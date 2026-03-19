@@ -420,9 +420,9 @@
     <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span></div>
     <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
-      <button class="btn btn-ghost" onclick="openModal('modal-help')" style="padding:4px 8px;font-size:12px;">❓</button>
-      <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
-      <button class="btn btn-ghost" onclick="openModal('modal-share')" style="padding:4px 8px;font-size:12px;">👁️</button>
+      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:12px;">❓</button>
+      <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
+      <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
       <div class="sync-badge" id="sync-badge">
         <div class="sync-dot synced" id="sync-dot"></div>
         <span id="sync-text">מסונכרן</span>
@@ -1310,7 +1310,7 @@ window.cleanAndOrganizeBank = async function() {
   if (newQs.length === 0) { toast('כל השאלות כבר נוקו! הוסף שאלות חדשות תחילה.', true); return; }
 
   const btn = document.getElementById('clean-bank-btn');
-  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> מנקה ומסדר...';
   btn.disabled = true;
 
   // Build context of existing cleaned questions for dedup comparison
@@ -1781,6 +1781,8 @@ function calcYears(start, end) {
   return Math.max(0, (e - s) / (1000 * 60 * 60 * 24 * 365.25));
 }
 
+let domainOrder = [];
+
 function renderExperience() {
   const list = localCache.workHistory || [];
   let total = 0;
@@ -1798,9 +1800,50 @@ function renderExperience() {
   const maxC = Math.max(...Object.values(capMap), 1);
   const maxCo = Math.max(...Object.values(companyMap), 1);
   document.getElementById('company-breakdown').innerHTML = renderBreakdown(companyMap, maxCo);
-  document.getElementById('domain-breakdown').innerHTML = renderBreakdown(domainMap, maxD);
   document.getElementById('capability-breakdown').innerHTML = renderBreakdown(capMap, maxC);
+  renderDomainBreakdown(domainMap, maxD);
 }
+
+function renderDomainBreakdown(map, max) {
+  const allEntries = Object.entries(map).sort((a,b) => b[1]-a[1]);
+  // Apply custom order if set
+  const ordered = domainOrder.length
+    ? [...domainOrder.filter(k => map[k]).map(k => [k, map[k]]),
+       ...allEntries.filter(([k]) => !domainOrder.includes(k))]
+    : allEntries;
+  domainOrder = ordered.map(([k]) => k);
+
+  const el = document.getElementById('domain-breakdown');
+  if (!ordered.length) { el.innerHTML = '<p style="color:var(--text3);font-size:13px;">אין נתונים.</p>'; return; }
+  el.innerHTML = '<p style="font-size:11px;color:var(--text3);margin-bottom:8px;">גרור לשינוי סדר ⠿</p>' +
+    ordered.map(([k,v], idx) => `
+    <div draggable="true"
+      ondragstart="domainDragStart(event,${idx})"
+      ondragover="domainDragOver(event)"
+      ondrop="domainDrop(event,${idx})"
+      style="margin-bottom:10px;cursor:grab;padding:4px;border-radius:6px;" data-idx="${idx}">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;align-items:center;">
+        <span style="color:var(--text2);">${v.toFixed(1)} שנ'</span>
+        <span style="color:var(--text);font-weight:500;">${k}</span>
+        <span style="color:var(--text3);font-size:10px;">⠿</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${(v/max)*100}%"></div></div>
+    </div>`).join('');
+}
+
+let domainDragSrc = null;
+let domainMap_ = {};
+let domainMax_ = 1;
+window.domainDragStart = function(e, idx) { domainDragSrc = idx; };
+window.domainDragOver = function(e) { e.preventDefault(); };
+window.domainDrop = function(e, targetIdx) {
+  e.preventDefault();
+  if (domainDragSrc === null || domainDragSrc === targetIdx) return;
+  const moved = domainOrder.splice(domainDragSrc, 1)[0];
+  domainOrder.splice(targetIdx, 0, moved);
+  domainDragSrc = null;
+  renderExperience();
+};
 
 function renderBreakdown(map, max) {
   const sorted = Object.entries(map).sort((a,b) => b[1]-a[1]);
@@ -1831,20 +1874,52 @@ window.selectQType = function(type, btn) {
   renderQuestions();
 };
 
+let topicOrder = []; // custom order for topics
+
 function renderTopicCheckboxes() {
   const qs = (localCache.questions||[]).filter(q => q.type === currentQType);
-  const topics = [...new Set(qs.map(q => q.topic || 'כללי'))].sort();
+  const allTopics = [...new Set(qs.map(q => q.topic || 'כללי'))];
+  // Use custom order if set, else sort
+  const topics = topicOrder.length
+    ? [...topicOrder.filter(t => allTopics.includes(t)), ...allTopics.filter(t => !topicOrder.includes(t))]
+    : allTopics.sort();
+
   const el = document.getElementById('topic-checkboxes');
   if (!el) return;
   if (!topics.length) { el.innerHTML = '<span style="color:var(--text3);font-size:12px;">אין נושאים עדיין</span>'; return; }
-  // If none selected, select all
   if (!selectedTopics.size) topics.forEach(t => selectedTopics.add(t));
-  el.innerHTML = topics.map(t => `
-    <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;flex-direction:row-reverse;background:var(--surface2);padding:5px 10px;border-radius:20px;border:1px solid ${selectedTopics.has(t)?'var(--accent)':'var(--border)'};">
-      <span style="font-size:12px;">${escHtml(t)}</span>
-      <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:14px;height:14px;">
+
+  el.style.display = 'grid';
+  el.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  el.style.gap = '6px';
+
+  el.innerHTML = topics.map((t, idx) => `
+    <label draggable="true"
+      ondragstart="topicDragStart(event,${idx})"
+      ondragover="topicDragOver(event)"
+      ondrop="topicDrop(event,${idx})"
+      data-idx="${idx}"
+      style="display:flex;align-items:center;gap:6px;cursor:grab;flex-direction:row-reverse;background:var(--surface2);padding:6px 10px;border-radius:8px;border:1px solid ${selectedTopics.has(t)?'var(--accent)':'var(--border)'};font-size:12px;">
+      <span style="flex:1;text-align:right;">${escHtml(t)}</span>
+      <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:14px;height:14px;flex-shrink:0;">
+      <span style="color:var(--text3);font-size:10px;cursor:grab;">⠿</span>
     </label>`).join('');
+
+  // Store current order
+  topicOrder = topics;
 }
+
+let dragSrcIdx = null;
+window.topicDragStart = function(e, idx) { dragSrcIdx = idx; e.dataTransfer.effectAllowed = 'move'; };
+window.topicDragOver = function(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; };
+window.topicDrop = function(e, targetIdx) {
+  e.preventDefault();
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  const moved = topicOrder.splice(dragSrcIdx, 1)[0];
+  topicOrder.splice(targetIdx, 0, moved);
+  dragSrcIdx = null;
+  renderTopicCheckboxes();
+};
 
 window.toggleTopic = function(topic) {
   if (selectedTopics.has(topic)) selectedTopics.delete(topic);
@@ -1903,11 +1978,11 @@ function renderQuestions() {
   el.innerHTML = `
     <!-- Summary bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;">
-      <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroups(true)">פתח הכל ▼</button>
+      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
       <div style="font-size:13px;color:var(--text2);">
         <strong style="color:var(--accent);">${totalCount}</strong> שאלות ב-<strong>${groupCount}</strong> נושאים
       </div>
-      <button class="btn btn-ghost" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroups(false)">סגור הכל ^</button>
+      
     </div>
 
     <!-- Topic groups - collapsed by default -->
@@ -1930,15 +2005,19 @@ function renderQuestions() {
   `;
 }
 
+let allGroupsOpen = false;
+window.toggleAllTopicGroupsBtn = function() {
+  allGroupsOpen = !allGroupsOpen;
+  const btn = document.getElementById('toggle-all-btn');
+  if (btn) btn.textContent = allGroupsOpen ? 'סגור הכל ^' : 'פתח הכל ▼';
+  toggleAllTopicGroups(allGroupsOpen);
+};
+
 window.toggleAllTopicGroups = function(open) {
   const el = document.getElementById('q-filtered-list');
   if (!el) return;
-  el.querySelectorAll('.collapsible-body').forEach(body => {
-    body.classList.toggle('open', open);
-  });
-  el.querySelectorAll('.collapsible-arrow').forEach(arrow => {
-    arrow.classList.toggle('open', open);
-  });
+  el.querySelectorAll('.collapsible-body').forEach(body => body.classList.toggle('open', open));
+  el.querySelectorAll('.collapsible-arrow').forEach(arrow => arrow.classList.toggle('open', open));
 };
 
 function renderQList(list, containerId) {
