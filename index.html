@@ -1648,12 +1648,14 @@ function renderWorkHistoryList() {
     <div class="history-item">
       <div class="history-actions">
         <button class="btn btn-ghost" onclick="deleteWork(${i})" style="color:var(--danger)">✕</button>
+        <button class="btn btn-ghost" onclick="editWork(${i})" style="color:var(--accent);font-size:12px;">✏️</button>
       </div>
       <div class="history-info">
         <div class="history-company">${w.company}</div>
         <div class="history-role">${w.role}</div>
         <div class="history-meta">${w.start} → ${w.end || 'היום'} · ${calcYears(w.start, w.end).toFixed(1)} שנים</div>
         <div style="margin-top:4px;">${(w.domains||[]).map(d => `<span class="chip">${d}</span>`).join('')}</div>
+        <div style="margin-top:4px;">${(w.capabilities||[]).map(c => `<span class="chip" style="background:rgba(124,106,247,0.15)">${c}</span>`).join('')}</div>
       </div>
     </div>
   `).join('');
@@ -1712,9 +1714,33 @@ window.addCustomCapability = function() {
 };
 
 window.openAddWork = function() {
+  editWorkIndex = -1;
+  document.querySelector('#modal-work .modal-title').textContent = 'הוסף תפקיד';
   renderCheckboxGroup('domain-checkboxes', DOMAINS, [], ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
   renderCheckboxGroup('capability-checkboxes', CAPABILITIES, [], ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
   ['wh-company','wh-role','wh-start','wh-end'].forEach(id => document.getElementById(id).value = '');
+  openModal('modal-work');
+};
+
+let editWorkIndex = -1;
+
+window.editWork = function(i) {
+  const w = (localCache.workHistory || [])[i];
+  if (!w) return;
+  editWorkIndex = i;
+
+  // Add custom domains/capabilities if not in default lists
+  (w.domains||[]).forEach(d => { if (!DOMAINS.includes(d)) DOMAINS.push(d); });
+  (w.capabilities||[]).forEach(c => { if (!CAPABILITIES.includes(c)) CAPABILITIES.push(c); });
+
+  renderCheckboxGroup('domain-checkboxes', DOMAINS, w.domains||[], ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
+  renderCheckboxGroup('capability-checkboxes', CAPABILITIES, w.capabilities||[], ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
+
+  document.getElementById('wh-company').value = w.company || '';
+  document.getElementById('wh-role').value = w.role || '';
+  document.getElementById('wh-start').value = w.start || '';
+  document.getElementById('wh-end').value = w.end || '';
+  document.querySelector('#modal-work .modal-title').textContent = 'עדכן תפקיד';
   openModal('modal-work');
 };
 
@@ -1726,12 +1752,21 @@ window.saveWorkHistory = function() {
   const domains = [...document.querySelectorAll('#domain-checkboxes input:checked')].map(i => i.value);
   const capabilities = [...document.querySelectorAll('#capability-checkboxes input:checked')].map(i => i.value);
   const list = localCache.workHistory || [];
-  list.push({ company, role, start, end: document.getElementById('wh-end').value, domains, capabilities });
+  const entry = { company, role, start, end: document.getElementById('wh-end').value, domains, capabilities };
+
+  if (editWorkIndex >= 0) {
+    list[editWorkIndex] = entry;
+    editWorkIndex = -1;
+  } else {
+    list.push(entry);
+  }
+
   localCache.workHistory = list;
   saveProfile();
   closeModal('modal-work');
   renderWorkHistoryList();
-  toast('התפקיד נוסף!');
+  document.querySelector('#modal-work .modal-title').textContent = 'הוסף תפקיד';
+  toast('התפקיד נשמר!');
 };
 
 window.deleteWork = function(i) {
