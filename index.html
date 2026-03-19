@@ -140,19 +140,19 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
   .section-title { font-weight: 700; font-size: 32px; margin-bottom: 6px; }
-  .section-sub { color: var(--text2); font-size: 14px; margin-bottom: 24px; }
+  .section-sub { color: var(--text2); font-size: 16px; margin-bottom: 24px; }
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
   }
   .card-title {
-    font-size: 14px; font-weight: 700; text-transform: uppercase;
+    font-size: 16px; font-weight: 700; text-transform: uppercase;
     letter-spacing: 1px; color: var(--text2); margin-bottom: 14px;
   }
 
   label {
-    display: block; font-size: 12px; font-weight: 500;
+    display: block; font-size: 14px; font-weight: 500;
     color: var(--text2); margin-bottom: 6px; margin-top: 14px; text-align: right;
   }
   label:first-child { margin-top: 0; }
@@ -392,6 +392,12 @@
 <body>
 
 <!-- LOGIN SCREEN -->
+<!-- VIEW MODE BANNER -->
+<div id="view-mode-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:10px;">
+  <span>👁️ מצב צפייה בלבד — לא ניתן לערוך</span>
+  <button class="btn btn-ghost" onclick="toggleLanguage()" id="view-lang-btn" style="color:#fff;font-size:12px;padding:2px 8px;border:1px solid rgba(255,255,255,0.5);">EN</button>
+</div>
+
 <div class="login-screen" id="login-screen">
   <div class="login-logo">הכנה<span>לראיון</span></div>
   <p class="login-sub">הנתונים שלך — בענן, תמיד זמינים</p>
@@ -411,8 +417,12 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo">הכנה<span>לראיון</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span></div>
+    <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
+      <button class="btn btn-ghost" onclick="openModal('modal-help')" style="padding:4px 8px;font-size:12px;">❓</button>
+      <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
+      <button class="btn btn-ghost" onclick="openModal('modal-share')" style="padding:4px 8px;font-size:12px;">👁️</button>
       <div class="sync-badge" id="sync-badge">
         <div class="sync-dot synced" id="sync-dot"></div>
         <span id="sync-text">מסונכרן</span>
@@ -445,11 +455,11 @@
       <p class="section-sub">בסיס הידע האישי שלך לראיונות</p>
       <div class="card">
         <div class="card-title">הצגה עצמית / Pitch</div>
-        <textarea id="personal-pitch" placeholder="כתוב/י כאן את ה-elevator pitch שלך..." rows="5" oninput="autoSavePitch()"></textarea>
+        <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." rows="5" oninput="autoSavePitch()"></textarea>
       </div>
       <div class="card">
-        <div class="card-title">קורות חיים מלאים</div>
-        <textarea id="cv-text" placeholder="הדבק/י כאן את טקסט קורות החיים שלך..." rows="8" oninput="autoSaveCV()"></textarea>
+        <div class="card-title">קורות חיים מלאם</div>
+        <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." rows="8" oninput="autoSaveCV()"></textarea>
       </div>
       <div class="card">
         <div class="card-title">היסטוריית עבודה</div>
@@ -495,7 +505,7 @@
         <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
           <div class="upload-zone" id="upload-zone2" onclick="document.getElementById('file-input2').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
             <div class="upload-zone-icon">📎</div>
-            <div class="upload-zone-text">לחצי להעלאת קובץ</div>
+            <div class="upload-zone-text">לחץ להעלאת קובץ</div>
             <div class="upload-zone-sub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
           </div>
           <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
@@ -520,7 +530,7 @@
           <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
             נושא: ניהול גרסאות<br>שאלה 1: תארי את תהליך הריליס<br>תשובה: אני מובילה מקצה לקצה...
           </div>
-          <textarea id="kb-import-text" rows="6" placeholder="הדביקי כאן שאלות ותשובות..." style="margin-bottom:8px;"></textarea>
+          <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." style="margin-bottom:8px;"></textarea>
           <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
             📥 ייבא לבנק השאלות
           </button>
@@ -563,7 +573,7 @@
         </div>
         <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
           <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()">בחרי הכל</button>
+          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()">בחר הכל</button>
         </div>
       </div>
 
@@ -586,7 +596,7 @@
         <label>תפקיד / כותרת</label>
         <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר">
         <label>תיאור המשרה</label>
-        <textarea id="jp-jd" rows="6" placeholder="הדבק/י כאן את תיאור המשרה..."></textarea>
+        <textarea id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..."></textarea>
         <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
           הפק הכנה
@@ -609,7 +619,7 @@
     <!-- ראיון מדומה -->
     <section id="sec-mock" class="section">
       <h1 class="section-title">ראיון מדומה</h1>
-      <p class="section-sub">תרגלי תשובות וקבלי משוב מ-AI</p>
+      <p class="section-sub">תרגל תשובות וקבל משוב מ-AI</p>
       <div id="mock-setup">
         <div class="card">
           <div class="card-title">סוג שאלות לתרגול</div>
@@ -666,7 +676,7 @@
           <div class="q-type-badge" id="mock-badge">HR</div>
           <div class="question-text" id="mock-q-text"></div>
           <label>התשובה שלך</label>
-          <textarea id="mock-answer" rows="5" placeholder="כתוב/י את תשובתך כאן..."></textarea>
+          <textarea id="mock-answer" rows="5" placeholder="כתוב את תשובתך כאן..."></textarea>
           <div style="display:flex;gap:8px;margin-top:12px;flex-direction:row-reverse;">
             <button class="btn btn-primary" style="flex:1;" onclick="submitMockAnswer()">קבל משוב</button>
             <button class="btn btn-secondary" onclick="skipMock()">דלג</button>
@@ -755,8 +765,8 @@
     <input type="hidden" id="q-type"><input type="hidden" id="q-edit-id">
     <label>נושא</label>
     <input type="text" id="q-topic" placeholder="למשל: Cloud, AI Program Management, HR...">
-    <label>שאלה</label><textarea id="q-question" rows="3" placeholder="הכנס/י את שאלת הראיון..."></textarea>
-    <label>התשובה שלך</label><textarea id="q-answer" rows="5" placeholder="כתוב/י את תשובתך..."></textarea>
+    <label>שאלה</label><textarea id="q-question" rows="3" placeholder="הכנס את שאלת הראיון..."></textarea>
+    <label>התשובה שלך</label><textarea id="q-answer" rows="5" placeholder="כתוב את תשובתך..."></textarea>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveQuestion()">שמור</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-question')">ביטול</button>
@@ -805,12 +815,56 @@
   </div>
 </div>
 
+<!-- Modal: עזרה -->
+<div class="modal-overlay" id="modal-help">
+  <div class="modal-sheet" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">❓ איך להשתמש באפליקציה</div>
+    <div style="font-size:14px;color:var(--text2);line-height:2;">
+      1. הכנס API Key — לחץ על תמונת הפרופיל ← הכנס מפתח מ-console.anthropic.com<br>
+      2. מלא פרופיל — Pitch, קורות חיים, היסטוריית עבודה<br>
+      3. הכן שאלות — בכרטיסיית שאלות:<br>
+      &nbsp;&nbsp;א. הוסף מסמך ← לחץ ✨ חלץ שאלות (AI מחלץ אוטומטית)<br>
+      &nbsp;&nbsp;ב. ייבא שאלות מוכנות בפורמט:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;נושא: [שם נושא]<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;שאלה 1: [השאלה]<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;תשובה: [התשובה]<br>
+      4. מומלץ — הכן שאלות בכלי AI תחילה ← עצב בפורמט הנ"ל ← ייבא<br>
+      5. לאחר ייבוא גדול — לחץ 🧹 נקה וסדר<br>
+      6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
+      7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI
+    </div>
+    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:16px;">הבנתי ✅</button>
+  </div>
+</div>
+
+<!-- Modal: שתף מצב צפייה -->
+<div class="modal-overlay" id="modal-share">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">👁️ שתף מצב צפייה</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">צור לינק שיאפשר לאחרים לצפות בנתונים שלך — ללא עריכה, ללא התחברות.</p>
+    <div id="share-link-area">
+      <button class="btn btn-primary btn-block" onclick="generateShareLink()">🔗 צור לינק צפייה</button>
+    </div>
+    <div id="share-link-result" style="display:none;margin-top:14px;">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">העתק את הלינק ושלח:</div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-input" readonly style="flex:1;font-size:11px;padding:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="copyShareLink()">העתק</button>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;">הלינק תקף ל-30 יום. מי שנכנס יוכל לצפות בלבד.</div>
+    </div>
+    <button class="btn btn-ghost btn-block" onclick="closeModal('modal-share')" style="margin-top:12px;">סגור</button>
+  </div>
+</div>
+
 <!-- Modal: נקה וסדר בנק -->
 <div class="modal-overlay" id="modal-clean-bank">
   <div class="modal-sheet" style="max-height:92vh;">
     <div class="modal-handle"></div>
     <div class="modal-title">🧹 בנק מסודר ונקי</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">תצוגה מקדימה — לחצי "החלף את הבנק" כדי לשמור:</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">תצוגה מקדימה — לחץ "החלף את הבנק" כדי לשמור:</p>
     <div id="clean-bank-list"></div>
     <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="applyCleanedBank()">✅ החלף את הבנק</button>
@@ -824,7 +878,7 @@
   <div class="modal-sheet" style="max-height:90vh;">
     <div class="modal-handle"></div>
     <div class="modal-title">✨ שאלות שחולצו</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">בחרי אילו שאלות להוסיף לבנק שלך:</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">בחר אילו שאלות להוסיף לבנק שלך:</p>
     <div id="extracted-list"></div>
     <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="addAllExtracted()">הוסף את כולן לבנק</button>
@@ -864,7 +918,7 @@ window.signInWithGoogle = async function() {
   try {
     await signInWithPopup(auth, provider);
   } catch (e) {
-    toast('שגיאה בהתחברות. נסי שוב.', true);
+    toast('שגיאה בהתחברות. נסה שוב.', true);
   }
 };
 
@@ -905,10 +959,21 @@ onAuthStateChanged(auth, async (user) => {
     loadProfileUI();
     renderSavedJobs();
     updateMockJobSelect();
+    applyLanguage();
   } else {
     currentUser = null;
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
+    // Check if this is a view-only link
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('view') && params.get('uid')) {
+      document.getElementById('app').style.display = 'block';
+      document.getElementById('login-screen').style.display = 'none';
+      await checkViewMode();
+      loadProfileUI();
+      renderQuestions();
+    } else {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('app').style.display = 'none';
+    }
   }
 });
 
@@ -979,7 +1044,7 @@ async function processFile(file) {
     } else {
       text = await extractWithClaude(file);
     }
-    if (!text || !text.trim()) { toast('לא הצלחתי לקרוא את הקובץ. נסי להדביק ידנית.', true); return; }
+    if (!text || !text.trim()) { toast('לא הצלחתי לקרוא את הקובץ. נסה להדביק ידנית.', true); return; }
     addDocToCache(file.name, text);
     toast('הקובץ נוסף! ✅');
   } catch(e) {
@@ -990,7 +1055,7 @@ async function processFile(file) {
 
 async function extractWithClaude(file) {
   const apiKey = getApiKey();
-  if (!apiKey) { toast('יש להכניס API Key תחילה — לחצי על תמונת הפרופיל', true); throw new Error('No API key'); }
+  if (!apiKey) { toast('יש להכניס API Key תחילה — לחץ על תמונת הפרופיל', true); throw new Error('No API key'); }
 
   const name = file.name.toLowerCase();
   const isImage = name.match(/\.(jpg|jpeg|png|webp|gif)$/);
@@ -1028,7 +1093,7 @@ async function extractWithClaude(file) {
             extracted = (str.match(/<a:t[^>]*>([^<]+)<\/a:t>/g) || []).map(m => m.replace(/<[^>]+>/g,'')).filter(t=>t.length>1).join('\n');
           }
           if (!extracted || extracted.length < 50) {
-            resolve('לא הצלחתי לחלץ טקסט מהקובץ. נסי להדביק את התוכן ידנית.');
+            resolve('לא הצלחתי לחלץ טקסט מהקובץ. נסה להדביק את התוכן ידנית.');
             return;
           }
           contentBlocks = [
@@ -1209,7 +1274,7 @@ async function checkAndMergeWithExisting(newQuestion, newAnswer, newType, newTop
 שאלות קיימות:
 ${existingList}
 ענה ב-JSON בלבד:
-{"similar": true/false, "index": מספר_השאלה_הדומה_או_-1, "mergedQuestion": "שאלה ממוזגת אם צריך", "mergedAnswer": "תשובה ממוזגת אם צריך"}`;
+{"similar": true/false, "index": מספר_השאלה_הדומה_או_-1, "mergedQuestion": "שאלה ממוזגת אם צורך", "mergedAnswer": "תשובה ממוזגת אם צורך"}`;
 
   try {
     const resp = await callClaude(prompt, true);
@@ -1242,7 +1307,7 @@ window.cleanAndOrganizeBank = async function() {
   const cleanedQs = allQs.filter(q => q._cleaned);
 
   if (allQs.length < 1) { toast('אין שאלות בבנק.', true); return; }
-  if (newQs.length === 0) { toast('כל השאלות כבר נוקו! הוסיפי שאלות חדשות תחילה.', true); return; }
+  if (newQs.length === 0) { toast('כל השאלות כבר נוקו! הוסף שאלות חדשות תחילה.', true); return; }
 
   const btn = document.getElementById('clean-bank-btn');
   btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
@@ -1257,7 +1322,7 @@ window.cleanAndOrganizeBank = async function() {
     `${i+1}. [${q.type}] נושא: ${q.topic||'כללי'}\nשאלה: ${q.question}\nתשובה: ${q.answer||'אין'}`
   ).join('\n\n');
 
-  const prompt = `להלן שאלות חדשות לראיון עבודה שצריך לנקות ולסדר.
+  const prompt = `להלן שאלות חדשות לראיון עבודה שצורך לנקות ולסדר.
 ${existingContext}
 
 שאלות חדשות לעיבוד:
@@ -1318,7 +1383,7 @@ ${newQList}
 
     openModal('modal-clean-bank');
   } catch(e) {
-    toast('שגיאה בניקוי. נסי שוב.', true);
+    toast('שגיאה בניקוי. נסה שוב.', true);
   }
 
   btn.innerHTML = '🧹 נקה וסדר';
@@ -1435,7 +1500,7 @@ window.reExtractDoc = async function(docId) {
 };
 window.sortAllExtractedByTopic = function() {
   if (!extractedQuestions.length) {
-    toast('חלצי קודם שאלות ממסמכים — לחצי ✨ על כל מסמך.', true);
+    toast('חלצי קודם שאלות ממסמכים — לחץ ✨ על כל מסמך.', true);
     return;
   }
   renderExtractedQuestions();
@@ -1551,6 +1616,11 @@ window.showSection = function(name, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + name).classList.add('active');
   btn.classList.add('active');
+  // Show section name in header
+  const names = { profile: 'פרופיל', experience: 'ניסיון', questions: 'בנק שאלות', jobprep: 'הכנה למשרה', mock: 'תרגול' };
+  const namesEn = { profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job Prep', mock: 'Practice' };
+  const n = currentLang === 'en' ? namesEn[name] : names[name];
+  document.getElementById('current-section-name').textContent = n || '';
   if (name === 'experience') renderExperience();
   if (name === 'questions') renderQuestions();
   if (name === 'profile') loadProfileUI();
@@ -1592,14 +1662,32 @@ function renderWorkHistoryList() {
 const DOMAINS = ['AI', 'Cloud', 'SaaS', 'Telecom', 'Automotive', 'ERP', 'PMO'];
 const CAPABILITIES = ['ניהול תוכנית', 'ניהול פרויקטים', 'Delivery Governance', 'ניהול שחרורים', 'ניהול בעלי עניין', 'Agile'];
 
-function renderCheckboxGroup(containerId, items, checked=[]) {
+function renderCheckboxGroup(containerId, items, checked=[], defaultItems=[]) {
   const el = document.getElementById(containerId);
-  el.innerHTML = items.map(d => `
+  el.innerHTML = items.map(d => {
+    const isCustom = !defaultItems.includes(d);
+    return `
     <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--surface2);padding:8px 12px;border-radius:20px;border:2px solid ${checked.includes(d)?'var(--accent)':'var(--border)'};flex-direction:row-reverse;">
       <span style="font-size:13px;color:var(--text);">${d}</span>
       <input type="checkbox" value="${d}" ${checked.includes(d)?'checked':''} onchange="this.closest('label').style.borderColor=this.checked?'var(--accent)':'var(--border)'" style="width:16px;height:16px;cursor:pointer;">
-    </label>`).join('');
+      ${isCustom ? `<span onclick="removeCustomItem('${containerId}','${d}')" style="color:var(--danger);font-size:14px;cursor:pointer;margin-right:2px;">✕</span>` : ''}
+    </label>`;
+  }).join('');
 }
+
+window.removeCustomItem = function(containerId, val) {
+  if (containerId === 'domain-checkboxes') {
+    const idx = DOMAINS.indexOf(val);
+    if (idx > -1) DOMAINS.splice(idx, 1);
+    const checked = [...document.querySelectorAll('#domain-checkboxes input:checked')].map(i => i.value).filter(v => v !== val);
+    renderCheckboxGroup('domain-checkboxes', DOMAINS, checked, ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
+  } else {
+    const idx = CAPABILITIES.indexOf(val);
+    if (idx > -1) CAPABILITIES.splice(idx, 1);
+    const checked = [...document.querySelectorAll('#capability-checkboxes input:checked')].map(i => i.value).filter(v => v !== val);
+    renderCheckboxGroup('capability-checkboxes', CAPABILITIES, checked, ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
+  }
+};
 
 window.addCustomDomain = function() {
   const input = document.getElementById('domain-custom');
@@ -1608,7 +1696,7 @@ window.addCustomDomain = function() {
   if (!DOMAINS.includes(val)) DOMAINS.push(val);
   const checked = [...document.querySelectorAll('#domain-checkboxes input:checked')].map(i => i.value);
   checked.push(val);
-  renderCheckboxGroup('domain-checkboxes', DOMAINS, checked);
+  renderCheckboxGroup('domain-checkboxes', DOMAINS, checked, ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
   input.value = '';
 };
 
@@ -1619,13 +1707,13 @@ window.addCustomCapability = function() {
   if (!CAPABILITIES.includes(val)) CAPABILITIES.push(val);
   const checked = [...document.querySelectorAll('#capability-checkboxes input:checked')].map(i => i.value);
   checked.push(val);
-  renderCheckboxGroup('capability-checkboxes', CAPABILITIES, checked);
+  renderCheckboxGroup('capability-checkboxes', CAPABILITIES, checked, ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
   input.value = '';
 };
 
 window.openAddWork = function() {
-  renderCheckboxGroup('domain-checkboxes', DOMAINS);
-  renderCheckboxGroup('capability-checkboxes', CAPABILITIES);
+  renderCheckboxGroup('domain-checkboxes', DOMAINS, [], ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
+  renderCheckboxGroup('capability-checkboxes', CAPABILITIES, [], ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
   ['wh-company','wh-role','wh-start','wh-end'].forEach(id => document.getElementById(id).value = '');
   openModal('modal-work');
 };
@@ -2000,7 +2088,7 @@ ${localCache.pitch?`\nהצגה עצמית: ${localCache.pitch}`:''}
     document.getElementById('improve-loading').style.display = 'none';
     document.getElementById('improve-result').style.display = 'block';
   } catch {
-    document.getElementById('improve-loading').innerHTML = '<p style="color:var(--danger)">שגיאה. נסי שוב.</p>';
+    document.getElementById('improve-loading').innerHTML = '<p style="color:var(--danger)">שגיאה. נסה שוב.</p>';
   }
 };
 
@@ -2182,7 +2270,7 @@ window.startMock = function() {
     qs = filtered.filter(q => { if (seen.has(q.id)) return false; seen.add(q.id); return true; });
   }
 
-  if (!qs.length) { toast('אין שאלות במאגר הנבחר. הוסיפי שאלות תחילה!', true); return; }
+  if (!qs.length) { toast('אין שאלות במאגר הנבחר. הוסף שאלות תחילה!', true); return; }
   qs = shuffle(qs);
   if (count!=='all') qs = qs.slice(0, parseInt(count));
 
@@ -2229,7 +2317,7 @@ window.submitMockAnswer = async function() {
     document.getElementById('mock-feedback-area').style.display='block';
     document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='none');
     mockAnswered++;
-  } catch { toast('הפקת המשוב נכשלה. נסי שוב.', true); }
+  } catch { toast('הפקת המשוב נכשלה. נסה שוב.', true); }
   btn.innerHTML='קבל משוב'; btn.disabled=false;
 };
 
@@ -2320,7 +2408,7 @@ Use your knowledge to suggest a real, specific YouTube video that exists. The vi
         <span class="video-link-icon">▶</span>
         <div class="video-link-title">
           <div style="font-weight:600;color:var(--text);margin-bottom:2px;">חיפוש YouTube</div>
-          <div style="font-size:11px;color:var(--text3);">לחצי לחיפוש: ${escHtml(searchQuery.substring(0,50))}</div>
+          <div style="font-size:11px;color:var(--text3);">לחץ לחיפוש: ${escHtml(searchQuery.substring(0,50))}</div>
         </div>
         <span class="video-link-arrow">↗</span>
       </a>`;
@@ -2344,6 +2432,108 @@ window.saveApiKey = function() {
   toast('מפתח API נשמר! ✅');
 };
 
+// ==================== LANGUAGE TOGGLE ====================
+let currentLang = 'he';
+const LANG = {
+  he: {
+    appTitle: 'הכנה<span>לראיון</span>',
+    profile: 'פרופיל', experience: 'ניסיון', questions: 'שאלות', jobprep: 'משרה', mock: 'תרגול',
+    syncText: 'מסונכרן', btnLang: 'EN',
+    secProfile: 'הפרופיל שלי', secQuestions: 'בנק שאלות', secMock: 'ראיון מדומה',
+    secJobprep: 'הכנה למשרה', secExperience: 'ניסיון',
+  },
+  en: {
+    appTitle: 'Interview<span>Prep</span>',
+    profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job', mock: 'Practice',
+    syncText: 'Synced', btnLang: 'HE',
+    secProfile: 'My Profile', secQuestions: 'Question Bank', secMock: 'Mock Interview',
+    secJobprep: 'Job Prep', secExperience: 'Experience',
+  }
+};
+
+window.toggleLanguage = function() {
+  currentLang = currentLang === 'he' ? 'en' : 'he';
+  applyLanguage();
+};
+
+function applyLanguage() {
+  const L = LANG[currentLang];
+  const isHe = currentLang === 'he';
+  document.documentElement.setAttribute('lang', currentLang);
+  document.documentElement.setAttribute('dir', isHe ? 'rtl' : 'ltr');
+  document.getElementById('app-logo-text').innerHTML = L.appTitle;
+  document.getElementById('lang-btn').textContent = L.btnLang;
+  document.getElementById('sync-text').textContent = L.syncText;
+  // Nav buttons
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const navKeys = ['profile','experience','questions','jobprep','mock'];
+  navBtns.forEach((btn, i) => {
+    const lastChild = btn.lastChild;
+    if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
+  });
+}
+
+// ==================== SHARE LINK ====================
+window.generateShareLink = async function() {
+  const uid = currentUser?.uid;
+  if (!uid) return;
+  // Save share token to Firebase
+  const token = Math.random().toString(36).substr(2, 12);
+  const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+  try {
+    await setDoc(userDoc('data/shareToken'), { token, expiry, uid });
+    const link = `${window.location.origin}${window.location.pathname}?view=${token}&uid=${uid}`;
+    document.getElementById('share-link-input').value = link;
+    document.getElementById('share-link-result').style.display = 'block';
+    document.getElementById('share-link-area').style.display = 'none';
+  } catch(e) {
+    toast('שגיאה ביצירת לינק', true);
+  }
+};
+
+window.copyShareLink = function() {
+  const input = document.getElementById('share-link-input');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => toast('הלינק הועתק! ✅'));
+};
+
+// ==================== VIEW-ONLY MODE ====================
+async function checkViewMode() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('view');
+  const uid = params.get('uid');
+  if (!token || !uid) return false;
+
+  try {
+    const snap = await getDoc(doc(db, 'users', uid, 'data', 'shareToken'));
+    if (!snap.exists()) return false;
+    const data = snap.data();
+    if (data.token !== token || data.expiry < Date.now()) return false;
+
+    // Load owner's data in view-only mode
+    const profileSnap = await getDoc(doc(db, 'users', uid, 'data', 'profile'));
+    if (profileSnap.exists()) {
+      const d = profileSnap.data();
+      localCache.pitch = d.pitch || '';
+      localCache.cv = d.cv || '';
+      localCache.workHistory = d.workHistory || [];
+      localCache.kbDocs = d.kbDocs || [];
+      localCache.savedJobs = d.savedJobs || [];
+    }
+    const qSnap = await getDocs(collection(db, 'users', uid, 'questions'));
+    localCache.questions = [];
+    qSnap.forEach(d => localCache.questions.push({ id: d.id, ...d.data() }));
+
+    // Show view-only banner
+    document.getElementById('view-mode-banner').style.display = 'flex';
+    // Disable all edit buttons
+    document.querySelectorAll('.btn-primary, .btn-secondary, .btn-accent2, .btn-danger').forEach(btn => {
+      if (!btn.closest('#view-mode-banner')) btn.disabled = true;
+    });
+    return true;
+  } catch(e) { return false; }
+}
+
 function getApiKey() {
   return localStorage.getItem('anthropic_api_key') || '';
 }
@@ -2361,7 +2551,7 @@ setTimeout(() => {
 async function callClaude(prompt, jsonMode=false) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    toast('יש להכניס Anthropic API Key — לחצי על תמונת הפרופיל', true);
+    toast('יש להכניס Anthropic API Key — לחץ על תמונת הפרופיל', true);
     throw new Error('No API key');
   }
   const messages=[{role:'user',content:prompt}];
