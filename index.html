@@ -372,6 +372,16 @@
   .badge-relevant { background:rgba(79,200,168,0.15); color:var(--accent2); padding:3px 8px; border-radius:12px; font-size:11px; font-weight:600; }
   .badge-not-relevant { background:rgba(247,106,124,0.15); color:var(--danger); padding:3px 8px; border-radius:12px; font-size:11px; font-weight:600; }
 
+  /* INFO PANEL */
+  .info-section { margin-bottom:20px; }
+  .info-section-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:6px; }
+  .info-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:8px; }
+  .info-table th { background:var(--surface2); padding:7px 10px; text-align:right; font-weight:600; color:var(--text2); }
+  .info-table td { padding:7px 10px; border-bottom:1px solid var(--border); color:var(--text); font-size:12px; }
+  .info-step { display:flex; gap:10px; align-items:flex-start; margin-bottom:8px; font-size:13px; color:var(--text2); }
+  .info-step span { background:var(--accent); color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
+  .info-note { background:rgba(247,162,106,0.1); border:1px solid rgba(247,162,106,0.3); border-radius:8px; padding:8px 12px; font-size:12px; color:var(--accent3); margin-top:8px; }
+
   /* SAVED JOBS */
   .saved-job-item {
     display: flex; align-items: center; justify-content: space-between;
@@ -429,7 +439,9 @@
     <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span></div>
     <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
+      <button class="btn btn-ghost" onclick="openInfoPanel()" title="מידע על האפליקציה" style="padding:4px 8px;font-size:12px;">ℹ️</button>
       <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:12px;">❓</button>
+      <button class="btn btn-ghost" onclick="openDocsModal()" title="מסמכים ומדריך" style="padding:4px 8px;font-size:12px;">📄</button>
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
       <div class="sync-badge" id="sync-badge">
@@ -873,6 +885,143 @@
   </div>
 </div>
 
+<!-- Modal: מסמכים -->
+<div class="modal-overlay" id="modal-docs">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📄 מסמכים</div>
+    <div id="docs-lock">
+      <p style="font-size:14px;color:var(--text2);margin-bottom:16px;">הכנס סיסמה לצפייה במסמכים:</p>
+      <input type="password" id="docs-password" placeholder="סיסמה..." style="margin-bottom:8px;" onkeydown="if(event.key==='Enter')checkDocsPassword()">
+      <button class="btn btn-primary btn-block" onclick="checkDocsPassword()">כנס</button>
+      <div id="docs-error" style="color:var(--danger);font-size:12px;margin-top:8px;text-align:center;"></div>
+    </div>
+    <div id="docs-content" style="display:none;">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">בחר מסמך להצגה או הורדה:</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:700;font-size:14px;">📋 מדריך למשתמש</div>
+            <div style="font-size:12px;color:var(--text2);">הוראות שימוש, קונפיגורציות, קבצים</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-secondary btn-sm" onclick="viewGuide()">צפה</button>
+            <button class="btn btn-accent2 btn-sm" onclick="downloadGuide()">הורד</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-block" onclick="closeModal('modal-docs');document.getElementById('docs-lock').style.display='block';document.getElementById('docs-content').style.display='none';document.getElementById('docs-password').value='';" style="margin-top:14px;">סגור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: מידע על האפליקציה (מוגן סיסמה) -->
+<div class="modal-overlay" id="modal-info">
+  <div class="modal-sheet" style="max-height:95vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">ℹ️ מידע על האפליקציה</div>
+
+    <!-- Password screen -->
+    <div id="info-password-screen">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">הזן סיסמה לצפייה במידע:</p>
+      <input type="password" id="info-password-input" placeholder="סיסמה..." style="margin-bottom:10px;">
+      <div id="info-password-error" style="color:var(--danger);font-size:12px;margin-bottom:10px;display:none;">סיסמה שגויה</div>
+      <div style="display:flex;gap:8px;flex-direction:row-reverse;">
+        <button class="btn btn-primary" style="flex:1;" onclick="checkInfoPassword()">כניסה</button>
+        <button class="btn btn-secondary" onclick="closeModal('modal-info')">ביטול</button>
+      </div>
+    </div>
+
+    <!-- Content (shown after password) -->
+    <div id="info-content-screen" style="display:none;overflow-y:auto;max-height:70vh;">
+
+      <div style="display:flex;justify-content:flex-start;margin-bottom:16px;">
+        <button class="btn btn-secondary btn-sm" onclick="downloadUserGuide()">📥 הורד מדריך</button>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">📁 קבצי האפליקציה</div>
+        <table class="info-table">
+          <tr><th>שם קובץ</th><th>היכן נשמר</th><th>תיאור</th></tr>
+          <tr><td>index.html</td><td>GitHub Pages</td><td>האפליקציה כולה — קובץ HTML יחיד</td></tr>
+          <tr><td>users/{uid}/data/profile</td><td>Firebase Firestore</td><td>פרופיל, Pitch, CV, היסטוריית עבודה, מסמכים</td></tr>
+          <tr><td>users/{uid}/questions/{id}</td><td>Firebase Firestore</td><td>בנק שאלות ותשובות</td></tr>
+          <tr><td>users/{uid}/tracker/{id}</td><td>Firebase Firestore</td><td>מעקב פניות למשרות</td></tr>
+          <tr><td>users/{uid}/data/shareToken</td><td>Firebase Firestore</td><td>טוקן לשיתוף מצב צפייה</td></tr>
+          <tr><td>API Key</td><td>localStorage (דפדפן)</td><td>מפתח Anthropic — לא נשלח לשרת</td></tr>
+        </table>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🔑 הגדרת Anthropic API Key</div>
+        <div class="info-steps">
+          <div class="info-step"><span>1</span>כנס ל-console.anthropic.com</div>
+          <div class="info-step"><span>2</span>לחץ על "API Keys" בתפריט שמאל</div>
+          <div class="info-step"><span>3</span>לחץ "+ Create Key" ← תן שם ← העתק מיד</div>
+          <div class="info-step"><span>4</span>באפליקציה: לחץ על תמונת הפרופיל ← הדבק המפתח ← שמור</div>
+          <div class="info-step"><span>5</span>שמור את המפתח גם ב-Notes בטלפון — הוא לא נשמר בין מכשירים</div>
+        </div>
+        <div class="info-note">עלות: ~$0.002–0.03 לפעולה. עם $5 ניתן לבצע מאות פעולות.</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🐙 הגדרת GitHub Pages</div>
+        <div class="info-steps">
+          <div class="info-step"><span>1</span>צור חשבון ב-github.com (חינם)</div>
+          <div class="info-step"><span>2</span>צור Repository חדש: + ← New repository ← שם: interview-prep ← Public ← Create</div>
+          <div class="info-step"><span>3</span>העלה קובץ: Code ← + ← Upload files ← העלה index.html ← Commit</div>
+          <div class="info-step"><span>4</span>הפעל Pages: Settings ← Pages ← Source: Deploy from branch ← main ← Save</div>
+          <div class="info-step"><span>5</span>הלינק שלך: https://[username].github.io/interview-prep</div>
+          <div class="info-step"><span>6</span>לעדכון: העלה קובץ חדש בשם index.html ← Commit ← ממתין 2 דקות</div>
+        </div>
+        <div class="info-note">⚠️ הקובץ חייב להיקרא בדיוק index.html (לא index.html.html)</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🔥 קונפיגורציית Firebase</div>
+        <table class="info-table">
+          <tr><th>פרמטר</th><th>ערך</th></tr>
+          <tr><td>Project ID</td><td>interview-prep-6a3aa</td></tr>
+          <tr><td>Auth Domain</td><td>interview-prep-6a3aa.firebaseapp.com</td></tr>
+          <tr><td>Authorized Domains</td><td>sagitsustiel-alt.github.io</td></tr>
+          <tr><td>Auth Method</td><td>Google Sign-In</td></tr>
+          <tr><td>Database</td><td>Cloud Firestore</td></tr>
+        </table>
+        <div class="info-steps" style="margin-top:10px;">
+          <div class="info-step"><span>!</span>להוספת דומיין חדש: console.firebase.google.com ← Authentication ← Settings ← Authorized domains ← Add domain</div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">💰 עלויות שירותים</div>
+        <table class="info-table">
+          <tr><th>שירות</th><th>עלות</th><th>הערה</th></tr>
+          <tr><td>GitHub Pages</td><td>חינם</td><td>ללא מגבלות ביקורים</td></tr>
+          <tr><td>Firebase Firestore</td><td>חינם</td><td>עד 50K קריאות/יום</td></tr>
+          <tr><td>Firebase Auth</td><td>חינם</td><td>ללא הגבלה</td></tr>
+          <tr><td>Anthropic API</td><td>לפי שימוש</td><td>~$0.002–0.03 לפעולה</td></tr>
+        </table>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🛠️ טכנולוגיות</div>
+        <table class="info-table">
+          <tr><th>רכיב</th><th>טכנולוגיה</th></tr>
+          <tr><td>Frontend</td><td>HTML + CSS + JavaScript (קובץ יחיד)</td></tr>
+          <tr><td>Authentication</td><td>Firebase Auth (Google)</td></tr>
+          <tr><td>Database</td><td>Firebase Firestore</td></tr>
+          <tr><td>AI</td><td>Claude API — claude-sonnet-4-20250514</td></tr>
+          <tr><td>Hosting</td><td>GitHub Pages</td></tr>
+          <tr><td>Fonts</td><td>Google Fonts (Heebo)</td></tr>
+        </table>
+      </div>
+
+    </div><!-- end info-content-screen -->
+    <button class="btn btn-ghost btn-block" id="info-close-btn" style="display:none;margin-top:12px;" onclick="closeModal('modal-info')">סגור</button>
+  </div>
+</div>
+
+<!-- Modal: מידע על האפליקציה (מוגן סיסמה) -- end -->
 <!-- Modal: עזרה -->
 <div class="modal-overlay" id="modal-help">
   <div class="modal-sheet" style="max-height:90vh;">
@@ -922,26 +1071,29 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
-    <label>תאריך</label>
-    <input type="date" id="tr-date">
-    <label>חברה *</label>
+    <label id="lbl-tr-date">תאריך</label>
+    <input type="date" id="tr-date" style="direction:ltr;text-align:left;">
+    <label id="lbl-tr-company">חברה *</label>
     <input type="text" id="tr-company" placeholder="שם החברה">
-    <label>תפקיד *</label>
+    <label id="lbl-tr-role">תפקיד *</label>
     <input type="text" id="tr-role" placeholder="שם התפקיד">
-    <label>קישור למשרה</label>
+    <label id="lbl-tr-link">קישור למשרה</label>
     <input type="url" id="tr-link" placeholder="https://...">
-    <label>רלוונטי?</label>
+    <label id="lbl-tr-relevant">רלוונטי?</label>
     <select id="tr-relevant">
-      <option value="yes">כן — רלוונטי</option>
-      <option value="no">לא — לא רלוונטי</option>
+      <option value="yes" id="opt-tr-yes">כן — רלוונטי</option>
+      <option value="no" id="opt-tr-no">לא — לא רלוונטי</option>
     </select>
-    <label>תאריך ראיון</label>
-    <input type="datetime-local" id="tr-interview">
-    <label>הערות</label>
+    <label id="lbl-tr-interview">תאריך ראיון</label>
+    <div style="display:flex;gap:8px;">
+      <input type="date" id="tr-interview-date" style="flex:1;direction:ltr;text-align:left;">
+      <input type="time" id="tr-interview-time" style="flex:1;direction:ltr;text-align:left;">
+    </div>
+    <label id="lbl-tr-notes">הערות</label>
     <textarea id="tr-notes" rows="3" placeholder="משוב ראיון, מעקב..."></textarea>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')">ביטול</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
     </div>
   </div>
 </div>
@@ -2634,10 +2786,89 @@ window.saveApiKey = function() {
   toast('מפתח API נשמר! ✅');
 };
 
-// ==================== JOB TRACKER ====================
+// ==================== DOCS MODAL ====================
+window.openDocsModal = function() {
+  document.getElementById('docs-lock').style.display = 'block';
+  document.getElementById('docs-content').style.display = 'none';
+  document.getElementById('docs-password').value = '';
+  document.getElementById('docs-error').textContent = '';
+  openModal('modal-docs');
+};
+
+window.checkDocsPassword = function() {
+  const pw = document.getElementById('docs-password').value;
+  if (pw === 'Sagit5576') {
+    document.getElementById('docs-lock').style.display = 'none';
+    document.getElementById('docs-content').style.display = 'block';
+  } else {
+    document.getElementById('docs-error').textContent = 'סיסמה שגויה';
+  }
+};
+
+window.viewGuide = function() {
+  window.open('https://sagitsustiel-alt.github.io/interview-prep/guide.html', '_blank');
+};
+
+window.downloadGuide = function() {
+  const link = document.createElement('a');
+  link.href = 'https://sagitsustiel-alt.github.io/interview-prep/guide.html';
+  link.download = 'interview-prep-user-guide.html';
+  link.click();
+};
 let trackerApps = [];
 let trackerFilter = 'all';
 let trackerEditId = null;
+
+// ==================== INFO PANEL ====================
+window.openInfoPanel = function() {
+  document.getElementById('info-password-screen').style.display = 'block';
+  document.getElementById('info-content-screen').style.display = 'none';
+  document.getElementById('info-close-btn').style.display = 'none';
+  document.getElementById('info-password-input').value = '';
+  document.getElementById('info-password-error').style.display = 'none';
+  openModal('modal-info');
+};
+
+window.checkInfoPassword = function() {
+  const val = document.getElementById('info-password-input').value;
+  if (val === 'Sagit5576') {
+    document.getElementById('info-password-screen').style.display = 'none';
+    document.getElementById('info-content-screen').style.display = 'block';
+    document.getElementById('info-close-btn').style.display = 'block';
+  } else {
+    document.getElementById('info-password-error').style.display = 'block';
+    document.getElementById('info-password-input').value = '';
+  }
+};
+
+setTimeout(() => {
+  const inp = document.getElementById('info-password-input');
+  if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkInfoPassword(); });
+}, 1000);
+
+window.downloadUserGuide = function() {
+  const content = document.getElementById('info-content-screen').innerHTML;
+  const html = `<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>מדריך — Job Prep</title>
+  <style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:20px;direction:rtl;color:#222;}
+  h1{color:#7c6af7;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;}
+  th{background:#7c6af7;color:#fff;padding:8px;text-align:right;}
+  td{padding:8px;border:1px solid #ddd;font-size:13px;}
+  .info-section{margin-bottom:24px;}
+  .info-section-title{color:#7c6af7;font-size:16px;font-weight:bold;border-bottom:2px solid #eee;padding-bottom:6px;margin:20px 0 10px;}
+  .info-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;font-size:13px;}
+  .info-step span{background:#7c6af7;color:#fff;border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px;}
+  .info-note{background:#fff8e6;border:1px solid #f7c26a;padding:8px;border-radius:6px;margin-top:8px;font-size:12px;}
+  button{display:none!important;}</style></head><body>
+  <h1>📋 מדריך למשתמש — Job Prep</h1>
+  <p style="color:#666;font-size:13px;">נוצר: ${new Date().toLocaleDateString('he-IL')}</p>
+  ${content}</body></html>`;
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'job-prep-user-guide.html';
+  a.click();
+};
 
 async function loadTrackerApps() {
   if (!currentUser) return;
@@ -2700,13 +2931,17 @@ window.setTrackerFilter = function(f, btn) {
 
 window.openTrackerModal = function() {
   trackerEditId = null;
-  document.getElementById('tracker-modal-title').textContent = 'הוסף פנייה';
+  const isEn = currentLang === 'en';
+  document.getElementById('tracker-modal-title').textContent = isEn ? 'Add Application' : 'הוסף פנייה';
+  document.getElementById('tracker-submit-btn').textContent = isEn ? 'Save' : 'שמור';
+  document.getElementById('tracker-cancel-btn').textContent = isEn ? 'Cancel' : 'ביטול';
   document.getElementById('tr-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('tr-company').value = '';
   document.getElementById('tr-role').value = '';
   document.getElementById('tr-link').value = '';
   document.getElementById('tr-relevant').value = 'yes';
-  document.getElementById('tr-interview').value = '';
+  document.getElementById('tr-interview-date').value = '';
+  document.getElementById('tr-interview-time').value = '';
   document.getElementById('tr-notes').value = '';
   openModal('modal-tracker');
 };
@@ -2715,13 +2950,23 @@ window.editTrackerApp = function(id) {
   const a = trackerApps.find(x => x._id === id);
   if (!a) return;
   trackerEditId = id;
-  document.getElementById('tracker-modal-title').textContent = 'ערוך פנייה';
+  const isEn = currentLang === 'en';
+  document.getElementById('tracker-modal-title').textContent = isEn ? 'Edit Application' : 'ערוך פנייה';
+  document.getElementById('tracker-submit-btn').textContent = isEn ? 'Save' : 'שמור';
+  document.getElementById('tracker-cancel-btn').textContent = isEn ? 'Cancel' : 'ביטול';
   document.getElementById('tr-date').value = a.date || '';
   document.getElementById('tr-company').value = a.company || '';
   document.getElementById('tr-role').value = a.role || '';
   document.getElementById('tr-link').value = a.link || '';
   document.getElementById('tr-relevant').value = a.isRelevant || 'yes';
-  document.getElementById('tr-interview').value = a.interviewDate || '';
+  if (a.interviewDate) {
+    const parts = a.interviewDate.split('T');
+    document.getElementById('tr-interview-date').value = parts[0] || '';
+    document.getElementById('tr-interview-time').value = parts[1] ? parts[1].substring(0,5) : '';
+  } else {
+    document.getElementById('tr-interview-date').value = '';
+    document.getElementById('tr-interview-time').value = '';
+  }
   document.getElementById('tr-notes').value = a.notes || '';
   openModal('modal-tracker');
 };
@@ -2730,12 +2975,15 @@ window.saveTrackerApp = async function() {
   const company = document.getElementById('tr-company').value.trim();
   const role = document.getElementById('tr-role').value.trim();
   if (!company || !role) { toast('יש למלא חברה ותפקיד.', true); return; }
+  const iDate = document.getElementById('tr-interview-date').value;
+  const iTime = document.getElementById('tr-interview-time').value;
+  const interviewDate = iDate ? (iTime ? `${iDate}T${iTime}` : iDate) : '';
   const entry = {
     date: document.getElementById('tr-date').value,
     company, role,
     link: document.getElementById('tr-link').value.trim(),
     isRelevant: document.getElementById('tr-relevant').value,
-    interviewDate: document.getElementById('tr-interview').value,
+    interviewDate,
     notes: document.getElementById('tr-notes').value.trim()
   };
   try {
@@ -2794,13 +3042,88 @@ function applyLanguage() {
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
   document.getElementById('lang-btn').textContent = L.btnLang;
   document.getElementById('sync-text').textContent = L.syncText;
-  // Nav buttons
+
+  // Nav buttons text
   const navBtns = document.querySelectorAll('.nav-btn');
-  const navKeys = ['profile','experience','questions','jobprep','mock'];
+  const navKeys = ['profile','experience','questions','jobprep','mock','tracker'];
   navBtns.forEach((btn, i) => {
     const lastChild = btn.lastChild;
-    if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
+    if (lastChild && lastChild.nodeType === 3 && navKeys[i]) {
+      lastChild.textContent = '\n      ' + (L[navKeys[i]] || '');
+    }
   });
+
+  // Section titles & subs
+  const sectionMap = {
+    'sec-profile': { title: isHe ? 'הפרופיל שלי' : 'My Profile', sub: isHe ? 'בסיס הידע האישי שלך לראיונות' : 'Your personal knowledge base for interviews' },
+    'sec-experience': { title: isHe ? 'ניסיון' : 'Experience', sub: isHe ? 'מחושב אוטומטית מהיסטוריית העבודה שלך' : 'Automatically calculated from work history' },
+    'sec-questions': { title: isHe ? 'בנק שאלות' : 'Question Bank', sub: isHe ? 'ספריית שאלות ותשובות לראיון' : 'Interview questions and answers library' },
+    'sec-jobprep': { title: isHe ? 'הכנה למשרה' : 'Job Prep', sub: isHe ? 'הפק הכנה מותאמת אישית לתפקיד ספציפי' : 'Generate personalized prep for a specific role' },
+    'sec-mock': { title: isHe ? 'ראיון מדומה' : 'Mock Interview', sub: isHe ? 'תרגל תשובות וקבל משוב מ-AI' : 'Practice answers and get AI feedback' },
+    'sec-tracker': { title: isHe ? 'מעקב משרות' : 'Job Tracker', sub: isHe ? 'עקוב אחרי כל הגשות המועמדות שלך' : 'Track all your job applications' },
+  };
+  Object.entries(sectionMap).forEach(([id, texts]) => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const h1 = sec.querySelector('.section-title');
+    const p = sec.querySelector('.section-sub');
+    if (h1) h1.textContent = texts.title;
+    if (p) p.textContent = texts.sub;
+  });
+
+  // Card titles
+  const cardTitleMap = isHe ? {
+    'הצגה עצמית / Pitch': 'הצגה עצמית / Pitch',
+    'קורות חיים מלאים': 'קורות חיים מלאים',
+    'היסטוריית עבודה': 'היסטוריית עבודה',
+  } : {
+    'הצגה עצמית / Pitch': 'Personal Pitch',
+    'קורות חיים מלאים': 'Full CV',
+    'היסטוריית עבודה': 'Work History',
+  };
+  document.querySelectorAll('.card-title').forEach(el => {
+    const mapped = cardTitleMap[el.textContent.trim()];
+    if (mapped) el.textContent = mapped;
+  });
+
+  // Add work button
+  const addWorkBtn = document.querySelector('#sec-profile .btn-secondary');
+  if (addWorkBtn) addWorkBtn.childNodes[addWorkBtn.childNodes.length-1].textContent = isHe ? ' הוסף תפקיד' : ' Add Role';
+
+  // Tracker filters
+  const tfilterMap = isHe
+    ? ['הכל','רלוונטי','לא רלוונטי','יש ראיון']
+    : ['All','Relevant','Not Relevant','Has Interview'];
+  document.querySelectorAll('.tracker-filter').forEach((btn, i) => {
+    const span = btn.querySelector('span');
+    const count = span ? span.outerHTML : '';
+    btn.innerHTML = tfilterMap[i] + ' ' + count;
+  });
+
+  // Clean bank button
+  const cleanBtn = document.getElementById('clean-bank-btn');
+  if (cleanBtn && !cleanBtn.disabled) cleanBtn.textContent = isHe ? '🧹 נקה וסדר' : '🧹 Clean & Sort';
+
+  // Tracker modal labels
+  const trackerLabelMap = {
+    'lbl-tr-date': isHe ? 'תאריך' : 'Date',
+    'lbl-tr-company': isHe ? 'חברה *' : 'Company *',
+    'lbl-tr-role': isHe ? 'תפקיד *' : 'Role *',
+    'lbl-tr-link': isHe ? 'קישור למשרה' : 'Job Link',
+    'lbl-tr-relevant': isHe ? 'רלוונטי?' : 'Relevant?',
+    'lbl-tr-interview': isHe ? 'תאריך ראיון' : 'Interview Date',
+    'lbl-tr-notes': isHe ? 'הערות' : 'Notes',
+  };
+  Object.entries(trackerLabelMap).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  });
+  const optYes = document.getElementById('opt-tr-yes');
+  const optNo = document.getElementById('opt-tr-no');
+  if (optYes) optYes.textContent = isHe ? 'כן — רלוונטי' : 'Yes — Relevant';
+  if (optNo) optNo.textContent = isHe ? 'לא — לא רלוונטי' : 'No — Not Relevant';
+
+  renderQuestions();
 }
 
 // ==================== SHARE LINK ====================
