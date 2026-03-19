@@ -556,10 +556,15 @@
       </div>
 
       <!-- Topic checkboxes -->
-      <div id="topic-checkboxes-area" style="margin-bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">סנני לפי נושא:</div>
-        <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-        <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()">בחרי הכל</button>
+      <div style="margin-bottom:14px;">
+        <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
+          <div class="collapsible-title" style="font-size:13px;">🏷️ סנני לפי נושא</div>
+          <span class="collapsible-arrow">^</span>
+        </div>
+        <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
+          <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()">בחרי הכל</button>
+        </div>
       </div>
 
       <!-- Questions list -->
@@ -725,9 +730,17 @@
     <label>תאריך התחלה</label><input type="date" id="wh-start">
     <label>תאריך סיום (ריק = עד היום)</label><input type="date" id="wh-end">
     <label>תחום/ים</label>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;" id="domain-checkboxes"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="domain-checkboxes"></div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <input type="text" id="domain-custom" placeholder="הוסף תחום ידנית..." style="flex:1;font-size:13px;">
+      <button class="btn btn-secondary btn-sm" onclick="addCustomDomain()">+ הוסף</button>
+    </div>
     <label style="margin-top:14px;">יכולות</label>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;" id="capability-checkboxes"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="capability-checkboxes"></div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <input type="text" id="capability-custom" placeholder="הוסף יכולת ידנית..." style="flex:1;font-size:13px;">
+      <button class="btn btn-secondary btn-sm" onclick="addCustomCapability()">+ הוסף</button>
+    </div>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveWorkHistory()">שמור</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-work')">ביטול</button>
@@ -1579,17 +1592,40 @@ function renderWorkHistoryList() {
 const DOMAINS = ['AI', 'Cloud', 'SaaS', 'Telecom', 'Automotive', 'ERP', 'PMO'];
 const CAPABILITIES = ['ניהול תוכנית', 'ניהול פרויקטים', 'Delivery Governance', 'ניהול שחרורים', 'ניהול בעלי עניין', 'Agile'];
 
+function renderCheckboxGroup(containerId, items, checked=[]) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(d => `
+    <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--surface2);padding:8px 12px;border-radius:20px;border:2px solid ${checked.includes(d)?'var(--accent)':'var(--border)'};flex-direction:row-reverse;">
+      <span style="font-size:13px;color:var(--text);">${d}</span>
+      <input type="checkbox" value="${d}" ${checked.includes(d)?'checked':''} onchange="this.closest('label').style.borderColor=this.checked?'var(--accent)':'var(--border)'" style="width:16px;height:16px;cursor:pointer;">
+    </label>`).join('');
+}
+
+window.addCustomDomain = function() {
+  const input = document.getElementById('domain-custom');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!DOMAINS.includes(val)) DOMAINS.push(val);
+  const checked = [...document.querySelectorAll('#domain-checkboxes input:checked')].map(i => i.value);
+  checked.push(val);
+  renderCheckboxGroup('domain-checkboxes', DOMAINS, checked);
+  input.value = '';
+};
+
+window.addCustomCapability = function() {
+  const input = document.getElementById('capability-custom');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!CAPABILITIES.includes(val)) CAPABILITIES.push(val);
+  const checked = [...document.querySelectorAll('#capability-checkboxes input:checked')].map(i => i.value);
+  checked.push(val);
+  renderCheckboxGroup('capability-checkboxes', CAPABILITIES, checked);
+  input.value = '';
+};
+
 window.openAddWork = function() {
-  document.getElementById('domain-checkboxes').innerHTML = DOMAINS.map(d => `
-    <label style="margin:0;display:inline-flex;align-items:center;gap:4px;cursor:pointer;flex-direction:row-reverse;">
-      <span style="font-size:12px;color:var(--text)">${d}</span>
-      <input type="checkbox" value="${d}" style="width:auto;">
-    </label>`).join('');
-  document.getElementById('capability-checkboxes').innerHTML = CAPABILITIES.map(c => `
-    <label style="margin:0;display:inline-flex;align-items:center;gap:4px;cursor:pointer;flex-direction:row-reverse;">
-      <span style="font-size:12px;color:var(--text)">${c}</span>
-      <input type="checkbox" value="${c}" style="width:auto;">
-    </label>`).join('');
+  renderCheckboxGroup('domain-checkboxes', DOMAINS);
+  renderCheckboxGroup('capability-checkboxes', CAPABILITIES);
   ['wh-company','wh-role','wh-start','wh-end'].forEach(id => document.getElementById(id).value = '');
   openModal('modal-work');
 };
@@ -1957,7 +1993,7 @@ window.generateJobPrep = async function() {
   const btn = document.querySelector('#sec-jobprep .btn-primary');
   btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> מפיק...';
   btn.disabled = true;
-  const existingQTexts = (localCache.questions||[]).map(q=>q.question).join('\n');
+  const existingQTexts = (localCache.questions||[]).map(q=>q.question).join('\n').substring(0, 1000);
   const prompt = `אתה מאמן הכנה לראיונות מומחה. הפק הכנה מותאמת.
 תפקיד יעד: ${role} ב-${company}
 תיאור משרה: ${jd||'לא סופק'}
@@ -1995,7 +2031,10 @@ window.generateJobPrep = async function() {
     localCache.savedJobs.push({ id: jobId, company, role, jd, date: new Date().toLocaleDateString('he-IL') });
     saveProfile();
     renderSavedJobs();
-  } catch { toast('ההפקה נכשלה. נסי שוב.', true); }
+  } catch(e) {
+    console.error('Job prep error:', e);
+    toast('ההפקה נכשלה: ' + (e.message || 'בדקי API Key'), true);
+  }
   btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg> הפק הכנה`;
   btn.disabled = false;
 };
