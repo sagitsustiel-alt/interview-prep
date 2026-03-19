@@ -940,16 +940,54 @@
       </div>
 
       <div class="info-section">
-        <div class="info-section-title">📁 קבצי האפליקציה</div>
+        <div class="info-section-title">📁 מבנה האפליקציה — ארכיטקטורה</div>
+        <div class="info-note" style="margin-bottom:12px;">האפליקציה כולה נכתבה בקובץ HTML יחיד — index.html (~3,200 שורות). גישה זו נקראת Single Page Application (SPA). אין שרת, אין build process, אין תלויות מקומיות.</div>
+
+        <div class="info-section-title" style="font-size:13px;margin-top:12px;">🏗️ שכבות הקוד בתוך index.html</div>
         <table class="info-table">
-          <tr><th>שם קובץ</th><th>היכן נשמר</th><th>תיאור</th></tr>
-          <tr><td>index.html</td><td>GitHub Pages</td><td>האפליקציה כולה — קובץ HTML יחיד</td></tr>
-          <tr><td>users/{uid}/data/profile</td><td>Firebase Firestore</td><td>פרופיל, Pitch, CV, היסטוריית עבודה, מסמכים</td></tr>
-          <tr><td>users/{uid}/questions/{id}</td><td>Firebase Firestore</td><td>בנק שאלות ותשובות</td></tr>
-          <tr><td>users/{uid}/tracker/{id}</td><td>Firebase Firestore</td><td>מעקב פניות למשרות</td></tr>
-          <tr><td>users/{uid}/data/shareToken</td><td>Firebase Firestore</td><td>טוקן לשיתוף מצב צפייה</td></tr>
-          <tr><td>API Key</td><td>localStorage (דפדפן)</td><td>מפתח Anthropic — לא נשלח לשרת</td></tr>
+          <tr><th>שכבה</th><th>תג</th><th>תוכן</th></tr>
+          <tr><td><strong>HTML</strong></td><td>&lt;body&gt;</td><td>מבנה הדף — 6 כרטיסיות, כפתורים, שדות קלט, מודאלים (חלונות קופצים)</td></tr>
+          <tr><td><strong>CSS</strong></td><td>&lt;style&gt;</td><td>עיצוב — צבעים, גדלים, מרווחים, אנימציות, RTL, responsive</td></tr>
+          <tr><td><strong>JavaScript</strong></td><td>&lt;script&gt;</td><td>כל הלוגיקה — ראה פירוט למטה</td></tr>
         </table>
+
+        <div class="info-section-title" style="font-size:13px;margin-top:12px;">⚙️ מה JavaScript עושה</div>
+        <div class="info-steps">
+          <div class="info-step"><span>1</span><div><strong>Firebase Auth</strong> — כניסה עם Google, ניהול משתמש, מצב התחברות</div></div>
+          <div class="info-step"><span>2</span><div><strong>Firebase Firestore</strong> — שמירה וטעינה של נתונים: פרופיל, שאלות, מעקב משרות, טוקן שיתוף</div></div>
+          <div class="info-step"><span>3</span><div><strong>Claude API</strong> — חיבור ל-Anthropic: חילוץ שאלות ממסמכים, שיפור תשובות, ראיון מדומה, ניקוי בנק, בדיקת כפילויות</div></div>
+          <div class="info-step"><span>4</span><div><strong>פונקציות בנק שאלות</strong> — הוספה, עריכה, מחיקה, מיון לפי נושא/סוג, חיפוש, גרירה לשינוי סדר</div></div>
+          <div class="info-step"><span>5</span><div><strong>ניהול מסמכים</strong> — העלאת קבצים (PDF, Word, תמונות), שליחה ל-Claude לניתוח, חילוץ שאלות</div></div>
+          <div class="info-step"><span>6</span><div><strong>ניהול מצב הדף</strong> — איזו כרטיסייה פתוחה, מה מסונכרן, localCache למניעת קריאות מיותרות</div></div>
+          <div class="info-step"><span>7</span><div><strong>מצב צפייה ושיתוף</strong> — יצירת טוקן, כניסה ללא התחברות, הגבלת עריכה</div></div>
+          <div class="info-step"><span>8</span><div><strong>תרגום שפה</strong> — החלפה בין עברית לאנגלית בממשק</div></div>
+          <div class="info-step"><span>9</span><div><strong>ייבוא/ייצוא</strong> — ייבוא שאלות מפורמט מוכן, הורדת מדריך משתמש</div></div>
+        </div>
+
+        <div class="info-section-title" style="font-size:13px;margin-top:12px;">🗄️ נתונים ב-Firebase Firestore</div>
+        <table class="info-table">
+          <tr><th>נתיב</th><th>תוכן</th></tr>
+          <tr><td>users/{uid}/data/profile</td><td>Pitch, CV, היסטוריית עבודה, מסמכי רקע, משרות שמורות</td></tr>
+          <tr><td>users/{uid}/questions/{id}</td><td>שאלה, תשובה, סוג (HR/TECH), נושא, מזהה משרה</td></tr>
+          <tr><td>users/{uid}/tracker/{id}</td><td>חברה, תפקיד, תאריך, רלוונטיות, ראיון, הערות</td></tr>
+          <tr><td>users/{uid}/data/shareToken</td><td>טוקן + תאריך תפוגה לשיתוף מצב צפייה</td></tr>
+        </table>
+
+        <div class="info-section-title" style="font-size:13px;margin-top:12px;">📦 ספריות חיצוניות (CDN — אין התקנה)</div>
+        <table class="info-table">
+          <tr><th>ספרייה</th><th>תפקיד</th></tr>
+          <tr><td>Firebase SDK 10.12</td><td>Auth + Firestore — טעון מ-gstatic.com</td></tr>
+          <tr><td>Google Fonts (Heebo)</td><td>פונט עברי/אנגלי</td></tr>
+          <tr><td>Anthropic API</td><td>קריאות ישירות מהדפדפן ל-api.anthropic.com</td></tr>
+        </table>
+
+        <div class="info-section-title" style="font-size:13px;margin-top:12px;">🔄 זרימת נתונים — ארכיטקטורה</div>
+        <div class="info-steps">
+          <div class="info-step"><span>→</span><div>משתמש פותח אפליקציה ← Firebase Auth מזהה ← טוען נתונים מ-Firestore ל-localCache</div></div>
+          <div class="info-step"><span>→</span><div>פעולות משתמש ← JavaScript מעדכן localCache ← שומר ב-Firestore</div></div>
+          <div class="info-step"><span>→</span><div>בקשות AI ← JavaScript שולח ל-Claude API עם API Key ← מקבל תשובה ← מציג ומעדכן</div></div>
+          <div class="info-step"><span>→</span><div>כל הנתונים מסונכרנים בענן — עובד מכל מכשיר עם אותו חשבון Google</div></div>
+        </div>
       </div>
 
       <div class="info-section">
