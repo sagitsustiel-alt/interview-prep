@@ -1156,6 +1156,11 @@ onAuthStateChanged(auth, async (user) => {
     applyLanguage();
   } else {
     currentUser = null;
+    // אם יש session אנונימי — נתנתק ממנו כדי לאפשר Google login
+    if (user && user.isAnonymous) {
+      await fbSignOut(auth);
+      return; // onAuthStateChanged ייקרא שוב עם user=null
+    }
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
   }
@@ -1455,7 +1460,22 @@ window.addPastedDoc2 = function() {
   toast(t('toastDocAdded'));
 };
 
-// ==================== AUTO MERGE ON ADD ====================
+// ==================== TOPIC NORMALIZATION ====================
+// מונע כפילות נושאים בשל הבדלי רישיות/רווחים
+function normalizeTopic(topic) {
+  if (!topic) return '';
+  return topic.trim()
+    .replace(/\s+/g, ' ')           // רווחים כפולים
+    .replace(/^./, c => c.toUpperCase()); // אות ראשונה גדולה
+}
+
+// מאחד נושאים דומים מול רשימה קיימת (case-insensitive)
+function resolveTopicName(newTopic, existingTopics) {
+  if (!newTopic) return '';
+  const norm = newTopic.trim().toLowerCase();
+  const match = existingTopics.find(t => t.trim().toLowerCase() === norm);
+  return match || normalizeTopic(newTopic);
+}
 async function checkAndMergeWithExisting(newQuestion, newAnswer, newType, newTopic) {
   const existing = localCache.questions || [];
   if (!existing.length) return { merged: false };
@@ -2341,10 +2361,13 @@ window.saveQuestion = async function() {
   const question = document.getElementById('q-question').value.trim();
   const answer = document.getElementById('q-answer').value.trim();
   const type = document.getElementById('q-type').value;
-  const topic = document.getElementById('q-topic').value.trim();
+  const rawTopic = document.getElementById('q-topic').value.trim();
   const editId = document.getElementById('q-edit-id').value;
   if (!question) { toast('יש להזין שאלה.', true); return; }
   if (!localCache.questions) localCache.questions = [];
+  // נורמליזציה — מאחד נושאים דומים
+  const existingTopics = [...new Set((localCache.questions).map(q => q.topic).filter(Boolean))];
+  const topic = resolveTopicName(rawTopic, existingTopics);
   if (editId) {
     const idx = localCache.questions.findIndex(x => x.id===editId);
     if (idx>-1) { localCache.questions[idx].question=question; localCache.questions[idx].answer=answer; localCache.questions[idx].topic=topic; }
@@ -2543,7 +2566,9 @@ window.deleteSavedJob = async function(id) {
 
 window.addToBank = async function(type, question, topic, jobId, company, role) {
   if ((localCache.questions||[]).find(q=>q.question===question)) { toast(t('toastAlreadyInBank')); return; }
-  const q = { id: uid(), type, question, answer: '', topic: topic||'', _jobId: jobId || 'generic', _company: company||'', _role: role||'' };
+  const existingTopics = [...new Set((localCache.questions||[]).map(q => q.topic).filter(Boolean))];
+  const normalizedTopic = resolveTopicName(topic, existingTopics);
+  const q = { id: uid(), type, question, answer: '', topic: normalizedTopic, _jobId: jobId || 'generic', _company: company||'', _role: role||'' };
   if (!localCache.questions) localCache.questions = [];
   localCache.questions.push(q);
   await saveQuestionToCloud(q);
