@@ -2772,7 +2772,16 @@ window.saveApiKey = function() {
 
 // ==================== LANGUAGE TOGGLE ====================
 let currentLang = 'he';
-const LANG = {
+
+// helper: get translated string — חייב להיות לפני LANG
+function t(key, ...args) {
+  if (typeof LANG === 'undefined') return key;
+  const L = LANG[currentLang] || LANG.he;
+  const val = L[key] ?? LANG.he[key] ?? key;
+  return typeof val === 'function' ? val(...args) : val;
+}
+
+let LANG = {
   he: {
     appTitle: 'הכנה<span>לראיון</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
@@ -2986,13 +2995,6 @@ const LANG = {
     today: 'Present',
   }
 };
-
-// helper: get translated string
-function t(key, ...args) {
-  const L = LANG[currentLang] || LANG.he;
-  const val = L[key] ?? LANG.he[key] ?? key;
-  return typeof val === 'function' ? val(...args) : val;
-}
 
 window.toggleLanguage = function() {
   currentLang = currentLang === 'he' ? 'en' : 'he';
