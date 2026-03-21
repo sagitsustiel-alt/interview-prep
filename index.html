@@ -2005,12 +2005,20 @@ function renderQuestions() {
     </div>
 
     <!-- Topic groups - collapsed by default -->
-    ${Object.entries(groups).map(([topic, questions], idx) => `
+    ${Object.entries(groups).map(([topic, questions], idx) => {
+      const ytQuery = encodeURIComponent(`${topic} interview explained program manager`);
+      const ytUrl = `https://www.youtube.com/results?search_query=${ytQuery}`;
+      return `
       <div style="margin-bottom:6px;">
         <div class="collapsible-header" onclick="toggleCollapsible('tg-${idx}', this)" style="margin-bottom:0;">
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
             <span style="background:var(--accent);color:#fff;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;">${questions.length}</span>
             <span style="font-weight:700;font-size:14px;">${escHtml(topic)}</span>
+            <a href="${ytUrl}" target="_blank" onclick="event.stopPropagation()"
+               style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(255,0,0,0.12);color:#ff4444;border:1px solid rgba(255,0,0,0.25);text-decoration:none;white-space:nowrap;flex-shrink:0;"
+               title="חיפוש YouTube: ${escHtml(topic)}">
+              ▶ YouTube
+            </a>
           </div>
           <span class="collapsible-arrow">^</span>
         </div>
@@ -2020,7 +2028,7 @@ function renderQuestions() {
           </div>
         </div>
       </div>
-    `).join('')}
+    `}).join('')}
   `;
 }
 
@@ -2434,24 +2442,32 @@ window.submitMockAnswer = async function() {
   const answer=document.getElementById('mock-answer').value.trim();
   if (!answer) { toast('יש לכתוב תשובה תחילה.', true); return; }
   const q=mockQueue[mockIndex];
-  const btn=document.querySelector('#mock-active .btn-primary');
+  // ספציפי יותר — רק הכפתור בתוך mock-question-card
+  const btn=document.querySelector('#mock-question-card .btn-primary');
+  const originalLabel = btn.innerHTML;
   btn.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
   btn.disabled=true;
   const prompt=`אתה מאמן ראיונות מומחה. מועמד ענה על שאלת ראיון. ספק משוב מובנה.
 שאלה: ${q.question}
 תשובת המועמד: ${answer}
-ענה ב-JSON: {"feedback":"2-3 משפטי משוב על בהירות ומבנה, בעברית","improved":"גרסה טובה יותר 3-5 משפטים, בעברית","followup":"שאלת המשך אפשרית, בעברית"}`;
+ענה ב-JSON בלבד (ללא כל טקסט נוסף): {"feedback":"2-3 משפטי משוב על בהירות ומבנה, בעברית","improved":"גרסה טובה יותר 3-5 משפטים, בעברית","followup":"שאלת המשך אפשרית, בעברית"}`;
   try {
     const resp=await callClaude(prompt,true);
-    const data=JSON.parse(resp);
-    document.getElementById('mock-fb-clarity').textContent=data.feedback;
-    document.getElementById('mock-fb-improved').textContent=data.improved;
-    document.getElementById('mock-fb-followup').textContent=data.followup;
+    // חילוץ JSON חזק — מוצא את האובייקט גם אם יש טקסט סביבו
+    const jsonMatch = resp.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON found');
+    const data=JSON.parse(jsonMatch[0]);
+    document.getElementById('mock-fb-clarity').textContent = data.feedback || '';
+    document.getElementById('mock-fb-improved').textContent = data.improved || '';
+    document.getElementById('mock-fb-followup').textContent = data.followup || '';
     document.getElementById('mock-feedback-area').style.display='block';
     document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='none');
     mockAnswered++;
-  } catch { toast('הפקת המשוב נכשלה. נסה שוב.', true); }
-  btn.innerHTML='קבל משוב'; btn.disabled=false;
+  } catch(e) {
+    toast('הפקת המשוב נכשלה. נסה שוב.', true);
+    btn.innerHTML=originalLabel;
+    btn.disabled=false;
+  }
 };
 
 window.skipMock = function() {
@@ -2473,81 +2489,28 @@ window.resetMock = function() {
 };
 
 // ==================== VIDEO SEARCH ====================
-window.findVideo = async function(id, question, topic) {
-  const btn = document.getElementById(`vbtn-${id}`);
+window.findVideo = function(id, question, topic) {
   const area = document.getElementById(`video-area-${id}`);
-  if (!btn || !area) return;
+  if (!area) return;
 
   // Toggle off if already showing
-  if (area.innerHTML && !area.innerHTML.includes('loading')) {
-    area.innerHTML = '';
-    btn.textContent = '▶ סרטון';
-    btn.classList.remove('loading');
-    return;
-  }
-
-  btn.textContent = '⏳';
-  btn.classList.add('loading');
-  area.innerHTML = '<div style="font-size:11px;color:var(--text3);padding:6px 0;">מחפש סרטון רלוונטי...</div>';
+  if (area.innerHTML) { area.innerHTML = ''; return; }
 
   const searchQuery = topic
-    ? `${topic} explained for program manager interview`
-    : `${question.substring(0, 80)} program manager explained`;
+    ? `${topic} explained program manager interview`
+    : `${question.substring(0, 80)} explained`;
+  const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`;
 
-  const prompt = `You are a helpful assistant that finds the best YouTube video to explain a topic for a job interview candidate.
-
-Topic/Question: "${question}"
-Topic tag: "${topic || 'general'}"
-
-Find the single best YouTube video to explain this concept clearly. It should be:
-- In English
-- Educational and clear
-- Relevant to program/project management or the specific technical topic
-- From a reputable channel
-
-Respond ONLY with this JSON (no markdown):
-{
-  "title": "exact video title",
-  "url": "https://www.youtube.com/watch?v=VIDEOID",
-  "channel": "channel name",
-  "reason": "one sentence why this video is relevant (in Hebrew)"
-}
-
-Use your knowledge to suggest a real, specific YouTube video that exists. The video ID must be real.`;
-
-  try {
-    const resp = await callClaude(prompt, true);
-    const data = JSON.parse(resp);
-    if (data.url && data.title) {
-      area.innerHTML = `
-        <a href="${data.url}" target="_blank" class="video-link">
-          <span class="video-link-icon">▶</span>
-          <div class="video-link-title">
-            <div style="font-weight:600;color:var(--text);margin-bottom:2px;">${escHtml(data.title)}</div>
-            <div style="font-size:11px;color:var(--text3);">${escHtml(data.channel)} · ${escHtml(data.reason)}</div>
-          </div>
-          <span class="video-link-arrow">↗</span>
-        </a>`;
-      btn.textContent = '▶ סרטון';
-      btn.classList.remove('loading');
-    } else {
-      throw new Error('no url');
-    }
-  } catch {
-    // Fallback: direct YouTube search link
-    const query = encodeURIComponent(searchQuery);
-    area.innerHTML = `
-      <a href="https://www.youtube.com/results?search_query=${query}" target="_blank" class="video-link">
-        <span class="video-link-icon">▶</span>
-        <div class="video-link-title">
-          <div style="font-weight:600;color:var(--text);margin-bottom:2px;">חיפוש YouTube</div>
-          <div style="font-size:11px;color:var(--text3);">לחץ לחיפוש: ${escHtml(searchQuery.substring(0,50))}</div>
-        </div>
-        <span class="video-link-arrow">↗</span>
-      </a>`;
-    btn.textContent = '▶ סרטון';
-    btn.classList.remove('loading');
-  }
+  area.innerHTML = `
+    <a href="${ytUrl}" target="_blank"
+       style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;border-radius:8px;background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.2);text-decoration:none;">
+      <span style="font-size:16px;">▶</span>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);">חיפוש YouTube: ${escHtml(topic || question.substring(0,40))}</div>
+        <div style="font-size:11px;color:var(--text3);">לחץ לפתיחת תוצאות חיפוש רלוונטיות</div>
+      </div>
+      <span style="margin-right:auto;color:var(--text3);">↗</span>
+    </a>`;
 };
 // ==================== AI ====================
 window.saveApiKey = function() {
