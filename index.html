@@ -65,7 +65,75 @@
   .btn-google img { width: 20px; height: 20px; }
   .login-note { color: var(--text3); font-size: 11px; margin-top: 16px; line-height: 1.5; }
 
-  /* SYNC STATUS */
+  /* ==================== MOBILE ==================== */
+  @media (max-width: 480px) {
+    /* Header */
+    .app-logo { font-size: 15px; }
+    .header-right { gap: 4px; }
+    .sync-badge { display: none; } /* מוסתר במובייל — חוסך מקום */
+    #current-section-name { display: none; }
+
+    /* Main */
+    .main { padding: 14px 12px 90px; }
+
+    /* Titles */
+    .section-title { font-size: 22px; }
+    .section-sub { font-size: 13px; margin-bottom: 16px; }
+    .card-title { font-size: 13px; letter-spacing: 0.5px; }
+
+    /* Cards */
+    .card { padding: 14px 12px; margin-bottom: 10px; }
+
+    /* Stats */
+    .stat-value { font-size: 24px; }
+    .stat-label { font-size: 10px; }
+
+    /* Nav */
+    .nav-btn { font-size: 9px; padding: 8px 2px; gap: 2px; }
+    .nav-btn svg { width: 20px; height: 20px; }
+
+    /* Modal */
+    .modal-sheet {
+      max-height: 92vh;
+      padding: 20px 14px;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+    .modal-title { font-size: 17px; }
+
+    /* Buttons */
+    .btn { font-size: 12px; padding: 9px 14px; }
+    .btn-sm { font-size: 11px; padding: 5px 10px; }
+
+    /* Question cards */
+    .question-card { padding: 12px; }
+    .question-text { font-size: 13px; }
+    .answer-text { font-size: 12px; }
+    .q-actions { gap: 6px; }
+    .q-actions .btn { font-size: 11px; padding: 5px 8px; }
+
+    /* History */
+    .history-item { padding: 10px; }
+    .history-company { font-size: 13px; }
+
+    /* Collapsible */
+    .collapsible-header { padding: 10px 12px; font-size: 13px; }
+
+    /* Inputs */
+    input[type="text"], input[type="date"], textarea, select {
+      font-size: 16px; /* מונע zoom אוטומטי ב-iOS */
+    }
+
+    /* Feedback cards */
+    .feedback-card { padding: 12px; }
+    .feedback-label { font-size: 11px; }
+  }
+
+  /* iPhone SE ומסכים קטנים מאוד */
+  @media (max-width: 360px) {
+    .section-title { font-size: 18px; }
+    .nav-btn { font-size: 8px; }
+    .card { padding: 10px; }
+  }
   .sync-badge {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; font-weight: 500; color: var(--text3);
@@ -423,6 +491,7 @@
       <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:12px;">❓</button>
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
+      <button class="btn btn-ghost" onclick="checkInfoPassword()" title="מידע טכני" style="padding:4px 8px;font-size:14px;">ℹ️</button>
       <div class="sync-badge" id="sync-badge">
         <div class="sync-dot synced" id="sync-dot"></div>
         <span id="sync-text">מסונכרן</span>
@@ -458,7 +527,7 @@
         <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()"></textarea>
       </div>
       <div class="card">
-        <div class="card-title" data-i18n="cardCV">קורות חיים מלאם</div>
+        <div class="card-title" data-i18n="cardCV">קורות חיים מלאים</div>
         <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()"></textarea>
       </div>
       <div class="card">
@@ -486,9 +555,33 @@
           <div class="stat-label" data-i18n="statCompanies">חברות</div>
         </div>
       </div>
-      <div class="card"><div class="card-title" data-i18n="cardByCompany">לפי חברה</div><div id="company-breakdown"></div></div>
-      <div class="card"><div class="card-title" data-i18n="cardByDomain">לפי תחום</div><div id="domain-breakdown"></div></div>
-      <div class="card"><div class="card-title" data-i18n="cardByCapability">לפי יכולת</div><div id="capability-breakdown"></div></div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('exp-company',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardByCompany" style="margin:0;">לפי חברה</div>
+          <span class="collapsible-arrow">^</span>
+        </div>
+        <div class="collapsible-body open" id="exp-company" style="padding:12px 16px 16px;">
+          <div id="company-breakdown"></div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('exp-domain',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardByDomain" style="margin:0;">לפי תחום</div>
+          <span class="collapsible-arrow">^</span>
+        </div>
+        <div class="collapsible-body open" id="exp-domain" style="padding:12px 16px 16px;">
+          <div id="domain-breakdown"></div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('exp-capability',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardByCapability" style="margin:0;">לפי יכולת</div>
+          <span class="collapsible-arrow">^</span>
+        </div>
+        <div class="collapsible-body open" id="exp-capability" style="padding:12px 16px 16px;">
+          <div id="capability-breakdown"></div>
+        </div>
+      </div>
     </section>
 
     <!-- שאלות -->
@@ -510,7 +603,7 @@
           </div>
           <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
           <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— <span data-i18n="orText">או</span> —</div>
-          <textarea id="kb-paste-text2" rows="3" placeholder="הדבקי טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
+          <textarea id="kb-paste-text2" rows="3" placeholder="הדבק טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
           <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
             <input type="text" id="kb-paste-name2" placeholder="שם המסמך" data-i18n-ph="phDocName" style="flex:1;">
             <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()" data-i18n="btnAdd">הוסף</button>
@@ -528,7 +621,7 @@
         <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
           <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
           <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
-            נושא: ניהול גרסאות<br>שאלה 1: תארי את תהליך הריליס<br>תשובה: אני מובילה מקצה לקצה...
+            נושא: ניהול גרסאות<br>שאלה 1: תאר את תהליך הריליס<br>תשובה: אני מוביל מקצה לקצה...
           </div>
           <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
           <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
@@ -554,26 +647,29 @@
       <!-- Merge notification area -->
       <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
-      <!-- Filter bar -->
-      <div style="margin-bottom:10px;">
-        <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0;">
-      </div>
+      <!-- Search & Filter Card -->
+      <div class="card" style="padding:16px;">
+        <div class="card-title" data-i18n="cardSearchQ">🔍 חיפוש שאלה</div>
 
-      <!-- Type selector -->
-      <div class="tabs" style="margin-bottom:10px;">
-        <button class="tab-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
-        <button class="tab-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
-      </div>
+        <!-- Filter bar -->
+        <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0 0 10px 0;">
 
-      <!-- Topic checkboxes -->
-      <div style="margin-bottom:14px;">
-        <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
-          <div class="collapsible-title" style="font-size:13px;" data-i18n="colTopics">🏷️ סנני לפי נושא</div>
-          <span class="collapsible-arrow">^</span>
+        <!-- Type selector -->
+        <div class="tabs" style="margin-bottom:10px;">
+          <button class="tab-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
+          <button class="tab-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
         </div>
-        <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
-          <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
+
+        <!-- Topic checkboxes -->
+        <div style="margin-bottom:4px;">
+          <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
+            <div class="collapsible-title" style="font-size:13px;" data-i18n="colTopics">🏷️ סנן לפי נושא</div>
+            <span class="collapsible-arrow">^</span>
+          </div>
+          <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
+            <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+            <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
+          </div>
         </div>
       </div>
 
@@ -671,6 +767,9 @@
         </div>
       </div>
       <div id="mock-active" style="display:none;">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+          <button class="btn btn-danger btn-sm" onclick="stopMock()" data-i18n="btnStop">⛔ הפסק סימולציה</button>
+        </div>
         <div class="mock-progress" id="mock-progress-dots"></div>
         <div class="card" id="mock-question-card">
           <div class="q-type-badge" id="mock-badge">HR</div>
@@ -684,8 +783,12 @@
         </div>
         <div id="mock-feedback-area" style="display:none;">
           <div class="feedback-card clarity"><div class="feedback-label" style="color:var(--accent);" data-i18n="fbFeedback">משוב</div><div id="mock-fb-clarity"></div></div>
-          <div class="feedback-card improved"><div class="feedback-label" style="color:var(--accent2);" data-i18n="fbImproved">תשובה משופרת</div><div id="mock-fb-improved"></div></div>
           <div class="feedback-card followup"><div class="feedback-label" style="color:var(--accent3);" data-i18n="fbFollowup">שאלת המשך אפשרית</div><div id="mock-fb-followup"></div></div>
+          <button class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="toggleSuggestedAnswer(this)" data-i18n="btnShowAnswer">💡 הצג תשובה מוצעת</button>
+          <div class="feedback-card improved" id="mock-suggested-answer" style="display:none;margin-top:8px;">
+            <div class="feedback-label" style="color:var(--accent2);" data-i18n="fbImproved">תשובה משופרת</div>
+            <div id="mock-fb-improved"></div>
+          </div>
           <div style="display:flex;gap:8px;margin-top:14px;flex-direction:row-reverse;">
             <button class="btn btn-primary" style="flex:1;" onclick="nextMockQuestion()" data-i18n="btnNextQ">שאלה הבאה</button>
             <button class="btn btn-secondary" onclick="endMock()" data-i18n="btnEnd">סיים</button>
@@ -834,7 +937,8 @@
       6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
       7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI
     </div>
-    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:16px;">הבנתי ✅</button>
+    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;">📄 הורד מדריך מפורט</button>
+    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;">הבנתי ✅</button>
   </div>
 </div>
 
@@ -887,6 +991,67 @@
   </div>
 </div>
 
+<!-- Modal: סיסמה למידע טכני -->
+<div class="modal-overlay" id="modal-password">
+  <div class="modal-sheet" style="max-width:320px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔒 מידע טכני</div>
+    <label style="font-size:13px;color:var(--text2);">סיסמה</label>
+    <input type="password" id="info-password-input" placeholder="••••••••" style="margin-top:6px;"
+      onkeydown="if(event.key==='Enter') submitInfoPassword()">
+    <div id="info-password-error" style="font-size:12px;color:var(--danger);margin-top:6px;display:none;">סיסמה שגויה</div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="submitInfoPassword()">כניסה</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-password');document.getElementById('info-password-input').value='';document.getElementById('info-password-error').style.display='none';">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: מידע טכני -->
+<div class="modal-overlay" id="modal-info">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">ℹ️ מידע טכני</div>
+    <div style="font-size:13px;color:var(--text2);line-height:2.2;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
+          <span style="color:var(--text3);">גרסה</span>
+          <span style="color:var(--text);font-weight:600;">1.0.0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
+          <span style="color:var(--text3);">Firebase Project</span>
+          <span style="color:var(--accent);font-family:monospace;font-size:12px;">interview-prep-6a3aa</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
+          <span style="color:var(--text3);">GitHub</span>
+          <a href="https://github.com/sagitsustiel-alt/interview-prep" target="_blank" style="color:var(--accent);font-size:12px;">sagitsustiel-alt/interview-prep</a>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
+          <span style="color:var(--text3);">URL</span>
+          <a href="https://sagitsustiel-alt.github.io/interview-prep" target="_blank" style="color:var(--accent);font-size:12px;">GitHub Pages</a>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;margin:8px 0;font-size:12px;color:var(--text2);line-height:1.8;border-right:3px solid var(--accent);">
+          <strong style="color:var(--text);">איך GitHub משמש באפליקציה:</strong><br>
+          📦 <strong>אחסון קוד</strong> — הקובץ index.html שמור ב-GitHub repo<br>
+          🚀 <strong>פריסה</strong> — GitHub Pages מגיש את הקובץ לדפדפן (hosting)<br>
+          💾 <strong>נתוני משתמש</strong> — נשמרים ב-Firebase Firestore בלבד, לא ב-GitHub<br>
+          🔑 <strong>API Key</strong> — נשמר ב-localStorage במכשיר בלבד
+        </div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
+          <span style="color:var(--text3);">AI Model</span>
+          <span style="color:var(--text);font-family:monospace;font-size:12px;">claude-sonnet-4-20250514</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:var(--text3);">API Key</span>
+          <span id="info-api-status" style="color:var(--accent2);font-size:12px;"></span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:16px;">📄 הורד מדריך שימוש</button>
+    <button class="btn btn-ghost btn-block" onclick="closeModal('modal-info')" style="margin-top:8px;">סגור</button>
+  </div>
+</div>
+
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -918,7 +1083,7 @@ window.signInWithGoogle = async function() {
   try {
     await signInWithPopup(auth, provider);
   } catch (e) {
-    toast('שגיאה בהתחברות. נסה שוב.', true);
+    toast(t('toastLoginError'), true);
   }
 };
 
@@ -963,7 +1128,7 @@ onAuthStateChanged(auth, async (user) => {
     } else {
       document.getElementById('app').style.display = 'none';
       document.getElementById('login-screen').style.display = 'flex';
-      toast('הלינק אינו תקין או פג תוקף', true);
+      toast(t('toastLinkInvalid'), true);
     }
     return;
   }
@@ -1007,8 +1172,16 @@ function userCol(path) {
 function setSyncStatus(status) {
   const dot = document.getElementById('sync-dot');
   const text = document.getElementById('sync-text');
+  const badge = document.getElementById('sync-badge');
   dot.className = 'sync-dot ' + status;
-  text.textContent = status === 'synced' ? 'מסונכרן' : status === 'syncing' ? 'שומר...' : 'שגיאה';
+  const labels = {
+    synced:  { text: 'מסונכרן', title: 'מסונכרן ב-Firebase' },
+    syncing: { text: 'שומר...',  title: 'שומר ב-Firebase' },
+    error:   { text: 'שגיאה',   title: 'שגיאה ב-Firebase' }
+  };
+  const l = labels[status] || labels.synced;
+  text.textContent = l.text;
+  badge.title = l.title;
 }
 
 async function loadAllData() {
@@ -1055,7 +1228,7 @@ async function processFile(file) {
   const isAllowed = name.match(/\.(pdf|docx|doc|txt|xlsx|xls|pptx|ppt|jpg|jpeg|png|webp|gif)$/);
   if (!isAllowed) { toast('פורמט לא נתמך.', true); return; }
 
-  toast('שולח ל-AI לניתוח... ⏳');
+  toast(t('toastSending'));
   try {
     let text = '';
     if (name.endsWith('.txt')) {
@@ -1065,7 +1238,7 @@ async function processFile(file) {
     }
     if (!text || !text.trim()) { toast('לא הצלחתי לקרוא את הקובץ. נסה להדביק ידנית.', true); return; }
     addDocToCache(file.name, text);
-    toast('הקובץ נוסף! ✅');
+    toast(t('toastFileAdded'));
   } catch(e) {
     console.error(e);
     toast('שגיאה: ' + (e.message || 'בדקי שה-API Key מוגדר.'), true);
@@ -1155,7 +1328,7 @@ window.addPastedDoc = function() {
   addDocToCache(name, text);
   document.getElementById('kb-paste-text').value = '';
   document.getElementById('kb-paste-name').value = '';
-  toast('המסמך נוסף! ✅');
+  toast(t('toastDocAdded'));
 };
 
 window.deleteDoc = function(id) {
@@ -1279,7 +1452,7 @@ window.addPastedDoc2 = function() {
   document.getElementById('kb-paste-name2').value = '';
   // sync docs list to questions tab
   renderKbDocs();
-  toast('המסמך נוסף! ✅');
+  toast(t('toastDocAdded'));
 };
 
 // ==================== AUTO MERGE ON ADD ====================
@@ -1402,7 +1575,7 @@ ${newQList}
 
     openModal('modal-clean-bank');
   } catch(e) {
-    toast('שגיאה בניקוי. נסה שוב.', true);
+    toast(t('toastCleanError'), true);
   }
 
   btn.innerHTML = '🧹 נקה וסדר';
@@ -1504,7 +1677,7 @@ window.importReadyQA = async function() {
     toast(`✅ יובאו ${imported.length} שאלות לבנק!`);
   } else {
     statusEl.textContent = '⚠️ לא נמצאו שאלות בפורמט הנכון.';
-    toast('לא נמצאו שאלות. בדקי את הפורמט.', true);
+    toast(t('toastNoQFormat'), true);
   }
 };
 
@@ -1519,7 +1692,7 @@ window.reExtractDoc = async function(docId) {
 };
 window.sortAllExtractedByTopic = function() {
   if (!extractedQuestions.length) {
-    toast('חלצי קודם שאלות ממסמכים — לחץ ✨ על כל מסמך.', true);
+    toast(t('toastExtractFirst'), true);
     return;
   }
   renderExtractedQuestions();
@@ -1734,7 +1907,7 @@ window.addCustomCapability = function() {
 
 window.openAddWork = function() {
   editWorkIndex = -1;
-  document.querySelector('#modal-work .modal-title').textContent = 'הוסף תפקיד';
+  document.querySelector('#modal-work .modal-title').textContent = t('modalWorkAdd');
   renderCheckboxGroup('domain-checkboxes', DOMAINS, [], ['AI','Cloud','SaaS','Telecom','Automotive','ERP','PMO']);
   renderCheckboxGroup('capability-checkboxes', CAPABILITIES, [], ['ניהול תוכנית','ניהול פרויקטים','Delivery Governance','ניהול שחרורים','ניהול בעלי עניין','Agile']);
   ['wh-company','wh-role','wh-start','wh-end'].forEach(id => document.getElementById(id).value = '');
@@ -1759,7 +1932,7 @@ window.editWork = function(i) {
   document.getElementById('wh-role').value = w.role || '';
   document.getElementById('wh-start').value = w.start || '';
   document.getElementById('wh-end').value = w.end || '';
-  document.querySelector('#modal-work .modal-title').textContent = 'עדכן תפקיד';
+  document.querySelector('#modal-work .modal-title').textContent = t('modalWorkEdit');
   openModal('modal-work');
 };
 
@@ -1767,7 +1940,7 @@ window.saveWorkHistory = function() {
   const company = document.getElementById('wh-company').value.trim();
   const role = document.getElementById('wh-role').value.trim();
   const start = document.getElementById('wh-start').value;
-  if (!company || !role || !start) { toast('יש למלא חברה, תפקיד ותאריך התחלה.', true); return; }
+  if (!company || !role || !start) { toast(t('toastFillFields'), true); return; }
   const domains = [...document.querySelectorAll('#domain-checkboxes input:checked')].map(i => i.value);
   const capabilities = [...document.querySelectorAll('#capability-checkboxes input:checked')].map(i => i.value);
   const list = localCache.workHistory || [];
@@ -1784,8 +1957,8 @@ window.saveWorkHistory = function() {
   saveProfile();
   closeModal('modal-work');
   renderWorkHistoryList();
-  document.querySelector('#modal-work .modal-title').textContent = 'הוסף תפקיד';
-  toast('התפקיד נשמר!');
+  document.querySelector('#modal-work .modal-title').textContent = t('modalWorkAdd');
+  toast(t('toastRoleSaved'));
 };
 
 window.deleteWork = function(i) {
@@ -1991,8 +2164,15 @@ function renderQuestions() {
     groups[t].push(q);
   });
 
+  // סדר הקבוצות לפי topicOrder (סנכרון עם "סנני לפי נושא")
+  const groupTopics = Object.keys(groups);
+  const orderedTopics = [
+    ...topicOrder.filter(t => groupTopics.includes(t)),
+    ...groupTopics.filter(t => !topicOrder.includes(t))
+  ];
+
   const totalCount = qs.length;
-  const groupCount = Object.keys(groups).length;
+  const groupCount = orderedTopics.length;
 
   el.innerHTML = `
     <!-- Summary bar -->
@@ -2004,14 +2184,21 @@ function renderQuestions() {
       
     </div>
 
-    <!-- Topic groups - collapsed by default -->
-    ${Object.entries(groups).map(([topic, questions], idx) => {
+    <!-- Topic groups - ordered by topicOrder -->
+    ${orderedTopics.map((topic, idx) => {
+      const questions = groups[topic];
       const ytQuery = encodeURIComponent(`${topic} interview explained program manager`);
       const ytUrl = `https://www.youtube.com/results?search_query=${ytQuery}`;
       return `
-      <div style="margin-bottom:6px;">
+      <div style="margin-bottom:6px;" draggable="true"
+        ondragstart="groupDragStart(event, ${idx})"
+        ondragover="groupDragOver(event)"
+        ondrop="groupDrop(event, ${idx})"
+        ondragend="groupDragEnd(event)"
+        data-topic="${escHtml(topic)}">
         <div class="collapsible-header" onclick="toggleCollapsible('tg-${idx}', this)" style="margin-bottom:0;">
           <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+            <span style="color:var(--text3);font-size:14px;cursor:grab;padding:0 2px;" onclick="event.stopPropagation()" title="גרור לשינוי סדר">⠿</span>
             <span style="background:var(--accent);color:#fff;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;">${questions.length}</span>
             <span style="font-weight:700;font-size:14px;">${escHtml(topic)}</span>
             <a href="${ytUrl}" target="_blank" onclick="event.stopPropagation()"
@@ -2033,6 +2220,24 @@ function renderQuestions() {
 }
 
 let allGroupsOpen = false;
+let groupDragSrcIdx = null;
+
+window.groupDragStart = function(e, idx) {
+  groupDragSrcIdx = idx;
+  e.currentTarget.style.opacity = '0.5';
+};
+window.groupDragOver = function(e) { e.preventDefault(); };
+window.groupDragEnd = function(e) { e.currentTarget.style.opacity = '1'; };
+window.groupDrop = function(e, targetIdx) {
+  e.preventDefault();
+  if (groupDragSrcIdx === null || groupDragSrcIdx === targetIdx) return;
+  // עדכן את topicOrder — מקור האמת המשותף
+  const moved = topicOrder.splice(groupDragSrcIdx, 1)[0];
+  topicOrder.splice(targetIdx, 0, moved);
+  groupDragSrcIdx = null;
+  // רנדר מחדש — גם הקבוצות וגם הצ'קבוקסים יסתנכרנו
+  renderQuestions();
+};
 window.toggleAllTopicGroupsBtn = function() {
   allGroupsOpen = !allGroupsOpen;
   const btn = document.getElementById('toggle-all-btn');
@@ -2111,7 +2316,7 @@ function renderQByTopic(qs) {
 }
 
 window.openAddQuestion = function(type) {
-  document.getElementById('modal-q-title').textContent = type==='HR' ? 'הוסף שאלת HR' : 'הוסף שאלה טכנית';
+  document.getElementById('modal-q-title').textContent = type==='HR' ? t('modalQAddHR') : t('modalQAddTech');
   document.getElementById('q-type').value = type;
   document.getElementById('q-edit-id').value = '';
   document.getElementById('q-question').value = '';
@@ -2123,7 +2328,7 @@ window.openAddQuestion = function(type) {
 window.openEditQuestion = function(id) {
   const q = (localCache.questions||[]).find(x => x.id===id);
   if (!q) return;
-  document.getElementById('modal-q-title').textContent = 'ערוך שאלה';
+  document.getElementById('modal-q-title').textContent = t('modalQEdit');
   document.getElementById('q-type').value = q.type;
   document.getElementById('q-edit-id').value = id;
   document.getElementById('q-question').value = q.question;
@@ -2146,10 +2351,10 @@ window.saveQuestion = async function() {
     await saveQuestionToCloud(localCache.questions.find(x=>x.id===editId));
     closeModal('modal-question');
     renderQuestions();
-    toast('השאלה נשמרה!');
+    toast(t('toastQSaved'));
   } else {
     closeModal('modal-question');
-    toast('בודק כפילויות... ⏳');
+    toast(t('toastCheckingDup'));
     const mergeResult = await checkAndMergeWithExisting(question, answer, type, topic);
     if (mergeResult.merged) {
       // Show merge confirmation modal
@@ -2162,7 +2367,7 @@ window.saveQuestion = async function() {
       localCache.questions.push(q);
       await saveQuestionToCloud(q);
       renderQuestions();
-      toast('השאלה נשמרה!');
+      toast(t('toastQSaved'));
     }
   }
 };
@@ -2181,7 +2386,7 @@ window.confirmMerge = async function() {
   showMergeNotification(pendingMerge.newQ.question, mergeResult.existingQ.question);
   closeModal('modal-merge');
   renderQuestions();
-  toast('🔀 בוצע מיזוג!');
+  toast(t('toastMerged'));
   pendingMerge = null;
 };
 
@@ -2193,7 +2398,7 @@ window.skipMerge = async function() {
   await saveQuestionToCloud(q);
   closeModal('modal-merge');
   renderQuestions();
-  toast('השאלה נוספה בנפרד!');
+  toast(t('toastAddedSeparate'));
   pendingMerge = null;
 };
 
@@ -2242,7 +2447,7 @@ window.applyImprovedAnswer = async function() {
   }
   closeModal('modal-improve');
   renderQuestions();
-  toast('התשובה עודכנה!');
+  toast(t('toastAnswerUpdated'));
 };
 
 // ==================== JOB PREP ====================
@@ -2276,14 +2481,14 @@ window.generateJobPrep = async function() {
         ${q.topic?`<span class="topic-badge">📌 ${escHtml(q.topic)}</span>`:''}
         <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${escHtml(q.q)}</div>
         <div style="font-size:12px;color:var(--accent2);">💡 ${escHtml(q.tip)}</div>
-        <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('HR','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}')">+ הוסף לבנק השאלות</button>
+        <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('HR','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}','${escAttr(company)}','${escAttr(role)}')">+ הוסף לבנק השאלות</button>
       </div>`).join('');
     document.getElementById('jp-tech-questions').innerHTML = data.techQuestions.map(q=>`
       <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
         ${q.topic?`<span class="topic-badge">📌 ${escHtml(q.topic)}</span>`:''}
         <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${escHtml(q.q)}</div>
         <div style="font-size:12px;color:var(--accent2);">💡 ${escHtml(q.tip)}</div>
-        <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('TECH','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}')">+ הוסף לבנק השאלות</button>
+        <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('TECH','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}','${escAttr(company)}','${escAttr(role)}')">+ הוסף לבנק השאלות</button>
       </div>`).join('');
     document.getElementById('jp-results').style.display = 'block';
 
@@ -2336,13 +2541,13 @@ window.deleteSavedJob = async function(id) {
   toast(`המשרה נמחקה + ${toDelete.length} שאלות קשורות!`);
 };
 
-window.addToBank = async function(type, question, topic, jobId) {
-  if ((localCache.questions||[]).find(q=>q.question===question)) { toast('כבר קיים בבנק!'); return; }
-  const q = { id: uid(), type, question, answer: '', topic: topic||'', _jobId: jobId || 'generic' };
+window.addToBank = async function(type, question, topic, jobId, company, role) {
+  if ((localCache.questions||[]).find(q=>q.question===question)) { toast(t('toastAlreadyInBank')); return; }
+  const q = { id: uid(), type, question, answer: '', topic: topic||'', _jobId: jobId || 'generic', _company: company||'', _role: role||'' };
   if (!localCache.questions) localCache.questions = [];
   localCache.questions.push(q);
   await saveQuestionToCloud(q);
-  toast('נוסף לבנק השאלות!');
+  toast(t('toastAddedToBank'));
 };
 
 // ==================== MOCK INTERVIEW ====================
@@ -2389,7 +2594,7 @@ window.startMock = function() {
   let qs = [...(localCache.questions||[])];
 
   if (!allChecked && !hrGeneric && !techGeneric && !hrJob && !techJob) {
-    toast('יש לבחור לפחות סוג שאלות אחד.', true); return;
+    toast(t('toastPickType'), true); return;
   }
 
   if (allChecked) {
@@ -2400,18 +2605,20 @@ window.startMock = function() {
     if (techGeneric) filtered = [...filtered, ...qs.filter(q => q.type==='TECH' && !q._jobId)];
     if (hrJob) {
       const jobId = document.getElementById('mock-hr-job-name')?.value;
-      filtered = [...filtered, ...qs.filter(q => q.type==='HR' && (!jobId || q._jobId===jobId || q.topic))];
+      if (!jobId) { toast(t('toastPickJobHR'), true); return; }
+      filtered = [...filtered, ...qs.filter(q => q.type==='HR' && q._jobId===jobId)];
     }
     if (techJob) {
       const jobId = document.getElementById('mock-tech-job-name')?.value;
-      filtered = [...filtered, ...qs.filter(q => q.type==='TECH' && (!jobId || q._jobId===jobId || q.topic))];
+      if (!jobId) { toast(t('toastPickJobTech'), true); return; }
+      filtered = [...filtered, ...qs.filter(q => q.type==='TECH' && q._jobId===jobId)];
     }
     // Remove duplicates
     const seen = new Set();
     qs = filtered.filter(q => { if (seen.has(q.id)) return false; seen.add(q.id); return true; });
   }
 
-  if (!qs.length) { toast('אין שאלות במאגר הנבחר. הוסף שאלות תחילה!', true); return; }
+  if (!qs.length) { toast(t('toastNoQInPool'), true); return; }
   qs = shuffle(qs);
   if (count!=='all') qs = qs.slice(0, parseInt(count));
 
@@ -2431,6 +2638,11 @@ function loadMockQuestion() {
   document.getElementById('mock-badge').className=`q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}`;
   document.getElementById('mock-answer').value='';
   document.getElementById('mock-feedback-area').style.display='none';
+  document.getElementById('mock-suggested-answer').style.display='none';
+  const showBtn = document.querySelector('#mock-feedback-area ~ * .btn-secondary, #mock-active .btn-secondary[onclick*="toggleSuggested"]');
+  // reset button label via re-applying language
+  const toggleBtn = document.querySelector('button[onclick="toggleSuggestedAnswer(this)"]');
+  if (toggleBtn) toggleBtn.textContent = LANG[currentLang].btnShowAnswer || '💡 הצג תשובה מוצעת';
   document.getElementById('mock-question-card').style.display='block';
   document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='');
   document.querySelectorAll('.mock-dot').forEach((d,i)=>{
@@ -2440,7 +2652,7 @@ function loadMockQuestion() {
 
 window.submitMockAnswer = async function() {
   const answer=document.getElementById('mock-answer').value.trim();
-  if (!answer) { toast('יש לכתוב תשובה תחילה.', true); return; }
+  if (!answer) { toast(t('toastWriteAnswer'), true); return; }
   const q=mockQueue[mockIndex];
   // ספציפי יותר — רק הכפתור בתוך mock-question-card
   const btn=document.querySelector('#mock-question-card .btn-primary');
@@ -2464,13 +2676,21 @@ window.submitMockAnswer = async function() {
     document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='none');
     mockAnswered++;
   } catch(e) {
-    toast('הפקת המשוב נכשלה. נסה שוב.', true);
+    toast(t('toastFeedbackError'), true);
     btn.innerHTML=originalLabel;
     btn.disabled=false;
   }
 };
 
-window.skipMock = function() {
+window.toggleSuggestedAnswer = function(btn) {
+  const el = document.getElementById('mock-suggested-answer');
+  const isVisible = el.style.display !== 'none';
+  el.style.display = isVisible ? 'none' : 'block';
+  const L = LANG[currentLang];
+  btn.textContent = isVisible ? (L.btnShowAnswer || '💡 הצג תשובה מוצעת') : (L.btnHideAnswer || '🔼 הסתר תשובה מוצעת');
+};
+
+
   document.querySelectorAll('.mock-dot')[mockIndex].className='mock-dot';
   mockIndex++; if(mockIndex>=mockQueue.length) endMock(); else loadMockQuestion();
 };
@@ -2478,10 +2698,17 @@ window.nextMockQuestion = function() {
   document.querySelectorAll('.mock-dot')[mockIndex].className='mock-dot done';
   mockIndex++; loadMockQuestion();
 };
+window.stopMock = function() {
+  document.getElementById('mock-active').style.display='none';
+  document.getElementById('mock-setup').style.display='block';
+  document.getElementById('mock-done').style.display='none';
+  mockQueue=[]; mockIndex=0; mockAnswered=0;
+  toast(t('toastStopped'));
+};
 function endMock() {
   document.getElementById('mock-active').style.display='none';
   document.getElementById('mock-done').style.display='block';
-  document.getElementById('mock-summary-text').textContent=`ענית על ${mockAnswered} מתוך ${mockQueue.length} שאלות.`;
+  document.getElementById('mock-summary-text').textContent=t('mockSummary', mockAnswered, mockQueue.length);
 }
 window.resetMock = function() {
   document.getElementById('mock-done').style.display='none';
@@ -2538,8 +2765,8 @@ const LANG = {
     // Profile section
     secProfile: 'הפרופיל שלי', subProfile: 'בסיס הידע האישי שלך לראיונות',
     cardPitch: 'הצגה עצמית / Pitch', phPitch: 'כתוב כאן את ה-elevator pitch שלך...',
-    cardCV: 'קורות חיים מלאם', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
-    cardWorkHistory: 'היסטוריית עבודה', btnAddRole: 'הוסף תפקיד',
+    cardCV: 'קורות חיים מלאים', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
+    cardWorkHistory: 'היסטוריית עבודה', btnAddRole: t('modalWorkAdd'),
     // Experience section
     secExperience: 'ניסיון', subExperience: 'מחושב אוטומטית מהיסטוריית העבודה שלך',
     statYears: 'שנות ניסיון', statCompanies: 'חברות',
@@ -2548,13 +2775,14 @@ const LANG = {
     secQuestions: 'בנק שאלות', subQuestions: 'ספריית שאלות ותשובות לראיון',
     colDocs: '📚 הוסף מסמך לחילוץ שאלות',
     uploadClick: 'לחץ להעלאת קובץ', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, תמונות',
-    orText: 'או', phPasteText: 'הדבקי טקסט ישירות...', phDocName: 'שם המסמך', btnAdd: 'הוסף',
+    orText: 'או', phPasteText: 'הדבק טקסט ישירות...', phDocName: 'שם המסמך', btnAdd: 'הוסף',
     colImport: '📥 ייבא שאלות ותשובות מוכנות',
     importFormat: 'פורמט: נושא: / שאלה X: / תשובה:',
     phImport: 'הדבק כאן שאלות ותשובות...', btnImport: '📥 ייבא לבנק השאלות',
     cleanTitle: '🧹 נקה וסדר את הבנק',
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
-    phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנני לפי נושא', btnSelectAll: 'בחר הכל',
+    phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנן לפי נושא', btnSelectAll: 'בחר הכל',
+    cardSearchQ: '🔍 חיפוש שאלה',
     btnAddHR: 'הוסף שאלת HR',
     // Job Prep section
     secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
@@ -2575,8 +2803,10 @@ const LANG = {
     phAnswer: 'כתוב את תשובתך כאן...', btnGetFeedback: 'קבל משוב', btnSkip: 'דלג',
     fbFeedback: 'משוב', fbImproved: 'תשובה משופרת', fbFollowup: 'שאלת המשך אפשרית',
     btnNextQ: 'שאלה הבאה', btnEnd: 'סיים', mockDone: 'הראיון הושלם!', btnPracticeAgain: 'תרגל שוב',
+    btnShowAnswer: '💡 הצג תשובה מוצעת', btnHideAnswer: '🔼 הסתר תשובה מוצעת',
+    btnStop: '⛔ הפסק סימולציה',
     // Modals
-    modalWorkTitle: 'הוסף תפקיד',
+    modalWorkTitle: t('modalWorkAdd'),
     labelWHCompany: 'חברה', phWHCompany: 'שם החברה',
     labelWHRole: 'תפקיד', phWHRole: 'שם התפקיד',
     labelWHStart: 'תאריך התחלה', labelWHEnd: 'תאריך סיום (ריק = עד היום)',
@@ -2586,6 +2816,53 @@ const LANG = {
     modalQTitle: 'הוסף שאלה', labelTopic: 'נושא', phTopic: 'למשל: Cloud, AI Program Management, HR...',
     labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
     phYourAnswer: 'כתוב את תשובתך...',
+    // Toast & JS messages
+    toastLoginError: 'שגיאה בהתחברות. נסה שוב.',
+    toastLinkInvalid: 'הלינק אינו תקין או פג תוקף',
+    toastSending: 'שולח ל-AI לניתוח... ⏳',
+    toastFileAdded: 'הקובץ נוסף! ✅',
+    toastFileError: 'שגיאה: בדוק שה-API Key מוגדר.',
+    toastDocAdded: 'המסמך נוסף! ✅',
+    toastCleaning: 'מנקה ומסדר...',
+    toastCleanError: 'שגיאה בניקוי. נסה שוב.',
+    toastImporting: 'מייבא...',
+    toastNoQuestions: 'לא נמצאו שאלות בפורמט הנכון.',
+    toastNoQFormat: 'לא נמצאו שאלות. בדוק את הפורמט.',
+    toastExtractFirst: 'חלץ קודם שאלות ממסמכים — לחץ ✨ על כל מסמך.',
+    toastRoleSaved: 'התפקיד נשמר!',
+    toastQSaved: 'השאלה נשמרה!',
+    toastCheckingDup: 'בודק כפילויות... ⏳',
+    toastMerged: '🔀 בוצע מיזוג!',
+    toastAddedSeparate: 'השאלה נוספה בנפרד!',
+    toastAnswerUpdated: 'התשובה עודכנה!',
+    toastGenerateError: 'ההפקה נכשלה. בדוק API Key.',
+    toastAddedToBank: 'נוסף לבנק השאלות!',
+    toastAlreadyInBank: 'כבר קיים בבנק!',
+    toastPickType: 'יש לבחור לפחות סוג שאלות אחד.',
+    toastPickJobHR: 'יש לבחור משרה לסינון HR.',
+    toastPickJobTech: 'יש לבחור משרה לסינון טכני.',
+    toastFeedbackError: 'הפקת המשוב נכשלה. נסה שוב.',
+    toastStopped: 'הסימולציה הופסקה.',
+    toastApiKeyInvalid: '❌ מפתח לא תקין',
+    toastApiKeySaved: '✅ מפתח נשמר!',
+    toastApiKeySavedMsg: 'מפתח API נשמר! ✅',
+    toastShareError: 'שגיאה ביצירת לינק',
+    toastLinkCopied: 'הלינק הועתק! ✅',
+    toastGuideDownloaded: 'המדריך הורד בהצלחה ✅',
+    toastNoApiKey: 'יש להכניס Anthropic API Key — לחץ על תמונת הפרופיל',
+    toastWriteAnswer: 'יש לכתוב תשובה תחילה.',
+    toastFillFields: 'יש למלא חברה, תפקיד ותאריך התחלה.',
+    toastNoQInPool: 'אין שאלות במאגר הנבחר. הוסף שאלות תחילה!',
+    mockSummary: (answered, total) => `ענית על ${answered} מתוך ${total} שאלות. כל הכבוד!`,
+    emptyQuestions: 'אין שאלות בקטגוריה זו.',
+    emptyQList: 'אין שאלות עדיין.',
+    modalWorkAdd: t('modalWorkAdd'), modalWorkEdit: t('modalWorkEdit'),
+    modalQAdd: 'הוסף שאלה', modalQAddHR: 'הוסף שאלת HR', modalQAddTech: 'הוסף שאלה טכנית', modalQEdit: t('modalQEdit'),
+    infoApiSaved: '✅ שמור', infoApiMissing: '❌ לא הוגדר',
+    pwdWrong: 'סיסמה שגויה',
+    dragReorder: 'גרור לשינוי סדר ⠿',
+    years: 'שנ\'',
+    today: 'היום',
   },
   en: {
     appTitle: 'Interview<span>Prep</span>', btnLang: 'HE', syncText: 'Synced',
@@ -2611,6 +2888,7 @@ const LANG = {
     cleanTitle: '🧹 Clean & Organize Bank',
     cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
     phSearch: '🔍 Search question...', colTopics: '🏷️ Filter by Topic', btnSelectAll: 'Select All',
+    cardSearchQ: '🔍 Search Question',
     btnAddHR: 'Add HR Question',
     // Job Prep section
     secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
@@ -2631,6 +2909,8 @@ const LANG = {
     phAnswer: 'Write your answer here...', btnGetFeedback: 'Get Feedback', btnSkip: 'Skip',
     fbFeedback: 'Feedback', fbImproved: 'Improved Answer', fbFollowup: 'Possible Follow-up',
     btnNextQ: 'Next Question', btnEnd: 'Finish', mockDone: 'Interview Complete!', btnPracticeAgain: 'Practice Again',
+    btnShowAnswer: '💡 Show Suggested Answer', btnHideAnswer: '🔼 Hide Suggested Answer',
+    btnStop: '⛔ Stop Simulation',
     // Modals
     modalWorkTitle: 'Add Role',
     labelWHCompany: 'Company', phWHCompany: 'Company name',
@@ -2642,8 +2922,62 @@ const LANG = {
     modalQTitle: 'Add Question', labelTopic: 'Topic', phTopic: 'e.g. Cloud, AI Program Management, HR...',
     labelQuestion: 'Question', phQuestion: 'Enter interview question...',
     phYourAnswer: 'Write your answer...',
+    // Toast & JS messages
+    toastLoginError: 'Login error. Please try again.',
+    toastLinkInvalid: 'Link is invalid or expired.',
+    toastSending: 'Sending to AI for analysis... ⏳',
+    toastFileAdded: 'File added! ✅',
+    toastFileError: 'Error: Check that API Key is set.',
+    toastDocAdded: 'Document added! ✅',
+    toastCleaning: 'Cleaning & organizing...',
+    toastCleanError: 'Cleanup error. Please try again.',
+    toastImporting: 'Importing...',
+    toastNoQuestions: 'No questions found in the expected format.',
+    toastNoQFormat: 'No questions found. Check the format.',
+    toastExtractFirst: 'Extract questions from documents first — click ✨ on each document.',
+    toastRoleSaved: 'Role saved!',
+    toastQSaved: 'Question saved!',
+    toastCheckingDup: 'Checking for duplicates... ⏳',
+    toastMerged: '🔀 Merged!',
+    toastAddedSeparate: 'Question added separately!',
+    toastAnswerUpdated: 'Answer updated!',
+    toastGenerateError: 'Generation failed. Check API Key.',
+    toastAddedToBank: 'Added to question bank!',
+    toastAlreadyInBank: 'Already in bank!',
+    toastPickType: 'Please select at least one question type.',
+    toastPickJobHR: 'Please select a job for HR filtering.',
+    toastPickJobTech: 'Please select a job for tech filtering.',
+    toastFeedbackError: 'Feedback generation failed. Try again.',
+    toastStopped: 'Simulation stopped.',
+    toastApiKeyInvalid: '❌ Invalid key',
+    toastApiKeySaved: '✅ Key saved!',
+    toastApiKeySavedMsg: 'API key saved! ✅',
+    toastShareError: 'Error creating link',
+    toastLinkCopied: 'Link copied! ✅',
+    toastGuideDownloaded: 'Guide downloaded ✅',
+    toastNoApiKey: 'Please enter an Anthropic API Key — click on your profile picture',
+    toastWriteAnswer: 'Please write an answer first.',
+    toastFillFields: 'Please fill in company, role and start date.',
+    toastNoQInPool: 'No questions in selected pool. Add questions first!',
+    mockSummary: (answered, total) => `You answered ${answered} out of ${total} questions. Great job!`,
+    emptyQuestions: 'No questions in this category.',
+    emptyQList: 'No questions yet.',
+    modalWorkAdd: 'Add Role', modalWorkEdit: 'Update Role',
+    modalQAdd: 'Add Question', modalQAddHR: 'Add HR Question', modalQAddTech: 'Add Tech Question', modalQEdit: 'Edit Question',
+    infoApiSaved: '✅ Saved', infoApiMissing: '❌ Not set',
+    pwdWrong: 'Wrong password',
+    dragReorder: 'Drag to reorder ⠿',
+    years: 'yrs',
+    today: 'Present',
   }
 };
+
+// helper: get translated string
+function t(key, ...args) {
+  const L = LANG[currentLang] || LANG.he;
+  const val = L[key] ?? LANG.he[key] ?? key;
+  return typeof val === 'function' ? val(...args) : val;
+}
 
 window.toggleLanguage = function() {
   currentLang = currentLang === 'he' ? 'en' : 'he';
@@ -2706,14 +3040,14 @@ window.generateShareLink = async function() {
     document.getElementById('share-link-result').style.display = 'block';
     document.getElementById('share-link-area').style.display = 'none';
   } catch(e) {
-    toast('שגיאה ביצירת לינק', true);
+    toast(t('toastShareError'), true);
   }
 };
 
 window.copyShareLink = function() {
   const input = document.getElementById('share-link-input');
   input.select();
-  navigator.clipboard.writeText(input.value).then(() => toast('הלינק הועתק! ✅'));
+  navigator.clipboard.writeText(input.value).then(() => toast(t('toastLinkCopied')));
 };
 
 // ==================== VIEW-ONLY MODE ====================
@@ -2790,7 +3124,135 @@ async function callClaude(prompt, jsonMode=false) {
   return data.content.map(c=>c.text||'').join('').replace(/```json\n?|```\n?/g,'').trim();
 }
 
-// ==================== MODALS ====================
+// ==================== INFO & GUIDE ====================
+window.checkInfoPassword = function() {
+  document.getElementById('info-password-input').value = '';
+  document.getElementById('info-password-error').style.display = 'none';
+  openModal('modal-password');
+  setTimeout(() => document.getElementById('info-password-input').focus(), 300);
+};
+
+window.submitInfoPassword = function() {
+  const pwd = document.getElementById('info-password-input').value;
+  if (pwd === 'Sagit5576') {
+    closeModal('modal-password');
+    document.getElementById('info-password-input').value = '';
+    const hasKey = !!localStorage.getItem('anthropic_api_key');
+    const el = document.getElementById('info-api-status');
+    if (el) el.textContent = hasKey ? '✅ שמור' : '❌ לא הוגדר';
+    openModal('modal-info');
+  } else {
+    document.getElementById('info-password-error').style.display = 'block';
+    document.getElementById('info-password-input').value = '';
+    document.getElementById('info-password-input').focus();
+  }
+};
+
+window.downloadGuide = function() {
+  const html = `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מדריך שימוש — Job Prep</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.8; color: #222; }
+  h1 { color: #7c6af7; border-bottom: 2px solid #7c6af7; padding-bottom: 8px; }
+  h2 { color: #4fc8a8; margin-top: 32px; }
+  h3 { color: #555; }
+  code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  .section { background: #f9f9ff; border-right: 4px solid #7c6af7; padding: 12px 16px; margin: 16px 0; border-radius: 4px; }
+  .tip { background: #f0fff8; border-right: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>📋 מדריך שימוש — Job Prep</h1>
+<p>אפליקציה אישית להכנה לראיונות עבודה עם AI</p>
+
+<h2>🚀 התחלה מהירה</h2>
+<div class="section">
+  <h3>1. הכנסת API Key</h3>
+  <p>לחץ על תמונת הפרופיל (פינה ימנית עליונה) ← הכנס מפתח מ-<a href="https://console.anthropic.com">console.anthropic.com</a></p>
+  <p>המפתח נשמר ב-localStorage במכשיר בלבד — יש להכניסו מחדש בכל מכשיר חדש.</p>
+</div>
+
+<h2>📑 הכרטיסיות</h2>
+
+<div class="section">
+  <h3>👤 פרופיל</h3>
+  <ul>
+    <li><strong>Pitch:</strong> הצגה עצמית — elevator pitch מוכן לראיון</li>
+    <li><strong>קורות חיים:</strong> הדבק את טקסט ה-CV המלא</li>
+    <li><strong>היסטוריית עבודה:</strong> הוסף תפקידים עם תחומים ויכולות</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>📊 ניסיון</h3>
+  <p>מחושב אוטומטית מהיסטוריית העבודה — שנות ניסיון, חברות, לפי תחום ויכולת.</p>
+</div>
+
+<div class="section">
+  <h3>💬 שאלות — בנק שאלות</h3>
+  <ul>
+    <li><strong>הוסף מסמך:</strong> העלה PDF/Word/תמונה ← לחץ ✨ חלץ שאלות</li>
+    <li><strong>ייבא שאלות מוכנות:</strong> פורמט: <code>נושא: / שאלה X: / תשובה:</code></li>
+    <li><strong>🧹 נקה וסדר:</strong> מוחק כפילויות, ממזג שאלות דומות</li>
+    <li><strong>▶ YouTube:</strong> בכל נושא — פותח חיפוש YouTube רלוונטי</li>
+    <li><strong>✨ שפר:</strong> AI משפר את התשובה שלך</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>💼 משרה — הכנה למשרה</h3>
+  <p>הכנס שם חברה, תפקיד ותיאור משרה ← AI מפיק:</p>
+  <ul>
+    <li>Pitch מותאם למשרה</li>
+    <li>שאלות HR ספציפיות</li>
+    <li>שאלות טכניות / PM</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>🎤 תרגול — ראיון מדומה</h3>
+  <ul>
+    <li>בחר סוג שאלות (HR גנרי, טכני, ספציפי למשרה, הכל)</li>
+    <li>בחר מספר שאלות</li>
+    <li>ענה ← קבל משוב AI: ניתוח, תשובה משופרת, שאלת המשך</li>
+  </ul>
+</div>
+
+<h2>🔗 שיתוף</h2>
+<div class="tip">
+  לחץ 👁️ בכותרת ← צור לינק צפייה ← שלח לאחרים. הלינק תקף 30 יום, צפייה בלבד ללא עריכה.
+</div>
+
+<h2>⚙️ מידע טכני</h2>
+<div class="section">
+  <ul>
+    <li><strong>URL:</strong> <a href="https://sagitsustiel-alt.github.io/interview-prep">sagitsustiel-alt.github.io/interview-prep</a></li>
+    <li><strong>Firebase Project:</strong> <code>interview-prep-6a3aa</code></li>
+    <li><strong>GitHub:</strong> <code>sagitsustiel-alt/interview-prep</code></li>
+    <li><strong>AI Model:</strong> <code>claude-sonnet-4-20250514</code></li>
+    <li><strong>אחסון:</strong> Firebase Firestore (ענן) + localStorage (API Key בלבד)</li>
+  </ul>
+</div>
+
+<p style="color:#999;font-size:12px;margin-top:40px;text-align:center;">נוצר: ${new Date().toLocaleDateString('he-IL')}</p>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'interview-prep-user-guide.html';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(t('toastGuideDownloaded'));
+};
+
+
 window.openModal = function(id) { document.getElementById(id).classList.add('open'); };
 window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
 document.querySelectorAll('.modal-overlay').forEach(modal=>{
