@@ -1055,7 +1055,7 @@
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInAnonymously }
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc, onSnapshot }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -1105,41 +1105,11 @@ document.addEventListener('click', (e) => {
 });
 
 onAuthStateChanged(auth, async (user) => {
-  // --- VIEW MODE: בדיקה ראשונה לפני כל דבר אחר ---
-  const params = new URLSearchParams(window.location.search);
-  const isViewMode = params.get('view') && params.get('uid');
-
-  if (isViewMode) {
-    // אם הצופה לא מחובר כלל — נכנס כאנונימי כדי לאפשר קריאה מ-Firestore
-    if (!user) {
-      try { await signInAnonymously(auth); } catch(e) { /* onAuthStateChanged ייקרא שוב */ }
-      return; // onAuthStateChanged יופעל שוב עם anonymous user
-    }
-    // מגיעים לכאן: user קיים (אנונימי או Google של הצופה)
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    const viewOk = await checkViewMode();
-    if (viewOk) {
-      loadProfileUI();
-      renderQuestions();
-      renderSavedJobs();
-      renderExperience();
-      applyLanguage();
-    } else {
-      document.getElementById('app').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'flex';
-      toast(t('toastLinkInvalid'), true);
-    }
-    return;
-  }
-
-  // --- מצב רגיל (לא view mode) ---
-  if (user && !user.isAnonymous) {
+  if (user) {
     currentUser = user;
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
 
-    // Set avatar
     const avatarContainer = document.getElementById('user-avatar-container');
     if (user.photoURL) {
       avatarContainer.innerHTML = `<img src="${user.photoURL}" class="user-avatar" alt="avatar">`;
@@ -1149,6 +1119,21 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('menu-name').textContent = user.displayName || 'משתמש';
     document.getElementById('menu-email').textContent = user.email || '';
 
+    // בדוק אם זה מצב צפייה
+    const params = new URLSearchParams(window.location.search);
+    const isViewMode = params.get('view') && params.get('uid');
+    if (isViewMode) {
+      const viewOk = await checkViewMode();
+      if (viewOk) {
+        loadProfileUI();
+        renderQuestions();
+        renderSavedJobs();
+        renderExperience();
+        applyLanguage();
+        return;
+      }
+    }
+
     await loadAllData();
     loadProfileUI();
     renderSavedJobs();
@@ -1156,11 +1141,6 @@ onAuthStateChanged(auth, async (user) => {
     applyLanguage();
   } else {
     currentUser = null;
-    // אם יש session אנונימי — נתנתק ממנו כדי לאפשר Google login
-    if (user && user.isAnonymous) {
-      await fbSignOut(auth);
-      return; // onAuthStateChanged ייקרא שוב עם user=null
-    }
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
   }
