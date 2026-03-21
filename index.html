@@ -451,22 +451,22 @@
 
     <!-- פרופיל -->
     <section id="sec-profile" class="section active">
-      <h1 class="section-title">הפרופיל שלי</h1>
-      <p class="section-sub">בסיס הידע האישי שלך לראיונות</p>
+      <h1 class="section-title" data-i18n="secProfile">הפרופיל שלי</h1>
+      <p class="section-sub" data-i18n="subProfile">בסיס הידע האישי שלך לראיונות</p>
       <div class="card">
-        <div class="card-title">הצגה עצמית / Pitch</div>
-        <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." rows="5" oninput="autoSavePitch()"></textarea>
+        <div class="card-title" data-i18n="cardPitch">הצגה עצמית / Pitch</div>
+        <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()"></textarea>
       </div>
       <div class="card">
-        <div class="card-title">קורות חיים מלאם</div>
-        <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." rows="8" oninput="autoSaveCV()"></textarea>
+        <div class="card-title" data-i18n="cardCV">קורות חיים מלאם</div>
+        <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()"></textarea>
       </div>
       <div class="card">
-        <div class="card-title">היסטוריית עבודה</div>
+        <div class="card-title" data-i18n="cardWorkHistory">היסטוריית עבודה</div>
         <div id="work-history-list"></div>
         <button class="btn btn-secondary btn-block" onclick="openAddWork()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-          הוסף תפקיד
+          <span data-i18n="btnAddRole">הוסף תפקיד</span>
         </button>
       </div>
 
@@ -474,46 +474,46 @@
 
     <!-- ניסיון -->
     <section id="sec-experience" class="section">
-      <h1 class="section-title">ניסיון</h1>
-      <p class="section-sub">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
+      <h1 class="section-title" data-i18n="secExperience">ניסיון</h1>
+      <p class="section-sub" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-value" id="stat-total-years">0</div>
-          <div class="stat-label">שנות ניסיון</div>
+          <div class="stat-label" data-i18n="statYears">שנות ניסיון</div>
         </div>
         <div class="stat-card">
           <div class="stat-value" id="stat-companies">0</div>
-          <div class="stat-label">חברות</div>
+          <div class="stat-label" data-i18n="statCompanies">חברות</div>
         </div>
       </div>
-      <div class="card"><div class="card-title">לפי חברה</div><div id="company-breakdown"></div></div>
-      <div class="card"><div class="card-title">לפי תחום</div><div id="domain-breakdown"></div></div>
-      <div class="card"><div class="card-title">לפי יכולת</div><div id="capability-breakdown"></div></div>
+      <div class="card"><div class="card-title" data-i18n="cardByCompany">לפי חברה</div><div id="company-breakdown"></div></div>
+      <div class="card"><div class="card-title" data-i18n="cardByDomain">לפי תחום</div><div id="domain-breakdown"></div></div>
+      <div class="card"><div class="card-title" data-i18n="cardByCapability">לפי יכולת</div><div id="capability-breakdown"></div></div>
     </section>
 
     <!-- שאלות -->
     <section id="sec-questions" class="section">
-      <h1 class="section-title">בנק שאלות</h1>
-      <p class="section-sub">ספריית שאלות ותשובות לראיון</p>
+      <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
+      <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
       <!-- COLLAPSIBLE: הוסף מסמך -->
       <div class="collapsible-header" onclick="toggleCollapsible('col-docs', this)">
-        <div class="collapsible-title">📚 הוסף מסמך לחילוץ שאלות</div>
+        <div class="collapsible-title" data-i18n="colDocs">📚 הוסף מסמך לחילוץ שאלות</div>
         <span class="collapsible-arrow" id="arrow-col-docs">^</span>
       </div>
       <div class="collapsible-body" id="col-docs">
         <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
           <div class="upload-zone" id="upload-zone2" onclick="document.getElementById('file-input2').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
             <div class="upload-zone-icon">📎</div>
-            <div class="upload-zone-text">לחץ להעלאת קובץ</div>
-            <div class="upload-zone-sub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
+            <div class="upload-zone-text" data-i18n="uploadClick">לחץ להעלאת קובץ</div>
+            <div class="upload-zone-sub" data-i18n="uploadSub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
           </div>
           <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
-          <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— או —</div>
-          <textarea id="kb-paste-text2" rows="3" placeholder="הדבקי טקסט ישירות..."></textarea>
+          <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— <span data-i18n="orText">או</span> —</div>
+          <textarea id="kb-paste-text2" rows="3" placeholder="הדבקי טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
           <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-            <input type="text" id="kb-paste-name2" placeholder="שם המסמך" style="flex:1;">
-            <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()">הוסף</button>
+            <input type="text" id="kb-paste-name2" placeholder="שם המסמך" data-i18n-ph="phDocName" style="flex:1;">
+            <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()" data-i18n="btnAdd">הוסף</button>
           </div>
           <div id="kb-docs-list2" style="margin-top:12px;"></div>
         </div>
@@ -521,18 +521,18 @@
 
       <!-- COLLAPSIBLE: ייבא שאלות מוכנות -->
       <div class="collapsible-header" onclick="toggleCollapsible('col-import', this)">
-        <div class="collapsible-title">📥 ייבא שאלות ותשובות מוכנות</div>
+        <div class="collapsible-title" data-i18n="colImport">📥 ייבא שאלות ותשובות מוכנות</div>
         <span class="collapsible-arrow" id="arrow-col-import">^</span>
       </div>
       <div class="collapsible-body" id="col-import">
         <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
-          <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;">פורמט: נושא: / שאלה X: / תשובה:</p>
+          <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
           <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
             נושא: ניהול גרסאות<br>שאלה 1: תארי את תהליך הריליס<br>תשובה: אני מובילה מקצה לקצה...
           </div>
-          <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." style="margin-bottom:8px;"></textarea>
+          <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
           <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
-            📥 ייבא לבנק השאלות
+            <span data-i18n="btnImport">📥 ייבא לבנק השאלות</span>
           </button>
           <div id="import-status" style="font-size:12px;color:var(--accent2);margin-top:8px;text-align:center;"></div>
         </div>
@@ -542,11 +542,11 @@
       <div class="card" style="background:rgba(124,106,247,0.06);border-color:rgba(124,106,247,0.3);margin-top:8px;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
           <div>
-            <div style="font-weight:700;font-size:14px;margin-bottom:3px;">🧹 נקה וסדר את הבנק</div>
-            <div style="font-size:12px;color:var(--text2);">מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים</div>
+            <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="cleanTitle">🧹 נקה וסדר את הבנק</div>
+            <div style="font-size:12px;color:var(--text2);" data-i18n="cleanDesc">מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים</div>
           </div>
           <button class="btn btn-primary btn-sm" onclick="cleanAndOrganizeBank()" id="clean-bank-btn">
-            🧹 נקה וסדר
+            <span data-i18n="btnClean">🧹 נקה וסדר</span>
           </button>
         </div>
       </div>
@@ -556,7 +556,7 @@
 
       <!-- Filter bar -->
       <div style="margin-bottom:10px;">
-        <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." oninput="renderQuestions()" style="margin:0;">
+        <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0;">
       </div>
 
       <!-- Type selector -->
@@ -568,12 +568,12 @@
       <!-- Topic checkboxes -->
       <div style="margin-bottom:14px;">
         <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
-          <div class="collapsible-title" style="font-size:13px;">🏷️ סנני לפי נושא</div>
+          <div class="collapsible-title" style="font-size:13px;" data-i18n="colTopics">🏷️ סנני לפי נושא</div>
           <span class="collapsible-arrow">^</span>
         </div>
         <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
           <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()">בחר הכל</button>
+          <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
         </div>
       </div>
 
@@ -581,62 +581,62 @@
       <div id="q-filtered-list"></div>
       <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:8px;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        הוסף שאלת HR
+        <span data-i18n="btnAddHR">הוסף שאלת HR</span>
       </button>
     </section>
 
     <!-- הכנה למשרה -->
     <section id="sec-jobprep" class="section">
-      <h1 class="section-title">הכנה למשרה</h1>
-      <p class="section-sub">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
+      <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
+      <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
       <div class="card">
-        <div class="card-title">פרטי המשרה</div>
-        <label>שם החברה</label>
-        <input type="text" id="jp-company" placeholder="למשל: גוגל, מיקרוסופט">
-        <label>תפקיד / כותרת</label>
-        <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר">
-        <label>תיאור המשרה</label>
-        <textarea id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..."></textarea>
+        <div class="card-title" data-i18n="cardJobDetails">פרטי המשרה</div>
+        <label data-i18n="labelCompany">שם החברה</label>
+        <input type="text" id="jp-company" placeholder="למשל: גוגל, מיקרוסופט" data-i18n-ph="phCompany">
+        <label data-i18n="labelRole">תפקיד / כותרת</label>
+        <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר" data-i18n-ph="phRole">
+        <label data-i18n="labelJD">תיאור המשרה</label>
+        <textarea id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD"></textarea>
         <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
-          הפק הכנה
+          <span data-i18n="btnGenerate">הפק הכנה</span>
         </button>
       </div>
 
       <!-- Saved jobs list -->
       <div class="card" id="saved-jobs-card" style="display:none;">
-        <div class="card-title">משרות שהוכנו</div>
+        <div class="card-title" data-i18n="cardSavedJobs">משרות שהוכנו</div>
         <div id="saved-jobs-list"></div>
       </div>
 
       <div id="jp-results" style="display:none;">
-        <div class="card"><div class="card-title">Pitch מותאם למשרה</div><div class="gen-content" id="jp-pitch"></div></div>
-        <div class="card"><div class="card-title">שאלות HR למשרה זו</div><div id="jp-hr-questions"></div></div>
-        <div class="card"><div class="card-title">שאלות טכניות / PM</div><div id="jp-tech-questions"></div></div>
+        <div class="card"><div class="card-title" data-i18n="cardJpPitch">Pitch מותאם למשרה</div><div class="gen-content" id="jp-pitch"></div></div>
+        <div class="card"><div class="card-title" data-i18n="cardJpHR">שאלות HR למשרה זו</div><div id="jp-hr-questions"></div></div>
+        <div class="card"><div class="card-title" data-i18n="cardJpTech">שאלות טכניות / PM</div><div id="jp-tech-questions"></div></div>
       </div>
     </section>
 
     <!-- ראיון מדומה -->
     <section id="sec-mock" class="section">
-      <h1 class="section-title">ראיון מדומה</h1>
-      <p class="section-sub">תרגל תשובות וקבל משוב מ-AI</p>
+      <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
+      <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
       <div id="mock-setup">
         <div class="card">
-          <div class="card-title">סוג שאלות לתרגול</div>
+          <div class="card-title" data-i18n="cardMockTypes">סוג שאלות לתרגול</div>
 
           <!-- Checkboxes -->
           <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
             <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
-              <span style="font-size:14px;color:var(--text);font-weight:500;">שאלות HR גנריות</span>
+              <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockHRGeneric">שאלות HR גנריות</span>
               <input type="checkbox" id="mock-hr-generic" value="hr-generic" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
             <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
-              <span style="font-size:14px;color:var(--text);font-weight:500;">שאלות טכניות גנריות</span>
+              <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockTechGeneric">שאלות טכניות גנריות</span>
               <input type="checkbox" id="mock-tech-generic" value="tech-generic" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
             <div>
               <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
-                <span style="font-size:14px;color:var(--text);font-weight:500;">שאלות HR ספציפיות למשרה</span>
+                <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockHRJob">שאלות HR ספציפיות למשרה</span>
                 <input type="checkbox" id="mock-hr-job" value="hr-job" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
               </label>
               <div id="mock-hr-job-select" style="display:none;margin-top:8px;margin-right:28px;">
@@ -645,7 +645,7 @@
             </div>
             <div>
               <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
-                <span style="font-size:14px;color:var(--text);font-weight:500;">שאלות טכניות ספציפיות למשרה</span>
+                <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockTechJob">שאלות טכניות ספציפיות למשרה</span>
                 <input type="checkbox" id="mock-tech-job" value="tech-job" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
               </label>
               <div id="mock-tech-job-select" style="display:none;margin-top:8px;margin-right:28px;">
@@ -653,20 +653,20 @@
               </div>
             </div>
             <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
-              <span style="font-size:14px;color:var(--text);font-weight:500;">כל השאלות</span>
+              <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockAll">כל השאלות</span>
               <input type="checkbox" id="mock-all" value="all" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
           </div>
 
-          <label>מספר שאלות</label>
+          <label data-i18n="labelMockCount">מספר שאלות</label>
           <select id="mock-count">
-            <option value="5">5 שאלות</option>
-            <option value="10">10 שאלות</option>
-            <option value="all">כל השאלות הזמינות</option>
+            <option value="5" data-i18n="mock5">5 שאלות</option>
+            <option value="10" data-i18n="mock10">10 שאלות</option>
+            <option value="all" data-i18n="mockAllQ">כל השאלות הזמינות</option>
           </select>
           <button class="btn btn-primary btn-block" onclick="startMock()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/></svg>
-            התחל ראיון מדומה
+            <span data-i18n="btnStartMock">התחל ראיון מדומה</span>
           </button>
         </div>
       </div>
@@ -675,29 +675,29 @@
         <div class="card" id="mock-question-card">
           <div class="q-type-badge" id="mock-badge">HR</div>
           <div class="question-text" id="mock-q-text"></div>
-          <label>התשובה שלך</label>
-          <textarea id="mock-answer" rows="5" placeholder="כתוב את תשובתך כאן..."></textarea>
+          <label data-i18n="labelYourAnswer">התשובה שלך</label>
+          <textarea id="mock-answer" rows="5" placeholder="כתוב את תשובתך כאן..." data-i18n-ph="phAnswer"></textarea>
           <div style="display:flex;gap:8px;margin-top:12px;flex-direction:row-reverse;">
-            <button class="btn btn-primary" style="flex:1;" onclick="submitMockAnswer()">קבל משוב</button>
-            <button class="btn btn-secondary" onclick="skipMock()">דלג</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="submitMockAnswer()" data-i18n="btnGetFeedback">קבל משוב</button>
+            <button class="btn btn-secondary" onclick="skipMock()" data-i18n="btnSkip">דלג</button>
           </div>
         </div>
         <div id="mock-feedback-area" style="display:none;">
-          <div class="feedback-card clarity"><div class="feedback-label" style="color:var(--accent);">משוב</div><div id="mock-fb-clarity"></div></div>
-          <div class="feedback-card improved"><div class="feedback-label" style="color:var(--accent2);">תשובה משופרת</div><div id="mock-fb-improved"></div></div>
-          <div class="feedback-card followup"><div class="feedback-label" style="color:var(--accent3);">שאלת המשך אפשרית</div><div id="mock-fb-followup"></div></div>
+          <div class="feedback-card clarity"><div class="feedback-label" style="color:var(--accent);" data-i18n="fbFeedback">משוב</div><div id="mock-fb-clarity"></div></div>
+          <div class="feedback-card improved"><div class="feedback-label" style="color:var(--accent2);" data-i18n="fbImproved">תשובה משופרת</div><div id="mock-fb-improved"></div></div>
+          <div class="feedback-card followup"><div class="feedback-label" style="color:var(--accent3);" data-i18n="fbFollowup">שאלת המשך אפשרית</div><div id="mock-fb-followup"></div></div>
           <div style="display:flex;gap:8px;margin-top:14px;flex-direction:row-reverse;">
-            <button class="btn btn-primary" style="flex:1;" onclick="nextMockQuestion()">שאלה הבאה</button>
-            <button class="btn btn-secondary" onclick="endMock()">סיים</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="nextMockQuestion()" data-i18n="btnNextQ">שאלה הבאה</button>
+            <button class="btn btn-secondary" onclick="endMock()" data-i18n="btnEnd">סיים</button>
           </div>
         </div>
       </div>
       <div id="mock-done" style="display:none;">
         <div class="card" style="text-align:center;padding:32px 20px;">
           <div style="font-size:40px;margin-bottom:12px;">🎯</div>
-          <div class="section-title" style="font-size:22px;margin-bottom:8px;">הראיון הושלם!</div>
+          <div class="section-title" style="font-size:22px;margin-bottom:8px;" data-i18n="mockDone">הראיון הושלם!</div>
           <div style="color:var(--text2);font-size:13px;margin-bottom:20px;" id="mock-summary-text"></div>
-          <button class="btn btn-primary" onclick="resetMock()">תרגל שוב</button>
+          <button class="btn btn-primary" onclick="resetMock()" data-i18n="btnPracticeAgain">תרגל שוב</button>
         </div>
       </div>
     </section>
@@ -734,26 +734,26 @@
 <div class="modal-overlay" id="modal-work">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">הוסף תפקיד</div>
-    <label>חברה</label><input type="text" id="wh-company" placeholder="שם החברה">
-    <label>תפקיד</label><input type="text" id="wh-role" placeholder="שם התפקיד">
-    <label>תאריך התחלה</label><input type="date" id="wh-start">
-    <label>תאריך סיום (ריק = עד היום)</label><input type="date" id="wh-end">
-    <label>תחום/ים</label>
+    <div class="modal-title" data-i18n="modalWorkTitle">הוסף תפקיד</div>
+    <label data-i18n="labelWHCompany">חברה</label><input type="text" id="wh-company" placeholder="שם החברה" data-i18n-ph="phWHCompany">
+    <label data-i18n="labelWHRole">תפקיד</label><input type="text" id="wh-role" placeholder="שם התפקיד" data-i18n-ph="phWHRole">
+    <label data-i18n="labelWHStart">תאריך התחלה</label><input type="date" id="wh-start">
+    <label data-i18n="labelWHEnd">תאריך סיום (ריק = עד היום)</label><input type="date" id="wh-end">
+    <label data-i18n="labelWHDomains">תחום/ים</label>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="domain-checkboxes"></div>
     <div style="display:flex;gap:8px;margin-top:8px;">
-      <input type="text" id="domain-custom" placeholder="הוסף תחום ידנית..." style="flex:1;font-size:13px;">
-      <button class="btn btn-secondary btn-sm" onclick="addCustomDomain()">+ הוסף</button>
+      <input type="text" id="domain-custom" placeholder="הוסף תחום ידנית..." data-i18n-ph="phAddDomain" style="flex:1;font-size:13px;">
+      <button class="btn btn-secondary btn-sm" onclick="addCustomDomain()" data-i18n="btnAddItem">+ הוסף</button>
     </div>
-    <label style="margin-top:14px;">יכולות</label>
+    <label style="margin-top:14px;" data-i18n="labelWHCap">יכולות</label>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="capability-checkboxes"></div>
     <div style="display:flex;gap:8px;margin-top:8px;">
-      <input type="text" id="capability-custom" placeholder="הוסף יכולת ידנית..." style="flex:1;font-size:13px;">
-      <button class="btn btn-secondary btn-sm" onclick="addCustomCapability()">+ הוסף</button>
+      <input type="text" id="capability-custom" placeholder="הוסף יכולת ידנית..." data-i18n-ph="phAddCap" style="flex:1;font-size:13px;">
+      <button class="btn btn-secondary btn-sm" onclick="addCustomCapability()" data-i18n="btnAddItem">+ הוסף</button>
     </div>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveWorkHistory()">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-work')">ביטול</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveWorkHistory()" data-i18n="btnSave">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-work')" data-i18n="btnCancel">ביטול</button>
     </div>
   </div>
 </div>
@@ -761,15 +761,15 @@
 <div class="modal-overlay" id="modal-question">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="modal-q-title">הוסף שאלה</div>
+    <div class="modal-title" id="modal-q-title" data-i18n="modalQTitle">הוסף שאלה</div>
     <input type="hidden" id="q-type"><input type="hidden" id="q-edit-id">
-    <label>נושא</label>
-    <input type="text" id="q-topic" placeholder="למשל: Cloud, AI Program Management, HR...">
-    <label>שאלה</label><textarea id="q-question" rows="3" placeholder="הכנס את שאלת הראיון..."></textarea>
-    <label>התשובה שלך</label><textarea id="q-answer" rows="5" placeholder="כתוב את תשובתך..."></textarea>
+    <label data-i18n="labelTopic">נושא</label>
+    <input type="text" id="q-topic" placeholder="למשל: Cloud, AI Program Management, HR..." data-i18n-ph="phTopic">
+    <label data-i18n="labelQuestion">שאלה</label><textarea id="q-question" rows="3" placeholder="הכנס את שאלת הראיון..." data-i18n-ph="phQuestion"></textarea>
+    <label data-i18n="labelYourAnswer">התשובה שלך</label><textarea id="q-answer" rows="5" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer"></textarea>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveQuestion()">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-question')">ביטול</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveQuestion()" data-i18n="btnSave">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-question')" data-i18n="btnCancel">ביטול</button>
     </div>
   </div>
 </div>
@@ -2569,18 +2569,116 @@ window.saveApiKey = function() {
 let currentLang = 'he';
 const LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span>',
+    appTitle: 'הכנה<span>לראיון</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    // Nav
     profile: 'פרופיל', experience: 'ניסיון', questions: 'שאלות', jobprep: 'משרה', mock: 'תרגול',
-    syncText: 'מסונכרן', btnLang: 'EN',
-    secProfile: 'הפרופיל שלי', secQuestions: 'בנק שאלות', secMock: 'ראיון מדומה',
-    secJobprep: 'הכנה למשרה', secExperience: 'ניסיון',
+    // Profile section
+    secProfile: 'הפרופיל שלי', subProfile: 'בסיס הידע האישי שלך לראיונות',
+    cardPitch: 'הצגה עצמית / Pitch', phPitch: 'כתוב כאן את ה-elevator pitch שלך...',
+    cardCV: 'קורות חיים מלאם', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
+    cardWorkHistory: 'היסטוריית עבודה', btnAddRole: 'הוסף תפקיד',
+    // Experience section
+    secExperience: 'ניסיון', subExperience: 'מחושב אוטומטית מהיסטוריית העבודה שלך',
+    statYears: 'שנות ניסיון', statCompanies: 'חברות',
+    cardByCompany: 'לפי חברה', cardByDomain: 'לפי תחום', cardByCapability: 'לפי יכולת',
+    // Questions section
+    secQuestions: 'בנק שאלות', subQuestions: 'ספריית שאלות ותשובות לראיון',
+    colDocs: '📚 הוסף מסמך לחילוץ שאלות',
+    uploadClick: 'לחץ להעלאת קובץ', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, תמונות',
+    orText: 'או', phPasteText: 'הדבקי טקסט ישירות...', phDocName: 'שם המסמך', btnAdd: 'הוסף',
+    colImport: '📥 ייבא שאלות ותשובות מוכנות',
+    importFormat: 'פורמט: נושא: / שאלה X: / תשובה:',
+    phImport: 'הדבק כאן שאלות ותשובות...', btnImport: '📥 ייבא לבנק השאלות',
+    cleanTitle: '🧹 נקה וסדר את הבנק',
+    cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
+    phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנני לפי נושא', btnSelectAll: 'בחר הכל',
+    btnAddHR: 'הוסף שאלת HR',
+    // Job Prep section
+    secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
+    cardJobDetails: 'פרטי המשרה',
+    labelCompany: 'שם החברה', phCompany: 'למשל: גוגל, מיקרוסופט',
+    labelRole: 'תפקיד / כותרת', phRole: 'למשל: Program Manager בכיר',
+    labelJD: 'תיאור המשרה', phJD: 'הדבק כאן את תיאור המשרה...',
+    btnGenerate: 'הפק הכנה', cardSavedJobs: 'משרות שהוכנו',
+    cardJpPitch: 'Pitch מותאם למשרה', cardJpHR: 'שאלות HR למשרה זו', cardJpTech: 'שאלות טכניות / PM',
+    // Mock section
+    secMock: 'ראיון מדומה', subMock: 'תרגל תשובות וקבל משוב מ-AI',
+    cardMockTypes: 'סוג שאלות לתרגול',
+    mockHRGeneric: 'שאלות HR גנריות', mockTechGeneric: 'שאלות טכניות גנריות',
+    mockHRJob: 'שאלות HR ספציפיות למשרה', mockTechJob: 'שאלות טכניות ספציפיות למשרה',
+    mockAll: 'כל השאלות', labelMockCount: 'מספר שאלות',
+    mock5: '5 שאלות', mock10: '10 שאלות', mockAllQ: 'כל השאלות הזמינות',
+    btnStartMock: 'התחל ראיון מדומה', labelYourAnswer: 'התשובה שלך',
+    phAnswer: 'כתוב את תשובתך כאן...', btnGetFeedback: 'קבל משוב', btnSkip: 'דלג',
+    fbFeedback: 'משוב', fbImproved: 'תשובה משופרת', fbFollowup: 'שאלת המשך אפשרית',
+    btnNextQ: 'שאלה הבאה', btnEnd: 'סיים', mockDone: 'הראיון הושלם!', btnPracticeAgain: 'תרגל שוב',
+    // Modals
+    modalWorkTitle: 'הוסף תפקיד',
+    labelWHCompany: 'חברה', phWHCompany: 'שם החברה',
+    labelWHRole: 'תפקיד', phWHRole: 'שם התפקיד',
+    labelWHStart: 'תאריך התחלה', labelWHEnd: 'תאריך סיום (ריק = עד היום)',
+    labelWHDomains: 'תחום/ים', phAddDomain: 'הוסף תחום ידנית...',
+    labelWHCap: 'יכולות', phAddCap: 'הוסף יכולת ידנית...',
+    btnAddItem: '+ הוסף', btnSave: 'שמור', btnCancel: 'ביטול',
+    modalQTitle: 'הוסף שאלה', labelTopic: 'נושא', phTopic: 'למשל: Cloud, AI Program Management, HR...',
+    labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
+    phYourAnswer: 'כתוב את תשובתך...',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span>',
+    appTitle: 'Interview<span>Prep</span>', btnLang: 'HE', syncText: 'Synced',
+    // Nav
     profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job', mock: 'Practice',
-    syncText: 'Synced', btnLang: 'HE',
-    secProfile: 'My Profile', secQuestions: 'Question Bank', secMock: 'Mock Interview',
-    secJobprep: 'Job Prep', secExperience: 'Experience',
+    // Profile section
+    secProfile: 'My Profile', subProfile: 'Your personal knowledge base for interviews',
+    cardPitch: 'Personal Pitch', phPitch: 'Write your elevator pitch here...',
+    cardCV: 'Full CV', phCV: 'Paste your CV text here...',
+    cardWorkHistory: 'Work History', btnAddRole: 'Add Role',
+    // Experience section
+    secExperience: 'Experience', subExperience: 'Auto-calculated from your work history',
+    statYears: 'Years of Experience', statCompanies: 'Companies',
+    cardByCompany: 'By Company', cardByDomain: 'By Domain', cardByCapability: 'By Capability',
+    // Questions section
+    secQuestions: 'Question Bank', subQuestions: 'Interview Q&A library',
+    colDocs: '📚 Add Document to Extract Questions',
+    uploadClick: 'Click to upload file', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, Images',
+    orText: 'or', phPasteText: 'Paste text directly...', phDocName: 'Document name', btnAdd: 'Add',
+    colImport: '📥 Import Ready Q&A',
+    importFormat: 'Format: Topic: / Question X: / Answer:',
+    phImport: 'Paste Q&A here...', btnImport: '📥 Import to Question Bank',
+    cleanTitle: '🧹 Clean & Organize Bank',
+    cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
+    phSearch: '🔍 Search question...', colTopics: '🏷️ Filter by Topic', btnSelectAll: 'Select All',
+    btnAddHR: 'Add HR Question',
+    // Job Prep section
+    secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
+    cardJobDetails: 'Job Details',
+    labelCompany: 'Company Name', phCompany: 'e.g. Google, Microsoft',
+    labelRole: 'Role / Title', phRole: 'e.g. Senior Program Manager',
+    labelJD: 'Job Description', phJD: 'Paste job description here...',
+    btnGenerate: 'Generate Prep', cardSavedJobs: 'Prepared Jobs',
+    cardJpPitch: 'Job-Tailored Pitch', cardJpHR: 'HR Questions for This Job', cardJpTech: 'Technical / PM Questions',
+    // Mock section
+    secMock: 'Mock Interview', subMock: 'Practice answers and get AI feedback',
+    cardMockTypes: 'Question Types to Practice',
+    mockHRGeneric: 'Generic HR Questions', mockTechGeneric: 'Generic Technical Questions',
+    mockHRJob: 'Job-Specific HR Questions', mockTechJob: 'Job-Specific Tech Questions',
+    mockAll: 'All Questions', labelMockCount: 'Number of Questions',
+    mock5: '5 Questions', mock10: '10 Questions', mockAllQ: 'All Available Questions',
+    btnStartMock: 'Start Mock Interview', labelYourAnswer: 'Your Answer',
+    phAnswer: 'Write your answer here...', btnGetFeedback: 'Get Feedback', btnSkip: 'Skip',
+    fbFeedback: 'Feedback', fbImproved: 'Improved Answer', fbFollowup: 'Possible Follow-up',
+    btnNextQ: 'Next Question', btnEnd: 'Finish', mockDone: 'Interview Complete!', btnPracticeAgain: 'Practice Again',
+    // Modals
+    modalWorkTitle: 'Add Role',
+    labelWHCompany: 'Company', phWHCompany: 'Company name',
+    labelWHRole: 'Role', phWHRole: 'Role name',
+    labelWHStart: 'Start Date', labelWHEnd: 'End Date (empty = present)',
+    labelWHDomains: 'Domain(s)', phAddDomain: 'Add domain manually...',
+    labelWHCap: 'Capabilities', phAddCap: 'Add capability manually...',
+    btnAddItem: '+ Add', btnSave: 'Save', btnCancel: 'Cancel',
+    modalQTitle: 'Add Question', labelTopic: 'Topic', phTopic: 'e.g. Cloud, AI Program Management, HR...',
+    labelQuestion: 'Question', phQuestion: 'Enter interview question...',
+    phYourAnswer: 'Write your answer...',
   }
 };
 
@@ -2594,9 +2692,13 @@ function applyLanguage() {
   const isHe = currentLang === 'he';
   document.documentElement.setAttribute('lang', currentLang);
   document.documentElement.setAttribute('dir', isHe ? 'rtl' : 'ltr');
+
+  // Logo & header
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
   document.getElementById('lang-btn').textContent = L.btnLang;
+  if (document.getElementById('view-lang-btn')) document.getElementById('view-lang-btn').textContent = L.btnLang;
   document.getElementById('sync-text').textContent = L.syncText;
+
   // Nav buttons
   const navBtns = document.querySelectorAll('.nav-btn');
   const navKeys = ['profile','experience','questions','jobprep','mock'];
@@ -2604,6 +2706,27 @@ function applyLanguage() {
     const lastChild = btn.lastChild;
     if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
   });
+
+  // All data-i18n elements (text content)
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (L[key] !== undefined) el.textContent = L[key];
+  });
+
+  // All data-i18n-ph elements (placeholders)
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (L[key] !== undefined) el.placeholder = L[key];
+  });
+
+  // Select options (mock-count)
+  const mockCount = document.getElementById('mock-count');
+  if (mockCount) {
+    const opts = mockCount.options;
+    if (opts[0]) opts[0].textContent = L.mock5;
+    if (opts[1]) opts[1].textContent = L.mock10;
+    if (opts[2]) opts[2].textContent = L.mockAllQ;
+  }
 }
 
 // ==================== SHARE LINK ====================
