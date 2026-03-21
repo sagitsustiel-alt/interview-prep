@@ -2695,7 +2695,7 @@ window.toggleSuggestedAnswer = function(btn) {
   btn.textContent = isVisible ? (L.btnShowAnswer || '💡 הצג תשובה מוצעת') : (L.btnHideAnswer || '🔼 הסתר תשובה מוצעת');
 };
 
-
+window.skipMock = function() {
   document.querySelectorAll('.mock-dot')[mockIndex].className='mock-dot';
   mockIndex++; if(mockIndex>=mockQueue.length) endMock(); else loadMockQuestion();
 };
