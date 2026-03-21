@@ -1105,6 +1105,9 @@ document.addEventListener('click', (e) => {
 });
 
 onAuthStateChanged(auth, async (user) => {
+  const params = new URLSearchParams(window.location.search);
+  const isViewMode = params.get('view') && params.get('uid');
+
   if (user) {
     currentUser = user;
     document.getElementById('login-screen').style.display = 'none';
@@ -1119,17 +1122,10 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('menu-name').textContent = user.displayName || 'משתמש';
     document.getElementById('menu-email').textContent = user.email || '';
 
-    // בדוק אם זה מצב צפייה
-    const params = new URLSearchParams(window.location.search);
-    const isViewMode = params.get('view') && params.get('uid');
     if (isViewMode) {
       const viewOk = await checkViewMode();
       if (viewOk) {
-        loadProfileUI();
-        renderQuestions();
-        renderSavedJobs();
-        renderExperience();
-        applyLanguage();
+        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); applyLanguage();
         return;
       }
     }
@@ -1141,6 +1137,20 @@ onAuthStateChanged(auth, async (user) => {
     applyLanguage();
   } else {
     currentUser = null;
+    // מצב צפייה בלי התחברות — ננסה לטעון ישירות מ-Firestore
+    if (isViewMode) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      const viewOk = await checkViewMode();
+      if (viewOk) {
+        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); applyLanguage();
+      } else {
+        document.getElementById('app').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'flex';
+        toast(t('toastLinkInvalid'), true);
+      }
+      return;
+    }
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
   }
