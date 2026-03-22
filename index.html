@@ -491,10 +491,6 @@
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
       <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:16px;">❓</button>
-      <div class="sync-badge" id="sync-badge" title="מסונכרן ב-Firebase">
-        <div class="sync-dot synced" id="sync-dot"></div>
-        <span id="sync-text">מסונכרן</span>
-      </div>
       <div id="user-avatar-container" onclick="toggleUserMenu()"></div>
     </div>
   </header>
@@ -520,8 +516,8 @@
 
   <!-- API KEY MISSING BANNER -->
   <div id="api-key-banner" style="display:none;background:rgba(247,162,106,0.12);border-bottom:1px solid rgba(247,162,106,0.4);padding:10px 16px;font-size:13px;color:var(--accent3);display:flex;align-items:center;justify-content:space-between;gap:10px;">
-    <span>⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
-    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;" onclick="toggleUserMenu()">הגדר עכשיו →</button>
+    <span data-i18n="bannerNoApiKey">⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
+    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;" onclick="document.getElementById('user-avatar-container').click()" data-i18n="bannerSetNow">הגדר עכשיו →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -1111,7 +1107,13 @@ window.signOut = async function() {
 };
 
 window.toggleUserMenu = function() {
-  document.getElementById('user-menu').classList.toggle('open');
+  const menu = document.getElementById('user-menu');
+  const header = document.querySelector('.app-header');
+  const banner = document.getElementById('api-key-banner');
+  const bannerH = (banner && banner.style.display !== 'none') ? banner.offsetHeight : 0;
+  const headerH = header ? header.offsetHeight : 56;
+  menu.style.top = (bannerH + headerH) + 'px';
+  menu.classList.toggle('open');
 };
 
 document.addEventListener('click', (e) => {
@@ -1183,19 +1185,20 @@ function userCol(path) {
   return collection(db, 'users', currentUser.uid, path);
 }
 
+let syncToastTimer;
 function setSyncStatus(status) {
-  const dot = document.getElementById('sync-dot');
-  const text = document.getElementById('sync-text');
-  const badge = document.getElementById('sync-badge');
-  dot.className = 'sync-dot ' + status;
-  const labels = {
-    synced:  { text: 'מסונכרן', title: 'מסונכרן ב-Firebase' },
-    syncing: { text: 'שומר...',  title: 'שומר ב-Firebase' },
-    error:   { text: 'שגיאה',   title: 'שגיאה ב-Firebase' }
-  };
-  const l = labels[status] || labels.synced;
-  text.textContent = l.text;
-  badge.title = l.title;
+  if (status === 'syncing') {
+    // הצג toast קטן רק אם השמירה לוקחת יותר מ-500ms
+    clearTimeout(syncToastTimer);
+    syncToastTimer = setTimeout(() => {
+      toast(t('toastSyncing'), false, true); // subtle toast
+    }, 500);
+  } else if (status === 'synced') {
+    clearTimeout(syncToastTimer);
+  } else if (status === 'error') {
+    clearTimeout(syncToastTimer);
+    toast(t('toastSyncError'), true);
+  }
 }
 
 async function loadAllData() {
@@ -1240,7 +1243,7 @@ window.handleFileUpload = function(e) {
 async function processFile(file) {
   const name = file.name.toLowerCase();
   const isAllowed = name.match(/\.(pdf|docx|doc|txt|xlsx|xls|pptx|ppt|jpg|jpeg|png|webp|gif)$/);
-  if (!isAllowed) { toast('פורמט לא נתמך.', true); return; }
+  if (!isAllowed) { toast(t('toastFormatNotSupported'), true); return; }
 
   toast(t('toastSending'));
   try {
@@ -1393,7 +1396,7 @@ window.extractFromSingleDoc = async function(docId) {
   if (!doc) return;
   const btn = document.getElementById(`extract-btn-${docId}`);
   if (btn) { btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> AI מעבד...'; btn.disabled = true; }
-  toast('🤖 AI מחלץ שאלות מהמסמך...');
+  toast(t('toastAiExtracting'));
 
   // Existing questions for dedup
   const existingQTexts = (localCache.questions||[]).map(q => q.question).join('\n');
@@ -1439,7 +1442,7 @@ ${existingQTexts || 'אין'}
     }
 
     renderKbDocs();
-    toast(`✅ נוספו ${newQs.length} שאלות מ-"${doc.name}" לבנק!`);
+    toast(t('toastExtractedCount', newQs.length, doc.name));
     document.getElementById('kb-extract-section').style.display = 'block';
   } catch(e) {
     console.error('Extract error:', e);
@@ -1635,7 +1638,7 @@ window.applyCleanedBank = async function() {
   setSyncStatus('synced');
   closeModal('modal-clean-bank');
   renderQuestions();
-  toast(`✅ נוספו ${cleanedBankQuestions.length} שאלות נקיות לבנק!`);
+  toast(t('toastCleanedCount', cleanedBankQuestions.length));
   cleanedBankQuestions = [];
 };
 window.importReadyQA = async function() {
@@ -1704,7 +1707,7 @@ window.importReadyQA = async function() {
     renderQuestions();
     statusEl.textContent = `✅ יובאו ${imported.length} שאלות לבנק!`;
     document.getElementById('kb-import-text').value = '';
-    toast(`✅ יובאו ${imported.length} שאלות לבנק!`);
+    toast(t('toastImportedCount', imported.length));
   } else {
     statusEl.textContent = '⚠️ לא נמצאו שאלות בפורמט הנכון.';
     toast(t('toastNoQFormat'), true);
@@ -1769,7 +1772,7 @@ window.addAllExtracted = async function() {
   for (let i = 0; i < extractedQuestions.length; i++) {
     if (!extractedQuestions[i]._added) await addSingleExtracted(i);
   }
-  toast(`נוספו ${extractedQuestions.length} שאלות לבנק! 🎉`);
+  toast(t('toastAddedAllExtracted', extractedQuestions.length));
   closeModal('modal-extracted');
 };
 
@@ -2010,7 +2013,7 @@ function renderExperience() {
   if (!list.length) {
     document.getElementById('stat-total-years').textContent = '0';
     document.getElementById('stat-companies').textContent = '0';
-    const emptyMsg = '<div class="empty-state"><div class="empty-state-icon">💼</div><p style="font-size:13px;color:var(--text3);">הוסף היסטוריית עבודה בדף <strong>פרופיל</strong> כדי לראות את הסיכום שלך</p></div>';
+    const emptyMsg = `<div class="empty-state"><div class="empty-state-icon">💼</div><p style="font-size:13px;color:var(--text3);">${t('emptyAddWorkHistory')}</p></div>`;
     document.getElementById('company-breakdown').innerHTML = emptyMsg;
     document.getElementById('domain-breakdown').innerHTML = emptyMsg;
     document.getElementById('capability-breakdown').innerHTML = emptyMsg;
@@ -2554,7 +2557,7 @@ function renderSavedJobs() {
   if (!el) return;
   card.style.display = 'block';
   if (!jobs.length) {
-    el.innerHTML = '<p style="color:var(--text3);font-size:13px;">לא הוכנו משרות עדיין. הכן משרה למעלה ולחץ "הפק הכנה".</p>';
+    el.innerHTML = `<p style="color:var(--text3);font-size:13px;">${t('emptyNoJobsYet')}</p>`;
     return;
   }
   el.innerHTML = jobs.map(j => `
@@ -2583,7 +2586,7 @@ window.deleteSavedJob = async function(id) {
   saveProfile();
   renderSavedJobs();
   renderQuestions();
-  toast(`המשרה נמחקה + ${toDelete.length} שאלות קשורות!`);
+  toast(t('toastJobDeleted', toDelete.length));
 };
 
 window.addToBank = async function(type, question, topic, jobId, company, role) {
@@ -2876,6 +2879,19 @@ let LANG = {
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
     toastLoginError: 'שגיאה בהתחברות. נסה שוב.',
+    bannerNoApiKey: '⚠️ טרם הוגדר Anthropic API Key — פיצ\'רי AI לא יפעלו',
+    bannerSetNow: 'הגדר עכשיו →',
+    toastSyncing: '💾 שומר...',
+    toastSyncError: '❌ שגיאה בשמירה — הנתונים לא נשמרו ל-Firebase',
+    toastFormatNotSupported: 'פורמט לא נתמך.',
+    toastAiExtracting: '🤖 AI מחלץ שאלות מהמסמך...',
+    toastExtractedCount: (n, name) => `✅ נוספו ${n} שאלות מ-"${name}" לבנק!`,
+    toastCleanedCount: (n) => `✅ נוספו ${n} שאלות נקיות לבנק!`,
+    toastImportedCount: (n) => `✅ יובאו ${n} שאלות לבנק!`,
+    toastAddedAllExtracted: (n) => `נוספו ${n} שאלות לבנק! 🎉`,
+    toastJobDeleted: (n) => `המשרה נמחקה + ${n} שאלות קשורות!`,
+    emptyNoJobsYet: 'לא הוכנו משרות עדיין. הכן משרה למעלה ולחץ "הפק הכנה".',
+    emptyAddWorkHistory: 'הוסף היסטוריית עבודה בדף פרופיל כדי לראות את הסיכום שלך',
     toastLinkInvalid: 'הלינק אינו תקין או פג תוקף',
     toastSending: 'שולח ל-AI לניתוח... ⏳',
     toastFileAdded: 'הקובץ נוסף! ✅',
@@ -2983,6 +2999,19 @@ let LANG = {
     phYourAnswer: 'Write your answer...',
     // Toast & JS messages
     toastLoginError: 'Login error. Please try again.',
+    bannerNoApiKey: '⚠️ Anthropic API Key not set — AI features will not work',
+    bannerSetNow: 'Set up now →',
+    toastSyncing: '💾 Saving...',
+    toastSyncError: '❌ Save error — data was not saved to Firebase',
+    toastFormatNotSupported: 'Format not supported.',
+    toastAiExtracting: '🤖 AI is extracting questions from document...',
+    toastExtractedCount: (n, name) => `✅ Added ${n} questions from "${name}" to bank!`,
+    toastCleanedCount: (n) => `✅ Added ${n} clean questions to bank!`,
+    toastImportedCount: (n) => `✅ Imported ${n} questions to bank!`,
+    toastAddedAllExtracted: (n) => `Added ${n} questions to bank! 🎉`,
+    toastJobDeleted: (n) => `Job deleted + ${n} related questions!`,
+    emptyNoJobsYet: 'No jobs prepared yet. Fill in a job above and click "Generate Prep".',
+    emptyAddWorkHistory: 'Add work history in the Profile tab to see your summary',
     toastLinkInvalid: 'Link is invalid or expired.',
     toastSending: 'Sending to AI for analysis... ⏳',
     toastFileAdded: 'File added! ✅',
@@ -3046,7 +3075,6 @@ function applyLanguage() {
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
   document.getElementById('lang-btn').textContent = L.btnLang;
   if (document.getElementById('view-lang-btn')) document.getElementById('view-lang-btn').textContent = L.btnLang;
-  document.getElementById('sync-text').textContent = L.syncText;
 
   // Nav buttons
   const navBtns = document.querySelectorAll('.nav-btn');
