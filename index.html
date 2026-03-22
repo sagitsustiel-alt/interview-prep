@@ -11,21 +11,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f13;
-    --surface: #18181f;
-    --surface2: #222230;
-    --surface3: #2a2a3a;
-    --border: #2e2e40;
-    --accent: #7c6af7;
-    --accent2: #4fc8a8;
-    --accent3: #f7a26a;
-    --text: #e8e8f0;
-    --text2: #9999b8;
-    --text3: #5a5a78;
-    --danger: #f76a7c;
-    --radius: 12px;
-    --radius-sm: 8px;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --bg: #F7F8FB;
+    --surface: #FFFFFF;
+    --surface2: #F2F4F8;
+    --surface3: #E8EBF2;
+    --border: #E5E7EF;
+    --accent: #7C6CF2;
+    --accent-hover: #6B5AE8;
+    --accent2: #2DBF8A;
+    --accent3: #F59E5A;
+    --text: #1C1C1E;
+    --text2: #6E6E73;
+    --text3: #9E9EA8;
+    --danger: #E63950;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -39,101 +41,80 @@
   .login-screen {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    min-height: 100vh; padding: 40px 20px; text-align: center;
+    min-height: 100vh; padding: 40px 24px; text-align: center;
+    background: linear-gradient(160deg, #F0EEFF 0%, #F7F8FB 50%, #EEF5FF 100%);
   }
   .login-logo {
-    font-size: 28px; font-weight: 700; margin-bottom: 8px;
+    font-size: 32px; font-weight: 700; margin-bottom: 10px; color: var(--text);
   }
   .login-logo span { color: var(--accent); }
-  .login-sub { color: var(--text2); font-size: 14px; margin-bottom: 40px; }
+  .login-sub { color: var(--text2); font-size: 15px; margin-bottom: 40px; max-width: 260px; line-height: 1.5; }
   .login-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 32px 24px;
+    border-radius: 20px; padding: 32px 28px;
     width: 100%; max-width: 360px;
+    box-shadow: var(--shadow-md);
   }
-  .login-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-  .login-desc { color: var(--text2); font-size: 13px; margin-bottom: 24px; line-height: 1.5; }
+  .login-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .login-desc { color: var(--text2); font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
   .btn-google {
     width: 100%; display: flex; align-items: center; justify-content: center;
-    gap: 10px; padding: 12px 20px; background: #fff; color: #333;
-    border: none; border-radius: var(--radius-sm); font-family: 'Heebo', sans-serif;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    gap: 10px; padding: 14px 20px; background: var(--surface); color: var(--text);
+    border: 1.5px solid var(--border); border-radius: 12px; font-family: 'Heebo', sans-serif;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; box-shadow: var(--shadow);
   }
-  .btn-google:hover { background: #f5f5f5; transform: translateY(-1px); }
+  .btn-google:hover { background: var(--bg); border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow-md); }
   .btn-google:active { transform: scale(0.98); }
   .btn-google img { width: 20px; height: 20px; }
-  .login-note { color: var(--text3); font-size: 11px; margin-top: 16px; line-height: 1.5; }
+  .login-note { color: var(--text3); font-size: 12px; margin-top: 16px; line-height: 1.6; }
 
   /* ==================== MOBILE ==================== */
   @media (max-width: 480px) {
-    /* Header */
     .app-logo { font-size: 15px; }
     .header-right { gap: 4px; }
-    .sync-badge { display: none; } /* מוסתר במובייל — חוסך מקום */
+    .sync-badge { display: none; }
     #current-section-name { display: none; }
-
-    /* Main */
-    .main { padding: 14px 12px 90px; }
-
-    /* Titles */
-    .section-title { font-size: 22px; }
-    .section-sub { font-size: 13px; margin-bottom: 16px; }
-    .card-title { font-size: 13px; letter-spacing: 0.5px; }
-
-    /* Cards */
-    .card { padding: 14px 12px; margin-bottom: 10px; }
-
-    /* Stats */
-    .stat-value { font-size: 24px; }
+    .main { padding: 16px 14px 90px; }
+    .section-title { font-size: 24px; }
+    .section-sub { font-size: 13px; margin-bottom: 18px; }
+    .card-title { font-size: 11px; letter-spacing: 0.5px; }
+    .card { padding: 16px 14px; margin-bottom: 12px; }
+    .stat-value { font-size: 28px; }
     .stat-label { font-size: 10px; }
-
-    /* Nav */
     .nav-btn { font-size: 9px; padding: 8px 2px; gap: 2px; }
     .nav-btn svg { width: 20px; height: 20px; }
-
-    /* Modal */
     .modal-sheet {
       max-height: 92vh;
-      padding: 20px 14px;
+      padding: 20px 16px;
       padding-bottom: calc(20px + env(safe-area-inset-bottom));
     }
-    .modal-title { font-size: 17px; }
-
-    /* Buttons */
-    .btn { font-size: 12px; padding: 9px 14px; }
-    .btn-sm { font-size: 11px; padding: 5px 10px; }
-
-    /* Question cards */
-    .question-card { padding: 12px; }
+    .modal-title { font-size: 18px; }
+    .btn { font-size: 13px; padding: 10px 14px; }
+    .btn-sm { font-size: 11px; padding: 6px 10px; }
+    .question-card { padding: 14px; }
     .question-text { font-size: 13px; }
     .answer-text { font-size: 12px; }
     .q-actions { gap: 6px; }
-    .q-actions .btn { font-size: 11px; padding: 5px 8px; }
-
-    /* History */
-    .history-item { padding: 10px; }
+    .q-actions .btn { font-size: 11px; padding: 6px 8px; }
+    .history-item { padding: 12px; }
     .history-company { font-size: 13px; }
-
-    /* Collapsible */
-    .collapsible-header { padding: 10px 12px; font-size: 13px; }
-
-    /* Inputs */
-    input[type="text"], input[type="date"], textarea, select {
-      font-size: 16px; /* מונע zoom אוטומטי ב-iOS */
-    }
-
-    /* Feedback cards */
+    .collapsible-header { padding: 12px 14px; font-size: 13px; }
+    input[type="text"], input[type="date"], textarea, select { font-size: 16px; }
     .feedback-card { padding: 12px; }
     .feedback-label { font-size: 11px; }
   }
-
-  /* iPhone SE ומסכים קטנים מאוד */
   @media (max-width: 360px) {
-    .section-title { font-size: 18px; }
+    .section-title { font-size: 20px; }
     .nav-btn { font-size: 8px; }
-    .card { padding: 10px; }
+    .card { padding: 12px; }
   }
+  @media (min-width: 1025px) {
+    .main { padding: 32px 24px 100px; max-width: 720px; }
+    .stats-grid { grid-template-columns: repeat(4, 1fr); }
+    .section-title { font-size: 36px; }
+  }
+
   .sync-badge {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; font-weight: 500; color: var(--text3);
@@ -149,18 +130,19 @@
   /* HEADER */
   .app-header {
     background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 12px 16px; display: flex; align-items: center;
+    padding: 12px 20px; display: flex; align-items: center;
     justify-content: space-between; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 0 var(--border);
   }
   .app-logo { font-size: 18px; font-weight: 700; color: var(--text); }
   .app-logo span { color: var(--accent); }
-  .header-right { display: flex; align-items: center; gap: 8px; }
+  .header-right { display: flex; align-items: center; gap: 6px; }
   .user-avatar {
-    width: 30px; height: 30px; border-radius: 50%;
+    width: 32px; height: 32px; border-radius: 50%;
     border: 2px solid var(--accent); cursor: pointer; object-fit: cover;
   }
   .user-initial {
-    width: 30px; height: 30px; border-radius: 50%;
+    width: 32px; height: 32px; border-radius: 50%;
     background: var(--accent); color: #fff; font-size: 13px;
     font-weight: 700; display: flex; align-items: center; justify-content: center;
     cursor: pointer;
@@ -170,19 +152,19 @@
   .user-menu {
     display: none; position: fixed; top: 56px; left: 16px;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 12px;
-    z-index: 200; min-width: 200px; box-shadow: var(--shadow);
+    border-radius: var(--radius); padding: 16px;
+    z-index: 200; min-width: 220px; box-shadow: var(--shadow-md);
   }
   .user-menu.open { display: block; }
-  .user-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
-  .user-email { color: var(--text3); font-size: 11px; margin-bottom: 12px; }
+  .user-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; color: var(--text); }
+  .user-email { color: var(--text3); font-size: 12px; margin-bottom: 16px; }
   .btn-signout {
     width: 100%; background: none; border: 1px solid var(--border);
     border-radius: var(--radius-sm); color: var(--danger); font-family: 'Heebo', sans-serif;
-    font-size: 13px; font-weight: 600; padding: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 600; padding: 9px; cursor: pointer;
     transition: all 0.2s;
   }
-  .btn-signout:hover { background: rgba(247,106,124,0.1); }
+  .btn-signout:hover { background: #FFF0F2; border-color: var(--danger); }
 
   /* NAV */
   .bottom-nav {
@@ -190,6 +172,7 @@
     background: var(--surface); border-top: 1px solid var(--border);
     display: flex; z-index: 100;
     padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -1px 0 var(--border);
   }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -200,23 +183,25 @@
   }
   .nav-btn svg { width: 22px; height: 22px; }
   .nav-btn.active { color: var(--accent); }
+  .nav-btn.active svg { stroke: var(--accent); }
 
   /* MAIN */
-  .main { padding: 20px 16px 100px; max-width: 680px; margin: 0 auto; }
+  .main { padding: 22px 18px 100px; max-width: 680px; margin: 0 auto; }
   .section { display: none; animation: fadeUp 0.3s ease; }
   .section.active { display: block; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-  .section-title { font-weight: 700; font-size: 32px; margin-bottom: 6px; }
-  .section-sub { color: var(--text2); font-size: 16px; margin-bottom: 24px; }
+  .section-title { font-weight: 700; font-size: 28px; margin-bottom: 4px; color: var(--text); }
+  .section-sub { color: var(--text2); font-size: 15px; margin-bottom: 22px; }
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
+    border-radius: 20px; padding: 20px; margin-bottom: 14px;
+    box-shadow: var(--shadow);
   }
   .card-title {
-    font-size: 16px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text2); margin-bottom: 14px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text3); margin-bottom: 14px;
   }
 
   label {
@@ -226,99 +211,113 @@
   label:first-child { margin-top: 0; }
 
   input[type="text"], input[type="date"], textarea, select {
-    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    width: 100%; background: var(--surface2); border: 1.5px solid var(--border);
     border-radius: var(--radius-sm); color: var(--text); font-family: 'Heebo', sans-serif;
-    font-size: 14px; padding: 10px 12px; outline: none;
-    transition: border-color 0.2s; -webkit-appearance: none;
+    font-size: 15px; padding: 11px 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none;
     text-align: right; direction: rtl;
   }
-  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,108,242,0.12);
+    background: var(--surface);
+  }
   textarea { resize: vertical; min-height: 80px; }
 
   .btn {
-    display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px;
-    border-radius: var(--radius-sm); font-family: 'Heebo', sans-serif;
-    font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px;
+    border-radius: 12px; font-family: 'Heebo', sans-serif;
+    font-size: 14px; font-weight: 600; border: none; cursor: pointer;
     transition: all 0.2s; -webkit-tap-highlight-color: transparent;
   }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #6a5ae0; }
-  .btn-primary:active { transform: scale(0.97); }
-  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-  .btn-secondary:hover { border-color: var(--accent); }
-  .btn-ghost { background: none; color: var(--text2); padding: 6px 10px; font-size: 12px; }
-  .btn-ghost:hover { color: var(--text); }
-  .btn-accent2 { background: var(--surface2); color: var(--accent2); border: 1px solid var(--accent2); }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(124,108,242,0.30); }
+  .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 14px rgba(124,108,242,0.36); transform: translateY(-1px); }
+  .btn-primary:active { transform: scale(0.97); box-shadow: none; }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: #F5F3FF; }
+  .btn-ghost { background: none; color: var(--text2); padding: 6px 10px; font-size: 13px; }
+  .btn-ghost:hover { color: var(--text); background: var(--surface2); border-radius: 8px; }
+  .btn-accent2 { background: #F0FBF7; color: var(--accent2); border: 1.5px solid var(--accent2); }
+  .btn-accent2:hover { background: #E0F8EF; }
   .btn-danger { background: none; color: var(--danger); border: 1px solid var(--border); }
-  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn-danger:hover { background: #FFF0F2; border-color: var(--danger); }
+  .btn-sm { padding: 7px 12px; font-size: 12px; }
   .btn-block { width: 100%; justify-content: center; margin-top: 12px; }
 
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
   .stat-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px; text-align: center;
+    border-radius: 20px; padding: 20px; text-align: center;
+    box-shadow: var(--shadow);
   }
-  .stat-value { font-weight: 700; font-size: 32px; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+  .stat-value { font-weight: 700; font-size: 34px; color: var(--accent); line-height: 1; margin-bottom: 4px; }
   .stat-label { font-size: 11px; color: var(--text2); font-weight: 500; }
 
-  .progress-bar { height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; margin-top: 4px; }
-  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.6s ease; }
+  .progress-bar { height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #A78BF7); transition: width 0.6s ease; }
 
   .question-card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+    border-radius: 16px; padding: 18px; margin-bottom: 12px;
+    box-shadow: var(--shadow);
   }
-  .question-text { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
+  .question-text { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 10px; line-height: 1.55; }
   .answer-text {
-    font-size: 13px; color: var(--text2); line-height: 1.6;
+    font-size: 13px; color: var(--text2); line-height: 1.65;
     background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 10px 12px; margin-bottom: 10px; white-space: pre-wrap; text-align: right;
+    padding: 12px 14px; margin-bottom: 10px; white-space: pre-wrap; text-align: right;
+    border-right: 3px solid var(--border);
   }
   .q-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .q-type-badge {
-    display: inline-block; font-size: 10px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px;
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px; padding: 3px 9px;
     border-radius: 20px; margin-bottom: 8px;
   }
-  .badge-hr { background: rgba(124,106,247,0.15); color: var(--accent); }
-  .badge-tech { background: rgba(79,200,168,0.15); color: var(--accent2); }
+  .badge-hr { background: #EEF0FF; color: var(--accent); border: 1px solid rgba(124,108,242,0.2); }
+  .badge-tech { background: #EDFBF5; color: var(--accent2); border: 1px solid rgba(45,191,138,0.2); }
 
   .modal-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7); z-index: 200; align-items: flex-end;
+    background: rgba(28,28,30,0.45); z-index: 200; align-items: flex-end;
+    backdrop-filter: blur(4px);
   }
   .modal-overlay.open { display: flex; }
   .modal-sheet {
-    background: var(--surface); border-radius: 20px 20px 0 0;
+    background: var(--surface); border-radius: 24px 24px 0 0;
     border: 1px solid var(--border); border-bottom: none;
-    padding: 24px 20px; width: 100%; max-height: 85vh;
+    padding: 24px 22px; width: 100%; max-height: 87vh;
     overflow-y: auto; animation: slideUp 0.3s ease; direction: rtl;
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.10);
   }
   @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
-  .modal-title { font-weight: 700; font-size: 20px; margin-bottom: 16px; }
+  .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 20px; }
+  .modal-title { font-weight: 700; font-size: 20px; margin-bottom: 16px; color: var(--text); }
 
   .tabs {
     display: flex; gap: 4px; background: var(--surface2);
-    border-radius: var(--radius-sm); padding: 4px; margin-bottom: 20px;
+    border-radius: 12px; padding: 4px; margin-bottom: 18px;
   }
   .tab-btn {
     flex: 1; background: none; border: none; color: var(--text2);
-    font-family: 'Heebo', sans-serif; font-size: 12px; font-weight: 600;
-    padding: 8px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px; border-radius: 9px; cursor: pointer; transition: all 0.2s;
   }
-  .tab-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+  .tab-btn.active {
+    background: var(--surface); color: var(--text);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  }
 
   .mock-progress { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
   .mock-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--surface3); }
   .mock-dot.done { background: var(--accent2); }
   .mock-dot.current { background: var(--accent); }
 
-  .feedback-card { border-radius: var(--radius-sm); padding: 12px; margin-bottom: 10px; font-size: 13px; line-height: 1.6; text-align: right; }
-  .feedback-card.clarity { background: rgba(124,106,247,0.1); border-right: 3px solid var(--accent); }
-  .feedback-card.improved { background: rgba(79,200,168,0.1); border-right: 3px solid var(--accent2); }
-  .feedback-card.followup { background: rgba(247,162,106,0.1); border-right: 3px solid var(--accent3); }
-  .feedback-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; opacity: 0.7; }
+  .feedback-card { border-radius: 12px; padding: 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.65; text-align: right; }
+  .feedback-card.clarity { background: #F0EEFF; border-right: 3px solid var(--accent); }
+  .feedback-card.improved { background: #EDFBF5; border-right: 3px solid var(--accent2); }
+  .feedback-card.followup { background: #FEF5EC; border-right: 3px solid var(--accent3); }
+  .feedback-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; opacity: 0.65; }
 
   .loading-dots { display: inline-flex; gap: 4px; align-items: center; }
   .loading-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.2s infinite; }
@@ -328,25 +327,31 @@
 
   .chip {
     display: inline-block; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--text2); margin: 2px;
+    border-radius: 20px; padding: 4px 11px; font-size: 12px; color: var(--text2); margin: 2px;
+    cursor: pointer; transition: all 0.2s;
   }
+  .chip:hover { border-color: var(--accent); color: var(--accent); background: #F0EEFF; }
+  .chip.active { background: #EEF0FF; color: var(--accent); border-color: rgba(124,108,242,0.35); font-weight: 600; }
+
   .gen-content {
-    background: var(--surface2); border-radius: var(--radius-sm); padding: 14px;
-    font-size: 13px; line-height: 1.7; color: var(--text2); white-space: pre-wrap; text-align: right;
+    background: var(--surface2); border-radius: var(--radius-sm); padding: 16px;
+    font-size: 14px; line-height: 1.75; color: var(--text2); white-space: pre-wrap; text-align: right;
+    border-right: 3px solid var(--border);
   }
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--text3); }
-  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
+  .empty-state { text-align: center; padding: 48px 20px; color: var(--text3); }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.7; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
 
   .history-item {
     display: flex; justify-content: space-between; align-items: flex-start;
-    background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 12px; margin-bottom: 8px; gap: 8px; flex-direction: row-reverse;
+    background: var(--surface2); border-radius: 12px;
+    padding: 14px; margin-bottom: 10px; gap: 8px; flex-direction: row-reverse;
+    border: 1px solid var(--border);
   }
   .history-info { flex: 1; text-align: right; }
-  .history-company { font-weight: 600; font-size: 14px; }
-  .history-role { color: var(--text2); font-size: 12px; }
-  .history-meta { color: var(--text3); font-size: 11px; margin-top: 3px; }
+  .history-company { font-weight: 600; font-size: 14px; color: var(--text); }
+  .history-role { color: var(--text2); font-size: 13px; margin-top: 2px; }
+  .history-meta { color: var(--text3); font-size: 11px; margin-top: 4px; }
   .history-actions { display: flex; gap: 4px; }
 
   ::-webkit-scrollbar { width: 4px; }
@@ -357,25 +362,26 @@
   .doc-item {
     display: flex; align-items: center; justify-content: space-between;
     background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 12px; margin-bottom: 8px; gap: 10px;
+    padding: 13px; margin-bottom: 8px; gap: 10px;
+    border: 1px solid var(--border);
   }
   .doc-info { flex: 1; min-width: 0; text-align: right; }
-  .doc-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
   .doc-meta { color: var(--text3); font-size: 11px; margin-top: 2px; }
   .doc-icon { font-size: 24px; flex-shrink: 0; }
   .doc-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
   .upload-zone {
-    border: 2px dashed var(--border); border-radius: var(--radius);
-    padding: 24px; text-align: center; cursor: pointer;
-    transition: all 0.2s; margin-bottom: 12px;
+    border: 2px dashed var(--border); border-radius: 14px;
+    padding: 28px 20px; text-align: center; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 12px; background: var(--surface2);
   }
   .upload-zone:hover, .upload-zone.dragover {
-    border-color: var(--accent); background: rgba(124,106,247,0.05);
+    border-color: var(--accent); background: #F0EEFF;
   }
   .upload-zone-icon { font-size: 32px; margin-bottom: 8px; }
-  .upload-zone-text { font-size: 13px; color: var(--text2); }
-  .upload-zone-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .upload-zone-text { font-size: 14px; color: var(--text2); font-weight: 500; }
+  .upload-zone-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
 
   /* TOPIC GROUPS */
   .topic-group { margin-bottom: 28px; }
@@ -385,19 +391,17 @@
     border-bottom: 2px solid var(--accent);
   }
   .topic-section-icon { font-size: 14px; }
-  .topic-section-name {
-    font-weight: 700; font-size: 15px; color: var(--accent); flex: 1;
-  }
+  .topic-section-name { font-weight: 700; font-size: 15px; color: var(--accent); flex: 1; }
   .topic-section-count {
-    background: rgba(124,106,247,0.15); color: var(--accent);
-    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    background: #EEF0FF; color: var(--accent);
+    font-size: 11px; font-weight: 700; padding: 2px 9px;
     border-radius: 20px;
   }
   .topic-badge {
     display: inline-block; font-size: 10px; font-weight: 600;
     padding: 2px 8px; border-radius: 20px; margin-bottom: 6px;
-    background: rgba(124,106,247,0.12); color: var(--accent);
-    border: 1px solid rgba(124,106,247,0.2);
+    background: #EEF0FF; color: var(--accent);
+    border: 1px solid rgba(124,108,242,0.2);
   }
 
   .btn-video {
@@ -407,61 +411,82 @@
     padding: 3px 8px; cursor: pointer; transition: all 0.2s;
     display: inline-flex; align-items: center; gap: 4px;
   }
-  .btn-video:hover { border-color: #ff4444; color: #ff4444; }
+  .btn-video:hover { border-color: #e53935; color: #e53935; background: #FFF5F5; }
   .btn-video.loading { color: var(--accent); border-color: var(--accent); }
 
   .video-link {
-    display: flex; align-items: center; gap: 6px;
-    background: rgba(255,68,68,0.08); border: 1px solid rgba(255,68,68,0.2);
-    border-radius: var(--radius-sm); padding: 8px 10px;
+    display: flex; align-items: center; gap: 8px;
+    background: #FFF5F5; border: 1px solid rgba(229,57,53,0.2);
+    border-radius: var(--radius-sm); padding: 10px 12px;
     margin-top: 8px; text-decoration: none;
     font-size: 12px; color: var(--text2); line-height: 1.4;
   }
-  .video-link:hover { background: rgba(255,68,68,0.15); }
+  .video-link:hover { background: #FFECEC; }
   .video-link-icon { font-size: 16px; flex-shrink: 0; }
   .video-link-title { flex: 1; }
   .video-link-arrow { color: var(--text3); font-size: 10px; }
 
   .extracted-q-item {
     background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 12px; margin-bottom: 10px;
+    padding: 14px; margin-bottom: 10px;
+    border: 1px solid var(--border);
   }
-  .extracted-q-text { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
-  .extracted-a-text { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 8px; }
+  .extracted-q-text { font-weight: 600; font-size: 13px; margin-bottom: 6px; color: var(--text); }
+  .extracted-a-text { font-size: 12px; color: var(--text2); line-height: 1.55; margin-bottom: 8px; }
   .extracted-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
   .badge-added { font-size: 10px; color: var(--accent2); font-weight: 600; }
 
   /* SAVED JOBS */
   .saved-job-item {
     display: flex; align-items: center; justify-content: space-between;
-    background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 12px; margin-bottom: 8px; gap: 10px;
+    background: var(--surface2); border-radius: 12px;
+    padding: 14px; margin-bottom: 8px; gap: 10px;
+    border: 1px solid var(--border);
   }
   .saved-job-info { flex: 1; text-align: right; }
-  .saved-job-company { font-weight: 700; font-size: 14px; }
-  .saved-job-role { color: var(--text2); font-size: 12px; margin-top: 2px; }
-  .saved-job-date { color: var(--text3); font-size: 11px; margin-top: 2px; }
+  .saved-job-company { font-weight: 700; font-size: 14px; color: var(--text); }
+  .saved-job-role { color: var(--text2); font-size: 13px; margin-top: 2px; }
+  .saved-job-date { color: var(--text3); font-size: 11px; margin-top: 3px; }
 
   /* COLLAPSIBLE PANELS */
   .collapsible-header {
     display: flex; align-items: center; justify-content: space-between;
     cursor: pointer; padding: 14px 18px; background: var(--surface);
     border: 1px solid var(--border); border-radius: var(--radius);
-    margin-bottom: 8px; transition: border-color 0.2s;
+    margin-bottom: 8px; transition: border-color 0.2s, background 0.2s;
   }
-  .collapsible-header:hover { border-color: var(--accent); }
-  .collapsible-title { font-weight: 700; font-size: 14px; display:flex; align-items:center; gap:8px; }
+  .collapsible-header:hover { border-color: var(--accent); background: #FAFAFE; }
+  .collapsible-title { font-weight: 700; font-size: 14px; display:flex; align-items:center; gap:8px; color: var(--text); }
   .collapsible-arrow { color: var(--text3); font-size: 14px; transition: transform 0.2s; line-height:1; }
   .collapsible-arrow.open { transform: rotate(180deg); }
   .collapsible-body { display: none; }
   .collapsible-body.open { display: block; }
+
+  /* TOAST */
+  .toast-container { position: fixed; top: 72px; left: 50%; transform: translateX(-50%); z-index: 9999; pointer-events: none; }
+  .toast {
+    background: var(--text); color: #fff; border-radius: 12px;
+    padding: 10px 18px; font-size: 13px; font-weight: 500;
+    box-shadow: var(--shadow-md); margin-bottom: 8px;
+    animation: toastIn 0.3s ease; white-space: nowrap;
+  }
+  .toast.error { background: var(--danger); }
+  .toast.subtle { background: var(--text2); }
+  @keyframes toastIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+
+  /* API KEY BANNER */
+  #api-key-banner {
+    background: #FEF5EC !important;
+    border-bottom: 1px solid #FDDCB5 !important;
+    color: #C47B20 !important;
+  }
 </style>
 </head>
 <body>
 
 <!-- LOGIN SCREEN -->
 <!-- VIEW MODE BANNER -->
-<div id="view-mode-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:10px;">
+<div id="view-mode-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;padding:10px 18px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:10px;border-radius:0;">
   <span>👁️ מצב צפייה בלבד — לא ניתן לערוך</span>
   <button class="btn btn-ghost" onclick="toggleLanguage()" id="view-lang-btn" style="color:#fff;font-size:12px;padding:2px 8px;border:1px solid rgba(255,255,255,0.5);">EN</button>
 </div>
@@ -471,8 +496,7 @@
   <p class="login-sub">הנתונים שלך — בענן, תמיד זמינים</p>
   <div class="login-card">
     <div class="login-title">התחבר כדי להתחיל</div>
-    <p class="login-desc">הנתונים שלך יישמרו בענן ויהיו זמינים מכל מכשיר — מחשב, טלפון, טאבלט.</p>
-    <button class="btn-google" onclick="signInWithGoogle()">
+    <button class="btn-google" onclick="signInWithGoogle()" title="הנתונים שלך יישמרו בענן ויהיו זמינים מכל מכשיר — מחשב, טלפון, טאבלט.">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
       המשך עם Google
     </button>
@@ -515,9 +539,9 @@
   </div>
 
   <!-- API KEY MISSING BANNER -->
-  <div id="api-key-banner" style="display:none;background:rgba(247,162,106,0.12);border-bottom:1px solid rgba(247,162,106,0.4);padding:10px 16px;font-size:13px;color:var(--accent3);align-items:center;justify-content:space-between;gap:10px;">
+  <div id="api-key-banner" style="display:none;padding:10px 18px;font-size:13px;align-items:center;justify-content:space-between;gap:10px;">
     <span data-i18n="bannerNoApiKey">⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
-    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;cursor:pointer;z-index:999;" onclick="openModal('modal-apikey')" data-i18n="bannerSetNow">הגדר עכשיו →</button>
+    <button class="btn btn-ghost" style="color:var(--accent3);font-size:13px;padding:4px 10px;border:1px solid rgba(245,158,90,0.4);white-space:nowrap;cursor:pointer;z-index:999;border-radius:8px;" onclick="openModal('modal-apikey')" data-i18n="bannerSetNow">הגדר עכשיו →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -595,12 +619,12 @@
       <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
       <!-- COLLAPSIBLE: נהל שאלות (הוסף מסמך + ייבא + נקה) -->
-      <div class="collapsible-header" onclick="toggleCollapsible('col-manage', this)" style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.25);border-radius:var(--radius);">
+      <div class="collapsible-header" onclick="toggleCollapsible('col-manage', this)" style="background:#F5F3FF;border:1px solid rgba(124,108,242,0.2);border-radius:var(--radius);">
         <div class="collapsible-title">⚙️ <span data-i18n="colManage">נהל שאלות</span></div>
         <span class="collapsible-arrow"> ▾</span>
       </div>
       <div class="collapsible-body" id="col-manage">
-        <div style="border:1px solid rgba(124,106,247,0.2);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;background:var(--surface);">
+        <div style="border:1px solid rgba(124,108,242,0.15);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;background:var(--surface);">
 
           <!-- הוסף מסמך -->
           <div class="collapsible-header" onclick="toggleCollapsible('col-docs', this)" style="margin-bottom:0;padding:10px 12px;">
@@ -637,7 +661,7 @@
           <div class="collapsible-body" id="col-import">
             <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
               <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
-              <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
+              <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.9;border:1px solid var(--border);">
                 נושא: ניהול גרסאות<br>שאלה 1: תאר את תהליך הריליס<br>תשובה: אני מוביל מקצה לקצה...
               </div>
               <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
@@ -703,6 +727,18 @@
     <section id="sec-jobprep" class="section">
       <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
+
+      <!-- כפתור שאלות בסיסיות -->
+      <div style="margin-bottom:14px;background:#F5F3FF;border:1px solid rgba(124,108,242,0.18);border-radius:var(--radius);padding:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="defaultQTitle">⚡ סט שאלות בסיסי</div>
+          <div style="font-size:12px;color:var(--text2);" data-i18n="defaultQDesc">שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="generateDefaultQuestions()" id="default-q-btn">
+          <span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>
+        </button>
+      </div>
+
       <div class="card">
         <div class="card-title" data-i18n="cardJobDetails">פרטי המשרה</div>
         <label data-i18n="labelCompany">שם החברה</label>
@@ -814,7 +850,7 @@
         </div>
       </div>
       <div id="mock-done" style="display:none;">
-        <div class="card" style="text-align:center;padding:32px 20px;">
+        <div class="card" style="text-align:center;padding:36px 20px;background:linear-gradient(135deg,#F5F3FF,#F7F8FB);">
           <div style="font-size:40px;margin-bottom:12px;">🎯</div>
           <div class="section-title" style="font-size:22px;margin-bottom:8px;" data-i18n="mockDone">הראיון הושלם!</div>
           <div style="color:var(--text2);font-size:13px;margin-bottom:20px;" id="mock-summary-text"></div>
@@ -968,6 +1004,7 @@
   </div>
 </div>
 
+<!-- Modal: שאלות בסיסיות -->
 <!-- Modal: נקה וסדר בנק -->
 <div class="modal-overlay" id="modal-clean-bank">
   <div class="modal-sheet" style="max-height:92vh;">
@@ -992,6 +1029,39 @@
     <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="addAllExtracted()">הוסף את כולן לבנק</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-extracted')">סגור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: שאלות בסיסיות -->
+<div class="modal-overlay" id="modal-default-questions">
+  <div class="modal-sheet" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title" data-i18n="defaultQModalTitle">⚡ סט שאלות בסיסי</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" data-i18n="defaultQModalDesc">AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.</p>
+    <!-- בורר כמות -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+      <label style="font-size:13px;color:var(--text2);margin:0;white-space:nowrap;" data-i18n="labelDefaultQCount">כמות לכל סוג:</label>
+      <select id="default-q-count" style="flex:1;font-size:13px;padding:6px 10px;">
+        <option value="6">6 HR + 6 טכניות</option>
+        <option value="10">10 HR + 10 טכניות</option>
+        <option value="15">15 HR + 15 טכניות</option>
+        <option value="20">20 HR + 20 טכניות</option>
+      </select>
+      <button class="btn btn-secondary btn-sm" onclick="reloadDefaultQ()" data-i18n="btnReload">🔄 טען</button>
+    </div>
+    <div id="default-q-loading" style="display:none;text-align:center;padding:20px;">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p style="color:var(--text3);font-size:13px;margin-top:10px;" data-i18n="defaultQLoading">AI מכין שאלות בסיסיות...</p>
+    </div>
+    <div id="default-q-list" style="display:none;max-height:45vh;overflow-y:auto;"></div>
+    <div id="default-q-actions" style="display:none;margin-top:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="toggleAllDefaultQ(true)" data-i18n="btnSelectAll">בחר הכל</button>
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="toggleAllDefaultQ(false)" data-i18n="btnDeselectAll">בטל הכל</button>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="addSelectedDefaultQ()" data-i18n="btnAddSelected">✅ הוסף שאלות מסומנות לבנק</button>
+      <button class="btn btn-ghost btn-block" onclick="closeModal('modal-default-questions')" style="margin-top:8px;" data-i18n="btnCancel">ביטול</button>
     </div>
   </div>
 </div>
@@ -1053,7 +1123,7 @@
           <span style="color:var(--text3);">URL</span>
           <a href="https://sagitsustiel-alt.github.io/interview-prep" target="_blank" style="color:var(--accent);font-size:12px;">GitHub Pages</a>
         </div>
-        <div style="background:var(--surface2);border-radius:8px;padding:10px;margin:8px 0;font-size:12px;color:var(--text2);line-height:1.8;border-right:3px solid var(--accent);">
+        <div style="background:var(--surface2);border-radius:10px;padding:12px;margin:8px 0;font-size:12px;color:var(--text2);line-height:1.9;border-right:3px solid var(--accent);border:1px solid var(--border);border-right:3px solid var(--accent);">
           <strong style="color:var(--text);">איך GitHub משמש באפליקציה:</strong><br>
           📦 <strong>אחסון קוד</strong> — הקובץ index.html שמור ב-GitHub repo<br>
           🚀 <strong>פריסה</strong> — GitHub Pages מגיש את הקובץ לדפדפן (hosting)<br>
@@ -1532,7 +1602,7 @@ function showMergeNotification(originalQ, mergedQuestion) {
   const el = document.getElementById('merge-notifications');
   if (!el) return;
   const div = document.createElement('div');
-  div.style.cssText = 'background:rgba(124,106,247,0.1);border:1px solid rgba(124,106,247,0.3);border-radius:8px;padding:12px;margin-bottom:8px;font-size:12px;';
+  div.style.cssText = 'background:#F5F3FF;border:1px solid rgba(124,108,242,0.25);border-radius:12px;padding:12px;margin-bottom:8px;font-size:12px;';
   div.innerHTML = `
     <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">🔀 נמצאה שאלה דומה — בוצע מיזוג</div>
     <div style="color:var(--text2);">השאלה: <em>${escHtml(originalQ)}</em></div>
@@ -1598,7 +1668,7 @@ ${newQList}
     const removed = before - after;
 
     el.innerHTML = `
-      <div style="background:rgba(79,200,168,0.1);border-radius:8px;padding:12px;margin-bottom:16px;text-align:center;">
+      <div style="background:#EDFBF5;border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;border:1px solid rgba(45,191,138,0.2);">
         <div style="font-size:13px;color:var(--accent2);">
           עובד על <strong>${before}</strong> שאלות חדשות → נשארו <strong>${after}</strong>
           ${removed > 0 ? `<span style="color:var(--danger)"> (הוסרו ${removed} כפילויות)</span>` : ''}
@@ -1897,7 +1967,7 @@ function renderWorkHistoryList() {
         <div class="history-role">${w.role}</div>
         <div class="history-meta">${w.start} → ${w.end || 'היום'} · ${calcYears(w.start, w.end).toFixed(1)} שנים</div>
         <div style="margin-top:4px;">${(w.domains||[]).map(d => `<span class="chip">${d}</span>`).join('')}</div>
-        <div style="margin-top:4px;">${(w.capabilities||[]).map(c => `<span class="chip" style="background:rgba(124,106,247,0.15)">${c}</span>`).join('')}</div>
+        <div style="margin-top:4px;">${(w.capabilities||[]).map(c => `<span class="chip" style="background:#EEF0FF;color:var(--accent);border-color:rgba(124,108,242,0.2)">${c}</span>`).join('')}</div>
       </div>
     </div>
   `).join('');
@@ -2860,6 +2930,9 @@ let LANG = {
     cleanTitle: '🧹 נקה וסדר את הבנק',
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
     phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנן לפי נושא', btnSelectAll: 'בחר הכל',
+    defaultQTitle: '⚡ סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
+    btnDefaultQ: '✨ קבל שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
+    modalDefaultQTitle: '⚡ סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: '🔍 חיפוש שאלה',
     btnAddHR: 'הוסף שאלת HR',
     // Job Prep section
@@ -2895,7 +2968,11 @@ let LANG = {
     labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
-    helpTitle: '❓ איך להשתמש באפליקציה',
+    defaultQTitle: '⚡ סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
+    btnDefaultQ: '✨ קבל שאלות בסיסיות', defaultQModalTitle: '⚡ סט שאלות בסיסי',
+    defaultQModalDesc: 'AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.',
+    defaultQLoading: 'AI מכין שאלות בסיסיות...',
+    btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
     helpDownload: '📄 הורד מדריך מפורט',
     helpGotIt: 'הבנתי ✅',
     helpContent: `1. הכנס API Key — לחץ על תמונת הפרופיל ← הכנס מפתח מ-<a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
@@ -2992,6 +3069,9 @@ let LANG = {
     cleanTitle: '🧹 Clean & Organize Bank',
     cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
     phSearch: '🔍 Search question...', colTopics: '🏷️ Filter by Topic', btnSelectAll: 'Select All',
+    defaultQTitle: '⚡ Basic Question Set', defaultQDesc: 'Classic interview questions without specific job details',
+    btnDefaultQ: '✨ Get Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected to Bank',
+    modalDefaultQTitle: '⚡ Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: '🔍 Search Question',
     btnAddHR: 'Add HR Question',
     // Job Prep section
@@ -3027,7 +3107,11 @@ let LANG = {
     labelQuestion: 'Question', phQuestion: 'Enter interview question...',
     phYourAnswer: 'Write your answer...',
     // Toast & JS messages
-    helpTitle: '❓ How to Use the App',
+    defaultQTitle: '⚡ Default Question Set', defaultQDesc: 'Classic interview questions without specific job details',
+    btnDefaultQ: '✨ Get Default Questions', defaultQModalTitle: '⚡ Default Question Set',
+    defaultQModalDesc: 'AI marked the recommended questions. You can change the selection.',
+    defaultQLoading: 'AI is preparing default questions...',
+    btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected Questions to Bank',
     helpDownload: '📄 Download Full Guide',
     helpGotIt: 'Got it ✅',
     helpContent: `1. Enter API Key — click your profile picture ← enter key from <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
@@ -3253,7 +3337,106 @@ async function callClaude(prompt, jsonMode=false) {
   return data.content.map(c=>c.text||'').join('').replace(/```json\n?|```\n?/g,'').trim();
 }
 
-// ==================== INFO & GUIDE ====================
+// ==================== DEFAULT QUESTIONS ====================
+let defaultQuestionsData = [];
+
+window.generateDefaultQuestions = async function() {
+  const btn = document.getElementById('default-q-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+  openModal('modal-default-questions');
+  await loadDefaultQ();
+
+  btn.disabled = false;
+  btn.innerHTML = '<span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>';
+};
+
+window.reloadDefaultQ = async function() {
+  await loadDefaultQ();
+};
+
+async function loadDefaultQ() {
+  document.getElementById('default-q-loading').style.display = 'block';
+  document.getElementById('default-q-list').style.display = 'none';
+  document.getElementById('default-q-actions').style.display = 'none';
+
+  const count = parseInt(document.getElementById('default-q-count')?.value || '6');
+  const role = document.getElementById('jp-role').value.trim() || 'Program Manager';
+
+  const prompt = `אתה מאמן ראיונות מומחה. צור סט שאלות ראיון בסיסיות וקלאסיות עבור תפקיד: ${role}.
+
+צור בדיוק ${count} שאלות HR ו-${count} שאלות טכניות/PM.
+סמן עם "recommended": true את השאלות שאתה ממליץ עליהן ביותר (כ-60% מהשאלות).
+
+ענה ב-JSON בלבד:
+{"questions":[
+  {"type":"HR","topic":"נושא","question":"שאלה בעברית","answer":"תשובה מוצעת קצרה","recommended":true}
+]}`;
+
+  try {
+    const resp = await callClaude(prompt, true);
+    const jsonMatch = resp.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON');
+    const data = JSON.parse(jsonMatch[0]);
+    defaultQuestionsData = data.questions || [];
+
+    const el = document.getElementById('default-q-list');
+    el.innerHTML = defaultQuestionsData.map((q, i) => `
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin:0;">
+          <input type="checkbox" id="dq-${i}" ${q.recommended ? 'checked' : ''}
+            style="width:16px;height:16px;margin-top:3px;flex-shrink:0;cursor:pointer;">
+          <div style="flex:1;">
+            <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
+              <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
+              <span class="topic-badge">📌 ${escHtml(q.topic)}</span>
+              ${q.recommended ? `<span style="font-size:10px;color:var(--accent2);font-weight:700;">⭐ מומלץ</span>` : ''}
+            </div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:4px;">${escHtml(q.question)}</div>
+            <div style="font-size:11px;color:var(--text3);">${escHtml((q.answer||'').substring(0,80))}${(q.answer||'').length>80?'...':''}</div>
+          </div>
+        </label>
+      </div>`).join('');
+
+    document.getElementById('default-q-loading').style.display = 'none';
+    el.style.display = 'block';
+    document.getElementById('default-q-actions').style.display = 'block';
+  } catch(e) {
+    document.getElementById('default-q-loading').innerHTML = `<p style="color:var(--danger);">שגיאה בטעינה. נסה שוב.</p>`;
+  }
+}
+
+window.toggleAllDefaultQ = function(state) {
+  defaultQuestionsData.forEach((_, i) => {
+    const cb = document.getElementById(`dq-${i}`);
+    if (cb) cb.checked = state;
+  });
+};
+
+window.addSelectedDefaultQ = async function() {
+  const selected = defaultQuestionsData.filter((_, i) => {
+    const cb = document.getElementById(`dq-${i}`);
+    return cb && cb.checked;
+  });
+  if (!selected.length) { toast('לא נבחרו שאלות.', true); return; }
+
+  let added = 0;
+  for (const q of selected) {
+    if ((localCache.questions||[]).find(x => x.question === q.question)) continue;
+    const existingTopics = [...new Set((localCache.questions||[]).map(x => x.topic).filter(Boolean))];
+    const newQ = { id: uid(), type: q.type, question: q.question, answer: q.answer||'', topic: resolveTopicName(q.topic, existingTopics), _jobId: 'generic' };
+    if (!localCache.questions) localCache.questions = [];
+    localCache.questions.push(newQ);
+    await saveQuestionToCloud(newQ);
+    added++;
+  }
+  closeModal('modal-default-questions');
+  renderQuestions();
+  toast(`✅ נוספו ${added} שאלות לבנק!`);
+};
+
+
 window.saveApiKeyFromModal = function() {
   const key = document.getElementById('modal-api-key-input').value.trim();
   const status = document.getElementById('modal-api-key-status');
@@ -3293,6 +3476,92 @@ window.submitInfoPassword = function() {
     document.getElementById('info-password-input').value = '';
     document.getElementById('info-password-input').focus();
   }
+};
+
+// ==================== DEFAULT QUESTIONS ====================
+let defaultQList = [];
+
+window.generateDefaultQuestions = async function() {
+  const btn = document.getElementById('default-q-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+  document.getElementById('default-q-loading').style.display = 'block';
+  document.getElementById('default-q-list').style.display = 'none';
+  document.getElementById('default-q-actions').style.display = 'none';
+  openModal('modal-default-questions');
+
+  const pitch = localCache.pitch || '';
+  const cv = localCache.cv ? localCache.cv.substring(0, 500) : '';
+
+  const prompt = `אתה מאמן ראיונות מומחה. צור סט שאלות ראיון קלאסיות וברירת מחדל עבור מועמד לתפקיד ניהולי/PM.
+${pitch ? `הפרופיל: ${pitch}` : ''}
+${cv ? `קורות חיים (חלקי): ${cv}` : ''}
+צור 6 שאלות HR קלאסיות ו-6 שאלות טכניות/PM קלאסיות שמתאימות לכמעט כל ראיון.
+סמן כל שאלה כ-"default": true.
+ענה ב-JSON בלבד:
+{"questions":[{"type":"HR","topic":"נושא","question":"שאלה","answer":"תשובה מוצעת קצרה","default":true}]}`;
+
+  try {
+    const resp = await callClaude(prompt, true);
+    const jsonMatch = resp.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON');
+    const data = JSON.parse(jsonMatch[0]);
+    defaultQList = (data.questions || []).map((q, i) => ({ ...q, id: uid(), checked: true }));
+
+    const el = document.getElementById('default-q-list');
+    el.innerHTML = defaultQList.map((q, i) => `
+      <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface2);">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;flex-direction:row-reverse;">
+          <div style="flex:1;">
+            <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
+              <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
+              <span style="font-size:10px;background:#EDFBF5;color:var(--accent2);border-radius:20px;padding:2px 8px;font-weight:600;border:1px solid rgba(45,191,138,0.2);">★ ברירת מחדל</span>
+              <span style="font-size:11px;color:var(--text3);">📌 ${escHtml(q.topic||'')}</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,120))}${(q.answer||'').length>120?'...':''}</div>
+          </div>
+          <input type="checkbox" checked onchange="defaultQList[${i}].checked=this.checked" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
+        </label>
+      </div>`).join('');
+
+    document.getElementById('default-q-loading').style.display = 'none';
+    el.style.display = 'block';
+    document.getElementById('default-q-actions').style.display = 'block';
+  } catch(e) {
+    closeModal('modal-default-questions');
+    toast('שגיאה ביצירת שאלות בסיסיות. בדוק API Key.', true);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>';
+};
+
+window.toggleAllDefaultQ = function(checked) {
+  defaultQList.forEach((q, i) => {
+    q.checked = checked;
+    const cb = document.querySelectorAll('#default-q-list input[type="checkbox"]')[i];
+    if (cb) cb.checked = checked;
+  });
+};
+
+window.addDefaultQToBank = async function() {
+  const selected = defaultQList.filter(q => q.checked);
+  if (!selected.length) { toast('לא נבחרו שאלות.', true); return; }
+  const existingTopics = [...new Set((localCache.questions||[]).map(q => q.topic).filter(Boolean))];
+  let added = 0;
+  for (const q of selected) {
+    if ((localCache.questions||[]).find(x => x.question === q.question)) continue;
+    const newQ = { id: uid(), type: q.type, question: q.question, answer: q.answer||'', topic: resolveTopicName(q.topic||'', existingTopics), _jobId: 'generic', _isDefault: true };
+    if (!localCache.questions) localCache.questions = [];
+    localCache.questions.push(newQ);
+    await saveQuestionToCloud(newQ);
+    added++;
+  }
+  closeModal('modal-default-questions');
+  renderQuestions();
+  toast(`✅ נוספו ${added} שאלות בסיסיות לבנק!`);
 };
 
 window.downloadGuide = function() {
@@ -3513,14 +3782,15 @@ window.toast = function(msg, isError=false) {
   let el=document.getElementById('toast');
   if(!el){
     el=document.createElement('div'); el.id='toast';
-    el.style.cssText=`position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 18px;font-size:13px;z-index:300;transition:opacity 0.3s;box-shadow:var(--shadow);white-space:nowrap;font-family:'Heebo',sans-serif;`;
+    el.style.cssText=`position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;border-radius:12px;padding:10px 18px;font-size:13px;font-weight:500;z-index:9999;transition:opacity 0.3s,transform 0.3s;box-shadow:0 4px 20px rgba(0,0,0,0.15);white-space:nowrap;font-family:'Heebo',sans-serif;direction:rtl;`;
     document.body.appendChild(el);
   }
   el.textContent=msg;
-  el.style.color=isError?'var(--danger)':'var(--accent2)';
+  el.style.background=isError?'var(--danger)':'var(--text)';
   el.style.opacity='1';
+  el.style.transform='translateX(-50%) translateY(0)';
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>{el.style.opacity='0';},2500);
+  toastTimer=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(-6px)';},2500);
 };
 
 </script>
