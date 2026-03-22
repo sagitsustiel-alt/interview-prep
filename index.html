@@ -451,8 +451,8 @@
   }
   .collapsible-header:hover { border-color: var(--accent); }
   .collapsible-title { font-weight: 700; font-size: 14px; display:flex; align-items:center; gap:8px; }
-  .collapsible-arrow { color: var(--text3); font-size: 12px; transition: transform 0.2s; }
-  .collapsible-arrow.open { transform: rotate(180deg) translateY(-1px); }
+  .collapsible-arrow { color: var(--text3); font-size: 14px; transition: transform 0.2s; line-height:1; }
+  .collapsible-arrow.open { transform: rotate(180deg); }
   .collapsible-body { display: none; }
   .collapsible-body.open { display: block; }
 </style>
@@ -470,13 +470,13 @@
   <div class="login-logo">הכנה<span>לראיון</span></div>
   <p class="login-sub">הנתונים שלך — בענן, תמיד זמינים</p>
   <div class="login-card">
-    <div class="login-title">התחברי כדי להתחיל</div>
+    <div class="login-title">התחבר כדי להתחיל</div>
     <p class="login-desc">הנתונים שלך יישמרו בענן ויהיו זמינים מכל מכשיר — מחשב, טלפון, טאבלט.</p>
     <button class="btn-google" onclick="signInWithGoogle()">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
       המשך עם Google
     </button>
-    <p class="login-note">הנתונים שלך פרטיים ומאובטחים.<br>רק את יכולה לראות אותם.</p>
+    <p class="login-note">הנתונים שלך פרטיים ומאובטחים.<br>רק אתה יכול לראות אותם.</p>
   </div>
 </div>
 
@@ -488,11 +488,10 @@
     <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span></div>
     <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
-      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:12px;">❓</button>
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
-      <button class="btn btn-ghost" onclick="checkInfoPassword()" title="מידע טכני" style="padding:4px 8px;font-size:14px;">ℹ️</button>
-      <div class="sync-badge" id="sync-badge">
+      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:16px;">❓</button>
+      <div class="sync-badge" id="sync-badge" title="מסונכרן ב-Firebase">
         <div class="sync-dot synced" id="sync-dot"></div>
         <span id="sync-text">מסונכרן</span>
       </div>
@@ -512,7 +511,17 @@
       </div>
       <div id="api-key-status" style="font-size:10px;margin-top:4px;color:var(--text3);"></div>
     </div>
-    <button class="btn-signout" onclick="signOut()">התנתקי</button>
+    <button class="btn-signout" onclick="signOut()">התנתק</button>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">❓ הוראות</button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="toggleUserMenu();checkInfoPassword()">ℹ️ מידע טכני</button>
+    </div>
+  </div>
+
+  <!-- API KEY MISSING BANNER -->
+  <div id="api-key-banner" style="display:none;background:rgba(247,162,106,0.12);border-bottom:1px solid rgba(247,162,106,0.4);padding:10px 16px;font-size:13px;color:var(--accent3);display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <span>⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
+    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;" onclick="toggleUserMenu()">הגדר עכשיו →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -558,7 +567,7 @@
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="collapsible-header" onclick="toggleCollapsible('exp-company',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" data-i18n="cardByCompany" style="margin:0;">לפי חברה</div>
-          <span class="collapsible-arrow">^</span>
+          <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body open" id="exp-company" style="padding:12px 16px 16px;">
           <div id="company-breakdown"></div>
@@ -567,7 +576,7 @@
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="collapsible-header" onclick="toggleCollapsible('exp-domain',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" data-i18n="cardByDomain" style="margin:0;">לפי תחום</div>
-          <span class="collapsible-arrow">^</span>
+          <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body open" id="exp-domain" style="padding:12px 16px 16px;">
           <div id="domain-breakdown"></div>
@@ -576,7 +585,7 @@
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="collapsible-header" onclick="toggleCollapsible('exp-capability',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" data-i18n="cardByCapability" style="margin:0;">לפי יכולת</div>
-          <span class="collapsible-arrow">^</span>
+          <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body open" id="exp-capability" style="padding:12px 16px 16px;">
           <div id="capability-breakdown"></div>
@@ -589,58 +598,67 @@
       <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
       <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
-      <!-- COLLAPSIBLE: הוסף מסמך -->
-      <div class="collapsible-header" onclick="toggleCollapsible('col-docs', this)">
-        <div class="collapsible-title" data-i18n="colDocs">📚 הוסף מסמך לחילוץ שאלות</div>
-        <span class="collapsible-arrow" id="arrow-col-docs">^</span>
+      <!-- COLLAPSIBLE: נהל שאלות (הוסף מסמך + ייבא + נקה) -->
+      <div class="collapsible-header" onclick="toggleCollapsible('col-manage', this)" style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.25);border-radius:var(--radius);">
+        <div class="collapsible-title">⚙️ <span data-i18n="colManage">נהל שאלות</span></div>
+        <span class="collapsible-arrow"> ▾</span>
       </div>
-      <div class="collapsible-body" id="col-docs">
-        <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
-          <div class="upload-zone" id="upload-zone2" onclick="document.getElementById('file-input2').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-            <div class="upload-zone-icon">📎</div>
-            <div class="upload-zone-text" data-i18n="uploadClick">לחץ להעלאת קובץ</div>
-            <div class="upload-zone-sub" data-i18n="uploadSub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
-          </div>
-          <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
-          <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— <span data-i18n="orText">או</span> —</div>
-          <textarea id="kb-paste-text2" rows="3" placeholder="הדבק טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
-          <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-            <input type="text" id="kb-paste-name2" placeholder="שם המסמך" data-i18n-ph="phDocName" style="flex:1;">
-            <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()" data-i18n="btnAdd">הוסף</button>
-          </div>
-          <div id="kb-docs-list2" style="margin-top:12px;"></div>
-        </div>
-      </div>
+      <div class="collapsible-body" id="col-manage">
+        <div style="border:1px solid rgba(124,106,247,0.2);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;background:var(--surface);">
 
-      <!-- COLLAPSIBLE: ייבא שאלות מוכנות -->
-      <div class="collapsible-header" onclick="toggleCollapsible('col-import', this)">
-        <div class="collapsible-title" data-i18n="colImport">📥 ייבא שאלות ותשובות מוכנות</div>
-        <span class="collapsible-arrow" id="arrow-col-import">^</span>
-      </div>
-      <div class="collapsible-body" id="col-import">
-        <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
-          <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
-          <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
-            נושא: ניהול גרסאות<br>שאלה 1: תאר את תהליך הריליס<br>תשובה: אני מוביל מקצה לקצה...
+          <!-- הוסף מסמך -->
+          <div class="collapsible-header" onclick="toggleCollapsible('col-docs', this)" style="margin-bottom:0;padding:10px 12px;">
+            <div class="collapsible-title" style="font-size:13px;" data-i18n="colDocs">📚 הוסף מסמך לחילוץ שאלות</div>
+            <span class="collapsible-arrow" id="arrow-col-docs"> ▾</span>
           </div>
-          <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
-          <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
-            <span data-i18n="btnImport">📥 ייבא לבנק השאלות</span>
-          </button>
-          <div id="import-status" style="font-size:12px;color:var(--accent2);margin-top:8px;text-align:center;"></div>
-        </div>
-      </div>
+          <div class="collapsible-body" id="col-docs">
+            <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
+              <div class="upload-zone" id="upload-zone2" onclick="document.getElementById('file-input2').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+                <div class="upload-zone-icon">📎</div>
+                <div class="upload-zone-text" data-i18n="uploadClick">לחץ להעלאת קובץ</div>
+                <div class="upload-zone-sub" data-i18n="uploadSub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
+              </div>
+              <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
+              <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— <span data-i18n="orText">או</span> —</div>
+              <textarea id="kb-paste-text2" rows="3" placeholder="הדבק טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
+              <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+                <input type="text" id="kb-paste-name2" placeholder="שם המסמך" data-i18n-ph="phDocName" style="flex:1;">
+                <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()" data-i18n="btnAdd">הוסף</button>
+              </div>
+              <div id="kb-docs-list2" style="margin-top:12px;"></div>
+            </div>
+          </div>
 
-      <!-- Clean bank button -->
-      <div class="card" style="background:rgba(124,106,247,0.06);border-color:rgba(124,106,247,0.3);margin-top:8px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="cleanTitle">🧹 נקה וסדר את הבנק</div>
-            <div style="font-size:12px;color:var(--text2);" data-i18n="cleanDesc">מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים</div>
+          <!-- ייבא שאלות מוכנות -->
+          <div class="collapsible-header" onclick="toggleCollapsible('col-import', this)" style="margin-bottom:0;padding:10px 12px;">
+            <div class="collapsible-title" style="font-size:13px;" data-i18n="colImport">📥 ייבא שאלות ותשובות מוכנות</div>
+            <span class="collapsible-arrow" id="arrow-col-import"> ▾</span>
           </div>
-          <button class="btn btn-primary btn-sm" onclick="cleanAndOrganizeBank()" id="clean-bank-btn">
-            <span data-i18n="btnClean">🧹 נקה וסדר</span>
-          </button>
+          <div class="collapsible-body" id="col-import">
+            <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
+              <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
+              <div style="background:var(--surface3);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.8;">
+                נושא: ניהול גרסאות<br>שאלה 1: תאר את תהליך הריליס<br>תשובה: אני מוביל מקצה לקצה...
+              </div>
+              <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
+              <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
+                <span data-i18n="btnImport">📥 ייבא לבנק השאלות</span>
+              </button>
+              <div id="import-status" style="font-size:12px;color:var(--accent2);margin-top:8px;text-align:center;"></div>
+            </div>
+          </div>
+
+          <!-- נקה וסדר -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="font-weight:700;font-size:13px;margin-bottom:2px;" data-i18n="cleanTitle">🧹 נקה וסדר את הבנק</div>
+              <div style="font-size:11px;color:var(--text2);" data-i18n="cleanDesc">מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="cleanAndOrganizeBank()" id="clean-bank-btn">
+              <span data-i18n="btnClean">🧹 נקה וסדר</span>
+            </button>
+          </div>
+
         </div>
       </div>
 
@@ -664,7 +682,7 @@
         <div style="margin-bottom:4px;">
           <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
             <div class="collapsible-title" style="font-size:13px;" data-i18n="colTopics">🏷️ סנן לפי נושא</div>
-            <span class="collapsible-arrow">^</span>
+            <span class="collapsible-arrow"> ▾</span>
           </div>
           <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
             <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
@@ -700,9 +718,9 @@
       </div>
 
       <!-- Saved jobs list -->
-      <div class="card" id="saved-jobs-card" style="display:none;">
+      <div class="card" id="saved-jobs-card">
         <div class="card-title" data-i18n="cardSavedJobs">משרות שהוכנו</div>
-        <div id="saved-jobs-list"></div>
+        <div id="saved-jobs-list"><p style="color:var(--text3);font-size:13px;">לא הוכנו משרות עדיין.</p></div>
       </div>
 
       <div id="jp-results" style="display:none;">
@@ -768,7 +786,7 @@
       </div>
       <div id="mock-active" style="display:none;">
         <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
-          <button class="btn btn-danger btn-sm" onclick="stopMock()" data-i18n="btnStop">⛔ הפסק סימולציה</button>
+          <button class="btn btn-ghost btn-sm" onclick="stopMock()" style="color:var(--text3);font-size:12px;" data-i18n="btnStop">× יציאה מהסימולציה</button>
         </div>
         <div class="mock-progress" id="mock-progress-dots"></div>
         <div class="card" id="mock-question-card">
@@ -1135,6 +1153,7 @@ onAuthStateChanged(auth, async (user) => {
     renderSavedJobs();
     updateMockJobSelect();
     applyLanguage();
+    checkApiKeyBanner();
   } else {
     currentUser = null;
     // מצב צפייה בלי התחברות — ננסה לטעון ישירות מ-Firestore
@@ -1236,7 +1255,7 @@ async function processFile(file) {
     toast(t('toastFileAdded'));
   } catch(e) {
     console.error(e);
-    toast('שגיאה: ' + (e.message || 'בדקי שה-API Key מוגדר.'), true);
+    toast('שגיאה: ' + (e.message || 'בדוק שה-API Key מוגדר.'), true);
   }
 }
 
@@ -1373,7 +1392,8 @@ window.extractFromSingleDoc = async function(docId) {
   const doc = (localCache.kbDocs||[]).find(d => d.id === docId);
   if (!doc) return;
   const btn = document.getElementById(`extract-btn-${docId}`);
-  if (btn) { btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> AI מעבד...'; btn.disabled = true; }
+  toast('🤖 AI מחלץ שאלות מהמסמך...');
 
   // Existing questions for dedup
   const existingQTexts = (localCache.questions||[]).map(q => q.question).join('\n');
@@ -1423,7 +1443,7 @@ ${existingQTexts || 'אין'}
     document.getElementById('kb-extract-section').style.display = 'block';
   } catch(e) {
     console.error('Extract error:', e);
-    toast('שגיאה: ' + (e.message || 'בדקי API Key וחיבור אינטרנט'), true);
+    toast('שגיאה: ' + (e.message || 'בדוק API Key וחיבור אינטרנט'), true);
     if (btn) { btn.innerHTML = '✨ חלץ שאלות'; btn.disabled = false; }
   }
 };
@@ -1987,6 +2007,15 @@ let domainOrder = [];
 
 function renderExperience() {
   const list = localCache.workHistory || [];
+  if (!list.length) {
+    document.getElementById('stat-total-years').textContent = '0';
+    document.getElementById('stat-companies').textContent = '0';
+    const emptyMsg = '<div class="empty-state"><div class="empty-state-icon">💼</div><p style="font-size:13px;color:var(--text3);">הוסף היסטוריית עבודה בדף <strong>פרופיל</strong> כדי לראות את הסיכום שלך</p></div>';
+    document.getElementById('company-breakdown').innerHTML = emptyMsg;
+    document.getElementById('domain-breakdown').innerHTML = emptyMsg;
+    document.getElementById('capability-breakdown').innerHTML = emptyMsg;
+    return;
+  }
   let total = 0;
   const companyMap = {}, domainMap = {}, capMap = {};
   list.forEach(w => {
@@ -2017,7 +2046,7 @@ function renderDomainBreakdown(map, max) {
 
   const el = document.getElementById('domain-breakdown');
   if (!ordered.length) { el.innerHTML = '<p style="color:var(--text3);font-size:13px;">אין נתונים.</p>'; return; }
-  el.innerHTML = '<p style="font-size:11px;color:var(--text3);margin-bottom:8px;">גרור לשינוי סדר ⠿</p>' +
+  el.innerHTML = '<p style="font-size:11px;color:var(--text3);margin-bottom:8px;">⠿ גרור פריט לשינוי סדר</p>' +
     ordered.map(([k,v], idx) => `
     <div draggable="true"
       ondragstart="domainDragStart(event,${idx})"
@@ -2217,7 +2246,7 @@ function renderQuestions() {
               ▶ YouTube
             </a>
           </div>
-          <span class="collapsible-arrow">^</span>
+          <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="tg-${idx}">
           <div style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:8px;">
@@ -2512,7 +2541,7 @@ window.generateJobPrep = async function() {
     renderSavedJobs();
   } catch(e) {
     console.error('Job prep error:', e);
-    toast('ההפקה נכשלה: ' + (e.message || 'בדקי API Key'), true);
+    toast('ההפקה נכשלה: ' + (e.message || 'בדוק API Key'), true);
   }
   btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg> הפק הכנה`;
   btn.disabled = false;
@@ -2523,8 +2552,11 @@ function renderSavedJobs() {
   const card = document.getElementById('saved-jobs-card');
   const el = document.getElementById('saved-jobs-list');
   if (!el) return;
-  if (!jobs.length) { card.style.display = 'none'; return; }
   card.style.display = 'block';
+  if (!jobs.length) {
+    el.innerHTML = '<p style="color:var(--text3);font-size:13px;">לא הוכנו משרות עדיין. הכן משרה למעלה ולחץ "הפק הכנה".</p>';
+    return;
+  }
   el.innerHTML = jobs.map(j => `
     <div class="saved-job-item">
       <div>
@@ -2766,6 +2798,7 @@ window.saveApiKey = function() {
   document.getElementById('api-key-input').value = '••••••••••••••••';
   document.getElementById('api-key-status').textContent = '✅ מפתח נשמר!';
   document.getElementById('api-key-status').style.color = 'var(--accent2)';
+  checkApiKeyBanner();
   document.getElementById('user-menu').classList.remove('open');
   toast('מפתח API נשמר! ✅');
 };
@@ -2788,7 +2821,7 @@ let LANG = {
     profile: 'פרופיל', experience: 'ניסיון', questions: 'שאלות', jobprep: 'משרה', mock: 'תרגול',
     // Profile section
     secProfile: 'הפרופיל שלי', subProfile: 'בסיס הידע האישי שלך לראיונות',
-    cardPitch: 'הצגה עצמית / Pitch', phPitch: 'כתוב כאן את ה-elevator pitch שלך...',
+    cardPitch: 'הצגה עצמית / Pitch', phPitch: 'לדוגמה: אני מנהל תוכניות עם 10 שנות ניסיון ב-AI ו-Cloud. מוביל פרויקטים מקצה לקצה ומתמחה בניהול בעלי עניין ו-Delivery Governance...',
     cardCV: 'קורות חיים מלאים', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
     cardWorkHistory: 'היסטוריית עבודה', btnAddRole: 'הוסף תפקיד',
     // Experience section
@@ -2798,6 +2831,7 @@ let LANG = {
     // Questions section
     secQuestions: 'בנק שאלות', subQuestions: 'ספריית שאלות ותשובות לראיון',
     colDocs: '📚 הוסף מסמך לחילוץ שאלות',
+    colManage: 'נהל שאלות',
     uploadClick: 'לחץ להעלאת קובץ', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, תמונות',
     orText: 'או', phPasteText: 'הדבק טקסט ישירות...', phDocName: 'שם המסמך', btnAdd: 'הוסף',
     colImport: '📥 ייבא שאלות ותשובות מוכנות',
@@ -2894,7 +2928,7 @@ let LANG = {
     profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job', mock: 'Practice',
     // Profile section
     secProfile: 'My Profile', subProfile: 'Your personal knowledge base for interviews',
-    cardPitch: 'Personal Pitch', phPitch: 'Write your elevator pitch here...',
+    cardPitch: 'Personal Pitch', phPitch: 'e.g. I am a Program Manager with 10 years of experience in AI and Cloud. I lead end-to-end projects and specialize in stakeholder management and Delivery Governance...',
     cardCV: 'Full CV', phCV: 'Paste your CV text here...',
     cardWorkHistory: 'Work History', btnAddRole: 'Add Role',
     // Experience section
@@ -2904,6 +2938,7 @@ let LANG = {
     // Questions section
     secQuestions: 'Question Bank', subQuestions: 'Interview Q&A library',
     colDocs: '📚 Add Document to Extract Questions',
+    colManage: 'Manage Questions',
     uploadClick: 'Click to upload file', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, Images',
     orText: 'or', phPasteText: 'Paste text directly...', phDocName: 'Document name', btnAdd: 'Add',
     colImport: '📥 Import Ready Q&A',
@@ -3104,6 +3139,12 @@ async function checkViewMode() {
   } catch(e) { return false; }
 }
 
+function checkApiKeyBanner() {
+  const banner = document.getElementById('api-key-banner');
+  if (!banner) return;
+  banner.style.display = getApiKey() ? 'none' : 'flex';
+}
+
 function getApiKey() {
   return localStorage.getItem('anthropic_api_key') || '';
 }
@@ -3166,7 +3207,99 @@ window.submitInfoPassword = function() {
 };
 
 window.downloadGuide = function() {
-  const html = `<!DOCTYPE html>
+  const isEn = currentLang === 'en';
+  const html = isEn ? `<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Guide — Job Prep</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.8; color: #222; }
+  h1 { color: #7c6af7; border-bottom: 2px solid #7c6af7; padding-bottom: 8px; }
+  h2 { color: #4fc8a8; margin-top: 32px; }
+  h3 { color: #555; }
+  code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  .section { background: #f9f9ff; border-left: 4px solid #7c6af7; padding: 12px 16px; margin: 16px 0; border-radius: 4px; }
+  .tip { background: #f0fff8; border-left: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>📋 User Guide — Job Prep</h1>
+<p>Your personal AI-powered interview preparation app</p>
+
+<h2>🚀 Quick Start</h2>
+<div class="section">
+  <h3>1. Enter API Key</h3>
+  <p>Click your profile picture (top right) ← Enter key from <a href="https://console.anthropic.com">console.anthropic.com</a></p>
+  <p>The key is stored locally in your browser — you'll need to re-enter it on each new device.</p>
+</div>
+
+<h2>📑 Tabs</h2>
+
+<div class="section">
+  <h3>👤 Profile</h3>
+  <ul>
+    <li><strong>Pitch:</strong> Your personal elevator pitch for interviews</li>
+    <li><strong>Full CV:</strong> Paste your full CV text</li>
+    <li><strong>Work History:</strong> Add roles with domains and capabilities</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>📊 Experience</h3>
+  <p>Auto-calculated from your work history — years of experience, companies, by domain and capability.</p>
+</div>
+
+<div class="section">
+  <h3>💬 Questions — Question Bank</h3>
+  <ul>
+    <li><strong>Add Document:</strong> Upload PDF/Word/image ← click ✨ Extract Questions</li>
+    <li><strong>Import Ready Q&A:</strong> Format: <code>Topic: / Question X: / Answer:</code></li>
+    <li><strong>🧹 Clean & Organize:</strong> Removes duplicates, merges similar questions</li>
+    <li><strong>▶ YouTube:</strong> Per topic — opens relevant YouTube search</li>
+    <li><strong>✨ Improve:</strong> AI improves your answer</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>💼 Job — Job Prep</h3>
+  <p>Enter company name, role and job description ← AI generates:</p>
+  <ul>
+    <li>Job-tailored Pitch</li>
+    <li>Specific HR questions</li>
+    <li>Technical / PM questions</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h3>🎤 Practice — Mock Interview</h3>
+  <ul>
+    <li>Choose question type (Generic HR, Tech, Job-specific, All)</li>
+    <li>Choose number of questions</li>
+    <li>Answer ← Get AI feedback: analysis, improved answer, follow-up question</li>
+  </ul>
+</div>
+
+<h2>🔗 Sharing</h2>
+<div class="tip">
+  Click 👁️ in the header ← Create view link ← Share with others. Link valid 30 days, view-only.
+</div>
+
+<h2>⚙️ Technical Info</h2>
+<div class="section">
+  <ul>
+    <li><strong>URL:</strong> <a href="https://sagitsustiel-alt.github.io/interview-prep">sagitsustiel-alt.github.io/interview-prep</a></li>
+    <li><strong>Firebase Project:</strong> <code>interview-prep-6a3aa</code></li>
+    <li><strong>GitHub:</strong> <code>sagitsustiel-alt/interview-prep</code></li>
+    <li><strong>AI Model:</strong> <code>claude-sonnet-4-20250514</code></li>
+    <li><strong>Storage:</strong> Firebase Firestore (cloud) + localStorage (API Key only)</li>
+  </ul>
+</div>
+
+<p style="color:#999;font-size:12px;margin-top:40px;text-align:center;">Generated: ${new Date().toLocaleDateString('en-US')}</p>
+</body>
+</html>` : `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -3263,7 +3396,7 @@ window.downloadGuide = function() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'interview-prep-user-guide.html';
+  a.download = isEn ? 'interview-prep-user-guide-en.html' : 'interview-prep-user-guide.html';
   a.click();
   URL.revokeObjectURL(url);
   toast(t('toastGuideDownloaded'));
