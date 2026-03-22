@@ -940,23 +940,10 @@
 <div class="modal-overlay" id="modal-help">
   <div class="modal-sheet" style="max-height:90vh;">
     <div class="modal-handle"></div>
-    <div class="modal-title">❓ איך להשתמש באפליקציה</div>
-    <div style="font-size:14px;color:var(--text2);line-height:2;">
-      1. הכנס API Key — לחץ על תמונת הפרופיל ← הכנס מפתח מ-console.anthropic.com<br>
-      2. מלא פרופיל — Pitch, קורות חיים, היסטוריית עבודה<br>
-      3. הכן שאלות — בכרטיסיית שאלות:<br>
-      &nbsp;&nbsp;א. הוסף מסמך ← לחץ ✨ חלץ שאלות (AI מחלץ אוטומטית)<br>
-      &nbsp;&nbsp;ב. ייבא שאלות מוכנות בפורמט:<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;נושא: [שם נושא]<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;שאלה 1: [השאלה]<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;תשובה: [התשובה]<br>
-      4. מומלץ — הכן שאלות בכלי AI תחילה ← עצב בפורמט הנ"ל ← ייבא<br>
-      5. לאחר ייבוא גדול — לחץ 🧹 נקה וסדר<br>
-      6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
-      7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI
-    </div>
-    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;">📄 הורד מדריך מפורט</button>
-    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;">הבנתי ✅</button>
+    <div class="modal-title" data-i18n="helpTitle">❓ איך להשתמש באפליקציה</div>
+    <div id="modal-help-content" style="font-size:14px;color:var(--text2);line-height:2;"></div>
+    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;" data-i18n="helpDownload">📄 הורד מדריך מפורט</button>
+    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;" data-i18n="helpGotIt">הבנתי ✅</button>
   </div>
 </div>
 
@@ -2908,7 +2895,19 @@ let LANG = {
     labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
-    toastLoginError: 'שגיאה בהתחברות. נסה שוב.',
+    helpTitle: '❓ איך להשתמש באפליקציה',
+    helpDownload: '📄 הורד מדריך מפורט',
+    helpGotIt: 'הבנתי ✅',
+    helpContent: `1. הכנס API Key — לחץ על תמונת הפרופיל ← הכנס מפתח מ-<a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
+2. מלא פרופיל — Pitch, קורות חיים, היסטוריית עבודה<br>
+3. הכן שאלות — בכרטיסיית שאלות:<br>
+&nbsp;&nbsp;א. הוסף מסמך ← לחץ ✨ חלץ שאלות (AI מחלץ אוטומטית)<br>
+&nbsp;&nbsp;ב. ייבא שאלות מוכנות בפורמט:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;נושא: [שם נושא] / שאלה 1: [השאלה] / תשובה: [התשובה]<br>
+4. מומלץ — הכן שאלות בכלי AI תחילה ← עצב בפורמט הנ"ל ← ייבא<br>
+5. לאחר ייבוא גדול — לחץ 🧹 נקה וסדר<br>
+6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
+7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI`,
     bannerNoApiKey: '⚠️ טרם הוגדר Anthropic API Key — פיצ\'רי AI לא יפעלו',
     bannerSetNow: 'הגדר עכשיו →',
     toastSyncing: '💾 שומר...',
@@ -3028,7 +3027,19 @@ let LANG = {
     labelQuestion: 'Question', phQuestion: 'Enter interview question...',
     phYourAnswer: 'Write your answer...',
     // Toast & JS messages
-    toastLoginError: 'Login error. Please try again.',
+    helpTitle: '❓ How to Use the App',
+    helpDownload: '📄 Download Full Guide',
+    helpGotIt: 'Got it ✅',
+    helpContent: `1. Enter API Key — click your profile picture ← enter key from <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
+2. Fill Profile — Pitch, CV, Work History<br>
+3. Prepare Questions — in the Questions tab:<br>
+&nbsp;&nbsp;a. Add document ← click ✨ Extract Questions (AI extracts automatically)<br>
+&nbsp;&nbsp;b. Import ready Q&A in format:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Topic: [name] / Question 1: [question] / Answer: [answer]<br>
+4. Recommended — prepare questions with AI first ← format ← import<br>
+5. After large import — click 🧹 Clean & Organize<br>
+6. Job Prep — enter job description ← AI generates Pitch + tailored questions<br>
+7. Practice — choose question type ← start mock interview with AI feedback`,
     bannerNoApiKey: '⚠️ Anthropic API Key not set — AI features will not work',
     bannerSetNow: 'Set up now →',
     toastSyncing: '💾 Saving...',
@@ -3126,7 +3137,9 @@ function applyLanguage() {
     if (L[key] !== undefined) el.placeholder = L[key];
   });
 
-  // Select options (mock-count)
+  // Help modal content
+  const helpContent = document.getElementById('modal-help-content');
+  if (helpContent) helpContent.innerHTML = L.helpContent;
   const mockCount = document.getElementById('mock-count');
   if (mockCount) {
     const opts = mockCount.options;
