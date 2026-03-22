@@ -517,7 +517,7 @@
   <!-- API KEY MISSING BANNER -->
   <div id="api-key-banner" style="display:none;background:rgba(247,162,106,0.12);border-bottom:1px solid rgba(247,162,106,0.4);padding:10px 16px;font-size:13px;color:var(--accent3);display:flex;align-items:center;justify-content:space-between;gap:10px;">
     <span data-i18n="bannerNoApiKey">⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
-    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;" onclick="toggleUserMenu();setTimeout(()=>document.getElementById('api-key-input')?.focus(),200)" data-i18n="bannerSetNow">הגדר עכשיו →</button>
+    <button class="btn btn-ghost" style="color:var(--accent3);font-size:12px;padding:2px 8px;border:1px solid rgba(247,162,106,0.4);white-space:nowrap;" onclick="openModal('modal-apikey')" data-i18n="bannerSetNow">הגדר עכשיו →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -1001,6 +1001,24 @@
     <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="addAllExtracted()">הוסף את כולן לבנק</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-extracted')">סגור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: API Key -->
+<div class="modal-overlay" id="modal-apikey">
+  <div class="modal-sheet" style="max-width:360px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔑 Anthropic API Key</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">
+      הכנס מפתח מ-<a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
+      המפתח נשמר במכשיר זה בלבד.
+    </p>
+    <input type="password" id="modal-api-key-input" placeholder="sk-ant-api03-..." style="margin-bottom:8px;">
+    <div id="modal-api-key-status" style="font-size:12px;margin-bottom:12px;"></div>
+    <div style="display:flex;gap:8px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="saveApiKeyFromModal()">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-apikey')">ביטול</button>
     </div>
   </div>
 </div>
@@ -3211,6 +3229,24 @@ async function callClaude(prompt, jsonMode=false) {
 }
 
 // ==================== INFO & GUIDE ====================
+window.saveApiKeyFromModal = function() {
+  const key = document.getElementById('modal-api-key-input').value.trim();
+  const status = document.getElementById('modal-api-key-status');
+  if (!key.startsWith('sk-ant-')) {
+    status.textContent = '❌ מפתח לא תקין';
+    status.style.color = 'var(--danger)';
+    return;
+  }
+  localStorage.setItem('anthropic_api_key', key);
+  document.getElementById('api-key-input').value = '••••••••••••••••';
+  document.getElementById('api-key-status').textContent = '✅ מפתח נשמר!';
+  document.getElementById('api-key-status').style.color = 'var(--accent2)';
+  checkApiKeyBanner();
+  closeModal('modal-apikey');
+  document.getElementById('modal-api-key-input').value = '';
+  toast(t('toastApiKeySavedMsg'));
+};
+
 window.checkInfoPassword = function() {
   document.getElementById('info-password-input').value = '';
   document.getElementById('info-password-error').style.display = 'none';
