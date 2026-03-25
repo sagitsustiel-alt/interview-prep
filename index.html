@@ -3998,9 +3998,7 @@ window.testClaude = async function() {
     if (resultEl) {
       resultEl.style.display = 'block';
       resultEl.style.color = 'var(--accent2)';
-      resultEl.textContent = '✅ הצליח!
-
-' + (result.result || JSON.stringify(result, null, 2));
+      resultEl.textContent = '✅ הצליח!\n\n' + (result.result || JSON.stringify(result, null, 2));
     }
   } catch(e) {
     if (resultEl) {
