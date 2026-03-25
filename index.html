@@ -480,6 +480,13 @@
     border-bottom: 1px solid #FDDCB5 !important;
     color: #C47B20 !important;
   }
+
+  /* TRACKER */
+  .tracker-filter { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; font-family:inherit; }
+  .tracker-filter.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .tracker-filter span { background:rgba(255,255,255,0.2); border-radius:10px; padding:1px 6px; margin-right:4px; font-size:11px; }
+  .tracker-row td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .tracker-row:hover td { background:var(--surface2); }
 </style>
 </head>
 <body>
@@ -580,15 +587,6 @@
       </div>
 
 
-      <!-- TEMP: כפתור בדיקת Claude — להסיר אחרי אימות -->
-      <div class="card" style="border:2px dashed var(--accent);background:#F5F3FF;">
-        <div class="card-title" style="color:var(--accent);">🧪 בדיקת חיבור Claude</div>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">לחץ לבדיקה שה-Backend עובד end-to-end</p>
-        <button onclick="testClaude()" class="btn btn-primary btn-block">
-          🚀 בדיקת Claude
-        </button>
-        <div id="test-claude-result" style="margin-top:12px;font-size:13px;color:var(--text2);display:none;background:var(--surface2);border-radius:10px;padding:12px;white-space:pre-wrap;"></div>
-      </div>
 
     </section>
 
@@ -881,6 +879,46 @@
       </div>
     </section>
 
+
+    <!-- מעקב משרות -->
+    <section id="sec-tracker" class="section">
+      <h1 class="section-title">מעקב משרות</h1>
+      <p class="section-sub">עקוב אחרי כל הגשות המועמדות שלך</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
+        <div style="position:relative;flex:1;min-width:180px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text3);">🔍</span>
+          <input type="text" id="tracker-search" placeholder="חפש חברה או תפקיד..." oninput="renderTracker()" style="padding-right:34px;margin:0;width:100%;">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openTrackerModal()">+ הוסף פנייה</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
+        <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)">הכל <span id="tfc-all">0</span></button>
+        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)">רלוונטי <span id="tfc-yes">0</span></button>
+        <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)">לא רלוונטי <span id="tfc-no">0</span></button>
+        <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)">יש ראיון <span id="tfc-interview">0</span></button>
+      </div>
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
+          <thead>
+            <tr style="background:var(--surface2);">
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">תאריך</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">חברה</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">תפקיד</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">רלוונטי</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">ראיון</th>
+              <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">פעולות</th>
+            </tr>
+          </thead>
+          <tbody id="tracker-tbody"></tbody>
+        </table>
+      </div>
+      <div id="tracker-empty" style="display:none;text-align:center;padding:40px 20px;color:var(--text3);">
+        <div style="font-size:32px;margin-bottom:8px;">📋</div>
+        <div>אין פניות עדיין. לחץ "+ הוסף פנייה" להתחיל.</div>
+      </div>
+      <div id="tracker-pagination" style="margin-top:12px;text-align:center;font-size:12px;color:var(--text3);"></div>
+    </section>
+
   </main>
 
   <!-- BOTTOM NAV -->
@@ -904,6 +942,10 @@
     <button class="nav-btn" onclick="showSection('mock', this)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg>
       תרגול
+    </button>
+    <button class="nav-btn" onclick="showSection('tracker', this)">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
+      מעקב
     </button>
   </nav>
 
@@ -1998,6 +2040,7 @@ window.showSection = function(name, btn) {
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') renderSavedJobs();
   if (name === 'mock') updateMockJobSelect();
+  if (name === 'tracker') loadTrackerApps();
   window.scrollTo(0, 0);
 };
 
@@ -3724,6 +3767,36 @@ window.downloadGuide = function() {
 </div>
 
 <p style="color:#999;font-size:12px;margin-top:40px;text-align:center;">Generated: ${new Date().toLocaleDateString('en-US')}</p>
+
+<!-- Modal: מעקב משרות -->
+<div class="modal-overlay" id="modal-tracker">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
+    <label id="lb-tracker-date">תאריך פנייה</label>
+    <input type="date" id="tracker-date">
+    <label>חברה</label>
+    <input type="text" id="tracker-company" placeholder="שם החברה">
+    <label>תפקיד</label>
+    <input type="text" id="tracker-role" placeholder="שם התפקיד">
+    <label>קישור למשרה</label>
+    <input type="text" id="tracker-link" placeholder="https://...">
+    <label>רלוונטי?</label>
+    <select id="tracker-relevant">
+      <option value="">לא ידוע עדיין</option>
+      <option value="yes">כן — רלוונטי</option>
+      <option value="no">לא — לא רלוונטי</option>
+    </select>
+    <label>תאריך ראיון (אם נקבע)</label>
+    <input type="datetime-local" id="tracker-interview">
+    <label>הערות</label>
+    <textarea id="tracker-notes" rows="3" placeholder="הערות נוספות..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>` : `<!DOCTYPE html>
 <html lang="he" dir="rtl">
@@ -3862,44 +3935,137 @@ window.toast = function(msg, isError=false) {
 };
 
 
-// ==================== TEST: askClaude + testClaude ====================
-async function askClaude(message) {
+
+
+
+// ==================== TRACKER ====================
+let trackerApps = [];
+let trackerFilter = 'all';
+let trackerEditId = null;
+
+async function loadTrackerApps() {
   try {
-    const response = await fetch(`${FUNCTIONS_BASE}/claudeProxy`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: message })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Request failed');
-    return data;
-  } catch (error) {
-    console.error('askClaude error:', error);
-    throw error;
-  }
+    const snap = await getDocs(collection(db, 'users', currentUser.uid, 'tracker'));
+    trackerApps = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderTracker();
+  } catch(e) { console.error('tracker load error', e); }
 }
 
-window.testClaude = async function() {
-  const btn = document.querySelector('[onclick="testClaude()"]');
-  const resultEl = document.getElementById('test-claude-result');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> שולח...'; }
-  if (resultEl) { resultEl.style.display = 'none'; }
-  try {
-    const result = await askClaude('תן לי שאלה אחת קצרה לראיון עבודה לתפקיד Program Manager');
-    if (resultEl) {
-      resultEl.style.display = 'block';
-      resultEl.style.color = 'var(--accent2)';
-      resultEl.textContent = '✅ הצליח!\n\n' + (result.result || JSON.stringify(result, null, 2));
-    }
-  } catch(e) {
-    if (resultEl) {
-      resultEl.style.display = 'block';
-      resultEl.style.color = 'var(--danger)';
-      resultEl.textContent = '❌ שגיאה: ' + e.message;
-    }
-  } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = '🚀 בדיקת Claude'; }
+function renderTracker() {
+  const search = (document.getElementById('tracker-search')?.value || '').toLowerCase();
+  let apps = trackerApps.filter(a => {
+    if (trackerFilter === 'yes') return a.isRelevant === 'yes';
+    if (trackerFilter === 'no') return a.isRelevant === 'no';
+    if (trackerFilter === 'interview') return !!a.interviewDate;
+    return true;
+  }).filter(a => !search || (a.company||'').toLowerCase().includes(search) || (a.role||'').toLowerCase().includes(search));
+
+  apps.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+
+  const tbody = document.getElementById('tracker-tbody');
+  const empty = document.getElementById('tracker-empty');
+  if (!tbody) return;
+
+  if (!apps.length) {
+    tbody.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+  } else {
+    if (empty) empty.style.display = 'none';
+    tbody.innerHTML = apps.map(a => `
+      <tr class="tracker-row">
+        <td>${a.date||''}</td>
+        <td style="font-weight:600;">${escHtml(a.company||'')}</td>
+        <td>${escHtml(a.role||'')}</td>
+        <td>${a.isRelevant === 'yes' ? '✅' : a.isRelevant === 'no' ? '❌' : '—'}</td>
+        <td style="font-size:12px;color:var(--text2);">${a.interviewDate ? a.interviewDate.replace('T',' ') : '—'}</td>
+        <td style="text-align:center;">
+          <button class="btn btn-ghost" style="padding:3px 8px;font-size:12px;" onclick="editTrackerApp('${a._id}')">✏️</button>
+          <button class="btn btn-ghost" style="padding:3px 8px;font-size:12px;color:var(--danger);" onclick="deleteTrackerApp('${a._id}')">✕</button>
+        </td>
+      </tr>`).join('');
   }
+
+  // Update filter counts
+  document.getElementById('tfc-all').textContent = trackerApps.length;
+  document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes').length;
+  document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
+  document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate).length;
+}
+
+window.setTrackerFilter = function(f, btn) {
+  trackerFilter = f;
+  document.querySelectorAll('.tracker-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTracker();
+};
+
+window.openTrackerModal = function() {
+  trackerEditId = null;
+  document.getElementById('tracker-modal-title').textContent = 'הוסף פנייה';
+  document.getElementById('tracker-submit-btn').textContent = 'שמור';
+  ['tracker-company','tracker-role','tracker-link','tracker-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('tracker-relevant').value = '';
+  document.getElementById('tracker-interview').value = '';
+  document.getElementById('tracker-date').value = new Date().toISOString().split('T')[0];
+  openModal('modal-tracker');
+};
+
+window.editTrackerApp = function(id) {
+  const a = trackerApps.find(x => x._id === id);
+  if (!a) return;
+  trackerEditId = id;
+  document.getElementById('tracker-modal-title').textContent = 'ערוך פנייה';
+  document.getElementById('tracker-submit-btn').textContent = 'עדכן';
+  document.getElementById('tracker-company').value = a.company || '';
+  document.getElementById('tracker-role').value = a.role || '';
+  document.getElementById('tracker-link').value = a.link || '';
+  document.getElementById('tracker-notes').value = a.notes || '';
+  document.getElementById('tracker-relevant').value = a.isRelevant || '';
+  document.getElementById('tracker-interview').value = a.interviewDate || '';
+  document.getElementById('tracker-date').value = a.date || '';
+  openModal('modal-tracker');
+};
+
+window.saveTrackerApp = async function() {
+  const company = document.getElementById('tracker-company').value.trim();
+  const role = document.getElementById('tracker-role').value.trim();
+  if (!company && !role) { toast('יש למלא לפחות חברה או תפקיד', true); return; }
+
+  const data = {
+    company,
+    role,
+    date: document.getElementById('tracker-date').value,
+    link: document.getElementById('tracker-link').value.trim(),
+    isRelevant: document.getElementById('tracker-relevant').value,
+    interviewDate: document.getElementById('tracker-interview').value,
+    notes: document.getElementById('tracker-notes').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+
+  try {
+    if (trackerEditId) {
+      await setDoc(doc(db, 'users', currentUser.uid, 'tracker', trackerEditId), data);
+      const idx = trackerApps.findIndex(a => a._id === trackerEditId);
+      if (idx > -1) trackerApps[idx] = { _id: trackerEditId, ...data };
+      toast('הפנייה עודכנה ✅');
+    } else {
+      const newId = uid();
+      await setDoc(doc(db, 'users', currentUser.uid, 'tracker', newId), data);
+      trackerApps.push({ _id: newId, ...data });
+      toast('הפנייה נוספה ✅');
+    }
+    closeModal('modal-tracker');
+    renderTracker();
+  } catch(e) { toast('שגיאה בשמירה', true); }
+};
+
+window.deleteTrackerApp = async function(id) {
+  try {
+    await deleteDoc(doc(db, 'users', currentUser.uid, 'tracker', id));
+    trackerApps = trackerApps.filter(a => a._id !== id);
+    renderTracker();
+    toast('הפנייה נמחקה');
+  } catch(e) { toast('שגיאה במחיקה', true); }
 };
 
 </script>
