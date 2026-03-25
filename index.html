@@ -523,14 +523,25 @@
   <div class="user-menu" id="user-menu">
     <div class="user-name" id="menu-name"></div>
     <div class="user-email" id="menu-email"></div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:11px;color:var(--text3);margin-bottom:6px;">🔑 Anthropic API Key</div>
-      <div style="display:flex;gap:6px;">
-        <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." style="flex:1;font-size:12px;padding:7px 10px;margin:0;">
-        <button class="btn btn-secondary btn-sm" onclick="saveApiKey()" style="white-space:nowrap;">שמור</button>
+
+    <!-- Credits Display -->
+    <div id="credits-box" style="background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleUserMenu();openModal('modal-pricing')" style="font-size:12px;padding:5px 12px;">רכוש קרדיטים</button>
+        <div style="font-size:11px;color:var(--text3);font-weight:600;">⚡ קרדיטים</div>
       </div>
-      <div id="api-key-status" style="font-size:10px;margin-top:4px;color:var(--text3);"></div>
+      <div style="display:flex;align-items:baseline;gap:4px;justify-content:flex-end;">
+        <span style="font-size:11px;color:var(--text2);">נשארו</span>
+        <span id="credits-balance" style="font-size:26px;font-weight:700;color:var(--accent);">--</span>
+        <span style="font-size:11px;color:var(--text2);">קרדיטים</span>
+      </div>
+      <div style="margin-top:8px;">
+        <div id="credits-bar-bg" style="height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;">
+          <div id="credits-bar-fill" style="height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),#A78BF7);transition:width 0.6s ease;width:0%"></div>
+        </div>
+      </div>
     </div>
+
     <button class="btn-signout" onclick="signOut()">התנתק</button>
     <div style="display:flex;gap:8px;margin-top:10px;">
       <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">❓ הוראות</button>
@@ -538,10 +549,10 @@
     </div>
   </div>
 
-  <!-- API KEY MISSING BANNER -->
-  <div id="api-key-banner" style="display:none;padding:10px 18px;font-size:13px;align-items:center;justify-content:space-between;gap:10px;">
-    <span data-i18n="bannerNoApiKey">⚠️ טרם הוגדר Anthropic API Key — פיצ'רי AI לא יפעלו</span>
-    <button class="btn btn-ghost" style="color:var(--accent3);font-size:13px;padding:4px 10px;border:1px solid rgba(245,158,90,0.4);white-space:nowrap;cursor:pointer;z-index:999;border-radius:8px;" onclick="openModal('modal-apikey')" data-i18n="bannerSetNow">הגדר עכשיו →</button>
+  <!-- LOW CREDITS BANNER -->
+  <div id="api-key-banner" style="display:none;padding:10px 18px;font-size:13px;align-items:center;justify-content:space-between;gap:10px;background:#FEF5EC;border-bottom:1px solid #FDDCB5;color:#C47B20;">
+    <span>⚠️ נגמרים לך הקרדיטים — נשארו פחות מ-10</span>
+    <button class="btn btn-ghost" style="color:#C47B20;font-size:13px;padding:4px 10px;border:1px solid rgba(245,158,90,0.4);white-space:nowrap;cursor:pointer;z-index:999;border-radius:8px;" onclick="openModal('modal-pricing')">רכוש עוד →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -566,6 +577,17 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
           <span data-i18n="btnAddRole">הוסף תפקיד</span>
         </button>
+      </div>
+
+
+      <!-- TEMP: כפתור בדיקת Claude — להסיר אחרי אימות -->
+      <div class="card" style="border:2px dashed var(--accent);background:#F5F3FF;">
+        <div class="card-title" style="color:var(--accent);">🧪 בדיקת חיבור Claude</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">לחץ לבדיקה שה-Backend עובד end-to-end</p>
+        <button onclick="testClaude()" class="btn btn-primary btn-block">
+          🚀 בדיקת Claude
+        </button>
+        <div id="test-claude-result" style="margin-top:12px;font-size:13px;color:var(--text2);display:none;background:var(--surface2);border-radius:10px;padding:12px;white-space:pre-wrap;"></div>
       </div>
 
     </section>
@@ -1066,21 +1088,67 @@
   </div>
 </div>
 
-<!-- Modal: API Key -->
-<div class="modal-overlay" id="modal-apikey">
-  <div class="modal-sheet" style="max-width:360px;">
+<!-- Modal: תמחור / רכישת קרדיטים -->
+<div class="modal-overlay" id="modal-pricing">
+  <div class="modal-sheet" style="max-width:420px;">
     <div class="modal-handle"></div>
-    <div class="modal-title">🔑 Anthropic API Key</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;">
-      הכנס מפתח מ-<a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
-      המפתח נשמר במכשיר זה בלבד.
-    </p>
-    <input type="password" id="modal-api-key-input" placeholder="sk-ant-api03-..." style="margin-bottom:8px;">
-    <div id="modal-api-key-status" style="font-size:12px;margin-bottom:12px;"></div>
-    <div style="display:flex;gap:8px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveApiKeyFromModal()">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-apikey')">ביטול</button>
+    <div class="modal-title" style="text-align:center;">⚡ רכוש קרדיטים</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;text-align:center;">בחר חבילה — כל פעולת AI מנכה קרדיטים</p>
+
+    <!-- יתרה נוכחית -->
+    <div style="background:#F5F3FF;border-radius:12px;padding:12px 16px;margin-bottom:20px;text-align:center;border:1px solid rgba(124,108,242,0.2);">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">יתרה נוכחית</div>
+      <div style="font-size:32px;font-weight:700;color:var(--accent);" id="pricing-balance">--</div>
+      <div style="font-size:11px;color:var(--text3);">קרדיטים</div>
     </div>
+
+    <!-- חבילות -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+
+      <!-- Basic -->
+      <div style="border:2px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('basic',this)" id="plan-basic">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪25 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Basic</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">200 קרדיטים · ~40 שיפורי תשובות</div>
+      </div>
+
+      <!-- Pro — מומלץ -->
+      <div style="border:2px solid var(--accent);border-radius:16px;padding:16px;cursor:pointer;background:#F5F3FF;position:relative;" onclick="selectPlan('pro',this)" id="plan-pro">
+        <div style="position:absolute;top:-10px;right:16px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;">⭐ מומלץ</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪39 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Pro</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">600 קרדיטים · ~120 שיפורי תשובות</div>
+      </div>
+
+      <!-- Unlimited -->
+      <div style="border:2px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('unlimited',this)" id="plan-unlimited">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪59 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Unlimited</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">∞ קרדיטים · שימוש ללא הגבלה</div>
+      </div>
+    </div>
+
+    <!-- עלות לפעולה -->
+    <div style="background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);">
+      <div style="font-weight:700;color:var(--text);margin-bottom:8px;">עלות לפי פעולה:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+        <div>✨ שיפור תשובה</div><div style="text-align:left;color:var(--accent);font-weight:600;">3 קרדיטים</div>
+        <div>🎤 ראיון מדומה</div><div style="text-align:left;color:var(--accent);font-weight:600;">5 קרדיטים</div>
+        <div>📋 הכנה למשרה</div><div style="text-align:left;color:var(--accent);font-weight:600;">15 קרדיטים</div>
+        <div>📎 חילוץ ממסמך</div><div style="text-align:left;color:var(--accent);font-weight:600;">10 קרדיטים</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="btn-buy-plan" onclick="goToCheckout()" style="font-size:15px;padding:14px;">
+      המשך לתשלום →
+    </button>
+    <button class="btn btn-ghost btn-block" onclick="closeModal('modal-pricing')" style="margin-top:8px;">סגור</button>
   </div>
 </div>
 
@@ -1234,7 +1302,7 @@ onAuthStateChanged(auth, async (user) => {
     renderSavedJobs();
     updateMockJobSelect();
     applyLanguage();
-    checkApiKeyBanner();
+    loadCredits(); // טעינת יתרת קרדיטים
   } else {
     currentUser = null;
     // מצב צפייה בלי התחברות — ננסה לטעון ישירות מ-Firestore
@@ -1342,9 +1410,6 @@ async function processFile(file) {
 }
 
 async function extractWithClaude(file) {
-  const apiKey = getApiKey();
-  if (!apiKey) { toast('יש להכניס API Key תחילה — לחץ על תמונת הפרופיל', true); throw new Error('No API key'); }
-
   const name = file.name.toLowerCase();
   const isImage = name.match(/\.(jpg|jpeg|png|webp|gif)$/);
   const isPdf = name.endsWith('.pdf');
@@ -1369,7 +1434,7 @@ async function extractWithClaude(file) {
             { type: 'text', text: `חלץ את כל המידע מהמסמך לצורך הכנה לראיון עבודה. כלול הכל — טקסט, טבלאות, רשימות. כתוב בעברית. היה מפורט.` }
           ];
         } else {
-          // Office formats — extract XML text then send to Claude for cleanup
+          // Office formats — extract XML text client-side, send as text
           const arr = new Uint8Array(atob(base64).split('').map(c => c.charCodeAt(0)));
           const str = new TextDecoder('utf-8', {fatal:false}).decode(arr);
           let extracted = '';
@@ -1384,25 +1449,20 @@ async function extractWithClaude(file) {
             resolve('לא הצלחתי לחלץ טקסט מהקובץ. נסה להדביק את התוכן ידנית.');
             return;
           }
-          contentBlocks = [
-            { type: 'text', text: `להלן טקסט גולמי מקובץ "${file.name}". נקה, ארגן וחלץ את כל המידע הרלוונטי לראיון עבודה. כתוב בעברית.\n\n${extracted.substring(0, 40000)}` }
-          ];
+          // שלח כטקסט רגיל דרך callClaude
+          const result = await callClaude(
+            `להלן טקסט גולמי מקובץ "${file.name}". נקה, ארגן וחלץ את כל המידע הרלוונטי לראיון עבודה. כתוב בעברית.\n\n${extracted.substring(0, 40000)}`,
+            false,
+            'extract_doc'
+          );
+          resolve(result || 'לא הצלחתי לחלץ תוכן.');
+          return;
         }
 
-        const resp = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
-          },
-          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content: contentBlocks }] })
-        });
+        // תמונות ו-PDFs — שלח דרך callClaudeWithFile
+        const result = await callClaudeWithFile(contentBlocks, 'extract_doc');
+        resolve(result || 'לא הצלחתי לחלץ תוכן.');
 
-        if (!resp.ok) { const err = await resp.json(); throw new Error(err.error?.message || 'API error'); }
-        const data = await resp.json();
-        resolve(data.content.map(c => c.text || '').join('') || 'לא הצלחתי לחלץ תוכן.');
       } catch(err) { reject(err); }
     };
     reader.onerror = reject;
@@ -1508,7 +1568,7 @@ ${existingQTexts || 'אין'}
 {"questions":[{"type":"HR","topic":"נושא","question":"שאלה","answer":"תשובה מפורטת"}]}`;
 
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'extract_doc');
     const data = JSON.parse(resp);
     const newQs = (data.questions || []).map(q => ({ ...q, _fromDoc: doc.name }));
 
@@ -1589,7 +1649,7 @@ ${existingList}
 {"similar": true/false, "index": מספר_השאלה_הדומה_או_-1, "mergedQuestion": "שאלה ממוזגת אם צורך", "mergedAnswer": "תשובה ממוזגת אם צורך"}`;
 
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'clean_bank');
     const data = JSON.parse(resp);
     if (data.similar && data.index >= 0 && data.index < existing.length) {
       return { merged: true, existingQ: existing[data.index], mergedQuestion: data.mergedQuestion, mergedAnswer: data.mergedAnswer };
@@ -1650,7 +1710,7 @@ ${newQList}
 {"questions":[{"type":"HR","topic":"נושא","question":"שאלה","answer":"תשובה"}]}`;
 
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'general');
     const data = JSON.parse(resp);
     cleanedBankQuestions = data.questions || [];
 
@@ -2561,7 +2621,7 @@ window.openImprove = async function(id) {
 ${localCache.pitch?`\nהצגה עצמית: ${localCache.pitch}`:''}
 ספק את התשובה המשופרת בלבד. תמציתית, מובנית (STAR אם רלוונטי), מקצועית. בעברית. ללא הקדמה.`;
   try {
-    const resp = await callClaude(prompt);
+    const resp = await callClaude(prompt, false, 'improve_answer');
     document.getElementById('improve-content').textContent = resp;
     document.getElementById('improve-loading').style.display = 'none';
     document.getElementById('improve-result').style.display = 'block';
@@ -2601,7 +2661,7 @@ window.generateJobPrep = async function() {
 ענה ב-JSON:
 {"pitch":"pitch מותאם 3-4 משפטים בעברית","hrQuestions":[{"q":"שאלה","tip":"טיפ","topic":"נושא בעברית או אנגלית"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"}],"techQuestions":[{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"},{"q":"שאלה","tip":"טיפ","topic":"נושא"}]}`;
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'job_prep');
     const data = JSON.parse(resp);
     document.getElementById('jp-pitch').textContent = data.pitch;
 
@@ -2801,7 +2861,7 @@ window.submitMockAnswer = async function() {
 תשובת המועמד: ${answer}
 ענה ב-JSON בלבד (ללא כל טקסט נוסף): {"feedback":"2-3 משפטי משוב על בהירות ומבנה, בעברית","improved":"גרסה טובה יותר 3-5 משפטים, בעברית","followup":"שאלת המשך אפשרית, בעברית"}`;
   try {
-    const resp=await callClaude(prompt,true);
+    const resp=await callClaude(prompt, true, 'mock_feedback');
     // חילוץ JSON חזק — מוצא את האובייקט גם אם יש טקסט סביבו
     const jsonMatch = resp.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON found');
@@ -3294,16 +3354,6 @@ async function checkViewMode() {
   } catch(e) { return false; }
 }
 
-function checkApiKeyBanner() {
-  const banner = document.getElementById('api-key-banner');
-  if (!banner) return;
-  banner.style.display = getApiKey() ? 'none' : 'flex';
-}
-
-function getApiKey() {
-  return localStorage.getItem('anthropic_api_key') || '';
-}
-
 // Load saved key indicator on startup
 setTimeout(() => {
   const saved = localStorage.getItem('anthropic_api_key');
@@ -3314,28 +3364,173 @@ setTimeout(() => {
   }
 }, 1000);
 
-async function callClaude(prompt, jsonMode=false) {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    toast('יש להכניס Anthropic API Key — לחץ על תמונת הפרופיל', true);
-    throw new Error('No API key');
-  }
-  const messages=[{role:'user',content:prompt}];
-  if (jsonMode) messages[0].content+='\n\nהגב ב-JSON תקין בלבד, ללא markdown וללא backticks.';
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages})
-  });
-  if (!resp.ok) throw new Error('API error');
-  const data=await resp.json();
-  return data.content.map(c=>c.text||'').join('').replace(/```json\n?|```\n?/g,'').trim();
+// ==================== FIREBASE FUNCTION URL ====================
+// אחרי deploy של Firebase Functions — עדכני את הURL
+const FUNCTIONS_BASE = 'https://europe-west1-interview-prep-6a3aa.cloudfunctions.net';
+
+// ==================== CREDITS SYSTEM ====================
+let userCredits = null; // יתרה מקומית (cache)
+const MAX_CREDITS_DISPLAY = 600; // לחישוב ה-progress bar
+
+async function getAuthToken() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not logged in');
+  return await user.getIdToken();
 }
+
+async function loadCredits() {
+  try {
+    const token = await getAuthToken();
+    const resp = await fetch(`${FUNCTIONS_BASE}/getCredits`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!resp.ok) throw new Error('Failed to load credits');
+    const data = await resp.json();
+    userCredits = data.balance ?? 0;
+    updateCreditsUI(userCredits);
+    checkCreditsBanner(userCredits);
+  } catch(e) {
+    console.error('loadCredits error:', e);
+  }
+}
+
+function updateCreditsUI(balance) {
+  const el = document.getElementById('credits-balance');
+  const pricingEl = document.getElementById('pricing-balance');
+  const bar = document.getElementById('credits-bar-fill');
+  if (el) el.textContent = balance;
+  if (pricingEl) pricingEl.textContent = balance;
+  if (bar) {
+    const pct = Math.min(100, Math.round((balance / MAX_CREDITS_DISPLAY) * 100));
+    bar.style.width = pct + '%';
+    bar.style.background = balance < 10
+      ? 'linear-gradient(90deg,#E63950,#F59E5A)'
+      : 'linear-gradient(90deg,var(--accent),#A78BF7)';
+  }
+}
+
+function checkCreditsBanner(balance) {
+  const banner = document.getElementById('api-key-banner');
+  if (!banner) return;
+  banner.style.display = (balance !== null && balance < 10) ? 'flex' : 'none';
+}
+
+// ==================== PLAN SELECTION ====================
+let selectedPlan = 'pro';
+
+window.selectPlan = function(plan, el) {
+  selectedPlan = plan;
+  ['basic','pro','unlimited'].forEach(p => {
+    const card = document.getElementById('plan-' + p);
+    if (!card) return;
+    if (p === plan) {
+      card.style.border = '2px solid var(--accent)';
+      card.style.background = '#F5F3FF';
+    } else {
+      card.style.border = '2px solid var(--border)';
+      card.style.background = 'transparent';
+    }
+  });
+};
+
+window.goToCheckout = function() {
+  // בשלב הבא — Stripe Checkout
+  // כרגע מציג הודעה
+  toast('מערכת התשלום תתווסף בקרוב! 🚀');
+  closeModal('modal-pricing');
+};
+
+// ==================== callClaude — עובר דרך Firebase Function ====================
+async function callClaude(prompt, jsonMode=false, action='general') {
+  // בדיקה מקומית של credits לפני השליחה
+  if (userCredits !== null && userCredits <= 0) {
+    openModal('modal-pricing');
+    throw new Error('insufficient_credits');
+  }
+
+  let token;
+  try {
+    token = await getAuthToken();
+  } catch(e) {
+    toast('יש להתחבר תחילה', true);
+    throw e;
+  }
+
+  const resp = await fetch(`${FUNCTIONS_BASE}/claudeProxy`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ prompt, jsonMode, action })
+  });
+
+  if (resp.status === 402) {
+    // אין credits
+    openModal('modal-pricing');
+    throw new Error('insufficient_credits');
+  }
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.message || 'API error');
+  }
+
+  const data = await resp.json();
+
+  // עדכון credits מקומי
+  if (data.creditsRemaining !== undefined) {
+    userCredits = data.creditsRemaining;
+    updateCreditsUI(userCredits);
+    checkCreditsBanner(userCredits);
+  }
+
+  return data.result || '';
+}
+
+// ==================== callClaudeWithFile — קבצים/תמונות/PDF ====================
+async function callClaudeWithFile(contentBlocks, action='extract_doc') {
+  if (userCredits !== null && userCredits <= 0) {
+    openModal('modal-pricing');
+    throw new Error('insufficient_credits');
+  }
+
+  const token = await getAuthToken();
+
+  const resp = await fetch(`${FUNCTIONS_BASE}/claudeProxy`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ contentBlocks, action, jsonMode: false })
+  });
+
+  if (resp.status === 402) {
+    openModal('modal-pricing');
+    throw new Error('insufficient_credits');
+  }
+  if (!resp.ok) throw new Error('API error');
+
+  const data = await resp.json();
+  if (data.creditsRemaining !== undefined) {
+    userCredits = data.creditsRemaining;
+    updateCreditsUI(userCredits);
+    checkCreditsBanner(userCredits);
+  }
+  return data.result || '';
+}
+
+function checkApiKeyBanner() {
+  // הפונקציה נשמרת לתאימות אחורה — עכשיו בודקת credits
+  checkCreditsBanner(userCredits);
+}
+
+function getApiKey() {
+  // נשמרת לתאימות — עכשיו תמיד מחזירה true (ה-key אצלנו בשרת)
+  return 'server-side';
+}
+
 
 // ==================== DEFAULT QUESTIONS ====================
 let defaultQuestionsData = [];
@@ -3375,7 +3570,7 @@ async function loadDefaultQ() {
 ]}`;
 
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'default_questions');
     const jsonMatch = resp.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON');
     const data = JSON.parse(jsonMatch[0]);
@@ -3437,24 +3632,6 @@ window.addSelectedDefaultQ = async function() {
 };
 
 
-window.saveApiKeyFromModal = function() {
-  const key = document.getElementById('modal-api-key-input').value.trim();
-  const status = document.getElementById('modal-api-key-status');
-  if (!key.startsWith('sk-ant-')) {
-    status.textContent = '❌ מפתח לא תקין';
-    status.style.color = 'var(--danger)';
-    return;
-  }
-  localStorage.setItem('anthropic_api_key', key);
-  document.getElementById('api-key-input').value = '••••••••••••••••';
-  document.getElementById('api-key-status').textContent = '✅ מפתח נשמר!';
-  document.getElementById('api-key-status').style.color = 'var(--accent2)';
-  checkApiKeyBanner();
-  closeModal('modal-apikey');
-  document.getElementById('modal-api-key-input').value = '';
-  toast(t('toastApiKeySavedMsg'));
-};
-
 window.checkInfoPassword = function() {
   document.getElementById('info-password-input').value = '';
   document.getElementById('info-password-error').style.display = 'none';
@@ -3503,7 +3680,7 @@ ${cv ? `קורות חיים (חלקי): ${cv}` : ''}
 {"questions":[{"type":"HR","topic":"נושא","question":"שאלה","answer":"תשובה מוצעת קצרה","default":true}]}`;
 
   try {
-    const resp = await callClaude(prompt, true);
+    const resp = await callClaude(prompt, true, 'general');
     const jsonMatch = resp.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON');
     const data = JSON.parse(jsonMatch[0]);
@@ -3791,6 +3968,49 @@ window.toast = function(msg, isError=false) {
   el.style.transform='translateX(-50%) translateY(0)';
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(-6px)';},2500);
+};
+
+
+// ==================== TEST: askClaude + testClaude ====================
+async function askClaude(message) {
+  try {
+    const response = await fetch(`${FUNCTIONS_BASE}/claudeProxy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: message })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  } catch (error) {
+    console.error('askClaude error:', error);
+    throw error;
+  }
+}
+
+window.testClaude = async function() {
+  const btn = document.querySelector('[onclick="testClaude()"]');
+  const resultEl = document.getElementById('test-claude-result');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> שולח...'; }
+  if (resultEl) { resultEl.style.display = 'none'; }
+  try {
+    const result = await askClaude('תן לי שאלה אחת קצרה לראיון עבודה לתפקיד Program Manager');
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.style.color = 'var(--accent2)';
+      resultEl.textContent = '✅ הצליח!
+
+' + (result.result || JSON.stringify(result, null, 2));
+    }
+  } catch(e) {
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.style.color = 'var(--danger)';
+      resultEl.textContent = '❌ שגיאה: ' + e.message;
+    }
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '🚀 בדיקת Claude'; }
+  }
 };
 
 </script>
