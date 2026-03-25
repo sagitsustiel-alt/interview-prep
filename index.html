@@ -1244,7 +1244,7 @@ window.signInWithGoogle = async function() {
   try {
     await signInWithPopup(auth, provider);
   } catch (e) {
-    toast(t('toastLoginError'), true);
+    toast('שגיאה בהתחברות — נסי שוב', true);
   }
 };
 
@@ -2937,21 +2937,6 @@ window.findVideo = function(id, question, topic) {
     </a>`;
 };
 // ==================== AI ====================
-window.saveApiKey = function() {
-  const key = document.getElementById('api-key-input').value.trim();
-  if (!key.startsWith('sk-ant-')) { 
-    document.getElementById('api-key-status').textContent = '❌ מפתח לא תקין';
-    document.getElementById('api-key-status').style.color = 'var(--danger)';
-    return; 
-  }
-  localStorage.setItem('anthropic_api_key', key);
-  document.getElementById('api-key-input').value = '••••••••••••••••';
-  document.getElementById('api-key-status').textContent = '✅ מפתח נשמר!';
-  document.getElementById('api-key-status').style.color = 'var(--accent2)';
-  checkApiKeyBanner();
-  document.getElementById('user-menu').classList.remove('open');
-  toast('מפתח API נשמר! ✅');
-};
 
 // ==================== LANGUAGE TOGGLE ====================
 let currentLang = 'he';
@@ -3354,15 +3339,7 @@ async function checkViewMode() {
   } catch(e) { return false; }
 }
 
-// Load saved key indicator on startup
-setTimeout(() => {
-  const saved = localStorage.getItem('anthropic_api_key');
-  if (saved) {
-    document.getElementById('api-key-input').value = '••••••••••••••••';
-    document.getElementById('api-key-status').textContent = '✅ מפתח שמור';
-    document.getElementById('api-key-status').style.color = 'var(--accent2)';
-  }
-}, 1000);
+
 
 // ==================== FIREBASE FUNCTION URL ====================
 // אחרי deploy של Firebase Functions — עדכני את הURL
@@ -3644,7 +3621,7 @@ window.submitInfoPassword = function() {
   if (pwd === 'Sagit5576') {
     closeModal('modal-password');
     document.getElementById('info-password-input').value = '';
-    const hasKey = !!localStorage.getItem('anthropic_api_key');
+    const hasKey = true; // API key now server-side
     const el = document.getElementById('info-api-status');
     if (el) el.textContent = hasKey ? '✅ שמור' : '❌ לא הוגדר';
     openModal('modal-info');
@@ -3653,92 +3630,6 @@ window.submitInfoPassword = function() {
     document.getElementById('info-password-input').value = '';
     document.getElementById('info-password-input').focus();
   }
-};
-
-// ==================== DEFAULT QUESTIONS ====================
-let defaultQList = [];
-
-window.generateDefaultQuestions = async function() {
-  const btn = document.getElementById('default-q-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-
-  document.getElementById('default-q-loading').style.display = 'block';
-  document.getElementById('default-q-list').style.display = 'none';
-  document.getElementById('default-q-actions').style.display = 'none';
-  openModal('modal-default-questions');
-
-  const pitch = localCache.pitch || '';
-  const cv = localCache.cv ? localCache.cv.substring(0, 500) : '';
-
-  const prompt = `אתה מאמן ראיונות מומחה. צור סט שאלות ראיון קלאסיות וברירת מחדל עבור מועמד לתפקיד ניהולי/PM.
-${pitch ? `הפרופיל: ${pitch}` : ''}
-${cv ? `קורות חיים (חלקי): ${cv}` : ''}
-צור 6 שאלות HR קלאסיות ו-6 שאלות טכניות/PM קלאסיות שמתאימות לכמעט כל ראיון.
-סמן כל שאלה כ-"default": true.
-ענה ב-JSON בלבד:
-{"questions":[{"type":"HR","topic":"נושא","question":"שאלה","answer":"תשובה מוצעת קצרה","default":true}]}`;
-
-  try {
-    const resp = await callClaude(prompt, true, 'general');
-    const jsonMatch = resp.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('No JSON');
-    const data = JSON.parse(jsonMatch[0]);
-    defaultQList = (data.questions || []).map((q, i) => ({ ...q, id: uid(), checked: true }));
-
-    const el = document.getElementById('default-q-list');
-    el.innerHTML = defaultQList.map((q, i) => `
-      <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface2);">
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;flex-direction:row-reverse;">
-          <div style="flex:1;">
-            <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
-              <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
-              <span style="font-size:10px;background:#EDFBF5;color:var(--accent2);border-radius:20px;padding:2px 8px;font-weight:600;border:1px solid rgba(45,191,138,0.2);">★ ברירת מחדל</span>
-              <span style="font-size:11px;color:var(--text3);">📌 ${escHtml(q.topic||'')}</span>
-            </div>
-            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
-            <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,120))}${(q.answer||'').length>120?'...':''}</div>
-          </div>
-          <input type="checkbox" checked onchange="defaultQList[${i}].checked=this.checked" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;">
-        </label>
-      </div>`).join('');
-
-    document.getElementById('default-q-loading').style.display = 'none';
-    el.style.display = 'block';
-    document.getElementById('default-q-actions').style.display = 'block';
-  } catch(e) {
-    closeModal('modal-default-questions');
-    toast('שגיאה ביצירת שאלות בסיסיות. בדוק API Key.', true);
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '<span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>';
-};
-
-window.toggleAllDefaultQ = function(checked) {
-  defaultQList.forEach((q, i) => {
-    q.checked = checked;
-    const cb = document.querySelectorAll('#default-q-list input[type="checkbox"]')[i];
-    if (cb) cb.checked = checked;
-  });
-};
-
-window.addDefaultQToBank = async function() {
-  const selected = defaultQList.filter(q => q.checked);
-  if (!selected.length) { toast('לא נבחרו שאלות.', true); return; }
-  const existingTopics = [...new Set((localCache.questions||[]).map(q => q.topic).filter(Boolean))];
-  let added = 0;
-  for (const q of selected) {
-    if ((localCache.questions||[]).find(x => x.question === q.question)) continue;
-    const newQ = { id: uid(), type: q.type, question: q.question, answer: q.answer||'', topic: resolveTopicName(q.topic||'', existingTopics), _jobId: 'generic', _isDefault: true };
-    if (!localCache.questions) localCache.questions = [];
-    localCache.questions.push(newQ);
-    await saveQuestionToCloud(newQ);
-    added++;
-  }
-  closeModal('modal-default-questions');
-  renderQuestions();
-  toast(`✅ נוספו ${added} שאלות בסיסיות לבנק!`);
 };
 
 window.downloadGuide = function() {
