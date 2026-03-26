@@ -676,6 +676,10 @@
   .prio-medium { background:#FFF7ED;color:#D97706;border-color:#FDE68A; }
   .prio-low    { background:#F3F4F6;color:#9CA3AF;border-color:#E5E7EB; }
 
+
+[dir="ltr"] .mock-check-row { flex-direction: row-reverse; justify-content: flex-end; gap: 10px; }
+  [dir="ltr"] .mock-check-row label { text-align: left; }
+
 </style>
 </head>
 <body>
@@ -683,7 +687,7 @@
 <!-- LOGIN SCREEN -->
 <!-- VIEW MODE BANNER -->
 <div id="view-mode-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;padding:10px 18px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:10px;border-radius:0;">
-  <span>👁️ מצב צפייה בלבד — לא ניתן לערוך</span>
+  <span>🔗 מצב צפייה בלבד — לא ניתן לערוך</span>
   <button class="btn btn-ghost" onclick="toggleLanguage()" id="view-lang-btn" style="color:#fff;font-size:12px;padding:2px 8px;border:1px solid rgba(255,255,255,0.5);">EN</button>
 </div>
 
@@ -709,8 +713,8 @@
     <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
-      <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:12px;">👁️</button>
-      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:16px;">❓</button>
+      <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:14px;">🔗</button>
+      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:14px;">ℹ️</button>
       <div id="user-avatar-container" onclick="toggleUserMenu()"></div>
     </div>
   </header>
@@ -740,7 +744,7 @@
 
     <button class="btn-signout" onclick="signOut()">התנתק</button>
     <div style="display:flex;gap:8px;margin-top:10px;">
-      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">❓ הוראות</button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">ℹ️ הוראות</button>
       <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="toggleUserMenu();checkInfoPassword()">ℹ️ מידע טכני</button>
     </div>
   </div>
@@ -762,7 +766,7 @@
 
       <!-- 1. בחירת משרה -->
       <div class="card">
-        <div class="card-title" data-i18n="piSelectJob">🎯 בחרי משרה</div>
+        <div class="card-title" data-i18n="piSelectJob">בחרי משרה</div>
         <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;font-size:13px;">
           <option value="" data-i18n="piSelectJobPh">-- בחרי משרה --</option>
         </select>
@@ -773,15 +777,15 @@
 
         <!-- 2. לינק ל-CV -->
         <div class="card" id="pi-cv-card">
-          <div class="card-title" data-i18n="piCvLinks">📄 קורות חיים</div>
+          <div class="card-title" data-i18n="piCvLinks">קורות חיים</div>
           <div id="pi-cv-links" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
         </div>
 
         <!-- 3. על עצמי — AI מותאם למשרה -->
         <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <div class="card-title" style="margin:0;" data-i18n="piAboutMe">👤 על עצמי — מותאם למשרה</div>
-            <button class="btn btn-primary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate">✨ צרי</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;">
+            <div class="card-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
+            <button class="btn btn-primary" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="white-space:nowrap;flex-shrink:0;">צרי</button>
           </div>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
@@ -792,7 +796,7 @@
         <!-- 4. טיפים -->
         <div class="card" id="pi-tips-card">
           <div class="collapsible-header" onclick="toggleCollapsible('pi-tips-body',this)" style="margin-bottom:0;padding:0;">
-            <div class="card-title" data-i18n="piTips" style="margin:0;">💡 הטיפים שלי</div>
+            <div class="card-title" data-i18n="piTips" style="margin:0;">הטיפים שלי</div>
             <span class="collapsible-arrow open"> ▾</span>
           </div>
           <div class="collapsible-body open" id="pi-tips-body" style="padding-top:10px;">
@@ -803,27 +807,27 @@
         <!-- 5. שאלות לפי עדיפות -->
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <div class="card-title" style="margin:0;" data-i18n="piQuestions">⭐ שאלות להכנה</div>
+            <div class="card-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div>
             <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
           </div>
 
           <!-- פילטרים -->
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
-            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-high" checked onchange="renderPiQuestions()">
-              <span class="priority-badge prio-high" data-i18n="prioHigh">🔴 חשוב מאוד</span>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
+            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-high" checked onchange="renderPiQuestions()" style="width:15px;height:15px;">
+              <span data-i18n="prioHighSimple">חשוב מאוד</span>
             </label>
-            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-medium" checked onchange="renderPiQuestions()">
-              <span class="priority-badge prio-medium" data-i18n="prioMedium">🟠 חשוב</span>
+            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-medium" checked onchange="renderPiQuestions()" style="width:15px;height:15px;">
+              <span data-i18n="prioMediumSimple">חשוב</span>
             </label>
-            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-low" onchange="renderPiQuestions()">
-              <span class="priority-badge prio-low" data-i18n="prioLow">⚪ נחמד לדעת</span>
+            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-low" onchange="renderPiQuestions()" style="width:15px;height:15px;">
+              <span data-i18n="prioLowSimple">נחמד לדעת</span>
             </label>
-            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
-              <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()">
-              <span style="font-size:12px;">⭐ <span data-i18n="piDifficultOnly">קשות בלבד</span></span>
+            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()" style="width:15px;height:15px;">
+              <span data-i18n="piDifficultOnly">קשות בלבד</span>
             </label>
           </div>
 
@@ -941,80 +945,17 @@
 <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
       <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
-      <!-- COLLAPSIBLE: נהל שאלות (הוסף מסמך + ייבא + נקה) -->
-      <div class="collapsible-header" onclick="toggleCollapsible('col-manage', this)" style="background:#F5F3FF;border:1px solid rgba(124,108,242,0.2);border-radius:var(--radius);">
-        <div class="collapsible-title">⚙️ <span data-i18n="colManage">נהל שאלות</span></div>
-        <span class="collapsible-arrow"> ▾</span>
-      </div>
-      <div class="collapsible-body" id="col-manage">
-        <div style="border:1px solid rgba(124,108,242,0.15);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;background:var(--surface);">
-
-          <!-- הוסף מסמך -->
-          <div class="collapsible-header" onclick="toggleCollapsible('col-docs', this)" style="margin-bottom:0;padding:10px 12px;">
-            <div class="collapsible-title" style="font-size:13px;" data-i18n="colDocs">📚 הוסף מסמך לחילוץ שאלות</div>
-            <span class="collapsible-arrow" id="arrow-col-docs"> ▾</span>
-          </div>
-          <div class="collapsible-body" id="col-docs">
-            <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
-              <div class="upload-zone" id="upload-zone2" onclick="document.getElementById('file-input2').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-                <div class="upload-zone-icon">📎</div>
-                <div class="upload-zone-text" data-i18n="uploadClick">לחץ להעלאת קובץ</div>
-                <div class="upload-zone-sub" data-i18n="uploadSub">PDF, Word, Excel, PowerPoint, TXT, תמונות</div>
-              </div>
-              <input type="file" id="file-input2" accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.pptx,.ppt,.jpg,.jpeg,.png,.webp,.gif" style="display:none" onchange="handleFileUpload(event)">
-              <div style="text-align:center;color:var(--text3);font-size:12px;margin:10px 0;">— <span data-i18n="orText">או</span> —</div>
-              <textarea id="kb-paste-text2" rows="3" placeholder="הדבק טקסט ישירות..." data-i18n-ph="phPasteText"></textarea>
-              <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
-                <input type="text" id="kb-paste-name2" placeholder="שם המסמך" data-i18n-ph="phDocName" style="flex:1;">
-                <button class="btn btn-secondary btn-sm" onclick="addPastedDoc2()" data-i18n="btnAdd">הוסף</button>
-              </div>
-              <div id="kb-docs-list2" style="margin-top:12px;"></div>
-              <div id="kb-docs-list" style="margin-top:12px;"></div>
-              <div id="kb-extract-section" style="display:none;margin-top:8px;">
-                <button class="btn btn-accent2 btn-block btn-sm" onclick="extractQuestionsFromDocs()">✨ חלץ שאלות מכל המסמכים</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- ייבא שאלות מוכנות -->
-          <div class="collapsible-header" onclick="toggleCollapsible('col-import', this)" style="margin-bottom:0;padding:10px 12px;">
-            <div class="collapsible-title" style="font-size:13px;" data-i18n="colImport">📥 ייבא שאלות ותשובות מוכנות</div>
-            <span class="collapsible-arrow" id="arrow-col-import"> ▾</span>
-          </div>
-          <div class="collapsible-body" id="col-import">
-            <div class="card" style="margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
-              <p style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;" data-i18n="importFormat">פורמט: נושא: / שאלה X: / תשובה:</p>
-              <div style="background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-bottom:10px;font-size:11px;color:var(--text2);direction:rtl;line-height:1.9;border:1px solid var(--border);">
-                נושא: ניהול גרסאות<br>שאלה 1: תאר את תהליך הריליס<br>תשובה: אני מוביל מקצה לקצה...
-              </div>
-              <textarea id="kb-import-text" rows="6" placeholder="הדבק כאן שאלות ותשובות..." data-i18n-ph="phImport" style="margin-bottom:8px;"></textarea>
-              <button class="btn btn-primary btn-block" onclick="importReadyQA()" style="background:var(--accent2);border-color:var(--accent2);">
-                <span data-i18n="btnImport">📥 ייבא לבנק השאלות</span>
-              </button>
-              <div id="import-status" style="font-size:12px;color:var(--accent2);margin-top:8px;text-align:center;"></div>
-            </div>
-          </div>
-
-          <!-- נקה וסדר -->
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;flex-wrap:wrap;gap:8px;">
-            <div>
-              <div style="font-weight:700;font-size:13px;margin-bottom:2px;" data-i18n="cleanTitle">🧹 נקה וסדר את הבנק</div>
-              <div style="font-size:11px;color:var(--text2);" data-i18n="cleanDesc">מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים</div>
-            </div>
-            <button class="btn btn-primary btn-sm" onclick="cleanAndOrganizeBank()" id="clean-bank-btn">
-              <span data-i18n="btnClean">🧹 נקה וסדר</span>
-            </button>
-          </div>
-
-        </div>
-      </div>
 
       <!-- Merge notification area -->
       <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
-      <!-- Search & Filter Card -->
-      <div class="card" style="padding:16px;">
-        <div class="card-title" data-i18n="cardSearchQ">🔍 חיפוש שאלה</div>
+      <!-- Search & Filter -->
+      <div class="collapsible-header" onclick="toggleCollapsible('col-search-q', this);" style="background:var(--surface2);border:1px solid var(--border);">
+        <div class="collapsible-title" style="font-size:13px;" data-i18n="cardSearchQ">חיפוש וסינון</div>
+        <span class="collapsible-arrow"> ▾</span>
+      </div>
+      <div class="collapsible-body" id="col-search-q">
+      <div class="card" style="padding:16px;margin-top:0;border-top-left-radius:0;border-top-right-radius:0;">
 
         <!-- Filter bar -->
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
@@ -1040,9 +981,16 @@
           </div>
         </div>
       </div>
+      </div><!-- end col-search-q -->
 
-      <!-- Questions list -->
+      <!-- Questions list — collapsible -->
+      <div class="collapsible-header" onclick="toggleCollapsible('col-questions-list', this)" style="background:var(--surface2);border:1px solid var(--border);margin-top:6px;">
+        <div class="collapsible-title" style="font-size:13px;" data-i18n="colQuestionsList">רשימת שאלות</div>
+        <span class="collapsible-arrow"> ▾</span>
+      </div>
+      <div class="collapsible-body" id="col-questions-list">
       <div id="q-filtered-list"></div>
+      </div><!-- end col-questions-list -->
       <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:8px;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         <span data-i18n="btnAddHR">הוסף שאלת HR</span>
@@ -1055,9 +1003,9 @@
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
 
       <!-- כפתור שאלות בסיסיות -->
-      <div style="margin-bottom:14px;background:#F5F3FF;border:1px solid rgba(124,108,242,0.18);border-radius:var(--radius);padding:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div class="card" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div>
-          <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="defaultQTitle">⚡ סט שאלות בסיסי</div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="defaultQTitle">סט שאלות בסיסי</div>
           <div style="font-size:12px;color:var(--text2);" data-i18n="defaultQDesc">שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים</div>
         </div>
         <button class="btn btn-secondary btn-sm" onclick="generateDefaultQuestions()" id="default-q-btn">
@@ -1102,16 +1050,16 @@
 
           <!-- Checkboxes -->
           <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;">
-            <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
+            <label class="mock-check-row" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
               <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockHRGeneric">שאלות HR גנריות</span>
               <input type="checkbox" id="mock-hr-generic" value="hr-generic" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
-            <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
+            <label class="mock-check-row" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
               <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockTechGeneric">שאלות טכניות גנריות</span>
               <input type="checkbox" id="mock-tech-generic" value="tech-generic" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
             <div>
-              <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
+              <label class="mock-check-row" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
                 <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockHRJob">שאלות HR ספציפיות למשרה</span>
                 <input type="checkbox" id="mock-hr-job" value="hr-job" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
               </label>
@@ -1120,7 +1068,7 @@
               </div>
             </div>
             <div>
-              <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
+              <label class="mock-check-row" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
                 <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockTechJob">שאלות טכניות ספציפיות למשרה</span>
                 <input type="checkbox" id="mock-tech-job" value="tech-job" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
               </label>
@@ -1128,7 +1076,7 @@
                 <select id="mock-tech-job-name" style="font-size:13px;"></select>
               </div>
             </div>
-            <label style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
+            <label class="mock-check-row" style="margin:0;display:flex;align-items:center;gap:10px;cursor:pointer;flex-direction:row-reverse;justify-content:flex-end;">
               <span style="font-size:14px;color:var(--text);font-weight:500;" data-i18n="mockAll">כל השאלות</span>
               <input type="checkbox" id="mock-all" value="all" style="width:18px;height:18px;" onchange="updateMockJobSelect()">
             </label>
@@ -1381,7 +1329,7 @@
 <div class="modal-overlay" id="modal-help">
   <div class="modal-sheet" style="max-height:90vh;">
     <div class="modal-handle"></div>
-    <div class="modal-title" data-i18n="helpTitle">❓ איך להשתמש באפליקציה</div>
+    <div class="modal-title" data-i18n="helpTitle">ℹ️ איך להשתמש באפליקציה</div>
     <div id="modal-help-content" style="font-size:14px;color:var(--text2);line-height:2;"></div>
     <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;" data-i18n="helpDownload">📄 הורד מדריך מפורט</button>
     <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;" data-i18n="helpGotIt">הבנתי ✅</button>
@@ -1392,7 +1340,7 @@
 <div class="modal-overlay" id="modal-share">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">👁️ שתף מצב צפייה</div>
+    <div class="modal-title">🔗 שתף מצב צפייה</div>
     <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">צור לינק שיאפשר לאחרים לצפות בנתונים שלך — ללא עריכה, ללא התחברות.</p>
     <div id="share-link-area">
       <button class="btn btn-primary btn-block" onclick="generateShareLink()">🔗 צור לינק צפייה</button>
@@ -2123,7 +2071,7 @@ ${newQList}
       ${Object.entries(groups).map(([topic, questions]) => `
         <div style="margin-bottom:16px;">
           <div class="topic-section-header">
-            <span class="topic-section-icon">📌</span>
+            
             <span class="topic-section-name">${escHtml(topic)}</span>
             <span class="topic-section-count">${questions.length}</span>
           </div>
@@ -2277,7 +2225,7 @@ function renderExtractedQuestions() {
     <div class="extracted-q-item" id="extracted-${i}">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
-        ${q.topic?`<span class="topic-badge">📌 ${escHtml(q.topic)}</span>`:''}
+        ${q.topic?`<span class="topic-badge">${escHtml(q.topic)}</span>`:''}
       </div>
       <div class="extracted-q-text">${escHtml(q.question)}</div>
       <div class="extracted-a-text">${escHtml(q.answer)}</div>
@@ -2854,7 +2802,7 @@ window.groupDrop = function(e, targetIdx) {
 window.toggleAllTopicGroupsBtn = function() {
   allGroupsOpen = !allGroupsOpen;
   const btn = document.getElementById('toggle-all-btn');
-  if (btn) btn.textContent = allGroupsOpen ? 'סגור הכל ^' : 'פתח הכל ▼';
+  if (btn) btn.textContent = allGroupsOpen ? t('btnCloseAll') : t('btnOpenAll');
   toggleAllTopicGroups(allGroupsOpen);
 };
 
@@ -2882,7 +2830,7 @@ function renderQCard(q) {
     <div class="question-card" id="qcard-${q.id}">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
-        ${q.topic ? `<span class="topic-badge">📌 ${escHtml(q.topic)}</span>` : ''}
+        ${q.topic ? `<span class="topic-badge">${escHtml(q.topic)}</span>` : ''}
         ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
         <button class="q-star ${q.difficult?'active':''}" onclick="toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}">⭐</button>
         <button class="btn-video" onclick="findVideo('${q.id}', \`${escAttr(q.question)}\`, \`${escAttr(q.topic||'')}\`)" id="vbtn-${q.id}">
@@ -2930,7 +2878,7 @@ function renderQByTopic(qs) {
   el.innerHTML = sorted.map(([topic, questions]) => `
     <div class="topic-group">
       <div class="topic-section-header">
-        <span class="topic-section-icon">📌</span>
+        
         <span class="topic-section-name">${escHtml(topic)}</span>
         <span class="topic-section-count">${questions.length}</span>
       </div>
@@ -3107,14 +3055,14 @@ window.generateJobPrep = async function() {
 
     document.getElementById('jp-hr-questions').innerHTML = data.hrQuestions.map(q=>`
       <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
-        ${q.topic?`<span class="topic-badge">📌 ${escHtml(q.topic)}</span>`:''}
+        ${q.topic?`<span class="topic-badge">${escHtml(q.topic)}</span>`:''}
         <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${escHtml(q.q)}</div>
         <div style="font-size:12px;color:var(--accent2);">💡 ${escHtml(q.tip)}</div>
         <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('HR','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}','${escAttr(company)}','${escAttr(role)}')">+ הוסף לבנק השאלות</button>
       </div>`).join('');
     document.getElementById('jp-tech-questions').innerHTML = data.techQuestions.map(q=>`
       <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);">
-        ${q.topic?`<span class="topic-badge">📌 ${escHtml(q.topic)}</span>`:''}
+        ${q.topic?`<span class="topic-badge">${escHtml(q.topic)}</span>`:''}
         <div style="font-weight:600;font-size:14px;margin-bottom:4px;">${escHtml(q.q)}</div>
         <div style="font-size:12px;color:var(--accent2);">💡 ${escHtml(q.tip)}</div>
         <button class="btn btn-ghost" style="margin-top:6px;padding:4px 0;" onclick="addToBank('TECH','${escAttr(q.q)}','${escAttr(q.topic||'')}','${jobId}','${escAttr(company)}','${escAttr(role)}')">+ הוסף לבנק השאלות</button>
@@ -3419,10 +3367,10 @@ let LANG = {
     cleanTitle: '🧹 נקה וסדר את הבנק',
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
     phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנן לפי נושא', btnSelectAll: 'בחר הכל',
-    defaultQTitle: '⚡ סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
+    defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
     btnDefaultQ: '✨ קבל שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
-    modalDefaultQTitle: '⚡ סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
-    cardSearchQ: '🔍 חיפוש שאלה',
+    modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
+    cardSearchQ: 'חיפוש וסינון',
     btnAddHR: 'הוסף שאלת HR',
     // Job Prep section
     secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
@@ -3457,8 +3405,8 @@ let LANG = {
     labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
-    defaultQTitle: '⚡ סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
-    btnDefaultQ: '✨ קבל שאלות בסיסיות', defaultQModalTitle: '⚡ סט שאלות בסיסי',
+    defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
+    btnDefaultQ: '✨ קבל שאלות בסיסיות', defaultQModalTitle: 'סט שאלות בסיסי',
     defaultQModalDesc: 'AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.',
     defaultQLoading: 'AI מכין שאלות בסיסיות...',
     btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
@@ -3542,12 +3490,13 @@ let LANG = {
     statusProcess: 'בתהליך', statusInterview: 'בראיונות',
     statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
     tfActive: 'פעיל',
-    piSelectJob: '🎯 בחרי משרה', piSelectJobPh: '-- בחרי משרה --', piCvLinks: '📄 קורות חיים',
-    piAboutMe: '👤 על עצמי — מותאם למשרה', btnGenerate: '✨ צרי', piTips: '💡 הטיפים שלי',
-    piQuestions: '⭐ שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: '⬇ הורד',
+    prioHighSimple: 'חשוב מאוד', prioMediumSimple: 'חשוב', prioLowSimple: 'נחמד לדעת',
+    piSelectJob: 'בחרי משרה', piSelectJobPh: '-- בחרי משרה --', piCvLinks: 'קורות חיים',
+    piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צרי', piTips: 'הטיפים שלי',
+    piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
-    lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼',
+    lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: '💡 טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
@@ -3604,7 +3553,7 @@ let LANG = {
     defaultQTitle: '⚡ Basic Question Set', defaultQDesc: 'Classic interview questions without specific job details',
     btnDefaultQ: '✨ Get Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected to Bank',
     modalDefaultQTitle: '⚡ Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
-    cardSearchQ: '🔍 Search Question',
+    cardSearchQ: 'Search & Filter',
     btnAddHR: 'Add HR Question',
     // Job Prep section
     secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
@@ -3639,8 +3588,8 @@ let LANG = {
     labelQuestion: 'Question', phQuestion: 'Enter interview question...',
     phYourAnswer: 'Write your answer...',
     // Toast & JS messages
-    defaultQTitle: '⚡ Default Question Set', defaultQDesc: 'Classic interview questions without specific job details',
-    btnDefaultQ: '✨ Get Default Questions', defaultQModalTitle: '⚡ Default Question Set',
+    defaultQTitle: 'Default Question Set', defaultQDesc: 'Classic interview questions without specific job details',
+    btnDefaultQ: '✨ Get Default Questions', defaultQModalTitle: 'Default Question Set',
     defaultQModalDesc: 'AI marked the recommended questions. You can change the selection.',
     defaultQLoading: 'AI is preparing default questions...',
     btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected Questions to Bank',
@@ -3724,12 +3673,13 @@ let LANG = {
     statusProcess: 'In Process', statusInterview: 'Interviewing',
     statusOffer: 'Offer', statusNotFit: 'Not a fit',
     tfActive: 'Active',
-    piSelectJob: '🎯 Select a job', piSelectJobPh: '-- Select a job --', piCvLinks: '📄 CV Links',
-    piAboutMe: '👤 About Me — tailored to this job', btnGenerate: '✨ Generate', piTips: '💡 My Tips',
-    piQuestions: '⭐ Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: '⬇ Download',
+    prioHighSimple: 'Must Know', prioMediumSimple: 'Important', prioLowSimple: 'Nice to Know',
+    piSelectJob: 'Select a job', piSelectJobPh: '-- Select a job --', piCvLinks: 'CV Links',
+    piAboutMe: 'About Me — tailored to this job', btnGenerate: 'Generate', piTips: 'My Tips',
+    piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
-    lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼',
+    lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: '💡 Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
@@ -4642,7 +4592,7 @@ window.renderPiQuestions = function() {
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
         ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
         ${q.difficult ? '<span style="font-size:13px;">⭐</span>' : ''}
-        ${q.topic ? `<span style="font-size:11px;color:var(--text3);">📌 ${escHtml(q.topic)}</span>` : ''}
+        ${q.topic ? `<span style="font-size:11px;color:var(--text3);">${escHtml(q.topic)}</span>` : ''}
       </div>
       <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
       <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,150))}${(q.answer||'').length>150?'...':''}</div>
