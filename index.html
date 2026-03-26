@@ -3618,6 +3618,17 @@ function applyLanguage() {
   const isHe = currentLang === 'he';
   document.documentElement.setAttribute('lang', currentLang);
   document.documentElement.setAttribute('dir', isHe ? 'rtl' : 'ltr');
+  // Update header section name on language change
+  const activeSection = document.querySelector('.section.active');
+  if (activeSection) {
+    const sectionId = activeSection.id.replace('sec-', '');
+    const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
+    const nameEl = document.getElementById('current-section-name');
+    if (nameEl) nameEl.textContent = t(sectionNameKeys[sectionId] || sectionId);
+    // Re-render dynamic content that contains translated text
+    if (sectionId === 'tracker' && typeof renderTracker === 'function') renderTracker();
+    if (sectionId === 'questions' && typeof renderQuestions === 'function') renderQuestions();
+  }
     // Fix flex row-reverse elements
   document.querySelectorAll('[style*="row-reverse"]').forEach(el => {
     el.style.flexDirection = isHe ? 'row-reverse' : 'row';
@@ -4421,12 +4432,14 @@ window.saveTrackerApp = async function() {
 };
 
 window.deleteTrackerApp = async function(id) {
-  try {
-    await deleteDoc(doc(db, 'users', currentUser.uid, 'tracker', id));
-    trackerApps = trackerApps.filter(a => a._id !== id);
-    renderTracker();
-    toast(t('toastAppDeleted'));
-  } catch(e) { toast('שגיאה במחיקה', true); }
+  confirmDelete('confirmDeleteTitle', 'confirmDeleteApp', async () => {
+    try {
+      await deleteDoc(doc(db, 'users', currentUser.uid, 'tracker', id));
+      trackerApps = trackerApps.filter(a => a._id !== id);
+      renderTracker();
+      toast(t('toastAppDeleted'));
+    } catch(e) { toast('שגיאה במחיקה', true); }
+  });
 };
 
 
@@ -4434,7 +4447,7 @@ window.deleteTrackerApp = async function(id) {
 
 <!-- Modal: מעקב משרות -->
 <div class="modal-overlay" id="modal-tracker">
-  <div class="modal-sheet">
+  <div class="modal-sheet" style="max-height:90vh;overflow-y:auto;">
     <div class="modal-handle"></div>
     <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
     <label id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
