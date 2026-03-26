@@ -506,6 +506,145 @@
   }
   .inner-section { display: none; }
   .inner-section.active { display: block; }
+
+  /* ============================================================
+     LTR OVERRIDES — English mode (dir="ltr")
+  ============================================================ */
+
+  /* Base direction */
+  [dir="ltr"] body { direction: ltr; text-align: left; }
+
+  /* Typography */
+  [dir="ltr"] .section-title,
+  [dir="ltr"] .section-sub,
+  [dir="ltr"] .card-title,
+  [dir="ltr"] .modal-title { text-align: left; }
+
+  /* Inputs & textareas */
+  [dir="ltr"] input[type="text"],
+  [dir="ltr"] input[type="date"],
+  [dir="ltr"] input[type="datetime-local"],
+  [dir="ltr"] input[type="password"],
+  [dir="ltr"] textarea,
+  [dir="ltr"] select {
+    direction: ltr;
+    text-align: left;
+  }
+
+  /* Labels */
+  [dir="ltr"] label { text-align: left; }
+
+  /* Cards */
+  [dir="ltr"] .card,
+  [dir="ltr"] .question-card,
+  [dir="ltr"] .stat-card { text-align: left; }
+
+  /* Buttons */
+  [dir="ltr"] .btn-block { direction: ltr; }
+
+  /* Answer / gen content */
+  [dir="ltr"] .answer-text { 
+    text-align: left; direction: ltr;
+    border-right: none; border-left: 3px solid var(--border);
+  }
+  [dir="ltr"] .gen-content { 
+    text-align: left; direction: ltr;
+    border-right: none; border-left: 3px solid var(--border);
+  }
+
+  /* Feedback cards */
+  [dir="ltr"] .feedback-card { text-align: left; direction: ltr; }
+  [dir="ltr"] .feedback-card.clarity  { border-right: none; border-left: 3px solid var(--accent); }
+  [dir="ltr"] .feedback-card.improved { border-right: none; border-left: 3px solid var(--accent2); }
+  [dir="ltr"] .feedback-card.followup { border-right: none; border-left: 3px solid var(--accent3); }
+
+  /* History / list items */
+  [dir="ltr"] .history-item { flex-direction: row; }
+  [dir="ltr"] .history-info,
+  [dir="ltr"] .doc-info,
+  [dir="ltr"] .saved-job-info { text-align: left; }
+
+  /* User menu */
+  [dir="ltr"] .user-menu { left: auto; right: 16px; text-align: left; }
+  [dir="ltr"] .user-name,
+  [dir="ltr"] .user-email { text-align: left; }
+
+  /* Modals */
+  [dir="ltr"] .modal-sheet { direction: ltr; }
+
+  /* Collapsible */
+  [dir="ltr"] .collapsible-title { direction: ltr; }
+  [dir="ltr"] .collapsible-header { direction: ltr; }
+
+  /* Login */
+  [dir="ltr"] .login-screen { direction: ltr; }
+  [dir="ltr"] .login-logo,
+  [dir="ltr"] .login-sub,
+  [dir="ltr"] .login-card { text-align: left; direction: ltr; }
+
+  /* Upload zone */
+  [dir="ltr"] .upload-zone { direction: ltr; }
+  [dir="ltr"] .upload-zone-text,
+  [dir="ltr"] .upload-zone-sub { direction: ltr; text-align: center; }
+
+  /* Empty state */
+  [dir="ltr"] .empty-state { direction: ltr; }
+
+  /* Topic sections */
+  [dir="ltr"] .topic-section-header { direction: ltr; }
+  [dir="ltr"] .topic-section-name { direction: ltr; }
+
+  /* Progress bars */
+  [dir="ltr"] .progress-fill { 
+    background: linear-gradient(270deg, var(--accent), #A78BF7);
+  }
+
+  /* Action rows */
+  [dir="ltr"] .q-actions,
+  [dir="ltr"] .history-actions,
+  [dir="ltr"] .doc-actions { direction: ltr; flex-direction: row; }
+
+  /* Doc item */
+  [dir="ltr"] .doc-item { flex-direction: row; }
+
+  /* Saved job item */
+  [dir="ltr"] .saved-job-item { flex-direction: row; }
+
+  /* Stats */
+  [dir="ltr"] .stat-label,
+  [dir="ltr"] .stat-value { text-align: center; }
+
+  /* Header */
+  [dir="ltr"] .app-header { direction: ltr; }
+  [dir="ltr"] .header-right { direction: ltr; }
+
+  /* Bottom nav */
+  [dir="ltr"] .bottom-nav { direction: ltr; }
+
+  /* Chips */
+  [dir="ltr"] .chip { direction: ltr; }
+
+  /* Inner tabs */
+  [dir="ltr"] .inner-tabs { direction: ltr; flex-direction: row; }
+
+  /* Tracker */
+  [dir="ltr"] .tracker-filter { direction: ltr; }
+  [dir="ltr"] #tracker-tbody tr { direction: ltr; }
+  [dir="ltr"] #tracker-tbody td { text-align: left; }
+  [dir="ltr"] table th { text-align: left; }
+
+  /* View mode banner */
+  [dir="ltr"] #view-mode-banner { direction: ltr; }
+
+  /* API banner */
+  [dir="ltr"] #api-key-banner { direction: ltr; }
+
+  /* Flex row-reverse → row */
+  [dir="ltr"] [style*="flex-direction: row-reverse"],
+  [dir="ltr"] [style*="flex-direction:row-reverse"] {
+    flex-direction: row !important;
+  }
+
 </style>
 </head>
 <body>
@@ -3386,6 +3525,10 @@ function applyLanguage() {
   const isHe = currentLang === 'he';
   document.documentElement.setAttribute('lang', currentLang);
   document.documentElement.setAttribute('dir', isHe ? 'rtl' : 'ltr');
+    // Fix flex row-reverse elements
+  document.querySelectorAll('[style*="row-reverse"]').forEach(el => {
+    el.style.flexDirection = isHe ? 'row-reverse' : 'row';
+  });
   // Flip inner tabs direction
   const innerTabs = document.querySelector('.inner-tabs');
   if (innerTabs) innerTabs.style.flexDirection = isHe ? 'row-reverse' : 'row';
