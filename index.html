@@ -641,6 +641,8 @@
   [dir="ltr"] #tracker-tbody tr { direction: ltr; }
   [dir="ltr"] #tracker-tbody td { text-align: left; }
   [dir="ltr"] table th { text-align: left; }
+  [dir="rtl"] table th { text-align: right; }
+  table th { text-align: inherit; }
 
   /* View mode banner */
   [dir="ltr"] #view-mode-banner { direction: ltr; }
@@ -1125,11 +1127,11 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
           <thead>
             <tr style="background:var(--surface2);">
-              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
-              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
-              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
-              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
-              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
               <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);"></th>
             </tr>
           </thead>
@@ -2256,11 +2258,9 @@ window.showSection = function(name, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + name).classList.add('active');
   btn.classList.add('active');
-  // Show section name in header
-  const names = { preinterview: 'לפני ראיון', profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי' };
-  const namesEn = { preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs' };
-  const n = currentLang === 'en' ? namesEn[name] : names[name];
-  document.getElementById('current-section-name').textContent = n || '';
+  // Show section name in header — uses LANG
+  const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
+  document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
   if (name === 'experience' || name === 'profile') renderExperience();
   if (name === 'preinterview') { /* future content */ }
   if (name === 'questions') renderQuestions();
@@ -4344,14 +4344,15 @@ window.renderTracker = function() {
   if (!tbody) return;
 
   // Status pill helper
+  const L = LANG[currentLang] || LANG.he;
   const statusPill = (val, interviewDate) => {
     const now = new Date();
     const soon = interviewDate && (new Date(interviewDate) - now) < 7*24*60*60*1000 && new Date(interviewDate) > now;
-    if (interviewDate || val === 'interview') return `<span class="status-pill status-interview">🎯 ${t('statusInterview') || 'ראיון'}</span>${soon ? ' 🔔' : ''}`;
-    if (val === 'process') return `<span class="status-pill status-process">🔄 ${t('statusProcess') || 'בתהליך'}</span>`;
-    if (val === 'yes') return `<span class="status-pill status-process">✨ ${t('statusInteresting') || 'מעניין'}</span>`;
-    if (val === 'no') return `<span class="status-pill status-notfit">${t('statusNotFit') || 'לא מתאים'}</span>`;
-    if (val === 'pending') return `<span class="status-pill status-pending">⏳ ${t('statusPending') || 'ממתין'}</span>`;
+    if (interviewDate || val === 'interview') return `<span class="status-pill status-interview">🎯 ${L.statusInterview || 'ראיון'}</span>${soon ? ' 🔔' : ''}`;
+    if (val === 'process') return `<span class="status-pill status-process">🔄 ${L.statusProcess || 'בתהליך'}</span>`;
+    if (val === 'yes') return `<span class="status-pill status-process">✨ ${L.statusInteresting || 'מעניין'}</span>`;
+    if (val === 'no') return `<span class="status-pill status-notfit">${L.statusNotFit || 'לא מתאים'}</span>`;
+    if (val === 'pending') return `<span class="status-pill status-pending">⏳ ${L.statusPending || 'ממתין'}</span>`;
     return `<span style="color:var(--text3);font-size:12px;">—</span>`;
   };
 
@@ -4379,9 +4380,9 @@ window.renderTracker = function() {
 
   // Update filter counts
   document.getElementById('tfc-all').textContent = trackerApps.length;
-  document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes').length;
+  document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes'||a.isRelevant==='process'||a.isRelevant==='interesting').length;
   document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
-  document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate).length;
+  document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate||a.isRelevant==='interview').length;
 
   // Update progress bar
   const total = trackerApps.length;
