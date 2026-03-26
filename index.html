@@ -4104,51 +4104,6 @@ window.downloadGuide = function() {
 
 <p style="color:#999;font-size:12px;margin-top:40px;text-align:center;">Generated: ${new Date().toLocaleDateString('en-US')}</p>
 
-<!-- Modal: מעקב משרות -->
-<div class="modal-overlay" id="modal-tracker">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
-    <label id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
-    <input type="date" id="tracker-date">
-    <label>חברה</label>
-    <input type="text" id="tracker-company" placeholder="שם החברה">
-    <label>תפקיד</label>
-    <input type="text" id="tracker-role" placeholder="שם התפקיד">
-    <label>קישור למשרה</label>
-    <input type="text" id="tracker-link" placeholder="https://...">
-    <label data-i18n="lblAppStatus">סטטוס</label>
-    <select id="tracker-relevant">
-      <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
-      <option value="pending" data-i18n="statusPending">⏳ ממתין לתגובה</option>
-      <option value="yes" data-i18n="statusInteresting">✨ מעניין אותי</option>
-      <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
-      <option value="interview" data-i18n="statusInterview">🎯 נקבע ראיון</option>
-      <option value="no" data-i18n="statusNotFit">לא מתאים כרגע</option>
-    </select>
-    <label>תאריך ראיון (אם נקבע)</label>
-    <input type="datetime-local" id="tracker-interview">
-    <label>הערות</label>
-    <textarea id="tracker-notes" rows="3" placeholder="הערות נוספות..."></textarea>
-    <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: אישור מחיקה -->
-<div class="modal-overlay" id="modal-confirm-delete">
-  <div class="modal-sheet" style="max-width:340px;">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="confirm-delete-title">מחיקה</div>
-    <p id="confirm-delete-msg" style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6;"></p>
-    <div style="display:flex;gap:10px;flex-direction:row-reverse;">
-      <button class="btn btn-danger" style="flex:1;" id="confirm-delete-btn">מחק</button>
-      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-confirm-delete')">ביטול</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>` : `<!DOCTYPE html>
 <html lang="he" dir="rtl">
@@ -4473,6 +4428,53 @@ window.deleteTrackerApp = async function(id) {
     toast(t('toastAppDeleted'));
   } catch(e) { toast('שגיאה במחיקה', true); }
 };
+
+
+<!-- Modal: מעקב משרות -->
+<div class="modal-overlay" id="modal-tracker">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
+    <label id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
+    <input type="date" id="tracker-date">
+    <label>חברה</label>
+    <input type="text" id="tracker-company" placeholder="שם החברה">
+    <label>תפקיד</label>
+    <input type="text" id="tracker-role" placeholder="שם התפקיד">
+    <label>קישור למשרה</label>
+    <input type="text" id="tracker-link" placeholder="https://...">
+    <label data-i18n="lblAppStatus">סטטוס</label>
+    <select id="tracker-relevant">
+      <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
+      <option value="pending" data-i18n="statusPending">⏳ ממתין לתגובה</option>
+      <option value="yes" data-i18n="statusInteresting">✨ מעניין אותי</option>
+      <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
+      <option value="interview" data-i18n="statusInterview">🎯 נקבע ראיון</option>
+      <option value="no" data-i18n="statusNotFit">לא מתאים כרגע</option>
+    </select>
+    <label>תאריך ראיון (אם נקבע)</label>
+    <input type="datetime-local" id="tracker-interview">
+    <label>הערות</label>
+    <textarea id="tracker-notes" rows="3" placeholder="הערות נוספות..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn">שמור</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: אישור מחיקה -->
+<div class="modal-overlay" id="modal-confirm-delete">
+  <div class="modal-sheet" style="max-width:340px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="confirm-delete-title">מחיקה</div>
+    <p id="confirm-delete-msg" style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6;"></p>
+    <div style="display:flex;gap:10px;flex-direction:row-reverse;">
+      <button class="btn btn-danger" style="flex:1;" id="confirm-delete-btn">מחק</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-confirm-delete')">ביטול</button>
+    </div>
+  </div>
+</div>
 
 </script>
 </body>
