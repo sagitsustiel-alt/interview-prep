@@ -484,11 +484,20 @@
   }
 
   /* TRACKER */
-  .tracker-filter { background:var(--surface2); border:1px solid var(--border); color:var(--text2); padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; font-family:inherit; }
-  .tracker-filter.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .tracker-filter span { background:rgba(255,255,255,0.2); border-radius:10px; padding:1px 6px; margin-right:4px; font-size:11px; }
-  .tracker-row td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
-  .tracker-row:hover td { background:var(--surface2); }
+  .tracker-filter { background:var(--surface2); border:1.5px solid var(--border); color:var(--text2); padding:7px 14px; border-radius:20px; font-size:12px; cursor:pointer; font-family:inherit; transition:all 0.2s; }
+  .tracker-filter:hover { border-color:var(--accent); color:var(--accent); }
+  .tracker-filter.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 8px rgba(124,108,242,0.25); }
+  .tracker-filter .tfc-count { background:rgba(255,255,255,0.25); border-radius:10px; padding:1px 7px; margin-right:5px; font-size:11px; font-weight:700; }
+  .tracker-filter:not(.active) .tfc-count { background:var(--surface3); color:var(--text3); }
+  .tracker-row td { padding:16px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .tracker-row:hover td { background:#FAFAFE; }
+  .tracker-row:last-child td { border-bottom:none; }
+  .status-pill { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; }
+  .status-pending   { background:#FEF9EC; color:#92400E; border:1px solid #FDE68A; }
+  .status-process   { background:#EFF6FF; color:#1E40AF; border:1px solid #BFDBFE; }
+  .status-interview { background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
+  .status-notfit    { background:#F3F4F6; color:#6B7280; border:1px solid #E5E7EB; }
+  .tracker-soon td  { background:#F0FDF4 !important; }
 
   /* INNER TABS — הכנה ולמידה */
   .inner-tabs {
@@ -1071,39 +1080,71 @@
     <!-- מעקב משרות -->
     <section id="sec-tracker" class="section">
       <h1 class="section-title" data-i18n="secTracker">המשרות שלי</h1>
-      <p class="section-sub" data-i18n="subTracker">עקוב אחרי כל הגשות המועמדות שלך</p>
+      <p class="section-sub" data-i18n="subTracker">עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה</p>
+
+      <!-- Progress Summary -->
+      <div id="tracker-progress" style="background:linear-gradient(135deg,#F5F3FF,#EEF5FF);border:1px solid rgba(124,108,242,0.15);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:none;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-around;">
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:var(--accent);" id="prog-total">0</div>
+            <div style="font-size:11px;color:var(--text2);" data-i18n="progSent">📨 פניות</div>
+          </div>
+          <div style="color:var(--text3);font-size:16px;">→</div>
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:#065F46;" id="prog-interview">0</div>
+            <div style="font-size:11px;color:var(--text2);" data-i18n="progInterview">🎯 ראיונות</div>
+          </div>
+          <div style="color:var(--text3);font-size:16px;">→</div>
+          <div style="text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:#92400E;" id="prog-pending">0</div>
+            <div style="font-size:11px;color:var(--text2);" data-i18n="progPending">⏳ ממתינות</div>
+          </div>
+          <div style="font-size:12px;color:var(--accent);font-weight:600;padding:6px 12px;background:rgba(124,108,242,0.1);border-radius:20px;" data-i18n="progMotivation">💪 את מתקדמת!</div>
+        </div>
+      </div>
+
+      <!-- Search + Add -->
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
         <div style="position:relative;flex:1;min-width:180px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text3);">🔍</span>
-          <input type="text" id="tracker-search" placeholder="חפש חברה או תפקיד..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:34px;margin:0;width:100%;">
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;">🔍</span>
+          <input type="text" id="tracker-search" placeholder="חפש משרות..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:38px;margin:0;width:100%;">
         </div>
-        <button class="btn btn-primary btn-sm" onclick="openTrackerModal()" data-i18n="btnAddApp">+ הוסף פנייה</button>
+        <button class="btn btn-primary" onclick="openTrackerModal()" data-i18n="btnAddApp" style="white-space:nowrap;">+ הוסף משרה</button>
       </div>
-      <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
-        <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)"><span data-i18n="tfAll">הכל</span> <span id="tfc-all">0</span></button>
-        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)"><span data-i18n="tfRelevant">רלוונטי</span> <span id="tfc-yes">0</span></button>
-        <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)"><span data-i18n="tfNotRelevant">לא רלוונטי</span> <span id="tfc-no">0</span></button>
-        <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)"><span data-i18n="tfInterview">יש ראיון</span> <span id="tfc-interview">0</span></button>
+
+      <!-- Filters -->
+      <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
+        <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)"><span data-i18n="tfAll">הכל</span> <span class="tfc-count" id="tfc-all">0</span></button>
+        <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)"><span data-i18n="tfInterview">🎯 ראיון</span> <span class="tfc-count" id="tfc-interview">0</span></button>
+        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)"><span data-i18n="tfRelevant">מעניין אותי</span> <span class="tfc-count" id="tfc-yes">0</span></button>
+        <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)"><span data-i18n="tfNotRelevant">לא מתאים</span> <span class="tfc-count" id="tfc-no">0</span></button>
       </div>
-      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);">
+
+      <!-- Table -->
+      <div style="overflow-x:auto;border-radius:16px;border:1px solid var(--border);background:var(--surface);">
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
           <thead>
             <tr style="background:var(--surface2);">
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colRelevant">רלוונטי</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
-              <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colActions">פעולות</th>
+              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
+              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
+              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
+              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
+              <th style="padding:12px 14px;text-align:right;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
+              <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);"></th>
             </tr>
           </thead>
           <tbody id="tracker-tbody"></tbody>
         </table>
       </div>
-      <div id="tracker-empty" style="display:none;text-align:center;padding:40px 20px;color:var(--text3);">
-        <div style="font-size:32px;margin-bottom:8px;">📋</div>
-        <div>אין פניות עדיין. לחץ "+ הוסף פנייה" להתחיל.</div>
+
+      <!-- Empty state -->
+      <div id="tracker-empty" style="display:none;text-align:center;padding:48px 20px;">
+        <div style="font-size:36px;margin-bottom:12px;">💡</div>
+        <div style="font-weight:600;font-size:15px;color:var(--text);margin-bottom:6px;" data-i18n="trackerEmptyTitle">כל פנייה היא התקדמות</div>
+        <div style="font-size:13px;color:var(--text2);" data-i18n="trackerEmptyDesc">התחילי עם הפנייה הראשונה שלך</div>
+        <button class="btn btn-primary" onclick="openTrackerModal()" style="margin-top:16px;" data-i18n="btnAddApp">+ הוסף משרה</button>
       </div>
+
       <div id="tracker-pagination" style="margin-top:12px;text-align:center;font-size:12px;color:var(--text3);"></div>
     </section>
 
@@ -2385,6 +2426,8 @@ function calcYears(start, end) {
 }
 
 let domainOrder = [];
+let companyOrder = [];
+let capOrder = [];
 
 function renderExperience() {
   const list = localCache.workHistory || [];
@@ -2411,8 +2454,8 @@ function renderExperience() {
   const maxD = Math.max(...Object.values(domainMap), 1);
   const maxC = Math.max(...Object.values(capMap), 1);
   const maxCo = Math.max(...Object.values(companyMap), 1);
-  document.getElementById('company-breakdown').innerHTML = renderBreakdown(companyMap, maxCo);
-  document.getElementById('capability-breakdown').innerHTML = renderBreakdown(capMap, maxC);
+  document.getElementById('company-breakdown').innerHTML = renderBreakdown(companyMap, maxCo, companyOrder, 'company');
+  document.getElementById('capability-breakdown').innerHTML = renderBreakdown(capMap, maxC, capOrder, 'capability');
   renderDomainBreakdown(domainMap, maxD);
 }
 
@@ -2457,18 +2500,52 @@ window.domainDrop = function(e, targetIdx) {
   renderExperience();
 };
 
-function renderBreakdown(map, max) {
-  const sorted = Object.entries(map).sort((a,b) => b[1]-a[1]);
-  if (!sorted.length) return '<p style="color:var(--text3);font-size:13px;">אין נתונים. הוסף/י היסטוריית עבודה תחילה.</p>';
-  return sorted.map(([k,v]) => `
-    <div style="margin-bottom:12px;">
-      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+function renderBreakdown(map, max, orderArr, onDrop) {
+  const allEntries = Object.entries(map).sort((a,b) => b[1]-a[1]);
+  const ordered = orderArr.length
+    ? [...orderArr.filter(k => map[k]).map(k => [k, map[k]]),
+       ...allEntries.filter(([k]) => !orderArr.includes(k))]
+    : allEntries;
+  // sync order
+  orderArr.length = 0;
+  ordered.forEach(([k]) => orderArr.push(k));
+
+  if (!ordered.length) return '<p style="color:var(--text3);font-size:13px;">אין נתונים. הוסף/י היסטוריית עבודה תחילה.</p>';
+
+  return '<p style="font-size:11px;color:var(--text3);margin-bottom:8px;">⠿ גרור לשינוי סדר</p>' +
+    ordered.map(([k,v], idx) => `
+    <div draggable="true"
+      ondragstart="genericDragStart(event,${idx},'${onDrop}')"
+      ondragover="genericDragOver(event)"
+      ondrop="genericDrop(event,${idx},'${onDrop}')"
+      style="margin-bottom:10px;cursor:grab;padding:4px;border-radius:6px;" data-idx="${idx}">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;align-items:center;">
         <span style="color:var(--text2);">${v.toFixed(1)} שנ'</span>
         <span style="color:var(--text);font-weight:500;">${k}</span>
+        <span style="color:var(--text3);font-size:10px;">⠿</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:${(v/max)*100}%"></div></div>
     </div>`).join('');
 }
+
+// Generic drag for company and capability breakdowns
+let genericDragSrc = null;
+let genericDragType = null;
+
+window.genericDragStart = function(e, idx, type) {
+  genericDragSrc = idx;
+  genericDragType = type;
+};
+window.genericDragOver = function(e) { e.preventDefault(); };
+window.genericDrop = function(e, targetIdx, type) {
+  e.preventDefault();
+  if (genericDragSrc === null || genericDragSrc === targetIdx || genericDragType !== type) return;
+  const arr = type === 'company' ? companyOrder : capOrder;
+  const moved = arr.splice(genericDragSrc, 1)[0];
+  arr.splice(targetIdx, 0, moved);
+  genericDragSrc = null;
+  renderExperience();
+};
 
 // ==================== QUESTIONS ====================
 let currentQType = 'HR';
@@ -3327,7 +3404,15 @@ let LANG = {
     lblAppLink: 'קישור למשרה', lblAppRelevant: 'רלוונטי?', lblAppInterview: 'תאריך ראיון',
     lblAppNotes: 'הערות', btnSaveApp: 'שמור',
     trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
-    toastAppAdded: 'הפנייה נוספה ✅', toastAppUpdated: 'הפנייה עודכנה ✅', toastAppDeleted: 'הפנייה נמחקה',
+    toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
+    subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
+    progSent: '📨 פניות', progInterview: '🎯 ראיונות', progPending: '⏳ ממתינות', progMotivation: '💪 את מתקדמת!',
+    btnAddApp: '+ הוסף משרה', phSearchApp: 'חפשי משרות...',
+    lblAppStatus: 'סטטוס', colStatus: 'סטטוס',
+    statusUnknown: 'לא ידוע עדיין', statusPending: '⏳ ממתין לתגובה',
+    statusInteresting: '✨ מעניין אותי', statusProcess: '🔄 בתהליך',
+    statusInterview: '🎯 נקבע ראיון', statusNotFit: 'לא מתאים כרגע',
+    trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
     toastApiKeySavedMsg: 'מפתח API נשמר! ✅',
@@ -3491,7 +3576,15 @@ let LANG = {
     lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Interview Date',
     lblAppNotes: 'Notes', btnSaveApp: 'Save',
     trackerModalAdd: 'Add Application', trackerModalEdit: 'Edit Application',
-    toastAppAdded: 'Application added ✅', toastAppUpdated: 'Application updated ✅', toastAppDeleted: 'Application deleted',
+    toastAppAdded: 'Job added ✅', toastAppUpdated: 'Job updated ✅', toastAppDeleted: 'Job removed',
+    subTracker: 'Track your progress — every application counts',
+    progSent: '📨 Applications', progInterview: '🎯 Interviews', progPending: '⏳ Pending', progMotivation: '💪 Keep going!',
+    btnAddApp: '+ Add Job', phSearchApp: 'Search jobs...',
+    lblAppStatus: 'Status', colStatus: 'Status',
+    statusUnknown: 'Unknown', statusPending: '⏳ Pending',
+    statusInteresting: '✨ Interesting', statusProcess: '🔄 In Process',
+    statusInterview: '🎯 Interview set', statusNotFit: 'Not a fit',
+    trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
     toastApiKeySavedMsg: 'API key saved! ✅',
@@ -4024,11 +4117,14 @@ window.downloadGuide = function() {
     <input type="text" id="tracker-role" placeholder="שם התפקיד">
     <label>קישור למשרה</label>
     <input type="text" id="tracker-link" placeholder="https://...">
-    <label>רלוונטי?</label>
+    <label data-i18n="lblAppStatus">סטטוס</label>
     <select id="tracker-relevant">
-      <option value="">לא ידוע עדיין</option>
-      <option value="yes">כן — רלוונטי</option>
-      <option value="no">לא — לא רלוונטי</option>
+      <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
+      <option value="pending" data-i18n="statusPending">⏳ ממתין לתגובה</option>
+      <option value="yes" data-i18n="statusInteresting">✨ מעניין אותי</option>
+      <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
+      <option value="interview" data-i18n="statusInterview">🎯 נקבע ראיון</option>
+      <option value="no" data-i18n="statusNotFit">לא מתאים כרגע</option>
     </select>
     <label>תאריך ראיון (אם נקבע)</label>
     <input type="datetime-local" id="tracker-interview">
@@ -4235,9 +4331,9 @@ async function loadTrackerApps() {
 window.renderTracker = function() {
   const search = (document.getElementById('tracker-search')?.value || '').toLowerCase();
   let apps = trackerApps.filter(a => {
-    if (trackerFilter === 'yes') return a.isRelevant === 'yes';
+    if (trackerFilter === 'yes') return a.isRelevant === 'yes' || a.isRelevant === 'process';
     if (trackerFilter === 'no') return a.isRelevant === 'no';
-    if (trackerFilter === 'interview') return !!a.interviewDate;
+    if (trackerFilter === 'interview') return !!a.interviewDate || a.isRelevant === 'interview';
     return true;
   }).filter(a => !search || (a.company||'').toLowerCase().includes(search) || (a.role||'').toLowerCase().includes(search));
 
@@ -4247,23 +4343,38 @@ window.renderTracker = function() {
   const empty = document.getElementById('tracker-empty');
   if (!tbody) return;
 
+  // Status pill helper
+  const statusPill = (val, interviewDate) => {
+    const now = new Date();
+    const soon = interviewDate && (new Date(interviewDate) - now) < 7*24*60*60*1000 && new Date(interviewDate) > now;
+    if (interviewDate || val === 'interview') return `<span class="status-pill status-interview">🎯 ${t('statusInterview') || 'ראיון'}</span>${soon ? ' 🔔' : ''}`;
+    if (val === 'process') return `<span class="status-pill status-process">🔄 ${t('statusProcess') || 'בתהליך'}</span>`;
+    if (val === 'yes') return `<span class="status-pill status-process">✨ ${t('statusInteresting') || 'מעניין'}</span>`;
+    if (val === 'no') return `<span class="status-pill status-notfit">${t('statusNotFit') || 'לא מתאים'}</span>`;
+    if (val === 'pending') return `<span class="status-pill status-pending">⏳ ${t('statusPending') || 'ממתין'}</span>`;
+    return `<span style="color:var(--text3);font-size:12px;">—</span>`;
+  };
+
   if (!apps.length) {
     tbody.innerHTML = '';
     if (empty) empty.style.display = 'block';
   } else {
     if (empty) empty.style.display = 'none';
-    tbody.innerHTML = apps.map(a => `
-      <tr class="tracker-row">
-        <td>${a.date||''}</td>
-        <td style="font-weight:600;">${escHtml(a.company||'')}</td>
-        <td>${escHtml(a.role||'')}</td>
-        <td>${a.isRelevant === 'yes' ? '✅' : a.isRelevant === 'no' ? '❌' : '—'}</td>
-        <td style="font-size:12px;color:var(--text2);">${a.interviewDate ? a.interviewDate.replace('T',' ') : '—'}</td>
-        <td style="text-align:center;">
-          <button class="btn btn-ghost" style="padding:3px 8px;font-size:12px;" onclick="editTrackerApp('${a._id}')">✏️</button>
-          <button class="btn btn-ghost" style="padding:3px 8px;font-size:12px;color:var(--danger);" onclick="deleteTrackerApp('${a._id}')">✕</button>
+    const now = new Date();
+    tbody.innerHTML = apps.map(a => {
+      const soon = a.interviewDate && (new Date(a.interviewDate) - now) < 7*24*60*60*1000 && new Date(a.interviewDate) > now;
+      return `
+      <tr class="tracker-row${soon ? ' tracker-soon' : ''}">
+        <td style="font-size:12px;color:var(--text2);">${a.date||''}</td>
+        <td style="font-weight:600;color:var(--text);">${escHtml(a.company||'')}</td>
+        <td style="color:var(--text2);">${escHtml(a.role||'')}</td>
+        <td>${statusPill(a.isRelevant, a.interviewDate)}</td>
+        <td style="font-size:12px;color:var(--text2);">${a.interviewDate ? a.interviewDate.replace('T',' ').substring(0,16) : '—'}</td>
+        <td style="text-align:center;white-space:nowrap;">
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:12px;" onclick="editTrackerApp('${a._id}')">✏️</button>
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:12px;color:var(--danger);" onclick="deleteTrackerApp('${a._id}')">✕</button>
         </td>
-      </tr>`).join('');
+      </tr>`;}).join('');
   }
 
   // Update filter counts
@@ -4271,6 +4382,19 @@ window.renderTracker = function() {
   document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes').length;
   document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
   document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate).length;
+
+  // Update progress bar
+  const total = trackerApps.length;
+  const interviews = trackerApps.filter(a=>!!a.interviewDate || a.isRelevant==='interview').length;
+  const pending = trackerApps.filter(a=>!a.isRelevant || a.isRelevant==='pending').length;
+  const prog = document.getElementById('tracker-progress');
+  if (prog) {
+    prog.style.display = total > 0 ? 'block' : 'none';
+    const el = (id) => document.getElementById(id);
+    if (el('prog-total')) el('prog-total').textContent = total;
+    if (el('prog-interview')) el('prog-interview').textContent = interviews;
+    if (el('prog-pending')) el('prog-pending').textContent = pending;
+  }
 };
 
 window.setTrackerFilter = function(f, btn) {
