@@ -941,21 +941,21 @@
         <button class="btn btn-primary btn-sm" onclick="openTrackerModal()" data-i18n="btnAddApp">+ הוסף פנייה</button>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
-        <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)">הכל <span id="tfc-all">0</span></button>
-        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)">רלוונטי <span id="tfc-yes">0</span></button>
-        <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)">לא רלוונטי <span id="tfc-no">0</span></button>
-        <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)">יש ראיון <span id="tfc-interview">0</span></button>
+        <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)"><span data-i18n="tfAll">הכל</span> <span id="tfc-all">0</span></button>
+        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)"><span data-i18n="tfRelevant">רלוונטי</span> <span id="tfc-yes">0</span></button>
+        <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)"><span data-i18n="tfNotRelevant">לא רלוונטי</span> <span id="tfc-no">0</span></button>
+        <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)"><span data-i18n="tfInterview">יש ראיון</span> <span id="tfc-interview">0</span></button>
       </div>
       <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);">
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
           <thead>
             <tr style="background:var(--surface2);">
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">תאריך</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">חברה</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">תפקיד</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">רלוונטי</th>
-              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">ראיון</th>
-              <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);">פעולות</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colRelevant">רלוונטי</th>
+              <th style="padding:10px 12px;text-align:right;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
+              <th style="padding:10px 12px;text-align:center;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border);" data-i18n="colActions">פעולות</th>
             </tr>
           </thead>
           <tbody id="tracker-tbody"></tbody>
@@ -3873,7 +3873,7 @@ window.downloadGuide = function() {
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
-    <label id="lb-tracker-date">תאריך פנייה</label>
+    <label id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
     <input type="date" id="tracker-date">
     <label>חברה</label>
     <input type="text" id="tracker-company" placeholder="שם החברה">
@@ -4089,7 +4089,7 @@ async function loadTrackerApps() {
   } catch(e) { console.error('tracker load error', e); }
 }
 
-function renderTracker() {
+window.renderTracker = function() {
   const search = (document.getElementById('tracker-search')?.value || '').toLowerCase();
   let apps = trackerApps.filter(a => {
     if (trackerFilter === 'yes') return a.isRelevant === 'yes';
@@ -4129,6 +4129,8 @@ function renderTracker() {
   document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
   document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate).length;
 }
+
+};
 
 window.setTrackerFilter = function(f, btn) {
   trackerFilter = f;
