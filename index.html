@@ -4271,8 +4271,6 @@ window.renderTracker = function() {
   document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes').length;
   document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
   document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate).length;
-}
-
 };
 
 window.setTrackerFilter = function(f, btn) {
