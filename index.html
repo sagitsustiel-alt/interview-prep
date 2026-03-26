@@ -645,7 +645,7 @@
   [dir="ltr"] .chip { direction: ltr; }
 
   /* Inner tabs */
-  [dir="ltr"] .inner-tabs { direction: ltr; flex-direction: row; }
+  [dir="ltr"] .inner-tabs { direction: ltr; flex-direction: row-reverse; }
 
   /* Tracker */
   [dir="ltr"] .tracker-filter { direction: ltr; }
@@ -679,6 +679,13 @@
 
 [dir="ltr"] .mock-check-row { flex-direction: row-reverse; justify-content: flex-end; gap: 10px; }
   [dir="ltr"] .mock-check-row label { text-align: left; }
+
+
+  /* Pre-interview larger titles */
+  .pi-title {
+    font-size: 15px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px; text-transform: none; letter-spacing: 0;
+  }
 
 </style>
 </head>
@@ -766,7 +773,7 @@
 
       <!-- 1. בחירת משרה -->
       <div class="card">
-        <div class="card-title" data-i18n="piSelectJob">בחרי משרה</div>
+        <div class="pi-title" data-i18n="piSelectJob">בחרי משרה</div>
         <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;font-size:13px;">
           <option value="" data-i18n="piSelectJobPh">-- בחרי משרה --</option>
         </select>
@@ -777,16 +784,14 @@
 
         <!-- 2. לינק ל-CV -->
         <div class="card" id="pi-cv-card">
-          <div class="card-title" data-i18n="piCvLinks">קורות חיים</div>
+          <div class="pi-title" data-i18n="piCvLinks">קורות חיים</div>
           <div id="pi-cv-links" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
         </div>
 
         <!-- 3. על עצמי — AI מותאם למשרה -->
         <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;">
-            <div class="card-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
-            <button class="btn btn-primary" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="white-space:nowrap;flex-shrink:0;">צרי</button>
-          </div>
+          <div class="pi-title" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
+          <button class="btn btn-primary btn-block" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="margin-bottom:8px;">צרי</button>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
           </div>
@@ -795,43 +800,48 @@
 
         <!-- 4. טיפים -->
         <div class="card" id="pi-tips-card">
-          <div class="collapsible-header" onclick="toggleCollapsible('pi-tips-body',this)" style="margin-bottom:0;padding:0;">
-            <div class="card-title" data-i18n="piTips" style="margin:0;">הטיפים שלי</div>
-            <span class="collapsible-arrow open"> ▾</span>
+          <div class="collapsible-header" onclick="toggleCollapsible('pi-tips-body',this)" style="margin-bottom:0;padding:10px 0;">
+            <div class="pi-title" data-i18n="piTips" style="margin:0;">הטיפים שלי</div>
+            <span class="collapsible-arrow"> ▾</span>
           </div>
-          <div class="collapsible-body open" id="pi-tips-body" style="padding-top:10px;">
+          <div class="collapsible-body" id="pi-tips-body" style="padding-top:10px;">
             <div id="pi-tips-list"></div>
           </div>
         </div>
 
         <!-- 5. שאלות לפי עדיפות -->
         <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <div class="card-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div>
-            <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
+          <div class="collapsible-header" onclick="toggleCollapsible('pi-q-body',this)" style="padding:10px 0;margin-bottom:0;">
+            <div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div>
+            <span class="collapsible-arrow"> ▾</span>
           </div>
-
-          <!-- פילטרים -->
-          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
-            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-high" checked onchange="renderPiQuestions()" style="width:15px;height:15px;">
-              <span data-i18n="prioHighSimple">חשוב מאוד</span>
-            </label>
-            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-medium" checked onchange="renderPiQuestions()" style="width:15px;height:15px;">
-              <span data-i18n="prioMediumSimple">חשוב</span>
-            </label>
-            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="pi-prio-low" onchange="renderPiQuestions()" style="width:15px;height:15px;">
-              <span data-i18n="prioLowSimple">נחמד לדעת</span>
-            </label>
-            <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()" style="width:15px;height:15px;">
-              <span data-i18n="piDifficultOnly">קשות בלבד</span>
-            </label>
+          <div class="collapsible-body" id="pi-q-body">
+            <div style="padding-top:12px;">
+              <!-- פילטרים + הורד -->
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+                  <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="pi-prio-high" checked onchange="renderPiQuestions()" style="width:15px;height:15px;vertical-align:middle;flex-shrink:0;">
+                    <span data-i18n="prioHighSimple">חשוב מאוד</span>
+                  </label>
+                  <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="pi-prio-medium" checked onchange="renderPiQuestions()" style="width:15px;height:15px;vertical-align:middle;flex-shrink:0;">
+                    <span data-i18n="prioMediumSimple">חשוב</span>
+                  </label>
+                  <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="pi-prio-low" onchange="renderPiQuestions()" style="width:15px;height:15px;vertical-align:middle;flex-shrink:0;">
+                    <span data-i18n="prioLowSimple">נחמד לדעת</span>
+                  </label>
+                  <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;">
+                    <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()" style="width:15px;height:15px;vertical-align:middle;flex-shrink:0;">
+                    <span data-i18n="piDifficultOnly">קשות בלבד</span>
+                  </label>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
+              </div>
+              <div id="pi-questions-list"></div>
+            </div>
           </div>
-
-          <div id="pi-questions-list"></div>
         </div>
 
       </div><!-- end pi-content -->
@@ -848,21 +858,36 @@
     <section id="sec-profile" class="section active">
       <h1 class="section-title" data-i18n="secSetup">הפרופיל שלי</h1>
       <p class="section-sub" data-i18n="subSetup">פרופיל אישי וסיכום ניסיון לראיונות</p>
-      <div class="card">
-        <div class="card-title" data-i18n="cardPitch">הצגה עצמית / Pitch</div>
-        <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()"></textarea>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('card-pitch-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardPitch" style="margin:0;">הצגה עצמית / Pitch</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body" id="card-pitch-body" style="padding:0 16px 16px;">
+          <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()" style="margin-top:10px;"></textarea>
+        </div>
       </div>
-      <div class="card">
-        <div class="card-title" data-i18n="cardCV">קורות חיים מלאים</div>
-        <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()"></textarea>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('card-cv-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardCV" style="margin:0;">קורות חיים מלאים</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body" id="card-cv-body" style="padding:0 16px 16px;">
+          <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()" style="margin-top:10px;"></textarea>
+        </div>
       </div>
-      <div class="card">
-        <div class="card-title" data-i18n="cardWorkHistory">היסטוריית עבודה</div>
-        <div id="work-history-list"></div>
-        <button class="btn btn-secondary btn-block" onclick="openAddWork()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-          <span data-i18n="btnAddRole">הוסף תפקיד</span>
-        </button>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('card-work-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardWorkHistory" style="margin:0;">היסטוריית עבודה</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body" id="card-work-body" style="padding:0 16px 16px;">
+          <div id="work-history-list" style="margin-top:10px;"></div>
+          <button class="btn btn-secondary btn-block" onclick="openAddWork()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            <span data-i18n="btnAddRole">הוסף תפקיד</span>
+          </button>
+        </div>
       </div>
 
 
@@ -872,7 +897,7 @@
           <div class="card-title" data-i18n="cardTips" style="margin:0;">💡 טיפים לראיון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body open" id="tips-body" style="padding-top:12px;">
+        <div class="collapsible-body" id="tips-body" style="padding-top:12px;">
           <div id="tips-list" style="margin-bottom:10px;"></div>
           <div style="display:flex;gap:8px;align-items:center;">
             <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
@@ -902,7 +927,7 @@
           <div class="card-title" data-i18n="cardByCompany" style="margin:0;">לפי חברה</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body open" id="exp-company" style="padding:12px 16px 16px;">
+        <div class="collapsible-body" id="exp-company" style="padding:12px 16px 16px;">
           <div id="company-breakdown"></div>
         </div>
       </div>
@@ -911,7 +936,7 @@
           <div class="card-title" data-i18n="cardByDomain" style="margin:0;">לפי תחום</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body open" id="exp-domain" style="padding:12px 16px 16px;">
+        <div class="collapsible-body" id="exp-domain" style="padding:12px 16px 16px;">
           <div id="domain-breakdown"></div>
         </div>
       </div>
@@ -920,7 +945,7 @@
           <div class="card-title" data-i18n="cardByCapability" style="margin:0;">לפי יכולת</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body open" id="exp-capability" style="padding:12px 16px 16px;">
+        <div class="collapsible-body" id="exp-capability" style="padding:12px 16px 16px;">
           <div id="capability-breakdown"></div>
         </div>
       </div>
@@ -935,9 +960,9 @@
 
       <!-- Inner tab bar -->
       <div class="inner-tabs">
-        <button class="inner-tab-btn active" onclick="showInnerTab('inner-questions', this)" data-i18n="innerTabQuestions">בנק שאלות</button>
-        <button class="inner-tab-btn" onclick="showInnerTab('inner-jobprep', this)" data-i18n="innerTabJob">הכנה למשרה</button>
         <button class="inner-tab-btn" onclick="showInnerTab('inner-mock', this)" data-i18n="innerTabMock">ראיון מדומה</button>
+        <button class="inner-tab-btn" onclick="showInnerTab('inner-jobprep', this)" data-i18n="innerTabJob">הכנה למשרה</button>
+        <button class="inner-tab-btn active" onclick="showInnerTab('inner-questions', this)" data-i18n="innerTabQuestions">בנק שאלות</button>
       </div>
 
       <!-- Sub-section: שאלות -->
@@ -1148,7 +1173,7 @@
       <p class="section-sub" data-i18n="subTracker">עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה</p>
 
       <!-- Progress Summary -->
-      <div id="tracker-progress" style="background:linear-gradient(135deg,#F5F3FF,#EEF5FF);border:1px solid rgba(124,108,242,0.15);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:none;">
+      <div id="tracker-progress" style="background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:none;">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-around;">
           <div style="text-align:center;">
             <div style="font-size:22px;font-weight:700;color:var(--accent);" id="prog-total">0</div>
