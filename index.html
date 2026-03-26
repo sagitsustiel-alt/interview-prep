@@ -669,9 +669,9 @@
 
       <!-- Inner tab bar -->
       <div class="inner-tabs">
-        <button class="inner-tab-btn active" onclick="showInnerTab('inner-questions', this)" data-i18n="innerTabQuestions">שאלות</button>
+        <button class="inner-tab-btn active" onclick="showInnerTab('inner-questions', this)" data-i18n="innerTabQuestions">בנק שאלות</button>
         <button class="inner-tab-btn" onclick="showInnerTab('inner-jobprep', this)" data-i18n="innerTabJob">הכנה למשרה</button>
-        <button class="inner-tab-btn" onclick="showInnerTab('inner-mock', this)" data-i18n="innerTabMock">תרגול</button>
+        <button class="inner-tab-btn" onclick="showInnerTab('inner-mock', this)" data-i18n="innerTabMock">ראיון מדומה</button>
       </div>
 
       <!-- Sub-section: שאלות -->
@@ -983,7 +983,7 @@
 
     <button class="nav-btn" onclick="showSection('questions', this)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
-      <span data-i18n="navLearn">הכנה ולמידה</span>
+      <span data-i18n="navLearn">תרגול והכנה</span>
     </button>
 
 
@@ -2078,7 +2078,7 @@ window.showSection = function(name, btn) {
   btn.classList.add('active');
   // Show section name in header
   const names = { preinterview: 'לפני ראיון', profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי' };
-  const namesEn = { preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'Applications' };
+  const namesEn = { preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs' };
   const n = currentLang === 'en' ? namesEn[name] : names[name];
   document.getElementById('current-section-name').textContent = n || '';
   if (name === 'experience' || name === 'profile') renderExperience();
@@ -3055,7 +3055,7 @@ let LANG = {
     preInterviewComingSoon: 'בקרוב...', preInterviewDesc: 'תוכן החלון יוגדר בקרוב',
     secSetup: 'הפרופיל שלי', subSetup: 'פרופיל אישי וסיכום ניסיון לראיונות', navSetup: 'הפרופיל שלי',
     secLearn: 'תרגול והכנה', subLearn: 'שאלות, הכנה למשרה וראיון מדומה', navLearn: 'תרגול והכנה',
-    innerTabQuestions: 'שאלות', innerTabJob: 'הכנה למשרה', innerTabMock: 'תרגול',
+    innerTabQuestions: 'בנק שאלות', innerTabJob: 'הכנה למשרה', innerTabMock: 'ראיון מדומה',
     secProfile: 'הפרופיל שלי', subProfile: 'בסיס הידע האישי שלך לראיונות',
     cardPitch: 'הצגה עצמית / Pitch', phPitch: 'לדוגמה: אני מנהל תוכניות עם 10 שנות ניסיון ב-AI ו-Cloud. מוביל פרויקטים מקצה לקצה ומתמחה בניהול בעלי עניין ו-Delivery Governance...',
     cardCV: 'קורות חיים מלאים', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
@@ -3218,8 +3218,8 @@ let LANG = {
     secPreInterview: 'Pre-Interview', subPreInterview: 'Final preparation before the interview', navPreInterview: 'Pre-Interview',
     preInterviewComingSoon: 'Coming soon...', preInterviewDesc: 'Content will be defined soon',
     secSetup: 'Profile Setup', subSetup: 'Personal profile and experience summary', navSetup: 'Profile Setup',
-    secLearn: 'Preparation & Practice', subLearn: 'Questions, job prep and mock interview', navLearn: 'Preparation',
-    innerTabQuestions: 'Questions', innerTabJob: 'Job Prep', innerTabMock: 'Practice',
+    secLearn: 'Preparation & Practice', subLearn: 'Questions, job prep and mock interview', navLearn: 'Prep & Practice',
+    innerTabQuestions: 'Question Bank', innerTabJob: 'Job Prep', innerTabMock: 'Mock Interview',
     secProfile: 'My Profile', subProfile: 'Your personal knowledge base for interviews',
     cardPitch: 'Personal Pitch', phPitch: 'e.g. I am a Program Manager with 10 years of experience in AI and Cloud. I lead end-to-end projects and specialize in stakeholder management and Delivery Governance...',
     cardCV: 'Full CV', phCV: 'Paste your CV text here...',
@@ -3342,7 +3342,7 @@ let LANG = {
     confirmDeleteApp: 'This will permanently delete the application.',
     btnDelete: 'Delete',
     // Tracker
-    secTracker: 'Applications Tracker', subTracker: 'Track all your job applications',
+    secTracker: 'My Jobs', subTracker: 'Track all your job applications',
     btnAddApp: '+ Add Application', phSearchApp: 'Search company or role...',
     tfAll: 'All', tfRelevant: 'Relevant', tfNotRelevant: 'Not Relevant', tfInterview: 'Interview',
     colDate: 'Date', colCompany: 'Company', colRole: 'Role', colRelevant: 'Relevant',
@@ -3386,19 +3386,16 @@ function applyLanguage() {
   const isHe = currentLang === 'he';
   document.documentElement.setAttribute('lang', currentLang);
   document.documentElement.setAttribute('dir', isHe ? 'rtl' : 'ltr');
+  // Flip inner tabs direction
+  const innerTabs = document.querySelector('.inner-tabs');
+  if (innerTabs) innerTabs.style.flexDirection = isHe ? 'row-reverse' : 'row';
 
   // Logo & header
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
   document.getElementById('lang-btn').textContent = L.btnLang;
   if (document.getElementById('view-lang-btn')) document.getElementById('view-lang-btn').textContent = L.btnLang;
 
-  // Nav buttons
-  const navBtns = document.querySelectorAll('.nav-btn');
-  const navKeys = ['preinterview','profile','questions','tracker'];
-  navBtns.forEach((btn, i) => {
-    const lastChild = btn.lastChild;
-    if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
-  });
+  // Nav buttons — handled by data-i18n spans
 
   // All data-i18n elements (text content)
   document.querySelectorAll('[data-i18n]').forEach(el => {
