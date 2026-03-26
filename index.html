@@ -4447,33 +4447,63 @@ window.deleteTrackerApp = async function(id) {
 
 <!-- Modal: מעקב משרות -->
 <div class="modal-overlay" id="modal-tracker">
-  <div class="modal-sheet" style="max-height:90vh;overflow-y:auto;">
+  <div class="modal-sheet" style="max-height:92vh;overflow-y:auto;padding:16px 20px 20px;">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="tracker-modal-title">הוסף פנייה</div>
-    <label id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
-    <input type="date" id="tracker-date">
-    <label>חברה</label>
-    <input type="text" id="tracker-company" placeholder="שם החברה">
-    <label>תפקיד</label>
-    <input type="text" id="tracker-role" placeholder="שם התפקיד">
-    <label>קישור למשרה</label>
-    <input type="text" id="tracker-link" placeholder="https://...">
-    <label data-i18n="lblAppStatus">סטטוס</label>
-    <select id="tracker-relevant">
-      <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
-      <option value="pending" data-i18n="statusPending">⏳ ממתין לתגובה</option>
-      <option value="yes" data-i18n="statusInteresting">✨ מעניין אותי</option>
-      <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
-      <option value="interview" data-i18n="statusInterview">🎯 נקבע ראיון</option>
-      <option value="no" data-i18n="statusNotFit">לא מתאים כרגע</option>
-    </select>
-    <label>תאריך ראיון (אם נקבע)</label>
-    <input type="datetime-local" id="tracker-interview">
-    <label>הערות</label>
-    <textarea id="tracker-notes" rows="3" placeholder="הערות נוספות..."></textarea>
-    <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
-      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn">שמור</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
+    <div class="modal-title" id="tracker-modal-title" style="margin-bottom:16px;font-size:18px;">הוסף פנייה</div>
+
+    <!-- Row 1: חברה + תפקיד -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppCompany">חברה</label>
+        <input type="text" id="tracker-company" placeholder="שם החברה" data-i18n-ph="lblAppCompany" style="margin:0;">
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppRole">תפקיד</label>
+        <input type="text" id="tracker-role" placeholder="שם התפקיד" data-i18n-ph="lblAppRole" style="margin:0;">
+      </div>
+    </div>
+
+    <!-- Row 2: סטטוס + תאריך -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppStatus">סטטוס</label>
+        <select id="tracker-relevant" style="margin:0;">
+          <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
+          <option value="pending" data-i18n="statusPending">⏳ ממתין לתגובה</option>
+          <option value="yes" data-i18n="statusInteresting">✨ מעניין אותי</option>
+          <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
+          <option value="interview" data-i18n="statusInterview">🎯 נקבע ראיון</option>
+          <option value="no" data-i18n="statusNotFit">לא מתאים כרגע</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
+        <input type="date" id="tracker-date" style="margin:0;">
+      </div>
+    </div>
+
+    <!-- Row 3: קישור -->
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppLink">קישור למשרה</label>
+      <input type="text" id="tracker-link" placeholder="https://..." style="margin:0;">
+    </div>
+
+    <!-- Row 4: תאריך ראיון -->
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppInterview">תאריך ראיון (אם נקבע)</label>
+      <input type="datetime-local" id="tracker-interview" style="margin:0;">
+    </div>
+
+    <!-- Row 5: הערות -->
+    <div style="margin-bottom:16px;">
+      <label style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;display:block;" data-i18n="lblAppNotes">הערות</label>
+      <textarea id="tracker-notes" rows="2" placeholder="הערות נוספות..." style="margin:0;resize:none;"></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div style="display:flex;gap:10px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn" data-i18n="btnSaveApp">שמור</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
     </div>
   </div>
 </div>
