@@ -8,9 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Job Prep">
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAADC0lEQVR42u3dzU0CYQBFUTpgYWH2YQ0WZCl25FLjwrUs+HlzOSS3gccJITPDx+k09jqfX751rE7P/AIAeIgFN8SCG2SBDbJisL0ZSqD2BigD2+jKoDa2MqiNrAxq4yqD2qjKoDamMqiNqAxq4ymF2nDKgDaaMqiNpRRqQykD2khKoTaQMqCNoxRqwwhoaRG0UZRCbRABLS2CNoZSqA0hoCWgJaATvb992QFooAX0JOa/7AE00LoctBHuhxlqoIEW0MuYoQY6hxlqoIEW0MuYoQYaaAG9jBlqoIEW0MuYoQY6hxlqoIEW0MuYoQYaaAG9jBlqoIEW0MuYoQY6hxlqoIEW0MuYoQYaaAG9jBlqoHOYoQYaaKC1jBlqoJOgVwIaJpiBBhro8FcOmGDOfYeGCmagBTTUOurlQqAFNNQwAw000EBDDfMT3fqGDmagBTTUMAMNNNBAQw0z0FDDDLSAhhpmoIEGGugg6tfPD5iBPi7oX8D/BTTQh0B9CeYV1I4xgPpqmB+N2rkcQF8d8yNRAw31TTA/ArWTk4AGGujnQX0k0M62AxpooJ8H9TUw3wu100dh9gkNNNBAA+0qh6scQAMNtDuF7hS6Uwi0ZzmA9rSdp+2A9jw01ED7xQrQflMovykEGmigYYYaaKCBdradnG0Hs5w+CjTQQMMMNdBAA+1fsORfsGCW/ykEGmigYYYaaKCB7oGGC2qgBTTMOirqE8wqoQZaQMMME9Ce6gMaaKhhBhpooLWM2u5AZ1DbG2iggdYiajsDDTTQRlhEbV+gM6jtCjTQAnoRtT2BBlpAL6K2I9BAC+hF1PYDOoPabkADLaAXUdsLaKAF9CJqOwENtIBeRG0foDOo7QI00LoM9O/LEPdDbQ+ggRbQi6jtADTQAlpAG0NAS0BLtwYNtVKYgRbQ0jJoqJXCDLSAlpZBQ60UZqCVAw21UpiBVg401Ephhlo5zEArBxpqpTBDrRxmqJXDDLVymKFWDjPUymGGWjnMUCuHGWzlIEOtJGawlYMMtpKQ4VYSMdx6BOIfMEMLWKappz4AAAAASUVORK5CYII=">
+<meta name="color-scheme" content="light only">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme: light only;
     --bg: #F7F8FB;
     --surface: #FFFFFF;
     --surface2: #F2F4F8;
@@ -882,14 +884,14 @@
 
     <!-- מעקב משרות -->
     <section id="sec-tracker" class="section">
-      <h1 class="section-title">מעקב משרות</h1>
-      <p class="section-sub">עקוב אחרי כל הגשות המועמדות שלך</p>
+      <h1 class="section-title" data-i18n="secTracker">מעקב משרות</h1>
+      <p class="section-sub" data-i18n="subTracker">עקוב אחרי כל הגשות המועמדות שלך</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
         <div style="position:relative;flex:1;min-width:180px;">
           <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text3);">🔍</span>
-          <input type="text" id="tracker-search" placeholder="חפש חברה או תפקיד..." oninput="renderTracker()" style="padding-right:34px;margin:0;width:100%;">
+          <input type="text" id="tracker-search" placeholder="חפש חברה או תפקיד..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:34px;margin:0;width:100%;">
         </div>
-        <button class="btn btn-primary btn-sm" onclick="openTrackerModal()">+ הוסף פנייה</button>
+        <button class="btn btn-primary btn-sm" onclick="openTrackerModal()" data-i18n="btnAddApp">+ הוסף פנייה</button>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
         <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)">הכל <span id="tfc-all">0</span></button>
@@ -945,7 +947,7 @@
     </button>
     <button class="nav-btn" onclick="showSection('tracker', this)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-      מעקב
+      <span data-i18n="tracker">מעקב</span>
     </button>
   </nav>
 
@@ -1529,10 +1531,12 @@ window.addPastedDoc = function() {
   toast(t('toastDocAdded'));
 };
 
-window.deleteDoc = function(id) {
-  localCache.kbDocs = (localCache.kbDocs||[]).filter(d => d.id !== id);
-  saveProfile();
-  renderKbDocs();
+window.deleteKbDoc = function(id) {
+  confirmDelete('confirmDeleteTitle', 'confirmDeleteDoc', () => {
+    localCache.kbDocs = (localCache.kbDocs||[]).filter(d => d.id !== id);
+    saveProfile();
+    renderKbDocs();
+  });
 };
 
 function renderKbDocs() {
@@ -1556,7 +1560,7 @@ function renderKbDocs() {
     return `
     <div class="doc-item" id="docitem-${d.id}">
       <div class="doc-actions">
-        <button class="btn btn-ghost" onclick="deleteDoc('${d.id}')" style="color:var(--danger);padding:4px 8px;">✕</button>
+        <button class="btn btn-ghost" onclick="deleteKbDoc('${d.id}')" style="color:var(--danger);padding:4px 8px;">✕</button>
       </div>
       <div class="doc-info">
         <div class="doc-name">${escHtml(d.name)}</div>
@@ -2031,8 +2035,8 @@ window.showSection = function(name, btn) {
   document.getElementById('sec-' + name).classList.add('active');
   btn.classList.add('active');
   // Show section name in header
-  const names = { profile: 'פרופיל', experience: 'ניסיון', questions: 'בנק שאלות', jobprep: 'הכנה למשרה', mock: 'תרגול' };
-  const namesEn = { profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job Prep', mock: 'Practice' };
+  const names = { profile: 'פרופיל', experience: 'ניסיון', questions: 'בנק שאלות', jobprep: 'הכנה למשרה', mock: 'תרגול', tracker: 'מעקב משרות' };
+  const namesEn = { profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job Prep', mock: 'Practice', tracker: 'Applications' };
   const n = currentLang === 'en' ? namesEn[name] : names[name];
   document.getElementById('current-section-name').textContent = n || '';
   if (name === 'experience') renderExperience();
@@ -2185,9 +2189,11 @@ window.saveWorkHistory = function() {
 };
 
 window.deleteWork = function(i) {
-  localCache.workHistory.splice(i, 1);
-  saveProfile();
-  renderWorkHistoryList();
+  confirmDelete('confirmDeleteTitle', 'confirmDeleteRole', () => {
+    localCache.workHistory.splice(i, 1);
+    saveProfile();
+    renderWorkHistoryList();
+  });
 };
 
 // ==================== EXPERIENCE ====================
@@ -2643,9 +2649,11 @@ window.cancelMerge = function() {
 };
 
 window.deleteQuestion = async function(id) {
-  localCache.questions = (localCache.questions||[]).filter(q => q.id!==id);
-  await deleteQuestionFromCloud(id);
-  renderQuestions();
+  confirmDelete('confirmDeleteTitle', 'confirmDeleteQuestion', async () => {
+    localCache.questions = (localCache.questions||[]).filter(q => q.id!==id);
+    await deleteQuestionFromCloud(id);
+    renderQuestions();
+  });
 };
 
 // ==================== IMPROVE ====================
@@ -2766,6 +2774,7 @@ function renderSavedJobs() {
 window.deleteSavedJob = async function(id) {
   const job = (localCache.savedJobs||[]).find(j => j.id === id);
   if (!job) return;
+  confirmDelete('confirmDeleteTitle', 'confirmDeleteJob', async () => {
   // Delete only questions tagged with this exact jobId
   const toDelete = (localCache.questions||[]).filter(q => q._jobId === id);
   for (const q of toDelete) {
@@ -2776,7 +2785,8 @@ window.deleteSavedJob = async function(id) {
   saveProfile();
   renderSavedJobs();
   renderQuestions();
-  toast(t('toastJobDeleted', toDelete.length));
+    toast(t('toastJobDeleted', toDelete.length));
+  });
 };
 
 window.addToBank = async function(type, question, topic, jobId, company, role) {
@@ -3111,6 +3121,26 @@ let LANG = {
     toastPickJobTech: 'יש לבחור משרה לסינון טכני.',
     toastFeedbackError: 'הפקת המשוב נכשלה. נסה שוב.',
     toastStopped: 'הסימולציה הופסקה.',
+    // Confirm delete
+    confirmDeleteTitle: 'האם אתה בטוח?',
+    confirmDeleteRole: 'פעולה זו תמחק את התפקיד לצמיתות.',
+    confirmDeleteQuestion: 'פעולה זו תמחק את השאלה לצמיתות.',
+    confirmDeleteJob: 'פעולה זו תמחק את המשרה וכל השאלות הקשורות אליה.',
+    confirmDeleteDoc: 'פעולה זו תמחק את המסמך לצמיתות.',
+    confirmDeleteApp: 'פעולה זו תמחק את הפנייה לצמיתות.',
+    btnDelete: 'מחק',
+    // Tracker
+    secTracker: 'מעקב משרות', subTracker: 'עקוב אחרי כל הגשות המועמדות שלך',
+    btnAddApp: '+ הוסף פנייה', phSearchApp: 'חפש חברה או תפקיד...',
+    tfAll: 'הכל', tfRelevant: 'רלוונטי', tfNotRelevant: 'לא רלוונטי', tfInterview: 'יש ראיון',
+    colDate: 'תאריך', colCompany: 'חברה', colRole: 'תפקיד', colRelevant: 'רלוונטי',
+    colInterview: 'ראיון', colActions: 'פעולות',
+    trackerEmpty: 'אין פניות עדיין. לחץ "+ הוסף פנייה" להתחיל.',
+    lblAppDate: 'תאריך פנייה', lblAppCompany: 'חברה', lblAppRole: 'תפקיד',
+    lblAppLink: 'קישור למשרה', lblAppRelevant: 'רלוונטי?', lblAppInterview: 'תאריך ראיון',
+    lblAppNotes: 'הערות', btnSaveApp: 'שמור',
+    trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
+    toastAppAdded: 'הפנייה נוספה ✅', toastAppUpdated: 'הפנייה עודכנה ✅', toastAppDeleted: 'הפנייה נמחקה',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
     toastApiKeySavedMsg: 'מפתח API נשמר! ✅',
@@ -3250,6 +3280,26 @@ let LANG = {
     toastPickJobTech: 'Please select a job for tech filtering.',
     toastFeedbackError: 'Feedback generation failed. Try again.',
     toastStopped: 'Simulation stopped.',
+    // Confirm delete
+    confirmDeleteTitle: 'Are you sure?',
+    confirmDeleteRole: 'This will permanently delete the role.',
+    confirmDeleteQuestion: 'This will permanently delete the question.',
+    confirmDeleteJob: 'This will permanently delete the job and all related questions.',
+    confirmDeleteDoc: 'This will permanently delete the document.',
+    confirmDeleteApp: 'This will permanently delete the application.',
+    btnDelete: 'Delete',
+    // Tracker
+    secTracker: 'Applications Tracker', subTracker: 'Track all your job applications',
+    btnAddApp: '+ Add Application', phSearchApp: 'Search company or role...',
+    tfAll: 'All', tfRelevant: 'Relevant', tfNotRelevant: 'Not Relevant', tfInterview: 'Interview',
+    colDate: 'Date', colCompany: 'Company', colRole: 'Role', colRelevant: 'Relevant',
+    colInterview: 'Interview', colActions: 'Actions',
+    trackerEmpty: 'No applications yet. Click "+ Add Application" to start.',
+    lblAppDate: 'Application Date', lblAppCompany: 'Company', lblAppRole: 'Role',
+    lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Interview Date',
+    lblAppNotes: 'Notes', btnSaveApp: 'Save',
+    trackerModalAdd: 'Add Application', trackerModalEdit: 'Edit Application',
+    toastAppAdded: 'Application added ✅', toastAppUpdated: 'Application updated ✅', toastAppDeleted: 'Application deleted',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
     toastApiKeySavedMsg: 'API key saved! ✅',
@@ -3291,7 +3341,7 @@ function applyLanguage() {
 
   // Nav buttons
   const navBtns = document.querySelectorAll('.nav-btn');
-  const navKeys = ['profile','experience','questions','jobprep','mock'];
+  const navKeys = ['profile','experience','questions','jobprep','mock','tracker'];
   navBtns.forEach((btn, i) => {
     const lastChild = btn.lastChild;
     if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
@@ -3797,6 +3847,19 @@ window.downloadGuide = function() {
     </div>
   </div>
 </div>
+
+<!-- Modal: אישור מחיקה -->
+<div class="modal-overlay" id="modal-confirm-delete">
+  <div class="modal-sheet" style="max-width:340px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="confirm-delete-title">מחיקה</div>
+    <p id="confirm-delete-msg" style="font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.6;"></p>
+    <div style="display:flex;gap:10px;flex-direction:row-reverse;">
+      <button class="btn btn-danger" style="flex:1;" id="confirm-delete-btn">מחק</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-confirm-delete')">ביטול</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>` : `<!DOCTYPE html>
 <html lang="he" dir="rtl">
@@ -3938,6 +4001,18 @@ window.toast = function(msg, isError=false) {
 
 
 
+
+// ==================== CONFIRM DELETE ====================
+window.confirmDelete = function(titleKey, msgKey, onConfirm) {
+  const L = LANG[currentLang] || LANG.he;
+  document.getElementById('confirm-delete-title').textContent = L[titleKey] || titleKey;
+  document.getElementById('confirm-delete-msg').textContent = L[msgKey] || msgKey;
+  const btn = document.getElementById('confirm-delete-btn');
+  btn.textContent = L.btnDelete || 'מחק';
+  btn.onclick = () => { closeModal('modal-confirm-delete'); onConfirm(); };
+  openModal('modal-confirm-delete');
+};
+
 // ==================== TRACKER ====================
 let trackerApps = [];
 let trackerFilter = 'all';
@@ -4001,7 +4076,7 @@ window.setTrackerFilter = function(f, btn) {
 
 window.openTrackerModal = function() {
   trackerEditId = null;
-  document.getElementById('tracker-modal-title').textContent = 'הוסף פנייה';
+  document.getElementById('tracker-modal-title').textContent = t('trackerModalAdd');
   document.getElementById('tracker-submit-btn').textContent = 'שמור';
   ['tracker-company','tracker-role','tracker-link','tracker-notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('tracker-relevant').value = '';
@@ -4014,8 +4089,8 @@ window.editTrackerApp = function(id) {
   const a = trackerApps.find(x => x._id === id);
   if (!a) return;
   trackerEditId = id;
-  document.getElementById('tracker-modal-title').textContent = 'ערוך פנייה';
-  document.getElementById('tracker-submit-btn').textContent = 'עדכן';
+  document.getElementById('tracker-modal-title').textContent = t('trackerModalEdit');
+  document.getElementById('tracker-submit-btn').textContent = t('btnSaveApp');
   document.getElementById('tracker-company').value = a.company || '';
   document.getElementById('tracker-role').value = a.role || '';
   document.getElementById('tracker-link').value = a.link || '';
@@ -4047,12 +4122,12 @@ window.saveTrackerApp = async function() {
       await setDoc(doc(db, 'users', currentUser.uid, 'tracker', trackerEditId), data);
       const idx = trackerApps.findIndex(a => a._id === trackerEditId);
       if (idx > -1) trackerApps[idx] = { _id: trackerEditId, ...data };
-      toast('הפנייה עודכנה ✅');
+      toast(t('toastAppUpdated'));
     } else {
       const newId = uid();
       await setDoc(doc(db, 'users', currentUser.uid, 'tracker', newId), data);
       trackerApps.push({ _id: newId, ...data });
-      toast('הפנייה נוספה ✅');
+      toast(t('toastAppAdded'));
     }
     closeModal('modal-tracker');
     renderTracker();
@@ -4064,7 +4139,7 @@ window.deleteTrackerApp = async function(id) {
     await deleteDoc(doc(db, 'users', currentUser.uid, 'tracker', id));
     trackerApps = trackerApps.filter(a => a._id !== id);
     renderTracker();
-    toast('הפנייה נמחקה');
+    toast(t('toastAppDeleted'));
   } catch(e) { toast('שגיאה במחיקה', true); }
 };
 
