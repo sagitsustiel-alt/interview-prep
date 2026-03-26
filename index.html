@@ -489,6 +489,23 @@
   .tracker-filter span { background:rgba(255,255,255,0.2); border-radius:10px; padding:1px 6px; margin-right:4px; font-size:11px; }
   .tracker-row td { padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
   .tracker-row:hover td { background:var(--surface2); }
+
+  /* INNER TABS — הכנה ולמידה */
+  .inner-tabs {
+    display: flex; gap: 4px; background: var(--surface2);
+    border-radius: 12px; padding: 4px; margin-bottom: 20px;
+  }
+  .inner-tab-btn {
+    flex: 1; background: none; border: none; color: var(--text2);
+    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 9px 6px; border-radius: 9px; cursor: pointer; transition: all 0.2s;
+  }
+  .inner-tab-btn.active {
+    background: var(--surface); color: var(--text);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  }
+  .inner-section { display: none; }
+  .inner-section.active { display: block; }
 </style>
 </head>
 <body>
@@ -568,9 +585,21 @@
   <main class="main">
 
     <!-- פרופיל -->
+    <!-- לפני ראיון -->
+    <section id="sec-preinterview" class="section">
+      <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
+      <p class="section-sub" data-i18n="subPreInterview">הכנה אחרונה לפני הראיון</p>
+      <div class="card" style="text-align:center;padding:40px 20px;background:linear-gradient(135deg,#F5F3FF,#F7F8FB);">
+        <div style="font-size:40px;margin-bottom:12px;">🎯</div>
+        <div style="font-weight:600;font-size:16px;margin-bottom:8px;" data-i18n="preInterviewComingSoon">בקרוב...</div>
+        <div style="font-size:13px;color:var(--text2);" data-i18n="preInterviewDesc">תוכן החלון יוגדר בקרוב</div>
+      </div>
+    </section>
+
+    <!-- הכנסת נתונים -->
     <section id="sec-profile" class="section active">
-      <h1 class="section-title" data-i18n="secProfile">הפרופיל שלי</h1>
-      <p class="section-sub" data-i18n="subProfile">בסיס הידע האישי שלך לראיונות</p>
+      <h1 class="section-title" data-i18n="secSetup">הפרופיל שלי</h1>
+      <p class="section-sub" data-i18n="subSetup">פרופיל אישי וסיכום ניסיון לראיונות</p>
       <div class="card">
         <div class="card-title" data-i18n="cardPitch">הצגה עצמית / Pitch</div>
         <textarea id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()"></textarea>
@@ -588,14 +617,10 @@
         </button>
       </div>
 
-
-
-    </section>
-
-    <!-- ניסיון -->
-    <section id="sec-experience" class="section">
-      <h1 class="section-title" data-i18n="secExperience">ניסיון</h1>
-      <p class="section-sub" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
+      <!-- ניסיון — חלק שני של אותו הדף -->
+      <div style="margin-top:8px;">
+        <div class="section-title" style="font-size:20px;margin-bottom:4px;" data-i18n="secExperience">ניסיון</div>
+        <p class="section-sub" style="margin-bottom:16px;" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-value" id="stat-total-years">0</div>
@@ -633,11 +658,25 @@
           <div id="capability-breakdown"></div>
         </div>
       </div>
+      </div><!-- end experience subsection -->
     </section>
 
     <!-- שאלות -->
+        <!-- הכנה ולמידה — שאלות + משרה + תרגול -->
     <section id="sec-questions" class="section">
-      <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
+      <h1 class="section-title" data-i18n="secLearn">תרגול והכנה</h1>
+      <p class="section-sub" data-i18n="subLearn">שאלות, הכנה למשרה וראיון מדומה</p>
+
+      <!-- Inner tab bar -->
+      <div class="inner-tabs">
+        <button class="inner-tab-btn active" onclick="showInnerTab('inner-questions', this)" data-i18n="innerTabQuestions">שאלות</button>
+        <button class="inner-tab-btn" onclick="showInnerTab('inner-jobprep', this)" data-i18n="innerTabJob">הכנה למשרה</button>
+        <button class="inner-tab-btn" onclick="showInnerTab('inner-mock', this)" data-i18n="innerTabMock">תרגול</button>
+      </div>
+
+      <!-- Sub-section: שאלות -->
+      <div id="inner-questions" class="inner-section active">
+<h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
       <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
       <!-- COLLAPSIBLE: נהל שאלות (הוסף מסמך + ייבא + נקה) -->
@@ -743,11 +782,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         <span data-i18n="btnAddHR">הוסף שאלת HR</span>
       </button>
-    </section>
+      </div>
 
-    <!-- הכנה למשרה -->
-    <section id="sec-jobprep" class="section">
-      <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
+      <!-- Sub-section: משרה -->
+      <div id="inner-jobprep" class="inner-section">
+<h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
 
       <!-- כפתור שאלות בסיסיות -->
@@ -786,11 +825,11 @@
         <div class="card"><div class="card-title" data-i18n="cardJpHR">שאלות HR למשרה זו</div><div id="jp-hr-questions"></div></div>
         <div class="card"><div class="card-title" data-i18n="cardJpTech">שאלות טכניות / PM</div><div id="jp-tech-questions"></div></div>
       </div>
-    </section>
+      </div>
 
-    <!-- ראיון מדומה -->
-    <section id="sec-mock" class="section">
-      <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
+      <!-- Sub-section: תרגול -->
+      <div id="inner-mock" class="inner-section">
+<h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
       <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
       <div id="mock-setup">
         <div class="card">
@@ -879,12 +918,20 @@
           <button class="btn btn-primary" onclick="resetMock()" data-i18n="btnPracticeAgain">תרגל שוב</button>
         </div>
       </div>
+      </div>
+
     </section>
+
+    <!-- הכנה למשרה -->
+    
+
+    <!-- ראיון מדומה -->
+    
 
 
     <!-- מעקב משרות -->
     <section id="sec-tracker" class="section">
-      <h1 class="section-title" data-i18n="secTracker">מעקב משרות</h1>
+      <h1 class="section-title" data-i18n="secTracker">המשרות שלי</h1>
       <p class="section-sub" data-i18n="subTracker">עקוב אחרי כל הגשות המועמדות שלך</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
         <div style="position:relative;flex:1;min-width:180px;">
@@ -925,29 +972,24 @@
 
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
+    <button class="nav-btn" onclick="showSection('preinterview', this)">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg>
+      <span data-i18n="navPreInterview">לפני ראיון</span>
+    </button>
     <button class="nav-btn active" onclick="showSection('profile', this)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
-      פרופיל
+      <span data-i18n="navSetup">הפרופיל שלי</span>
     </button>
-    <button class="nav-btn" onclick="showSection('experience', this)">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
-      ניסיון
-    </button>
+
     <button class="nav-btn" onclick="showSection('questions', this)">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"/></svg>
-      שאלות
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+      <span data-i18n="navLearn">הכנה ולמידה</span>
     </button>
-    <button class="nav-btn" onclick="showSection('jobprep', this)">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"/></svg>
-      משרה
-    </button>
-    <button class="nav-btn" onclick="showSection('mock', this)">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg>
-      תרגול
-    </button>
+
+
     <button class="nav-btn" onclick="showSection('tracker', this)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-      <span data-i18n="tracker">מעקב</span>
+      <span data-i18n="tracker">המשרות שלי</span>
     </button>
   </nav>
 
@@ -2035,15 +2077,16 @@ window.showSection = function(name, btn) {
   document.getElementById('sec-' + name).classList.add('active');
   btn.classList.add('active');
   // Show section name in header
-  const names = { profile: 'פרופיל', experience: 'ניסיון', questions: 'בנק שאלות', jobprep: 'הכנה למשרה', mock: 'תרגול', tracker: 'מעקב משרות' };
-  const namesEn = { profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job Prep', mock: 'Practice', tracker: 'Applications' };
+  const names = { preinterview: 'לפני ראיון', profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי' };
+  const namesEn = { preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'Applications' };
   const n = currentLang === 'en' ? namesEn[name] : names[name];
   document.getElementById('current-section-name').textContent = n || '';
-  if (name === 'experience') renderExperience();
+  if (name === 'experience' || name === 'profile') renderExperience();
+  if (name === 'preinterview') { /* future content */ }
   if (name === 'questions') renderQuestions();
   if (name === 'profile') loadProfileUI();
-  if (name === 'jobprep') renderSavedJobs();
-  if (name === 'mock') updateMockJobSelect();
+  if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
+  if (name === 'mock') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(3)'); if(b){b.click();} },50); return; }
   if (name === 'tracker') loadTrackerApps();
   window.scrollTo(0, 0);
 };
@@ -3008,6 +3051,11 @@ let LANG = {
     // Nav
     profile: 'פרופיל', experience: 'ניסיון', questions: 'שאלות', jobprep: 'משרה', mock: 'תרגול',
     // Profile section
+    secPreInterview: 'לפני ראיון', subPreInterview: 'הכנה אחרונה לפני הראיון', navPreInterview: 'לפני ראיון',
+    preInterviewComingSoon: 'בקרוב...', preInterviewDesc: 'תוכן החלון יוגדר בקרוב',
+    secSetup: 'הפרופיל שלי', subSetup: 'פרופיל אישי וסיכום ניסיון לראיונות', navSetup: 'הפרופיל שלי',
+    secLearn: 'תרגול והכנה', subLearn: 'שאלות, הכנה למשרה וראיון מדומה', navLearn: 'תרגול והכנה',
+    innerTabQuestions: 'שאלות', innerTabJob: 'הכנה למשרה', innerTabMock: 'תרגול',
     secProfile: 'הפרופיל שלי', subProfile: 'בסיס הידע האישי שלך לראיונות',
     cardPitch: 'הצגה עצמית / Pitch', phPitch: 'לדוגמה: אני מנהל תוכניות עם 10 שנות ניסיון ב-AI ו-Cloud. מוביל פרויקטים מקצה לקצה ומתמחה בניהול בעלי עניין ו-Delivery Governance...',
     cardCV: 'קורות חיים מלאים', phCV: 'הדבק כאן את טקסט קורות החיים שלך...',
@@ -3165,8 +3213,13 @@ let LANG = {
   en: {
     appTitle: 'Interview<span>Prep</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
-    profile: 'Profile', experience: 'Experience', questions: 'Questions', jobprep: 'Job', mock: 'Practice',
+    preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep',
     // Profile section
+    secPreInterview: 'Pre-Interview', subPreInterview: 'Final preparation before the interview', navPreInterview: 'Pre-Interview',
+    preInterviewComingSoon: 'Coming soon...', preInterviewDesc: 'Content will be defined soon',
+    secSetup: 'Profile Setup', subSetup: 'Personal profile and experience summary', navSetup: 'Profile Setup',
+    secLearn: 'Preparation & Practice', subLearn: 'Questions, job prep and mock interview', navLearn: 'Preparation',
+    innerTabQuestions: 'Questions', innerTabJob: 'Job Prep', innerTabMock: 'Practice',
     secProfile: 'My Profile', subProfile: 'Your personal knowledge base for interviews',
     cardPitch: 'Personal Pitch', phPitch: 'e.g. I am a Program Manager with 10 years of experience in AI and Cloud. I lead end-to-end projects and specialize in stakeholder management and Delivery Governance...',
     cardCV: 'Full CV', phCV: 'Paste your CV text here...',
@@ -3341,7 +3394,7 @@ function applyLanguage() {
 
   // Nav buttons
   const navBtns = document.querySelectorAll('.nav-btn');
-  const navKeys = ['profile','experience','questions','jobprep','mock','tracker'];
+  const navKeys = ['preinterview','profile','questions','tracker'];
   navBtns.forEach((btn, i) => {
     const lastChild = btn.lastChild;
     if (lastChild && lastChild.nodeType === 3) lastChild.textContent = L[navKeys[i]];
@@ -4001,6 +4054,19 @@ window.toast = function(msg, isError=false) {
 
 
 
+
+
+// ==================== INNER TABS ====================
+window.showInnerTab = function(id, btn) {
+  document.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  // trigger relevant renders
+  if (id === 'inner-questions') renderQuestions();
+  if (id === 'inner-jobprep') renderSavedJobs();
+  if (id === 'inner-mock') updateMockJobSelect();
+};
 
 // ==================== CONFIRM DELETE ====================
 window.confirmDelete = function(titleKey, msgKey, onConfirm) {
