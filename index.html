@@ -502,10 +502,12 @@
   .tracker-row:hover td { background:#FAFAFE; }
   .tracker-row:last-child td { border-bottom:none; }
   .status-pill { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; }
-  .status-pending   { background:#FEF9EC; color:#92400E; border:1px solid #FDE68A; }
-  .status-process   { background:#EFF6FF; color:#1E40AF; border:1px solid #BFDBFE; }
+  .status-saved     { background:#F3F4F6; color:#6B7280; border:1px solid #E5E7EB; }
+  .status-applied   { background:#EFF6FF; color:#3B82F6; border:1px solid #BFDBFE; }
+  .status-process   { background:#EEF2FF; color:#4F46E5; border:1px solid #C7D2FE; }
   .status-interview { background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
-  .status-notfit    { background:#F3F4F6; color:#6B7280; border:1px solid #E5E7EB; }
+  .status-offer     { background:#FAF5FF; color:#7C3AED; border:1px solid #DDD6FE; }
+  .status-notfit    { background:#F9FAFB; color:#9CA3AF; border:1px solid #F3F4F6; }
   .tracker-soon td  { background:#F0FDF4 !important; }
 
   /* INNER TABS — הכנה ולמידה */
@@ -774,6 +776,24 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
           <span data-i18n="btnAddRole">הוסף תפקיד</span>
         </button>
+      </div>
+
+
+      <!-- טיפים לראיון -->
+      <div class="card" id="card-tips">
+        <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;padding:0;">
+          <div class="card-title" data-i18n="cardTips" style="margin:0;">💡 טיפים לראיון</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body open" id="tips-body" style="padding-top:12px;">
+          <div id="tips-list" style="margin-bottom:10px;"></div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
+              style="flex:1;margin:0;padding:8px 12px;font-size:13px;"
+              onkeydown="if(event.key==='Enter')addTip()">
+            <button class="btn btn-primary btn-sm" onclick="addTip()" data-i18n="btnAddTip">+ הוסף</button>
+          </div>
+        </div>
       </div>
 
       <!-- ניסיון — חלק שני של אותו הדף -->
@@ -1127,7 +1147,7 @@
       <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
         <button class="tracker-filter active" data-f="all" onclick="setTrackerFilter('all',this)"><span data-i18n="tfAll">הכל</span> <span class="tfc-count" id="tfc-all">0</span></button>
         <button class="tracker-filter" data-f="interview" onclick="setTrackerFilter('interview',this)"><span data-i18n="tfInterview">🎯 ראיון</span> <span class="tfc-count" id="tfc-interview">0</span></button>
-        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)"><span data-i18n="tfRelevant">מעניין אותי</span> <span class="tfc-count" id="tfc-yes">0</span></button>
+        <button class="tracker-filter" data-f="yes" onclick="setTrackerFilter('yes',this)"><span data-i18n="tfActive">פעיל</span> <span class="tfc-count" id="tfc-yes">0</span></button>
         <button class="tracker-filter" data-f="no" onclick="setTrackerFilter('no',this)"><span data-i18n="tfNotRelevant">לא מתאים</span> <span class="tfc-count" id="tfc-no">0</span></button>
       </div>
 
@@ -1569,7 +1589,7 @@ onAuthStateChanged(auth, async (user) => {
     if (isViewMode) {
       const viewOk = await checkViewMode();
       if (viewOk) {
-        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); applyLanguage();
+        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); loadTips(); applyLanguage();
         return;
       }
     }
@@ -1588,7 +1608,7 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('app').style.display = 'block';
       const viewOk = await checkViewMode();
       if (viewOk) {
-        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); applyLanguage();
+        loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); loadTips(); applyLanguage();
       } else {
         document.getElementById('app').style.display = 'none';
         document.getElementById('login-screen').style.display = 'flex';
@@ -2270,7 +2290,7 @@ window.showSection = function(name, btn) {
   // Show section name in header — uses LANG
   const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
   document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
-  if (name === 'experience' || name === 'profile') renderExperience();
+  if (name === 'experience' || name === 'profile') { renderExperience(); loadTips(); }
   if (name === 'preinterview') { /* future content */ }
   if (name === 'questions') renderQuestions();
   if (name === 'profile') loadProfileUI();
@@ -3420,9 +3440,10 @@ let LANG = {
     progSent: '📨 פניות', progInterview: '🎯 ראיונות', progPending: '⏳ ממתינות', progMotivation: '💪 את מתקדמת!',
     btnAddApp: '+ הוסף משרה', phSearchApp: 'חפשי משרות...',
     lblAppStatus: 'סטטוס', colStatus: 'סטטוס',
-    statusUnknown: 'לא ידוע עדיין', statusPending: '⏳ ממתין לתגובה',
-    statusInteresting: '✨ מעניין אותי', statusProcess: '🔄 בתהליך',
-    statusInterview: '🎯 נקבע ראיון', statusNotFit: 'לא מתאים כרגע',
+    statusSaved: 'שמורה', statusApplied: 'פנייה נשלחה',
+    statusProcess: 'בתהליך', statusInterview: 'בראיונות',
+    statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
+    tfActive: 'פעיל',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
@@ -3594,9 +3615,10 @@ let LANG = {
     progSent: '📨 Applications', progInterview: '🎯 Interviews', progPending: '⏳ Pending', progMotivation: '💪 Keep going!',
     btnAddApp: '+ Add Job', phSearchApp: 'Search jobs...',
     lblAppStatus: 'Status', colStatus: 'Status',
-    statusUnknown: 'Unknown', statusPending: '⏳ Pending',
-    statusInteresting: '✨ Interesting', statusProcess: '🔄 In Process',
-    statusInterview: '🎯 Interview set', statusNotFit: 'Not a fit',
+    statusSaved: 'Saved', statusApplied: 'Applied',
+    statusProcess: 'In Process', statusInterview: 'Interviewing',
+    statusOffer: 'Offer', statusNotFit: 'Not a fit',
+    tfActive: 'Active',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
@@ -4289,9 +4311,9 @@ window.showInnerTab = function(id, btn) {
 function updateTrackerModalLang() {
   // Select options
   const opts = {
-    '': t('statusUnknown'), 'pending': t('statusPending'),
-    'yes': t('statusInteresting'), 'process': t('statusProcess'),
-    'interview': t('statusInterview'), 'no': t('statusNotFit')
+    'saved': t('statusSaved'), 'applied': t('statusApplied'),
+    'process': t('statusProcess'), 'interview': t('statusInterview'),
+    'offer': t('statusOffer'), 'no': t('statusNotFit')
   };
   const sel = document.getElementById('tracker-relevant');
   if (sel) Array.from(sel.options).forEach(o => { if (opts[o.value] !== undefined) o.text = opts[o.value]; });
@@ -4314,6 +4336,61 @@ function updateTrackerModalLang() {
     if (el) el.placeholder = ph;
   });
 }
+
+
+// ==================== TIPS ====================
+let interviewTips = [];
+
+async function loadTips() {
+  if (!currentUser) return;
+  try {
+    const snap = await getDoc(userDoc('data/profile'));
+    if (snap.exists()) {
+      interviewTips = snap.data().tips || [];
+      renderTips();
+    }
+  } catch(e) {}
+}
+
+async function saveTips() {
+  if (!currentUser) return;
+  try {
+    await setDoc(userDoc('data/profile'), { tips: interviewTips }, { merge: true });
+  } catch(e) {}
+}
+
+function renderTips() {
+  const el = document.getElementById('tips-list');
+  if (!el) return;
+  if (!interviewTips.length) {
+    el.innerHTML = `<p style="font-size:13px;color:var(--text3);margin-bottom:8px;">${t('phTip')}</p>`;
+    return;
+  }
+  el.innerHTML = interviewTips.map((tip, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:6px;">
+      <span style="flex:1;font-size:13px;line-height:1.5;">• ${escHtml(tip)}</span>
+      <button class="btn btn-ghost" style="padding:2px 6px;font-size:11px;color:var(--danger);flex-shrink:0;" onclick="deleteTip(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.addTip = async function() {
+  const input = document.getElementById('tip-input');
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  interviewTips.push(val);
+  input.value = '';
+  renderTips();
+  await saveTips();
+  toast(t('toastTipAdded'));
+};
+
+window.deleteTip = async function(i) {
+  interviewTips.splice(i, 1);
+  renderTips();
+  await saveTips();
+  toast(t('toastTipDeleted'));
+};
 
 // ==================== CONFIRM DELETE ====================
 window.confirmDelete = function(titleKey, msgKey, onConfirm) {
@@ -4359,12 +4436,17 @@ window.renderTracker = function() {
   const statusPill = (val, interviewDate) => {
     const now = new Date();
     const soon = interviewDate && (new Date(interviewDate) - now) < 7*24*60*60*1000 && new Date(interviewDate) > now;
-    if (interviewDate || val === 'interview') return `<span class="status-pill status-interview">🎯 ${L.statusInterview || 'ראיון'}</span>${soon ? ' 🔔' : ''}`;
-    if (val === 'process') return `<span class="status-pill status-process">🔄 ${L.statusProcess || 'בתהליך'}</span>`;
-    if (val === 'yes') return `<span class="status-pill status-process">✨ ${L.statusInteresting || 'מעניין'}</span>`;
-    if (val === 'no') return `<span class="status-pill status-notfit">${L.statusNotFit || 'לא מתאים'}</span>`;
-    if (val === 'pending') return `<span class="status-pill status-pending">⏳ ${L.statusPending || 'ממתין'}</span>`;
-    return `<span style="color:var(--text3);font-size:12px;">—</span>`;
+    const bells = soon ? ' 🔔' : '';
+    if (val === 'saved')     return `<span class="status-pill status-saved">📌 ${L.statusSaved || 'שמורה'}</span>`;
+    if (val === 'applied')   return `<span class="status-pill status-applied">📨 ${L.statusApplied || 'נשלחה'}</span>`;
+    if (val === 'process')   return `<span class="status-pill status-process">🔄 ${L.statusProcess || 'בתהליך'}</span>`;
+    if (val === 'interview') return `<span class="status-pill status-interview">🎯 ${L.statusInterview || 'ראיונות'}</span>${bells}`;
+    if (val === 'offer')     return `<span class="status-pill status-offer">🏆 ${L.statusOffer || 'הצעה'}</span>`;
+    if (val === 'no')        return `<span class="status-pill status-notfit">${L.statusNotFit || 'לא מתאים'}</span>`;
+    // Legacy values
+    if (val === 'yes' || val === 'pending') return `<span class="status-pill status-applied">📨 ${L.statusApplied || 'נשלחה'}</span>`;
+    if (interviewDate)       return `<span class="status-pill status-interview">🎯 ${L.statusInterview || 'ראיונות'}</span>${bells}`;
+    return `<span class="status-pill status-saved">📌 ${L.statusSaved || 'שמורה'}</span>`;
   };
 
   if (!apps.length) {
@@ -4391,9 +4473,9 @@ window.renderTracker = function() {
 
   // Update filter counts
   document.getElementById('tfc-all').textContent = trackerApps.length;
-  document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>a.isRelevant==='yes'||a.isRelevant==='process'||a.isRelevant==='interesting').length;
+  document.getElementById('tfc-yes').textContent = trackerApps.filter(a=>['applied','process','offer'].includes(a.isRelevant)).length;
   document.getElementById('tfc-no').textContent = trackerApps.filter(a=>a.isRelevant==='no').length;
-  document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>!!a.interviewDate||a.isRelevant==='interview').length;
+  document.getElementById('tfc-interview').textContent = trackerApps.filter(a=>a.isRelevant==='interview'||!!a.interviewDate).length;
 
   // Update progress bar
   const total = trackerApps.length;
@@ -4520,11 +4602,11 @@ window.deleteTrackerApp = async function(id) {
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppStatus">סטטוס</label>
         <select id="tracker-relevant" style="margin:0;padding:8px 10px;font-size:12px;">
-          <option value="" data-i18n="statusUnknown">לא ידוע עדיין</option>
-          <option value="pending" data-i18n="statusPending">⏳ ממתין</option>
-          <option value="yes" data-i18n="statusInteresting">✨ מעניין</option>
+          <option value="saved" data-i18n="statusSaved">📌 שמורה</option>
+          <option value="applied" data-i18n="statusApplied">📨 פנייה נשלחה</option>
           <option value="process" data-i18n="statusProcess">🔄 בתהליך</option>
-          <option value="interview" data-i18n="statusInterview">🎯 ראיון</option>
+          <option value="interview" data-i18n="statusInterview">🎯 בראיונות</option>
+          <option value="offer" data-i18n="statusOffer">🏆 הצעת עבודה</option>
           <option value="no" data-i18n="statusNotFit">לא מתאים</option>
         </select>
       </div>
