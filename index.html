@@ -1140,7 +1140,7 @@
               <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
               <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
               <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון הבא</th>
               <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);"></th>
             </tr>
           </thead>
@@ -3407,12 +3407,14 @@ let LANG = {
     btnAddApp: '+ הוסף פנייה', phSearchApp: 'חפש חברה או תפקיד...',
     tfAll: 'הכל', tfRelevant: 'רלוונטי', tfNotRelevant: 'לא רלוונטי', tfInterview: 'יש ראיון',
     colDate: 'תאריך', colCompany: 'חברה', colRole: 'תפקיד', colRelevant: 'רלוונטי',
-    colInterview: 'ראיון', colActions: 'פעולות',
+    colInterview: 'ראיון הבא', colActions: 'פעולות',
     trackerEmpty: 'אין פניות עדיין. לחץ "+ הוסף פנייה" להתחיל.',
     lblAppDate: 'תאריך פנייה', lblAppCompany: 'חברה', lblAppRole: 'תפקיד',
     lblAppLink: 'קישור למשרה', lblAppRelevant: 'רלוונטי?', lblAppInterview: 'תאריך ראיון',
     lblAppNotes: 'הערות', btnSaveApp: 'שמור',
     trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
+    phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות נוספות...', btnCancel: 'ביטול',
+    lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'הדביקי לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
     subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
     progSent: '📨 פניות', progInterview: '🎯 ראיונות', progPending: '⏳ ממתינות', progMotivation: '💪 את מתקדמת!',
@@ -3579,12 +3581,14 @@ let LANG = {
     btnAddApp: '+ Add Application', phSearchApp: 'Search company or role...',
     tfAll: 'All', tfRelevant: 'Relevant', tfNotRelevant: 'Not Relevant', tfInterview: 'Interview',
     colDate: 'Date', colCompany: 'Company', colRole: 'Role', colRelevant: 'Relevant',
-    colInterview: 'Interview', colActions: 'Actions',
+    colInterview: 'Next Interview', colActions: 'Actions',
     trackerEmpty: 'No applications yet. Click "+ Add Application" to start.',
     lblAppDate: 'Application Date', lblAppCompany: 'Company', lblAppRole: 'Role',
-    lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Interview Date',
+    lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Next Interview Date',
     lblAppNotes: 'Notes', btnSaveApp: 'Save',
     trackerModalAdd: 'Add Application', trackerModalEdit: 'Edit Application',
+    phCompany: 'Company name', phRole: 'Job title', phNotes: 'Additional notes...', btnCancel: 'Cancel',
+    lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'Paste Google Drive link...',
     toastAppAdded: 'Job added ✅', toastAppUpdated: 'Job updated ✅', toastAppDeleted: 'Job removed',
     subTracker: 'Track your progress — every application counts',
     progSent: '📨 Applications', progInterview: '🎯 Interviews', progPending: '⏳ Pending', progMotivation: '💪 Keep going!',
@@ -3636,6 +3640,7 @@ function applyLanguage() {
     if (nameEl) nameEl.textContent = t(sectionNameKeys[sectionId] || sectionId);
     // Re-render dynamic content that contains translated text
     if (sectionId === 'tracker' && typeof renderTracker === 'function') renderTracker();
+    if (typeof updateTrackerModalLang === 'function') updateTrackerModalLang();
     if (sectionId === 'questions' && typeof renderQuestions === 'function') renderQuestions();
   }
     // Fix flex row-reverse elements
@@ -4279,6 +4284,37 @@ window.showInnerTab = function(id, btn) {
   if (id === 'inner-mock') updateMockJobSelect();
 };
 
+
+// Update tracker modal texts on language change
+function updateTrackerModalLang() {
+  // Select options
+  const opts = {
+    '': t('statusUnknown'), 'pending': t('statusPending'),
+    'yes': t('statusInteresting'), 'process': t('statusProcess'),
+    'interview': t('statusInterview'), 'no': t('statusNotFit')
+  };
+  const sel = document.getElementById('tracker-relevant');
+  if (sel) Array.from(sel.options).forEach(o => { if (opts[o.value] !== undefined) o.text = opts[o.value]; });
+  // Buttons
+  const cancelBtn = document.getElementById('tracker-cancel-btn');
+  if (cancelBtn) cancelBtn.textContent = t('btnCancel');
+  const submitBtn = document.getElementById('tracker-submit-btn');
+  if (submitBtn && !trackerEditId) submitBtn.textContent = t('btnSaveApp');
+  // Placeholders
+  const fields = {
+    'tracker-company': t('phCompany'),
+    'tracker-role': t('phRole'),
+    'tracker-notes': t('phNotes'),
+    'tracker-link': 'https://...',
+    'tracker-cv-word': t('phCvLink'),
+    'tracker-cv-pdf': t('phCvLink'),
+  };
+  Object.entries(fields).forEach(([id, ph]) => {
+    const el = document.getElementById(id);
+    if (el) el.placeholder = ph;
+  });
+}
+
 // ==================== CONFIRM DELETE ====================
 window.confirmDelete = function(titleKey, msgKey, onConfirm) {
   const L = LANG[currentLang] || LANG.he;
@@ -4383,8 +4419,10 @@ window.setTrackerFilter = function(f, btn) {
 window.openTrackerModal = function() {
   trackerEditId = null;
   document.getElementById('tracker-modal-title').textContent = t('trackerModalAdd');
+  document.getElementById('tracker-submit-btn').textContent = t('btnSaveApp');
+  updateTrackerModalLang();
   document.getElementById('tracker-submit-btn').textContent = 'שמור';
-  ['tracker-company','tracker-role','tracker-link','tracker-notes'].forEach(id => document.getElementById(id).value = '');
+  ['tracker-company','tracker-role','tracker-link','tracker-notes','tracker-cv-word','tracker-cv-pdf'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('tracker-relevant').value = '';
   document.getElementById('tracker-interview').value = '';
   document.getElementById('tracker-date').value = new Date().toISOString().split('T')[0];
@@ -4396,11 +4434,14 @@ window.editTrackerApp = function(id) {
   if (!a) return;
   trackerEditId = id;
   document.getElementById('tracker-modal-title').textContent = t('trackerModalEdit');
+  updateTrackerModalLang();
   document.getElementById('tracker-submit-btn').textContent = t('btnSaveApp');
   document.getElementById('tracker-company').value = a.company || '';
   document.getElementById('tracker-role').value = a.role || '';
   document.getElementById('tracker-link').value = a.link || '';
   document.getElementById('tracker-notes').value = a.notes || '';
+  document.getElementById('tracker-cv-word').value = a.cvWord || '';
+  document.getElementById('tracker-cv-pdf').value = a.cvPdf || '';
   document.getElementById('tracker-relevant').value = a.isRelevant || '';
   document.getElementById('tracker-interview').value = a.interviewDate || '';
   document.getElementById('tracker-date').value = a.date || '';
@@ -4417,6 +4458,8 @@ window.saveTrackerApp = async function() {
     role,
     date: document.getElementById('tracker-date').value,
     link: document.getElementById('tracker-link').value.trim(),
+    cvWord: document.getElementById('tracker-cv-word').value.trim(),
+    cvPdf: document.getElementById('tracker-cv-pdf').value.trim(),
     isRelevant: document.getElementById('tracker-relevant').value,
     interviewDate: document.getElementById('tracker-interview').value,
     notes: document.getElementById('tracker-notes').value.trim(),
@@ -4464,11 +4507,11 @@ window.deleteTrackerApp = async function(id) {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppCompany">חברה</label>
-        <input type="text" id="tracker-company" placeholder="שם החברה" style="margin:0;padding:8px 10px;font-size:13px;">
+        <input type="text" id="tracker-company" placeholder="שם החברה" data-i18n-ph="phCompany" style="margin:0;padding:8px 10px;font-size:13px;">
       </div>
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppRole">תפקיד</label>
-        <input type="text" id="tracker-role" placeholder="שם התפקיד" style="margin:0;padding:8px 10px;font-size:13px;">
+        <input type="text" id="tracker-role" placeholder="שם התפקיד" data-i18n-ph="phRole" style="margin:0;padding:8px 10px;font-size:13px;">
       </div>
     </div>
 
@@ -4498,21 +4541,33 @@ window.deleteTrackerApp = async function(id) {
         <input type="text" id="tracker-link" placeholder="https://..." style="margin:0;padding:8px 10px;font-size:12px;">
       </div>
       <div>
-        <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppInterview">תאריך ראיון</label>
+        <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppInterview">תאריך ראיון הבא</label>
         <input type="datetime-local" id="tracker-interview" style="margin:0;padding:8px 4px;font-size:11px;">
+      </div>
+    </div>
+
+    <!-- CV Links -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div>
+        <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblCvWord">📄 CV — Word</label>
+        <input type="text" id="tracker-cv-word" placeholder="https://drive.google.com/..." data-i18n-ph="phCvLink" style="margin:0;padding:8px 10px;font-size:11px;">
+      </div>
+      <div>
+        <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblCvPdf">📕 CV — PDF</label>
+        <input type="text" id="tracker-cv-pdf" placeholder="https://drive.google.com/..." data-i18n-ph="phCvLink" style="margin:0;padding:8px 10px;font-size:11px;">
       </div>
     </div>
 
     <!-- הערות -->
     <div style="margin-bottom:12px;">
       <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppNotes">הערות</label>
-      <textarea id="tracker-notes" rows="2" placeholder="הערות נוספות..." style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
+      <textarea id="tracker-notes" rows="2" placeholder="הערות נוספות..." data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
     </div>
 
     <!-- Buttons -->
     <div style="display:flex;gap:8px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveTrackerApp()" id="tracker-submit-btn" data-i18n="btnSaveApp">שמור</button>
-      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn">ביטול</button>
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-tracker')" id="tracker-cancel-btn" data-i18n="btnCancel">ביטול</button>
     </div>
   </div>
 </div>
