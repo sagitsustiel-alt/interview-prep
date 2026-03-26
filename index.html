@@ -758,12 +758,86 @@
     <!-- לפני ראיון -->
     <section id="sec-preinterview" class="section">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
-      <p class="section-sub" data-i18n="subPreInterview">הכנה אחרונה לפני הראיון</p>
-      <div class="card" style="text-align:center;padding:40px 20px;background:linear-gradient(135deg,#F5F3FF,#F7F8FB);">
-        <div style="font-size:40px;margin-bottom:12px;">🎯</div>
-        <div style="font-weight:600;font-size:16px;margin-bottom:8px;" data-i18n="preInterviewComingSoon">בקרוב...</div>
-        <div style="font-size:13px;color:var(--text2);" data-i18n="preInterviewDesc">תוכן החלון יוגדר בקרוב</div>
+      <p class="section-sub" data-i18n="subPreInterview">כל מה שצריך לפני הראיון — במקום אחד</p>
+
+      <!-- 1. בחירת משרה -->
+      <div class="card">
+        <div class="card-title" data-i18n="piSelectJob">🎯 בחרי משרה</div>
+        <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;font-size:13px;">
+          <option value="" data-i18n="piSelectJobPh">-- בחרי משרה --</option>
+        </select>
       </div>
+
+      <!-- תוכן שנטען לאחר בחירת משרה -->
+      <div id="pi-content" style="display:none;">
+
+        <!-- 2. לינק ל-CV -->
+        <div class="card" id="pi-cv-card">
+          <div class="card-title" data-i18n="piCvLinks">📄 קורות חיים</div>
+          <div id="pi-cv-links" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+        </div>
+
+        <!-- 3. על עצמי — AI מותאם למשרה -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div class="card-title" style="margin:0;" data-i18n="piAboutMe">👤 על עצמי — מותאם למשרה</div>
+            <button class="btn btn-primary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate">✨ צרי</button>
+          </div>
+          <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+          </div>
+          <div id="pi-aboutme-content" style="font-size:13px;line-height:1.7;color:var(--text);white-space:pre-wrap;"></div>
+        </div>
+
+        <!-- 4. טיפים -->
+        <div class="card" id="pi-tips-card">
+          <div class="collapsible-header" onclick="toggleCollapsible('pi-tips-body',this)" style="margin-bottom:0;padding:0;">
+            <div class="card-title" data-i18n="piTips" style="margin:0;">💡 הטיפים שלי</div>
+            <span class="collapsible-arrow open"> ▾</span>
+          </div>
+          <div class="collapsible-body open" id="pi-tips-body" style="padding-top:10px;">
+            <div id="pi-tips-list"></div>
+          </div>
+        </div>
+
+        <!-- 5. שאלות לפי עדיפות -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div class="card-title" style="margin:0;" data-i18n="piQuestions">⭐ שאלות להכנה</div>
+            <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
+          </div>
+
+          <!-- פילטרים -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-high" checked onchange="renderPiQuestions()">
+              <span class="priority-badge prio-high" data-i18n="prioHigh">🔴 חשוב מאוד</span>
+            </label>
+            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-medium" checked onchange="renderPiQuestions()">
+              <span class="priority-badge prio-medium" data-i18n="prioMedium">🟠 חשוב</span>
+            </label>
+            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="pi-prio-low" onchange="renderPiQuestions()">
+              <span class="priority-badge prio-low" data-i18n="prioLow">⚪ נחמד לדעת</span>
+            </label>
+            <label style="font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()">
+              <span style="font-size:12px;">⭐ <span data-i18n="piDifficultOnly">קשות בלבד</span></span>
+            </label>
+          </div>
+
+          <div id="pi-questions-list"></div>
+        </div>
+
+      </div><!-- end pi-content -->
+
+      <!-- empty state when no jobs -->
+      <div id="pi-empty" style="display:none;text-align:center;padding:30px 20px;color:var(--text3);">
+        <div style="font-size:32px;margin-bottom:8px;">📋</div>
+        <div data-i18n="piNoJobs">אין משרות עם ראיון. הוסיפי משרה בחלון "המשרות שלי"</div>
+      </div>
+
     </section>
 
     <!-- הכנסת נתונים -->
@@ -2303,7 +2377,7 @@ window.showSection = function(name, btn) {
   const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
   document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
   if (name === 'experience' || name === 'profile') { renderExperience(); loadTips(); }
-  if (name === 'preinterview') { /* future content */ }
+  if (name === 'preinterview') { loadTrackerApps().then(() => loadPreInterviewSection()); }
   if (name === 'questions') renderQuestions();
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
@@ -3468,6 +3542,10 @@ let LANG = {
     statusProcess: 'בתהליך', statusInterview: 'בראיונות',
     statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
     tfActive: 'פעיל',
+    piSelectJob: '🎯 בחרי משרה', piSelectJobPh: '-- בחרי משרה --', piCvLinks: '📄 קורות חיים',
+    piAboutMe: '👤 על עצמי — מותאם למשרה', btnGenerate: '✨ צרי', piTips: '💡 הטיפים שלי',
+    piQuestions: '⭐ שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: '⬇ הורד',
+    piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼',
     cardTips: '💡 טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -3646,6 +3724,10 @@ let LANG = {
     statusProcess: 'In Process', statusInterview: 'Interviewing',
     statusOffer: 'Offer', statusNotFit: 'Not a fit',
     tfActive: 'Active',
+    piSelectJob: '🎯 Select a job', piSelectJobPh: '-- Select a job --', piCvLinks: '📄 CV Links',
+    piAboutMe: '👤 About Me — tailored to this job', btnGenerate: '✨ Generate', piTips: '💡 My Tips',
+    piQuestions: '⭐ Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: '⬇ Download',
+    piNoJobs: 'No jobs added. Add one in "My Jobs"',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼',
     cardTips: '💡 Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
@@ -4462,6 +4544,175 @@ window.confirmDelete = function(titleKey, msgKey, onConfirm) {
   btn.textContent = L.btnDelete || 'מחק';
   btn.onclick = () => { closeModal('modal-confirm-delete'); onConfirm(); };
   openModal('modal-confirm-delete');
+};
+
+
+// ==================== PRE-INTERVIEW ====================
+
+function loadPreInterviewSection() {
+  const sel = document.getElementById('pi-job-select');
+  if (!sel) return;
+  // Sort: jobs with interviewDate first (soonest first), then rest
+  const sorted = [...trackerApps].sort((a, b) => {
+    if (a.interviewDate && b.interviewDate) return new Date(a.interviewDate) - new Date(b.interviewDate);
+    if (a.interviewDate) return -1;
+    if (b.interviewDate) return 1;
+    return (b.date||'').localeCompare(a.date||'');
+  });
+  const isEn = currentLang === 'en';
+  sel.innerHTML = `<option value="">${isEn ? '-- Select a job --' : '-- בחרי משרה --'}</option>` +
+    sorted.map(j => {
+      const label = [j.company, j.role, j.interviewDate ? '📅 '+j.interviewDate.substring(0,10) : ''].filter(Boolean).join(' — ');
+      return `<option value="${j._id}">${escHtml(label)}</option>`;
+    }).join('');
+  document.getElementById('pi-content').style.display = 'none';
+  document.getElementById('pi-empty').style.display = sorted.length ? 'none' : 'block';
+}
+
+window.loadPreInterview = function() {
+  const id = document.getElementById('pi-job-select').value;
+  const content = document.getElementById('pi-content');
+  if (!id) { content.style.display = 'none'; return; }
+  content.style.display = 'block';
+
+  const job = trackerApps.find(j => j._id === id);
+  if (!job) return;
+
+  // CV links
+  const cvEl = document.getElementById('pi-cv-links');
+  const cvCard = document.getElementById('pi-cv-card');
+  if (cvEl) {
+    const links = [];
+    if (job.cvWord) links.push(`<a href="${escHtml(job.cvWord)}" target="_blank" class="btn btn-secondary btn-sm">📄 Word</a>`);
+    if (job.cvPdf)  links.push(`<a href="${escHtml(job.cvPdf)}"  target="_blank" class="btn btn-secondary btn-sm">📕 PDF</a>`);
+    cvEl.innerHTML = links.length ? links.join('') : `<span style="font-size:13px;color:var(--text3);">${currentLang==='en'?'No CV links added yet':'אין לינקים לקו"ח עדיין'}</span>`;
+  }
+
+  // Tips
+  const tipsEl = document.getElementById('pi-tips-list');
+  if (tipsEl) {
+    tipsEl.innerHTML = interviewTips.length
+      ? interviewTips.map(tip => `<div style="padding:6px 10px;background:var(--surface2);border-radius:8px;margin-bottom:6px;font-size:13px;">• ${escHtml(tip)}</div>`).join('')
+      : `<p style="font-size:13px;color:var(--text3);">${currentLang==='en'?'No tips yet. Add them in Profile.':'אין טיפים עדיין. הוסיפי בחלון הפרופיל.'}</p>`;
+  }
+
+  // Reset about me
+  document.getElementById('pi-aboutme-content').textContent = '';
+
+  // Render questions
+  renderPiQuestions();
+};
+
+window.renderPiQuestions = function() {
+  const el = document.getElementById('pi-questions-list');
+  if (!el) return;
+  const showHigh    = document.getElementById('pi-prio-high')?.checked;
+  const showMedium  = document.getElementById('pi-prio-medium')?.checked;
+  const showLow     = document.getElementById('pi-prio-low')?.checked;
+  const difficultOnly = document.getElementById('pi-difficult-only')?.checked;
+
+  let qs = (localCache.questions || []).filter(q => {
+    if (difficultOnly && !q.difficult) return false;
+    if (q.priority === 'high'   && !showHigh)   return !difficultOnly ? false : q.difficult;
+    if (q.priority === 'medium' && !showMedium) return !difficultOnly ? false : q.difficult;
+    if (q.priority === 'low'    && !showLow)    return !difficultOnly ? false : q.difficult;
+    if (!q.priority) return showHigh; // unset = show with high
+    return true;
+  });
+
+  // Sort: high → medium → low, difficult first within each
+  const prioOrder = { high: 0, medium: 1, low: 2 };
+  qs.sort((a, b) => {
+    const po = (prioOrder[a.priority]??1) - (prioOrder[b.priority]??1);
+    if (po !== 0) return po;
+    return (b.difficult?1:0) - (a.difficult?1:0);
+  });
+
+  if (!qs.length) {
+    el.innerHTML = `<p style="font-size:13px;color:var(--text3);text-align:center;padding:16px;">${currentLang==='en'?'No questions match the selected filters.':'אין שאלות עם הפילטרים שנבחרו.'}</p>`;
+    return;
+  }
+
+  const L = LANG[currentLang] || LANG.he;
+  el.innerHTML = qs.map(q => {
+    const prioClass = q.priority==='high'?'prio-high':q.priority==='medium'?'prio-medium':q.priority==='low'?'prio-low':'';
+    const prioLabel = q.priority==='high'?L.prioHigh:q.priority==='medium'?L.prioMedium:q.priority==='low'?L.prioLow:'';
+    return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface);">
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+        <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
+        ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
+        ${q.difficult ? '<span style="font-size:13px;">⭐</span>' : ''}
+        ${q.topic ? `<span style="font-size:11px;color:var(--text3);">📌 ${escHtml(q.topic)}</span>` : ''}
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,150))}${(q.answer||'').length>150?'...':''}</div>
+    </div>`;
+  }).join('');
+};
+
+window.generatePiAboutMe = async function() {
+  const id = document.getElementById('pi-job-select').value;
+  const job = trackerApps.find(j => j._id === id);
+  if (!job) return;
+
+  const btn = document.getElementById('pi-aboutme-btn');
+  const loading = document.getElementById('pi-aboutme-loading');
+  const content = document.getElementById('pi-aboutme-content');
+
+  btn.disabled = true;
+  loading.style.display = 'block';
+  content.textContent = '';
+
+  const pitch = localCache.pitch || '';
+  const cv = (localCache.cv || '').substring(0, 800);
+  const jobReqs = job.notes || '';
+  const isEn = currentLang === 'en';
+
+  const prompt = isEn
+    ? `You are an interview coach. Based on the candidate's profile and the job requirements, create a SHORT personalized "About Me" summary for this specific interview (max 120 words). Focus on what's most relevant to THIS job.
+
+Profile/Pitch: ${pitch}
+CV summary: ${cv}
+Job: ${job.company} — ${job.role}
+Job requirements/notes: ${jobReqs}
+
+Return only the summary text, no titles or formatting.`
+    : `אתה מאמן ראיונות. בהתבסס על הפרופיל של המועמדת ודרישות המשרה, כתוב סיכום "על עצמי" קצר ומותאם לראיון הספציפי הזה (עד 120 מילים). התמקד במה שהכי רלוונטי למשרה הזו.
+
+פרופיל/Pitch: ${pitch}
+קורות חיים (קטע): ${cv}
+משרה: ${job.company} — ${job.role}
+דרישות/הערות: ${jobReqs}
+
+החזר רק את הטקסט, ללא כותרות.`;
+
+  try {
+    const result = await callClaude(prompt, false, 'job_prep');
+    content.textContent = result;
+  } catch(e) {
+    content.textContent = isEn ? 'Error generating summary. Please try again.' : 'שגיאה ביצירת הסיכום. נסי שוב.';
+  } finally {
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
+};
+
+window.downloadPiQuestions = function() {
+  const items = document.querySelectorAll('#pi-questions-list > div');
+  if (!items.length) return;
+  const job = trackerApps.find(j => j._id === document.getElementById('pi-job-select').value);
+  const title = job ? `${job.company} — ${job.role}` : 'שאלות לראיון';
+  let txt = `${title}\n${'='.repeat(40)}\n\n`;
+  items.forEach((el, i) => {
+    const q = el.querySelector('[style*="font-weight:600"]')?.textContent || '';
+    const a = el.querySelectorAll('div')[2]?.textContent || '';
+    txt += `${i+1}. ${q}\n   ${a}\n\n`;
+  });
+  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'interview_questions.txt'; a.click();
+  URL.revokeObjectURL(url);
 };
 
 // ==================== TRACKER ====================
