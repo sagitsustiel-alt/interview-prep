@@ -667,6 +667,15 @@
     flex-direction: row !important;
   }
 
+
+  /* DIFFICULTY + PRIORITY */
+  .q-star { background:none;border:none;cursor:pointer;font-size:16px;padding:0 2px;opacity:0.35;transition:opacity 0.15s,transform 0.15s;line-height:1; }
+  .q-star.active { opacity:1;transform:scale(1.15); }
+  .priority-badge { display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;border:1px solid transparent; }
+  .prio-high   { background:#FEF2F2;color:#DC2626;border-color:#FECACA; }
+  .prio-medium { background:#FFF7ED;color:#D97706;border-color:#FDE68A; }
+  .prio-low    { background:#F3F4F6;color:#9CA3AF;border-color:#E5E7EB; }
+
 </style>
 </head>
 <body>
@@ -934,7 +943,10 @@
         <div class="card-title" data-i18n="cardSearchQ">🔍 חיפוש שאלה</div>
 
         <!-- Filter bar -->
-        <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0 0 10px 0;">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+          <input type="text" id="q-search" placeholder="🔍 חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;">
+          <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;flex-shrink:0;" data-i18n="btnDifficultFilter">⭐ קשות בלבד</button>
+        </div>
 
         <!-- Type selector -->
         <div class="tabs" style="margin-bottom:10px;">
@@ -2672,6 +2684,7 @@ function renderQuestions() {
     q.answer?.toLowerCase().includes(search) ||
     q.topic?.toLowerCase().includes(search)
   );
+  if (showDifficultOnly) qs = qs.filter(q => q.difficult);
 
   renderTopicCheckboxes();
 
@@ -2703,7 +2716,7 @@ function renderQuestions() {
   el.innerHTML = `
     <!-- Summary bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;">
-      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
+      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל ▼</button>
       <div style="font-size:13px;color:var(--text2);">
         <strong style="color:var(--accent);">${totalCount}</strong> שאלות ב-<strong>${groupCount}</strong> נושאים
       </div>
@@ -2788,22 +2801,33 @@ function renderQList(list, containerId) {
 }
 
 function renderQCard(q) {
+  const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
+  const prioLabel = q.priority === 'high' ? t('prioHigh') : q.priority === 'medium' ? t('prioMedium') : q.priority === 'low' ? t('prioLow') : '';
+  const isEn = currentLang === 'en';
   return `
     <div class="question-card" id="qcard-${q.id}">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
         ${q.topic ? `<span class="topic-badge">📌 ${escHtml(q.topic)}</span>` : ''}
+        ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
+        <button class="q-star ${q.difficult?'active':''}" onclick="toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}">⭐</button>
         <button class="btn-video" onclick="findVideo('${q.id}', \`${escAttr(q.question)}\`, \`${escAttr(q.topic||'')}\`)" id="vbtn-${q.id}">
-          ▶ סרטון
+          ▶ ${isEn?'Video':'סרטון'}
         </button>
       </div>
       <div class="question-text">${escHtml(q.question)}</div>
-      <div class="answer-text">${escHtml(q.answer)||'<em style="color:var(--text3)">אין תשובה עדיין</em>'}</div>
+      <div class="answer-text">${escHtml(q.answer)||'<em style="color:var(--text3)">${t("noAnswer")}</em>'}</div>
       <div id="video-area-${q.id}"></div>
       <div class="q-actions">
-        <button class="btn btn-secondary btn-sm" onclick="openEditQuestion('${q.id}')">ערוך</button>
-        <button class="btn btn-accent2 btn-sm" onclick="openImprove('${q.id}')">✨ שפר</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}')">מחק</button>
+        <select onchange="setPriority('${q.id}', this.value)" style="font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;" title="${t('lblPriority')}">
+          <option value="" ${!q.priority?'selected':''}>${t('lblPriority')}</option>
+          <option value="high" ${q.priority==='high'?'selected':''}>${t('prioHigh')}</option>
+          <option value="medium" ${q.priority==='medium'?'selected':''}>${t('prioMedium')}</option>
+          <option value="low" ${q.priority==='low'?'selected':''}>${t('prioLow')}</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" onclick="openEditQuestion('${q.id}')">${isEn?'Edit':'ערוך'}</button>
+        <button class="btn btn-accent2 btn-sm" onclick="openImprove('${q.id}')">✨ ${isEn?'Improve':'שפר'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}')">${isEn?'Delete':'מחק'}</button>
       </div>
     </div>`;
 }
@@ -3444,6 +3468,9 @@ let LANG = {
     statusProcess: 'בתהליך', statusInterview: 'בראיונות',
     statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
     tfActive: 'פעיל',
+    btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
+    lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼',
+    cardTips: '💡 טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
@@ -3619,6 +3646,9 @@ let LANG = {
     statusProcess: 'In Process', statusInterview: 'Interviewing',
     statusOffer: 'Offer', statusNotFit: 'Not a fit',
     tfActive: 'Active',
+    btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
+    lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼',
+    cardTips: '💡 Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
@@ -4390,6 +4420,37 @@ window.deleteTip = async function(i) {
   renderTips();
   await saveTips();
   toast(t('toastTipDeleted'));
+};
+
+
+// ==================== DIFFICULT + PRIORITY ====================
+let showDifficultOnly = false;
+
+window.toggleDifficultFilter = function() {
+  showDifficultOnly = !showDifficultOnly;
+  const btn = document.getElementById('difficult-filter-btn');
+  if (btn) {
+    btn.style.background = showDifficultOnly ? 'var(--accent)' : '';
+    btn.style.color = showDifficultOnly ? '#fff' : '';
+    btn.style.borderColor = showDifficultOnly ? 'var(--accent)' : '';
+  }
+  renderQuestions();
+};
+
+window.toggleDifficult = async function(id) {
+  const q = (localCache.questions||[]).find(x => x.id === id);
+  if (!q) return;
+  q.difficult = !q.difficult;
+  await saveQuestionToCloud(q);
+  renderQuestions();
+};
+
+window.setPriority = async function(id, val) {
+  const q = (localCache.questions||[]).find(x => x.id === id);
+  if (!q) return;
+  q.priority = val;
+  await saveQuestionToCloud(q);
+  renderQuestions();
 };
 
 // ==================== CONFIRM DELETE ====================
