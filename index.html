@@ -3413,7 +3413,7 @@ let LANG = {
     lblAppLink: 'קישור למשרה', lblAppRelevant: 'רלוונטי?', lblAppInterview: 'תאריך ראיון',
     lblAppNotes: 'הערות', btnSaveApp: 'שמור',
     trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
-    phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות נוספות...', btnCancel: 'ביטול',
+    phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות + דרישות המשרה (ישמש לניתוח בחלון "לפני ראיון")', btnCancel: 'ביטול',
     lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'הדביקי לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
     subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
@@ -3587,7 +3587,7 @@ let LANG = {
     lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Next Interview Date',
     lblAppNotes: 'Notes', btnSaveApp: 'Save',
     trackerModalAdd: 'Add Application', trackerModalEdit: 'Edit Application',
-    phCompany: 'Company name', phRole: 'Job title', phNotes: 'Additional notes...', btnCancel: 'Cancel',
+    phCompany: 'Company name', phRole: 'Job title', phNotes: 'Notes + job requirements (used for analysis in "Pre-Interview")', btnCancel: 'Cancel',
     lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'Paste Google Drive link...',
     toastAppAdded: 'Job added ✅', toastAppUpdated: 'Job updated ✅', toastAppDeleted: 'Job removed',
     subTracker: 'Track your progress — every application counts',
@@ -4504,8 +4504,8 @@ window.deleteTrackerApp = async function(id) {
     <div class="modal-title" id="tracker-modal-title" style="margin-bottom:12px;font-size:17px;">הוסף פנייה</div>
 
     <!-- חברה + תפקיד -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-      <div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;min-width:0;">
+      <div style="min-width:0;">
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppCompany">חברה</label>
         <input type="text" id="tracker-company" placeholder="שם החברה" data-i18n-ph="phCompany" style="margin:0;padding:8px 10px;font-size:13px;">
       </div>
@@ -4530,7 +4530,7 @@ window.deleteTrackerApp = async function(id) {
       </div>
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" id="lb-tracker-date" data-i18n="lblAppDate">תאריך פנייה</label>
-        <input type="date" id="tracker-date" style="margin:0;padding:8px 10px;font-size:12px;">
+        <input type="date" id="tracker-date" style="margin:0;padding:8px 6px;font-size:11px;min-width:0;width:100%;">
       </div>
     </div>
 
@@ -4542,7 +4542,7 @@ window.deleteTrackerApp = async function(id) {
       </div>
       <div>
         <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppInterview">תאריך ראיון הבא</label>
-        <input type="datetime-local" id="tracker-interview" style="margin:0;padding:8px 4px;font-size:11px;">
+        <input type="datetime-local" id="tracker-interview" style="margin:0;padding:8px 4px;font-size:10px;min-width:0;width:100%;">
       </div>
     </div>
 
@@ -4561,7 +4561,7 @@ window.deleteTrackerApp = async function(id) {
     <!-- הערות -->
     <div style="margin-bottom:12px;">
       <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppNotes">הערות</label>
-      <textarea id="tracker-notes" rows="2" placeholder="הערות נוספות..." data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
+      <textarea id="tracker-notes" rows="2" placeholder="הערות + דרישות המשרה (ישמש לניתוח בחלון 'לפני ראיון')" data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
     </div>
 
     <!-- Buttons -->
