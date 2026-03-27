@@ -203,7 +203,7 @@
   }
   .card-title {
     font-size: 13px; font-weight: 600; text-transform: none;
-    letter-spacing: 0; color: var(--text2); margin-bottom: 14px;
+    letter-spacing: 0; color: var(--text); margin-bottom: 14px;
   }
 
   label {
@@ -782,11 +782,11 @@
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
         <div style="font-size:13px;color:var(--text2);margin-bottom:8px;" data-i18n="piBannerText">💡 כדי לקבל הכנה מלאה — מלאי תחילה את:</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">← הפרופיל שלי</button>
-          <span style="color:var(--text3);">·</span>
-          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">← תרגול והכנה</button>
-          <span style="color:var(--text3);">·</span>
-          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">← המשרות שלי</button>
+          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
+          <span style="color:var(--text3);">←</span>
+          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה</button>
+          <span style="color:var(--text3);">←</span>
+          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
         </div>
       </div>
 
@@ -3556,7 +3556,7 @@ let LANG = {
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     piBannerText: 'כדי לקבל הכנה מלאה — מלאי תחילה את:',
-    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: '← הפרופיל שלי', piBannerPrep: '← תרגול והכנה', piBannerJobs: '← המשרות שלי',
+    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -3741,7 +3741,7 @@ let LANG = {
     piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     piBannerText: 'For full preparation — first complete:',
-    piBannerText: '💡 For a complete prep — first fill in:', piBannerProfile: 'Profile Setup →', piBannerPrep: 'Prep & Practice →', piBannerJobs: 'My Jobs →',
+    piBannerText: '💡 For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
