@@ -514,7 +514,11 @@
   .inner-tabs {
     display: flex; gap: 4px; background: var(--surface2);
     border-radius: 12px; padding: 4px; margin-bottom: 20px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .inner-tabs::-webkit-scrollbar { display: none; }
+  .inner-tab-btn { flex-shrink: 0; }
   .inner-tab-btn {
     flex: 1; background: none; border: none; color: var(--text2);
     font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
@@ -1247,12 +1251,12 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
           <thead>
             <tr style="background:var(--surface2);">
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון הבא</th>
-              <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);"></th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון הבא</th>
+              <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);"></th>
             </tr>
           </thead>
           <tbody id="tracker-tbody"></tbody>
