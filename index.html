@@ -782,26 +782,14 @@
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
         <div style="font-size:13px;color:var(--text2);margin-bottom:8px;" data-i18n="piBannerText">💡 כדי לקבל הכנה מלאה — מלאי תחילה את:</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי ↗</button>
+          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">← הפרופיל שלי</button>
           <span style="color:var(--text3);">·</span>
-          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה ↗</button>
+          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">← תרגול והכנה</button>
           <span style="color:var(--text3);">·</span>
-          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי ↗</button>
+          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">← המשרות שלי</button>
         </div>
       </div>
 
-
-      <!-- באנר הסבר -->
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-top:10px;font-size:13px;color:var(--text2);line-height:1.7;" id="pi-banner">
-        <span data-i18n="piBannerText">כדי לקבל הכנה מלאה — מלאי תחילה את:</span>
-        <span style="display:inline-flex;gap:8px;flex-wrap:wrap;margin-right:4px;">
-          <button onclick="showSection('profile', document.querySelector('[onclick*='profile']'))" style="background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;padding:0;font-weight:600;" data-i18n="navSetup">הפרופיל שלי</button>
-          <span style="color:var(--text3);">→</span>
-          <button onclick="showSection('questions', document.querySelector('[onclick*='questions']'))" style="background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;padding:0;font-weight:600;" data-i18n="navLearn">תרגול והכנה</button>
-          <span style="color:var(--text3);">→</span>
-          <button onclick="showSection('tracker', document.querySelector('[onclick*='tracker']'))" style="background:none;border:none;color:var(--accent);font-size:13px;cursor:pointer;padding:0;font-weight:600;" data-i18n="tracker">המשרות שלי</button>
-        </span>
-      </div>
 
       <!-- תוכן שנטען לאחר בחירת משרה -->
       <div id="pi-content" style="display:none;">
@@ -913,13 +901,13 @@
         </div>
       </div>
       <!-- טיפים לראיון -->
-      <div class="card" id="card-tips">
-        <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;padding:14px 16px;">
+      <div class="card" id="card-tips" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" data-i18n="cardTips" style="margin:0;">טיפים לראיון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body" id="tips-body" style="padding-top:12px;">
-          <div id="tips-list" style="margin-bottom:10px;"></div>
+        <div class="collapsible-body" id="tips-body" style="padding:0 16px 16px;">
+          <div id="tips-list" style="margin-bottom:10px;margin-top:10px;"></div>
           <div style="display:flex;gap:8px;align-items:center;">
             <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
               style="flex:1;margin:0;padding:9px 14px;font-size:14px;height:42px;"
@@ -1074,22 +1062,27 @@
           <div style="font-size:12px;color:var(--text2);" data-i18n="defaultQDesc">שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים</div>
         </div>
         <button class="btn btn-secondary btn-sm" onclick="generateDefaultQuestions()" id="default-q-btn">
-          <span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>
+          <span data-i18n="btnDefaultQ">שאלות בסיסיות</span>
         </button>
       </div>
 
-      <div class="card">
-        <div class="card-title" data-i18n="cardJobDetails">פרטי המשרה</div>
-        <label data-i18n="labelCompany">שם החברה</label>
-        <input type="text" id="jp-company" placeholder="למשל: גוגל, מיקרוסופט" data-i18n-ph="phCompany">
-        <label data-i18n="labelRole">תפקיד / כותרת</label>
-        <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר" data-i18n-ph="phRole">
-        <label data-i18n="labelJD">תיאור המשרה</label>
-        <textarea id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD"></textarea>
-        <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
-          <span data-i18n="btnGenerate">הפק הכנה</span>
-        </button>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div class="collapsible-header" onclick="toggleCollapsible('job-details-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" data-i18n="cardJobDetails" style="margin:0;">פרטי המשרה</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body" id="job-details-body" style="padding:0 16px 16px;">
+          <label data-i18n="labelCompany" style="margin-top:12px;">שם החברה</label>
+          <input type="text" id="jp-company" placeholder="למשל: גוגל, מיקרוסופט" data-i18n-ph="phCompany">
+          <label data-i18n="labelRole">תפקיד / כותרת</label>
+          <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר" data-i18n-ph="phRole">
+          <label data-i18n="labelJD">תיאור המשרה</label>
+          <textarea id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD"></textarea>
+          <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
+            <span data-i18n="btnGenerate">הפק הכנה</span>
+          </button>
+        </div>
       </div>
 
       <!-- Saved jobs list -->
@@ -1222,14 +1215,14 @@
           <div style="color:var(--text3);font-size:16px;">→</div>
           <div style="text-align:center;">
             <div style="font-size:22px;font-weight:700;color:var(--text);" id="prog-interview">0</div>
-            <div style="font-size:11px;color:var(--text2);" data-i18n="progInterview">🗓 ראיונות</div>
+            <div style="font-size:11px;color:var(--text2);" data-i18n="progInterview">💬 ראיונות</div>
           </div>
           <div style="color:var(--text3);font-size:16px;">→</div>
           <div style="text-align:center;">
             <div style="font-size:22px;font-weight:700;color:var(--text);" id="prog-pending">0</div>
             <div style="font-size:11px;color:var(--text2);" data-i18n="progPending">⏳ ממתינות</div>
           </div>
-          <div style="font-size:12px;color:var(--accent);font-weight:600;padding:6px 12px;background:rgba(124,108,242,0.1);border-radius:20px;" data-i18n="progMotivation">💪 את מתקדמת!</div>
+          <div style="font-size:12px;color:var(--accent);font-weight:600;padding:6px 12px;background:rgba(124,108,242,0.1);border-radius:20px;" data-i18n="progMotivation">יש התקדמות!</div>
         </div>
       </div>
 
@@ -3435,7 +3428,7 @@ let LANG = {
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
     phSearch: '🔍 חיפוש שאלה...', colTopics: '🏷️ סנן לפי נושא', btnSelectAll: 'בחר הכל',
     defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
-    btnDefaultQ: '✨ קבל שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
+    btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
     btnAddHR: 'הוסף שאלת HR',
@@ -3473,7 +3466,7 @@ let LANG = {
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
     defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
-    btnDefaultQ: '✨ קבל שאלות בסיסיות', defaultQModalTitle: 'סט שאלות בסיסי',
+    btnDefaultQ: 'שאלות בסיסיות', defaultQModalTitle: 'סט שאלות בסיסי',
     defaultQModalDesc: 'AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.',
     defaultQLoading: 'AI מכין שאלות בסיסיות...',
     btnDeselectAll: 'בטל הכל', btnAddSelected: '✅ הוסף שאלות מסומנות לבנק',
@@ -3550,7 +3543,7 @@ let LANG = {
     lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'הדביקי לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
     subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
-    progSent: '📨 פניות', progInterview: '🗓 ראיונות', progPending: '⏳ ממתינות', progMotivation: '💪 את מתקדמת!',
+    progSent: '📨 פניות', progInterview: '💬 ראיונות', progPending: '⏳ ממתינות', progMotivation: 'יש התקדמות!',
     btnAddApp: '+ הוסף משרה', phSearchApp: 'חפשי משרות...',
     lblAppStatus: 'סטטוס', colStatus: 'סטטוס',
     statusSaved: 'שמורה', statusApplied: 'פנייה נשלחה',
@@ -3563,7 +3556,7 @@ let LANG = {
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     piBannerText: 'כדי לקבל הכנה מלאה — מלאי תחילה את:',
-    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי ↗', piBannerPrep: 'תרגול והכנה ↗', piBannerJobs: 'המשרות שלי ↗',
+    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: '← הפרופיל שלי', piBannerPrep: '← תרגול והכנה', piBannerJobs: '← המשרות שלי',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -3620,7 +3613,7 @@ let LANG = {
     cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
     phSearch: '🔍 Search question...', colTopics: '🏷️ Filter by Topic', btnSelectAll: 'Select All',
     defaultQTitle: '⚡ Basic Question Set', defaultQDesc: 'Classic interview questions without specific job details',
-    btnDefaultQ: '✨ Get Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected to Bank',
+    btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected to Bank',
     modalDefaultQTitle: '⚡ Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: 'Search & Filter',
     btnAddHR: 'Add HR Question',
@@ -3658,7 +3651,7 @@ let LANG = {
     phYourAnswer: 'Write your answer...',
     // Toast & JS messages
     defaultQTitle: 'Default Question Set', defaultQDesc: 'Classic interview questions without specific job details',
-    btnDefaultQ: '✨ Get Default Questions', defaultQModalTitle: 'Default Question Set',
+    btnDefaultQ: 'Default Questions', defaultQModalTitle: 'Default Question Set',
     defaultQModalDesc: 'AI marked the recommended questions. You can change the selection.',
     defaultQLoading: 'AI is preparing default questions...',
     btnDeselectAll: 'Deselect All', btnAddSelected: '✅ Add Selected Questions to Bank',
@@ -3735,7 +3728,7 @@ let LANG = {
     lblCvWord: '📄 CV — Word', lblCvPdf: '📕 CV — PDF', phCvLink: 'Paste Google Drive link...',
     toastAppAdded: 'Job added ✅', toastAppUpdated: 'Job updated ✅', toastAppDeleted: 'Job removed',
     subTracker: 'Track your progress — every application counts',
-    progSent: '📨 Applications', progInterview: '🗓 Interviews', progPending: '⏳ Pending', progMotivation: '💪 Keep going!',
+    progSent: '📨 Applications', progInterview: '💬 Interviews', progPending: '⏳ Pending', progMotivation: 'Keep it up!',
     btnAddApp: '+ Add Job', phSearchApp: 'Search jobs...',
     lblAppStatus: 'Status', colStatus: 'Status',
     statusSaved: 'Saved', statusApplied: 'Applied',
@@ -3748,7 +3741,7 @@ let LANG = {
     piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     piBannerText: 'For full preparation — first complete:',
-    piBannerText: '💡 For a complete prep — first fill in:', piBannerProfile: 'Profile Setup ↗', piBannerPrep: 'Prep & Practice ↗', piBannerJobs: 'My Jobs ↗',
+    piBannerText: '💡 For a complete prep — first fill in:', piBannerProfile: 'Profile Setup →', piBannerPrep: 'Prep & Practice →', piBannerJobs: 'My Jobs →',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
@@ -4080,7 +4073,7 @@ window.generateDefaultQuestions = async function() {
   await loadDefaultQ();
 
   btn.disabled = false;
-  btn.innerHTML = '<span data-i18n="btnDefaultQ">✨ קבל שאלות בסיסיות</span>';
+  btn.innerHTML = '<span data-i18n="btnDefaultQ">שאלות בסיסיות</span>';
 };
 
 window.reloadDefaultQ = async function() {
