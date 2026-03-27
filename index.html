@@ -92,13 +92,13 @@
       padding-bottom: calc(20px + env(safe-area-inset-bottom));
     }
     .modal-title { font-size: 18px; }
-    .btn { font-size: 14px; padding: 10px 14px; }
-    .btn-sm { font-size: 14px; padding: 6px 10px; }
+    .btn { font-size: 13px; padding: 10px 14px; }
+    .btn-sm { font-size: 13px; padding: 6px 10px; }
     .question-card { padding: 14px; }
     .question-text { font-size: 13px; }
     .answer-text { font-size: 12px; }
     .q-actions { gap: 6px; }
-    .q-actions .btn { font-size: 14px; padding: 6px 8px; }
+    .q-actions .btn { font-size: 11px; padding: 6px 8px; }
     .history-item { padding: 12px; }
     .history-company { font-size: 13px; }
     .collapsible-header { padding: 12px 14px; font-size: 13px; }
@@ -237,7 +237,7 @@
   .btn-primary:active { transform: scale(0.97); box-shadow: none; }
   .btn-secondary { background: var(--surface); color: var(--text); border: 1.5px solid var(--border); }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: #F5F3FF; }
-  .btn-ghost { background: none; color: var(--text2); padding: 6px 10px; font-size: 14px; }
+  .btn-ghost { background: none; color: var(--text2); padding: 6px 10px; font-size: 13px; }
   .btn-ghost:hover { color: var(--text); background: var(--surface2); border-radius: 8px; }
   .btn-accent2 { background: #F0FBF7; color: var(--accent2); border: 1.5px solid var(--accent2); }
   .btn-accent2:hover { background: #E0F8EF; }
@@ -699,7 +699,7 @@
 <!-- VIEW MODE BANNER -->
 <div id="view-mode-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:var(--accent);color:#fff;padding:10px 18px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:10px;border-radius:0;">
   <span>🔗 מצב צפייה בלבד — לא ניתן לערוך</span>
-  <button class="btn btn-ghost" onclick="toggleLanguage()" id="view-lang-btn" style="color:#fff;font-size:14px;padding:2px 8px;border:1px solid rgba(255,255,255,0.5);">EN</button>
+  <button class="btn btn-ghost" onclick="toggleLanguage()" id="view-lang-btn" style="color:#fff;font-size:12px;padding:2px 8px;border:1px solid rgba(255,255,255,0.5);">EN</button>
 </div>
 
 <div class="login-screen" id="login-screen">
@@ -723,7 +723,7 @@
     <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span></div>
     <div id="current-section-name" style="font-size:13px;color:var(--text2);font-weight:600;"></div>
     <div class="header-right">
-      <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
+      <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:12px;font-weight:700;">EN</button>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:14px;">🔗</button>
       <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:14px;">ℹ️</button>
       <div id="user-avatar-container" onclick="toggleUserMenu()"></div>
@@ -738,7 +738,7 @@
     <!-- Credits Display -->
     <div id="credits-box" style="background:var(--surface2);border-radius:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--border);">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <button class="btn btn-primary btn-sm" onclick="toggleUserMenu();openModal('modal-pricing')" style="font-size:14px;padding:5px 12px;">רכוש קרדיטים</button>
+        <button class="btn btn-primary btn-sm" onclick="toggleUserMenu();openModal('modal-pricing')" style="font-size:12px;padding:5px 12px;">רכוש קרדיטים</button>
         <div style="font-size:11px;color:var(--text3);font-weight:600;">⚡ קרדיטים</div>
       </div>
       <div style="display:flex;align-items:baseline;gap:4px;justify-content:flex-end;">
@@ -755,15 +755,15 @@
 
     <button class="btn-signout" onclick="signOut()">התנתק</button>
     <div style="display:flex;gap:8px;margin-top:10px;">
-      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:14px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">ℹ️ הוראות</button>
-      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:14px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="toggleUserMenu();checkInfoPassword()">ℹ️ מידע טכני</button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()">ℹ️ הוראות</button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="toggleUserMenu();checkInfoPassword()">ℹ️ מידע טכני</button>
     </div>
   </div>
 
   <!-- LOW CREDITS BANNER -->
   <div id="api-key-banner" style="display:none;padding:10px 18px;font-size:13px;align-items:center;justify-content:space-between;gap:10px;background:#FEF5EC;border-bottom:1px solid #FDDCB5;color:#C47B20;">
     <span>⚠️ נגמרים לך הקרדיטים — נשארו פחות מ-10</span>
-    <button class="btn btn-ghost" style="color:#C47B20;font-size:14px;padding:4px 10px;border:1px solid rgba(245,158,90,0.4);white-space:nowrap;cursor:pointer;z-index:999;border-radius:8px;" onclick="openModal('modal-pricing')">רכוש עוד →</button>
+    <button class="btn btn-ghost" style="color:#C47B20;font-size:13px;padding:4px 10px;border:1px solid rgba(245,158,90,0.4);white-space:nowrap;cursor:pointer;z-index:999;border-radius:8px;" onclick="openModal('modal-pricing')">רכוש עוד →</button>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -786,11 +786,11 @@
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
         <div style="font-size:13px;color:var(--text2);margin-bottom:8px;" data-i18n="piBannerText">💡 כדי לקבל הכנה מלאה — מלאי תחילה את:</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
+          <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
           <span style="color:var(--text3);">←</span>
-          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה</button>
+          <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה</button>
           <span style="color:var(--text3);">←</span>
-          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
+          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
         </div>
       </div>
 
@@ -838,7 +838,7 @@
         <div class="card">
           <div class="collapsible-header" onclick="toggleCollapsible('pi-q-body',this)" style="padding:10px 0;margin-bottom:0;">
             <div style="display:flex;align-items:center;gap:6px;">
-                  <div style="display:flex;align-items:center;gap:6px;"><div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div><button onclick="showSection('questions', document.querySelector('[onclick*=\"questions\"]'));event.stopPropagation();" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0;line-height:1;">↗</button></div>
+                  <div style="display:flex;align-items:center;gap:6px;"><div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div><button onclick="showSection('questions', document.querySelector('[onclick*=\"questions\"]'));event.stopPropagation();" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:0;line-height:1;">↗</button></div>
                   <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
                 </div>
             <span class="collapsible-arrow"> ▾</span>
@@ -1034,7 +1034,7 @@
           </div>
           <div class="collapsible-body" id="topic-checkboxes-area" style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
             <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-            <button class="btn btn-ghost" style="font-size:14px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
+            <button class="btn btn-ghost" style="font-size:11px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
           </div>
         </div>
       </div>
@@ -1158,7 +1158,7 @@
       </div>
       <div id="mock-active" style="display:none;">
         <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
-          <button class="btn btn-ghost btn-sm" onclick="stopMock()" style="color:var(--text3);font-size:14px;" data-i18n="btnStop">× יציאה מהסימולציה</button>
+          <button class="btn btn-ghost btn-sm" onclick="stopMock()" style="color:var(--text3);font-size:12px;" data-i18n="btnStop">× יציאה מהסימולציה</button>
         </div>
         <div class="mock-progress" id="mock-progress-dots"></div>
         <div class="card" id="mock-question-card">
@@ -1251,12 +1251,12 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:500px;">
           <thead>
             <tr style="background:var(--surface2);">
-              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
-              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון הבא</th>
-              <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text);font-size:14px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);"></th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colDate">תאריך</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colCompany">חברה</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colRole">תפקיד</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colStatus">סטטוס</th>
+              <th style="padding:12px 14px;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);" data-i18n="colInterview">ראיון הבא</th>
+              <th style="padding:12px 14px;text-align:center;font-weight:600;color:var(--text);font-size:13px;text-transform:none;letter-spacing:0;border-bottom:1px solid var(--border);"></th>
             </tr>
           </thead>
           <tbody id="tracker-tbody"></tbody>
@@ -1471,8 +1471,8 @@
     <div id="default-q-list" style="display:none;max-height:45vh;overflow-y:auto;"></div>
     <div id="default-q-actions" style="display:none;margin-top:14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(true)" data-i18n="btnSelectAll">בחר הכל</button>
-        <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(false)" data-i18n="btnDeselectAll">בטל הכל</button>
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="toggleAllDefaultQ(true)" data-i18n="btnSelectAll">בחר הכל</button>
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="toggleAllDefaultQ(false)" data-i18n="btnDeselectAll">בטל הכל</button>
       </div>
       <button class="btn btn-primary btn-block" onclick="addSelectedDefaultQ()" data-i18n="btnAddSelected">✅ הוסף שאלות מסומנות לבנק</button>
       <button class="btn btn-ghost btn-block" onclick="closeModal('modal-default-questions')" style="margin-top:8px;" data-i18n="btnCancel">ביטול</button>
@@ -1537,7 +1537,7 @@
       </div>
     </div>
 
-    <button class="btn btn-primary btn-block" id="btn-buy-plan" onclick="goToCheckout()" style="font-size:14px;padding:14px;">
+    <button class="btn btn-primary btn-block" id="btn-buy-plan" onclick="goToCheckout()" style="font-size:15px;padding:14px;">
       המשך לתשלום →
     </button>
     <button class="btn btn-ghost btn-block" onclick="closeModal('modal-pricing')" style="margin-top:8px;">סגור</button>
@@ -1919,7 +1919,7 @@ function renderKbDocs() {
         ${d.extracted
           ? `<div style="display:flex;gap:6px;margin-top:6px;align-items:center;">
                <span style="font-size:12px;color:var(--accent2);font-weight:600;">✅ הופקו ${d.extractedCount||''} שאלות</span>
-               <button class="btn btn-ghost" style="padding:2px 8px;font-size:14px;color:var(--text3);" onclick="reExtractDoc('${d.id}')">↺ חלץ שוב</button>
+               <button class="btn btn-ghost" style="padding:2px 8px;font-size:11px;color:var(--text3);" onclick="reExtractDoc('${d.id}')">↺ חלץ שוב</button>
              </div>`
           : `<button class="btn btn-accent2 btn-sm" style="margin-top:6px;" onclick="extractFromSingleDoc('${d.id}')" id="extract-btn-${d.id}">
                ✨ חלץ שאלות
@@ -2417,7 +2417,7 @@ function renderWorkHistoryList() {
     <div class="history-item">
       <div class="history-actions">
         <button class="btn btn-ghost" onclick="deleteWork(${i})" style="color:var(--danger)">✕</button>
-        <button class="btn btn-ghost" onclick="editWork(${i})" style="color:var(--accent);font-size:14px;">✏️</button>
+        <button class="btn btn-ghost" onclick="editWork(${i})" style="color:var(--accent);font-size:12px;">✏️</button>
       </div>
       <div class="history-info">
         <div class="history-company">${w.company}</div>
@@ -2802,7 +2802,7 @@ function renderQuestions() {
   el.innerHTML = `
     <!-- Summary bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;">
-      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:14px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל ▼</button>
+      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל ▼</button>
       <div style="font-size:13px;color:var(--text2);">
         <strong style="color:var(--accent);">${totalCount}</strong> שאלות ב-<strong>${groupCount}</strong> נושאים
       </div>
@@ -3560,7 +3560,7 @@ let LANG = {
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     piBannerText: 'כדי לקבל הכנה מלאה — מלאי תחילה את:',
-    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerArrow: '←',, piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
+    piBannerText: '💡 כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -3745,7 +3745,7 @@ let LANG = {
     piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     piBannerText: 'For full preparation — first complete:',
-    piBannerText: '💡 For a complete prep — first fill in:', piBannerArrow: '→',, piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
+    piBannerText: '💡 For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
@@ -3790,19 +3790,7 @@ function applyLanguage() {
     const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
     const nameEl = document.getElementById('current-section-name');
     if (nameEl) nameEl.textContent = t(sectionNameKeys[sectionId] || sectionId);
-    // Flip banner arrows based on language
-  const bannerBtns = document.querySelectorAll('[data-i18n="piBannerProfile"],[data-i18n="piBannerPrep"],[data-i18n="piBannerJobs"]');
-  const seps = document.querySelectorAll('.pi-sep');
-  if (isHe) {
-    const labels = ['← הפרופיל שלי', '← תרגול והכנה', '← המשרות שלי'];
-    bannerBtns.forEach((b, i) => b.textContent = labels[i]);
-    seps.forEach(s => s.textContent = '·');
-  } else {
-    const labels = ['Profile Setup', 'Prep & Practice', 'My Jobs'];
-    bannerBtns.forEach((b, i) => b.textContent = labels[i]);
-    seps.forEach(s => s.textContent = '→');
-  }
-  // Re-render dynamic content that contains translated text
+    // Re-render dynamic content that contains translated text
     if (sectionId === 'tracker' && typeof renderTracker === 'function') renderTracker();
     if (typeof updateTrackerModalLang === 'function') updateTrackerModalLang();
     if (sectionId === 'questions' && typeof renderQuestions === 'function') renderQuestions();
@@ -4511,7 +4499,7 @@ function renderTips() {
   el.innerHTML = interviewTips.map((tip, i) => `
     <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:6px;">
       <span style="flex:1;font-size:13px;line-height:1.5;">• ${escHtml(tip)}</span>
-      <button class="btn btn-ghost" style="padding:2px 6px;font-size:14px;color:var(--danger);flex-shrink:0;" onclick="deleteTip(${i})">✕</button>
+      <button class="btn btn-ghost" style="padding:2px 6px;font-size:11px;color:var(--danger);flex-shrink:0;" onclick="deleteTip(${i})">✕</button>
     </div>`).join('');
 }
 
@@ -4807,8 +4795,8 @@ window.renderTracker = function() {
         <td>${statusPill(a.isRelevant, a.interviewDate)}</td>
         <td style="font-size:12px;color:var(--text2);">${a.interviewDate ? a.interviewDate.replace('T',' ').substring(0,16) : '—'}</td>
         <td style="text-align:center;white-space:nowrap;">
-          <button class="btn btn-ghost" style="padding:4px 8px;font-size:14px;" onclick="editTrackerApp('${a._id}')">✏️</button>
-          <button class="btn btn-ghost" style="padding:4px 8px;font-size:14px;color:var(--danger);" onclick="deleteTrackerApp('${a._id}')">✕</button>
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:12px;" onclick="editTrackerApp('${a._id}')">✏️</button>
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:12px;color:var(--danger);" onclick="deleteTrackerApp('${a._id}')">✕</button>
         </td>
       </tr>`;}).join('');
   }
