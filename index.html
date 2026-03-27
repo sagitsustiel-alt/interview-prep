@@ -774,8 +774,8 @@
       <!-- 1. בחירת משרה -->
       <div class="card">
         <div class="pi-title" data-i18n="piSelectJob">בחרי משרה</div>
-        <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;font-size:13px;">
-          <option value="" data-i18n="piSelectJobPh">-- בחרי משרה --</option>
+        <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;padding:9px 14px;font-size:14px;height:42px;">
+          <option value="" data-i18n="piSelectJobPh">בחר משרה...</option>
         </select>
       </div>
 
@@ -876,6 +876,23 @@
           <textarea id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()" style="margin-top:10px;"></textarea>
         </div>
       </div>
+      <!-- טיפים לראיון -->
+      <div class="card" id="card-tips">
+        <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;padding:0;">
+          <div class="card-title" data-i18n="cardTips" style="margin:0;">💡 טיפים לראיון</div>
+          <span class="collapsible-arrow"> ▾</span>
+        </div>
+        <div class="collapsible-body" id="tips-body" style="padding-top:12px;">
+          <div id="tips-list" style="margin-bottom:10px;"></div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
+              style="flex:1;margin:0;padding:9px 14px;font-size:14px;height:42px;"
+              onkeydown="if(event.key==='Enter')addTip()">
+            <button class="btn btn-primary btn-sm" onclick="addTip()" data-i18n="btnAddTip">+ הוסף</button>
+          </div>
+        </div>
+      </div>
+
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="collapsible-header" onclick="toggleCollapsible('card-work-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" data-i18n="cardWorkHistory" style="margin:0;">היסטוריית עבודה</div>
@@ -887,24 +904,6 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
             <span data-i18n="btnAddRole">הוסף תפקיד</span>
           </button>
-        </div>
-      </div>
-
-
-      <!-- טיפים לראיון -->
-      <div class="card" id="card-tips">
-        <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;padding:0;">
-          <div class="card-title" data-i18n="cardTips" style="margin:0;">💡 טיפים לראיון</div>
-          <span class="collapsible-arrow"> ▾</span>
-        </div>
-        <div class="collapsible-body" id="tips-body" style="padding-top:12px;">
-          <div id="tips-list" style="margin-bottom:10px;"></div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
-              style="flex:1;margin:0;padding:8px 12px;font-size:13px;"
-              onkeydown="if(event.key==='Enter')addTip()">
-            <button class="btn btn-primary btn-sm" onclick="addTip()" data-i18n="btnAddTip">+ הוסף</button>
-          </div>
         </div>
       </div>
 
@@ -1197,7 +1196,7 @@
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
         <div style="position:relative;flex:1;min-width:180px;">
           <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;">🔍</span>
-          <input type="text" id="tracker-search" placeholder="חפש משרות..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:38px;margin:0;width:100%;">
+          <input type="text" id="tracker-search" placeholder="חפש משרות..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:38px;margin:0;width:100%;padding:9px 14px;font-size:14px;height:42px;">
         </div>
         <button class="btn btn-primary" onclick="openTrackerModal()" data-i18n="btnAddApp" style="white-space:nowrap;">+ הוסף משרה</button>
       </div>
@@ -3519,7 +3518,7 @@ let LANG = {
     statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
     tfActive: 'פעיל',
     prioHighSimple: 'חשוב מאוד', prioMediumSimple: 'חשוב', prioLowSimple: 'נחמד לדעת',
-    piSelectJob: 'בחרי משרה', piSelectJobPh: '-- בחרי משרה --', piCvLinks: 'קורות חיים',
+    piSelectJob: 'בחרי משרה', piSelectJobPh: 'בחר משרה...', piCvLinks: 'קורות חיים',
     piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צרי', piTips: 'הטיפים שלי',
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
@@ -3702,7 +3701,7 @@ let LANG = {
     statusOffer: 'Offer', statusNotFit: 'Not a fit',
     tfActive: 'Active',
     prioHighSimple: 'Must Know', prioMediumSimple: 'Important', prioLowSimple: 'Nice to Know',
-    piSelectJob: 'Select a job', piSelectJobPh: '-- Select a job --', piCvLinks: 'CV Links',
+    piSelectJob: 'Select a job', piSelectJobPh: 'Select a job...', piCvLinks: 'CV Links',
     piAboutMe: 'About Me — tailored to this job', btnGenerate: 'Generate', piTips: 'My Tips',
     piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
@@ -4538,7 +4537,7 @@ function loadPreInterviewSection() {
     return (b.date||'').localeCompare(a.date||'');
   });
   const isEn = currentLang === 'en';
-  sel.innerHTML = `<option value="">${isEn ? '-- Select a job --' : '-- בחרי משרה --'}</option>` +
+  sel.innerHTML = `<option value="">${isEn ? '-- Select a job --' : 'בחר משרה...'}</option>` +
     sorted.map(j => {
       const label = [j.company, j.role, j.interviewDate ? '📅 '+j.interviewDate.substring(0,10) : ''].filter(Boolean).join(' — ');
       return `<option value="${j._id}">${escHtml(label)}</option>`;
