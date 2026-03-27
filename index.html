@@ -80,7 +80,7 @@
     .main { padding: 16px 14px 90px; }
     .section-title { font-size: 24px; }
     .section-sub { font-size: 13px; margin-bottom: 18px; }
-    .card-title { font-size: 11px; letter-spacing: 0.5px; }
+    .card-title { font-size: 13px; letter-spacing: 0; }
     .card { padding: 16px 14px; margin-bottom: 12px; }
     .stat-value { font-size: 28px; }
     .stat-label { font-size: 10px; }
@@ -93,7 +93,7 @@
     }
     .modal-title { font-size: 18px; }
     .btn { font-size: 13px; padding: 10px 14px; }
-    .btn-sm { font-size: 11px; padding: 6px 10px; }
+    .btn-sm { font-size: 13px; padding: 6px 10px; }
     .question-card { padding: 14px; }
     .question-text { font-size: 13px; }
     .answer-text { font-size: 12px; }
@@ -202,8 +202,8 @@
     box-shadow: var(--shadow);
   }
   .card-title {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text3); margin-bottom: 14px;
+    font-size: 13px; font-weight: 600; text-transform: none;
+    letter-spacing: 0; color: var(--text2); margin-bottom: 14px;
   }
 
   label {
@@ -243,7 +243,7 @@
   .btn-accent2:hover { background: #E0F8EF; }
   .btn-danger { background: none; color: var(--danger); border: 1px solid var(--border); }
   .btn-danger:hover { background: #FFF0F2; border-color: var(--danger); }
-  .btn-sm { padding: 7px 12px; font-size: 12px; }
+  .btn-sm { padding: 7px 14px; font-size: 14px; }
   .btn-block { width: 100%; justify-content: center; margin-top: 12px; }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
@@ -784,13 +784,19 @@
 
         <!-- 2. לינק ל-CV -->
         <div class="card" id="pi-cv-card">
-          <div class="pi-title" data-i18n="piCvLinks">קורות חיים</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+              <div class="pi-title" style="margin:0;" data-i18n="piCvLinks">קורות חיים</div>
+              <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" title="Go to My Jobs" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
+            </div>
           <div id="pi-cv-links" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
         </div>
 
         <!-- 3. על עצמי — AI מותאם למשרה -->
         <div class="card">
-          <div class="pi-title" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+              <div class="pi-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
+              <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" title="Go to Profile" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
+            </div>
           <button class="btn btn-primary btn-block" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="margin-bottom:8px;">צרי</button>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
@@ -801,7 +807,10 @@
         <!-- 4. טיפים -->
         <div class="card" id="pi-tips-card">
           <div class="collapsible-header" onclick="toggleCollapsible('pi-tips-body',this)" style="margin-bottom:0;padding:10px 0;">
-            <div class="pi-title" data-i18n="piTips" style="margin:0;">הטיפים שלי</div>
+            <div style="display:flex;align-items:center;gap:6px;">
+                <div class="pi-title" style="margin:0;" data-i18n="piTips">הטיפים שלי</div>
+                <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" title="Go to Profile" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
+              </div>
             <span class="collapsible-arrow"> ▾</span>
           </div>
           <div class="collapsible-body" id="pi-tips-body" style="padding-top:10px;">
@@ -812,7 +821,10 @@
         <!-- 5. שאלות לפי עדיפות -->
         <div class="card">
           <div class="collapsible-header" onclick="toggleCollapsible('pi-q-body',this)" style="padding:10px 0;margin-bottom:0;">
-            <div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div>
+            <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="display:flex;align-items:center;gap:6px;"><div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div><button onclick="showSection('questions', document.querySelector('[onclick*=\"questions\"]'));event.stopPropagation();" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:0;line-height:1;">↗</button></div>
+                  <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
+                </div>
             <span class="collapsible-arrow"> ▾</span>
           </div>
           <div class="collapsible-body" id="pi-q-body">
@@ -879,7 +891,7 @@
       <!-- טיפים לראיון -->
       <div class="card" id="card-tips">
         <div class="collapsible-header" onclick="toggleCollapsible('tips-body', this)" style="margin-bottom:0;padding:0;">
-          <div class="card-title" data-i18n="cardTips" style="margin:0;">💡 טיפים לראיון</div>
+          <div class="card-title" data-i18n="cardTips" style="margin:0;">טיפים לראיון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="tips-body" style="padding-top:12px;">
@@ -907,47 +919,52 @@
         </div>
       </div>
 
-      <!-- ניסיון — חלק שני של אותו הדף -->
-      <div style="margin-top:8px;">
-        <div class="section-title" style="font-size:20px;margin-bottom:4px;" data-i18n="secExperience">ניסיון</div>
-        <p class="section-sub" style="margin-bottom:16px;" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="stat-total-years">0</div>
-          <div class="stat-label" data-i18n="statYears">שנות ניסיון</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="stat-companies">0</div>
-          <div class="stat-label" data-i18n="statCompanies">חברות</div>
-        </div>
-      </div>
+      <!-- ניסיון — עטוף ב-collapsible -->
       <div class="card" style="padding:0;overflow:hidden;">
-        <div class="collapsible-header" onclick="toggleCollapsible('exp-company',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
-          <div class="card-title" data-i18n="cardByCompany" style="margin:0;">לפי חברה</div>
+        <div class="collapsible-header" onclick="toggleCollapsible('exp-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
+          <div class="card-title" style="margin:0;" data-i18n="secExperience">ניסיון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
-        <div class="collapsible-body" id="exp-company" style="padding:12px 16px 16px;">
-          <div id="company-breakdown"></div>
+        <div class="collapsible-body" id="exp-body" style="padding:12px 16px 16px;">
+          <p style="font-size:12px;color:var(--text3);margin-bottom:12px;" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
+          <div class="stats-grid" style="margin-bottom:12px;">
+            <div class="stat-card">
+              <div class="stat-value" id="stat-total-years">0</div>
+              <div class="stat-label" data-i18n="statYears">שנות ניסיון</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="stat-companies">0</div>
+              <div class="stat-label" data-i18n="statCompanies">חברות</div>
+            </div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:8px;">
+            <div class="collapsible-header" onclick="toggleCollapsible('exp-company',this)" style="margin-bottom:0;border-radius:var(--radius);padding:10px 14px;">
+              <div class="card-title" data-i18n="cardByCompany" style="margin:0;">לפי חברה</div>
+              <span class="collapsible-arrow"> ▾</span>
+            </div>
+            <div class="collapsible-body" id="exp-company" style="padding:10px 14px 14px;">
+              <div id="company-breakdown"></div>
+            </div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:8px;">
+            <div class="collapsible-header" onclick="toggleCollapsible('exp-domain',this)" style="margin-bottom:0;border-radius:var(--radius);padding:10px 14px;">
+              <div class="card-title" data-i18n="cardByDomain" style="margin:0;">לפי תחום</div>
+              <span class="collapsible-arrow"> ▾</span>
+            </div>
+            <div class="collapsible-body" id="exp-domain" style="padding:10px 14px 14px;">
+              <div id="domain-breakdown"></div>
+            </div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <div class="collapsible-header" onclick="toggleCollapsible('exp-capability',this)" style="margin-bottom:0;border-radius:var(--radius);padding:10px 14px;">
+              <div class="card-title" data-i18n="cardByCapability" style="margin:0;">לפי יכולת</div>
+              <span class="collapsible-arrow"> ▾</span>
+            </div>
+            <div class="collapsible-body" id="exp-capability" style="padding:10px 14px 14px;">
+              <div id="capability-breakdown"></div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="card" style="padding:0;overflow:hidden;">
-        <div class="collapsible-header" onclick="toggleCollapsible('exp-domain',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
-          <div class="card-title" data-i18n="cardByDomain" style="margin:0;">לפי תחום</div>
-          <span class="collapsible-arrow"> ▾</span>
-        </div>
-        <div class="collapsible-body" id="exp-domain" style="padding:12px 16px 16px;">
-          <div id="domain-breakdown"></div>
-        </div>
-      </div>
-      <div class="card" style="padding:0;overflow:hidden;">
-        <div class="collapsible-header" onclick="toggleCollapsible('exp-capability',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
-          <div class="card-title" data-i18n="cardByCapability" style="margin:0;">לפי יכולת</div>
-          <span class="collapsible-arrow"> ▾</span>
-        </div>
-        <div class="collapsible-body" id="exp-capability" style="padding:12px 16px 16px;">
-          <div id="capability-breakdown"></div>
-        </div>
-      </div>
       </div><!-- end experience subsection -->
     </section>
 
@@ -1194,9 +1211,8 @@
 
       <!-- Search + Add -->
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center;">
-        <div style="position:relative;flex:1;min-width:180px;">
-          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;">🔍</span>
-          <input type="text" id="tracker-search" placeholder="חפש משרות..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="padding-right:38px;margin:0;width:100%;padding:9px 14px;font-size:14px;height:42px;">
+        <div style="flex:1;min-width:180px;">
+          <input type="text" id="tracker-search" placeholder="חפש משרות..." data-i18n-ph="phSearchApp" oninput="renderTracker()" style="margin:0;width:100%;padding:9px 14px;font-size:14px;height:42px;">
         </div>
         <button class="btn btn-primary" onclick="openTrackerModal()" data-i18n="btnAddApp" style="white-space:nowrap;">+ הוסף משרה</button>
       </div>
@@ -3524,7 +3540,7 @@ let LANG = {
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     btnDifficultFilter: '⭐ קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
-    cardTips: '💡 טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
+    cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
@@ -3707,7 +3723,7 @@ let LANG = {
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     btnDifficultFilter: '⭐ Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
-    cardTips: '💡 Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
+    cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
