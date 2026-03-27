@@ -691,6 +691,11 @@
     margin-bottom: 12px; text-transform: none; letter-spacing: 0;
   }
 
+
+  [dir="rtl"] .pi-sep-arrow::before { content: "←"; }
+  [dir="ltr"] .pi-sep-arrow::before { content: "→"; }
+  .pi-sep-arrow { font-size:14px; }
+
 </style>
 </head>
 <body>
@@ -787,9 +792,9 @@
         <div style="font-size:13px;color:var(--text2);margin-bottom:8px;" data-i18n="piBannerText">💡 כדי לקבל הכנה מלאה — מלאי תחילה את:</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
-          <span style="color:var(--text3);" class="pi-sep">←</span>
+          <span style="color:var(--text3);" class="pi-sep pi-sep-arrow"></span>
           <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה</button>
-          <span style="color:var(--text3);" class="pi-sep">←</span>
+          <span style="color:var(--text3);" class="pi-sep pi-sep-arrow"></span>
           <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
         </div>
       </div>
@@ -3793,7 +3798,7 @@ function applyLanguage() {
   const bannerBtns = document.querySelectorAll('[data-i18n="piBannerProfile"],[data-i18n="piBannerPrep"],[data-i18n="piBannerJobs"]');
   const seps = document.querySelectorAll('.pi-sep');
   if (isHe) {
-    const labels = ['← הפרופיל שלי', '← תרגול והכנה', '← המשרות שלי'];
+    const labels = ['הפרופיל שלי', 'תרגול והכנה', 'המשרות שלי'];
     bannerBtns.forEach((b, i) => b.textContent = labels[i]);
     seps.forEach(s => s.textContent = '·');
   } else {
