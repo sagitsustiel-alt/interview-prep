@@ -785,7 +785,7 @@
       </div>
 
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;" data-i18n="piBannerText"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> כדי לקבל הכנה מלאה — מלאי תחילה את:</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> <span data-i18n="piBannerText">כדי לקבל הכנה מלאה — מלאי תחילה את:</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
           <span style="color:var(--text3);" class="pi-sep-arrow"> ← </span>
@@ -1021,7 +1021,7 @@
             <!-- Filter bar -->
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
               <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;">
-              <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;flex-shrink:0;" data-i18n="btnDifficultFilter"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> קשות בלבד</button>
+              <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="btnDifficultFilter">קשות בלבד</span></button>
             </div>
 
             <!-- Type selector -->
@@ -1033,7 +1033,7 @@
             <!-- Topic checkboxes -->
             <div>
               <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
-                <div class="collapsible-title" style="font-size:13px;" data-i18n="colTopics"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> סנן לפי נושא</div>
+                <div class="collapsible-title" style="font-size:13px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> <span data-i18n="colTopics">סנן לפי נושא</span></div>
                 <span class="collapsible-arrow"> ▾</span>
               </div>
               <div class="collapsible-body" id="topic-checkboxes-area" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
@@ -1182,7 +1182,7 @@
         <div id="mock-feedback-area" style="display:none;">
           <div class="feedback-card clarity"><div class="feedback-label" style="color:var(--accent);" data-i18n="fbFeedback">משוב</div><div id="mock-fb-clarity"></div></div>
           <div class="feedback-card followup"><div class="feedback-label" style="color:var(--accent3);" data-i18n="fbFollowup">שאלת המשך אפשרית</div><div id="mock-fb-followup"></div></div>
-          <button class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="toggleSuggestedAnswer(this)" data-i18n="btnShowAnswer"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת</button>
+          <button class="btn btn-secondary btn-block" style="margin-top:10px;display:inline-flex;align-items:center;gap:5px;" onclick="toggleSuggestedAnswer(this)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg><span data-i18n="btnShowAnswer">הצג תשובה מוצעת</span></button>
           <div class="feedback-card improved" id="mock-suggested-answer" style="display:none;margin-top:8px;">
             <div class="feedback-label" style="color:var(--accent2);" data-i18n="fbImproved">תשובה משופרת</div>
             <div id="mock-fb-improved"></div>
@@ -1395,10 +1395,10 @@
 <div class="modal-overlay" id="modal-help">
   <div class="modal-sheet" style="max-height:90vh;">
     <div class="modal-handle"></div>
-    <div class="modal-title" data-i18n="helpTitle"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> איך להשתמש באפליקציה</div>
+    <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> <span data-i18n="helpTitle">איך להשתמש באפליקציה</span></div>
     <div id="modal-help-content" style="font-size:14px;color:var(--text2);line-height:2;"></div>
-    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;" data-i18n="helpDownload"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> הורד מדריך מפורט</button>
-    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;" data-i18n="helpGotIt">הבנתי <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg></button>
+    <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg><span data-i18n="helpDownload">הורד מדריך מפורט</span></button>
+    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;"><span data-i18n="helpGotIt">הבנתי</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg></button>
   </div>
 </div>
 
@@ -1456,7 +1456,7 @@
 <div class="modal-overlay" id="modal-default-questions">
   <div class="modal-sheet" style="max-height:90vh;">
     <div class="modal-handle"></div>
-    <div class="modal-title" data-i18n="defaultQModalTitle"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> סט שאלות בסיסי</div>
+    <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span data-i18n="defaultQModalTitle">סט שאלות בסיסי</span></div>
     <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" data-i18n="defaultQModalDesc">AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.</p>
     <!-- בורר כמות -->
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
@@ -1467,7 +1467,7 @@
         <option value="15">15 HR + 15 טכניות</option>
         <option value="20">20 HR + 20 טכניות</option>
       </select>
-      <button class="btn btn-secondary btn-sm" onclick="reloadDefaultQ()" data-i18n="btnReload"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> טען</button>
+      <button class="btn btn-secondary btn-sm" onclick="reloadDefaultQ()" style="display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg><span data-i18n="btnReload">טען</span></button>
     </div>
     <div id="default-q-loading" style="display:none;text-align:center;padding:20px;">
       <div class="loading-dots"><span></span><span></span><span></span></div>
@@ -1479,7 +1479,7 @@
         <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(true)" data-i18n="btnSelectAll">בחר הכל</button>
         <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(false)" data-i18n="btnDeselectAll">בטל הכל</button>
       </div>
-      <button class="btn btn-primary btn-block" onclick="addSelectedDefaultQ()" data-i18n="btnAddSelected"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> הוסף שאלות מסומנות לבנק</button>
+      <button class="btn btn-primary btn-block" onclick="addSelectedDefaultQ()" style="display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span data-i18n="btnAddSelected">הוסף שאלות מסומנות לבנק</span></button>
       <button class="btn btn-ghost btn-block" onclick="closeModal('modal-default-questions')" style="margin-top:8px;" data-i18n="btnCancel">ביטול</button>
     </div>
   </div>
@@ -3295,7 +3295,7 @@ function loadMockQuestion() {
   const showBtn = document.querySelector('#mock-feedback-area ~ * .btn-secondary, #mock-active .btn-secondary[onclick*="toggleSuggested"]');
   // reset button label via re-applying language
   const toggleBtn = document.querySelector('button[onclick="toggleSuggestedAnswer(this)"]');
-  if (toggleBtn) toggleBtn.textContent = LANG[currentLang].btnShowAnswer || '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת';
+  if (toggleBtn) toggleBtn.innerHTML = LANG[currentLang].btnShowAnswer || '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת';
   document.getElementById('mock-question-card').style.display='block';
   document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='');
   document.querySelectorAll('.mock-dot').forEach((d,i)=>{
@@ -3430,14 +3430,14 @@ let LANG = {
     colManage: 'נהל שאלות',
     uploadClick: 'לחץ להעלאת קובץ', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, תמונות',
     orText: 'או', phPasteText: 'הדבק טקסט ישירות...', phDocName: 'שם המסמך', btnAdd: 'הוסף',
-    colImport: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ייבא שאלות ותשובות מוכנות',
+    colImport: 'ייבא שאלות ותשובות מוכנות',
     importFormat: 'פורמט: נושא: / שאלה X: / תשובה:',
-    phImport: 'הדבק כאן שאלות ותשובות...', btnImport: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ייבא לבנק השאלות',
+    phImport: 'הדבק כאן שאלות ותשובות...', btnImport: 'ייבא לבנק השאלות',
     cleanTitle: '🧹 נקה וסדר את הבנק',
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
-    phSearch: 'חיפוש שאלה...', colTopics: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> סנן לפי נושא', btnSelectAll: 'בחר הכל',
+    phSearch: 'חיפוש שאלה...', colTopics: 'סנן לפי נושא', btnSelectAll: 'בחר הכל',
     defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
-    btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> הוסף שאלות מסומנות לבנק',
+    btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
     btnAddHR: 'הוסף שאלת HR',
@@ -3478,9 +3478,9 @@ let LANG = {
     btnDefaultQ: 'שאלות בסיסיות', defaultQModalTitle: 'סט שאלות בסיסי',
     defaultQModalDesc: 'AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.',
     defaultQLoading: 'AI מכין שאלות בסיסיות...',
-    btnDeselectAll: 'בטל הכל', btnAddSelected: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> הוסף שאלות מסומנות לבנק',
-    helpDownload: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> הורד מדריך מפורט',
-    helpGotIt: 'הבנתי <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>',
+    btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
+    helpDownload: 'הורד מדריך מפורט',
+    helpGotIt: 'הבנתי',
     helpContent: `1. הכנס API Key — לחץ על תמונת הפרופיל ← הכנס מפתח מ-<a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
 2. מלא פרופיל — Pitch, קורות חיים, היסטוריית עבודה<br>
 3. הכן שאלות — בכרטיסיית שאלות:<br>
@@ -3565,9 +3565,9 @@ let LANG = {
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסיפי בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
-    piBannerText: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
+    piBannerText: 'כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnVideo: 'סרטון', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnDifficultFilter: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
+    btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
@@ -3616,15 +3616,15 @@ let LANG = {
     colManage: 'Manage Questions',
     uploadClick: 'Click to upload file', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, Images',
     orText: 'or', phPasteText: 'Paste text directly...', phDocName: 'Document name', btnAdd: 'Add',
-    colImport: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Import Ready Q&A',
+    colImport: 'Import Ready Q&A',
     importFormat: 'Format: Topic: / Question X: / Answer:',
-    phImport: 'Paste Q&A here...', btnImport: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Import to Question Bank',
+    phImport: 'Paste Q&A here...', btnImport: 'Import to Question Bank',
     cleanTitle: '🧹 Clean & Organize Bank',
     cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
-    phSearch: 'Search question...', colTopics: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Filter by Topic', btnSelectAll: 'Select All',
+    phSearch: 'Search question...', colTopics: 'Filter by Topic', btnSelectAll: 'Select All',
     defaultQTitle: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Basic Question Set', defaultQDesc: 'Classic interview questions without specific job details',
-    btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Add Selected to Bank',
-    modalDefaultQTitle: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
+    btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected to Bank',
+    modalDefaultQTitle: 'Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: 'Search & Filter',
     btnAddHR: 'Add HR Question',
     // Job Prep section
@@ -3664,9 +3664,9 @@ let LANG = {
     btnDefaultQ: 'Default Questions', defaultQModalTitle: 'Default Question Set',
     defaultQModalDesc: 'AI marked the recommended questions. You can change the selection.',
     defaultQLoading: 'AI is preparing default questions...',
-    btnDeselectAll: 'Deselect All', btnAddSelected: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Add Selected Questions to Bank',
-    helpDownload: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> Download Full Guide',
-    helpGotIt: 'Got it <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>',
+    btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected Questions to Bank',
+    helpDownload: 'Download Full Guide',
+    helpGotIt: 'Got it',
     helpContent: `1. Enter API Key — click your profile picture ← enter key from <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent);">console.anthropic.com</a><br>
 2. Fill Profile — Pitch, CV, Work History<br>
 3. Prepare Questions — in the Questions tab:<br>
@@ -3752,9 +3752,9 @@ let LANG = {
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     piNoCvLinks: 'No CV links added yet', piNoTips: 'No tips yet. Add them in Profile.', piNoQFilters: 'No questions match the selected filters.',
     piBannerText: 'For full preparation — first complete:',
-    piBannerText: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
+    piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnVideo: 'Video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
-    btnDifficultFilter: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
+    btnDifficultFilter: 'Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
