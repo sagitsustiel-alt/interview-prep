@@ -3295,7 +3295,7 @@ function loadMockQuestion() {
   const showBtn = document.querySelector('#mock-feedback-area ~ * .btn-secondary, #mock-active .btn-secondary[onclick*="toggleSuggested"]');
   // reset button label via re-applying language
   const toggleBtn = document.querySelector('button[onclick="toggleSuggestedAnswer(this)"]');
-  if (toggleBtn) toggleBtn.innerHTML = LANG[currentLang].btnShowAnswer || '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת';
+  if (toggleBtn) toggleBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> ' + (LANG[currentLang].btnShowAnswer || 'הצג תשובה מוצעת');
   document.getElementById('mock-question-card').style.display='block';
   document.getElementById('mock-question-card').querySelectorAll('button').forEach(b=>b.style.display='');
   document.querySelectorAll('.mock-dot').forEach((d,i)=>{
@@ -3340,7 +3340,7 @@ window.toggleSuggestedAnswer = function(btn) {
   const isVisible = el.style.display !== 'none';
   el.style.display = isVisible ? 'none' : 'block';
   const L = LANG[currentLang];
-  btn.innerHTML = isVisible ? (L.btnShowAnswer || '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת') : (L.btnHideAnswer || '🔼 הסתר תשובה מוצעת <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg>');
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> ' + (isVisible ? (L.btnShowAnswer || 'הצג תשובה מוצעת') : (L.btnHideAnswer || 'הסתר תשובה מוצעת'));
 };
 
 window.skipMock = function() {
@@ -3460,7 +3460,7 @@ let LANG = {
     phAnswer: 'כתוב את תשובתך כאן...', btnGetFeedback: 'קבל משוב', btnSkip: 'דלג',
     fbFeedback: 'משוב', fbImproved: 'תשובה משופרת', fbFollowup: 'שאלת המשך אפשרית',
     btnNextQ: 'שאלה הבאה', btnEnd: 'סיים', mockDone: 'הראיון הושלם!', btnPracticeAgain: 'תרגל שוב',
-    btnShowAnswer: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הצג תשובה מוצעת', btnHideAnswer: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> הסתר תשובה מוצעת',
+    btnShowAnswer: 'הצג תשובה מוצעת', btnHideAnswer: 'הסתר תשובה מוצעת',
     btnStop: '⛔ הפסק סימולציה',
     // Modals
     modalWorkTitle: 'הוסף תפקיד',
@@ -3646,7 +3646,7 @@ let LANG = {
     phAnswer: 'Write your answer here...', btnGetFeedback: 'Get Feedback', btnSkip: 'Skip',
     fbFeedback: 'Feedback', fbImproved: 'Improved Answer', fbFollowup: 'Possible Follow-up',
     btnNextQ: 'Next Question', btnEnd: 'Finish', mockDone: 'Interview Complete!', btnPracticeAgain: 'Practice Again',
-    btnShowAnswer: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> Show Suggested Answer', btnHideAnswer: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> Hide Suggested Answer',
+    btnShowAnswer: 'Show Suggested Answer', btnHideAnswer: 'Hide Suggested Answer',
     btnStop: '⛔ Stop Simulation',
     // Modals
     modalWorkTitle: 'Add Role',
