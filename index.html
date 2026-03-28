@@ -1008,10 +1008,10 @@
       <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
       <!-- Unified card: search + filter + list + add -->
-      <div class="card" style="padding:16px;">
+      <div style="padding:0;">
 
         <!-- Search & Filter collapsible -->
-        <div class="collapsible-header" onclick="toggleCollapsible('col-search-q', this);" style="border:1px solid var(--border);margin-bottom:0;">
+        <div class="collapsible-header" onclick="toggleCollapsible('col-search-q', this);" style="border:none;margin-bottom:0;padding-right:0;padding-left:0;">
           <div class="collapsible-title" style="font-size:13px;" data-i18n="cardSearchQ">חיפוש וסינון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
@@ -1032,11 +1032,11 @@
 
             <!-- Topic checkboxes -->
             <div>
-              <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;">
+              <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border:none;padding-right:0;padding-left:0;">
                 <div class="collapsible-title" style="font-size:13px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> <span data-i18n="colTopics">סנן לפי נושא</span></div>
                 <span class="collapsible-arrow"> ▾</span>
               </div>
-              <div class="collapsible-body" id="topic-checkboxes-area" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
+              <div class="collapsible-body" id="topic-checkboxes-area" style="border:none;padding:8px 0 4px 0;">
                 <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:6px;"></div>
                 <button class="btn btn-ghost" style="font-size:14px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
               </div>
@@ -1045,7 +1045,7 @@
         </div><!-- end col-search-q -->
 
         <!-- Questions list collapsible -->
-        <div class="collapsible-header" onclick="toggleCollapsible('col-questions-list', this)" style="border:1px solid var(--border);margin-bottom:0;">
+        <div class="collapsible-header" onclick="toggleCollapsible('col-questions-list', this)" style="border:none;margin-bottom:0;padding-right:0;padding-left:0;">
           <div class="collapsible-title" style="font-size:13px;" data-i18n="colQuestionsList">רשימת שאלות</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
@@ -1068,7 +1068,7 @@
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
 
       <!-- כפתור שאלות בסיסיות -->
-      <div class="card" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div>
           <div style="font-weight:700;font-size:14px;margin-bottom:3px;" data-i18n="defaultQTitle">סט שאלות בסיסי</div>
           <div style="font-size:12px;color:var(--text2);" data-i18n="defaultQDesc">שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים</div>
@@ -1105,8 +1105,8 @@
 
       <div id="jp-results" style="display:none;">
         <div class="card"><div class="card-title" data-i18n="cardJpPitch">Pitch מותאם למשרה</div><div class="gen-content" id="jp-pitch"></div></div>
-        <div class="card"><div class="card-title" data-i18n="cardJpHR">שאלות HR למשרה זו</div><div id="jp-hr-questions"></div></div>
-        <div class="card"><div class="card-title" data-i18n="cardJpTech">שאלות טכניות / PM</div><div id="jp-tech-questions"></div></div>
+        <div><div class="card-title" data-i18n="cardJpHR" style="margin-bottom:8px;">שאלות HR למשרה זו</div><div id="jp-hr-questions"></div></div>
+        <div><div class="card-title" data-i18n="cardJpTech" style="margin-bottom:8px;">שאלות טכניות / PM</div><div id="jp-tech-questions"></div></div>
       </div>
       </div>
 
