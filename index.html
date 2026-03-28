@@ -179,7 +179,7 @@
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center;
     gap: 3px; padding: 10px 4px; background: none; border: none;
-    color: var(--text3); font-family: 'Heebo', sans-serif; font-size: 10px;
+    color: var(--text2); font-family: 'Heebo', sans-serif; font-size: 10px;
     font-weight: 500; cursor: pointer; transition: color 0.2s;
     -webkit-tap-highlight-color: transparent;
   }
@@ -778,14 +778,14 @@
 
       <!-- 1. בחירת משרה -->
       <div class="card">
-        <div class="pi-title" data-i18n="piSelectJob">בחרי משרה</div>
+        <div class="pi-title" data-i18n="piSelectJob">בחר משרה</div>
         <select id="pi-job-select" onchange="loadPreInterview()" style="margin:0;padding:9px 14px;font-size:14px;height:42px;">
           <option value="" data-i18n="piSelectJobPh" id="pi-job-ph">בחר משרה...</option>
         </select>
       </div>
 
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> <span data-i18n="piBannerText">כדי לקבל הכנה מלאה — מלאי תחילה את:</span></div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> <span data-i18n="piBannerText">כדי לקבל הכנה מלאה — מלא תחילה את:</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
           <span style="color:var(--text3);" class="pi-sep-arrow"> ← </span>
@@ -814,7 +814,7 @@
               <div class="pi-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
               <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" title="Go to Profile" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
             </div>
-          <button class="btn btn-primary btn-block" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="margin-bottom:8px;">צרי</button>
+          <button class="btn btn-primary btn-block" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n="btnGenerate" style="margin-bottom:8px;">צור</button>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
           </div>
@@ -878,7 +878,7 @@
       <!-- empty state when no jobs -->
       <div id="pi-empty" style="display:none;text-align:center;padding:30px 20px;color:var(--text3);">
         <div style="margin-bottom:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
-        <div data-i18n="piNoJobs">אין משרות עם ראיון. הוסיפי משרה בחלון "המשרות שלי"</div>
+        <div data-i18n="piNoJobs">אין משרות עם ראיון. הוסף משרה בחלון "המשרות שלי"</div>
       </div>
 
     </section>
@@ -914,7 +914,7 @@
         <div class="collapsible-body" id="tips-body" style="padding:0 16px 16px;">
           <div id="tips-list" style="margin-bottom:10px;margin-top:10px;"></div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <input type="text" id="tip-input" placeholder="הוסיפי טיפ..." data-i18n-ph="phTip"
+            <input type="text" id="tip-input" placeholder="הוסף טיפ..." data-i18n-ph="phTip"
               style="flex:1;margin:0;padding:9px 14px;font-size:14px;height:42px;"
               onkeydown="if(event.key==='Enter')addTip()">
             <button class="btn btn-primary btn-sm" onclick="addTip()" data-i18n="btnAddTip">+ הוסף</button>
@@ -922,27 +922,27 @@
         </div>
       </div>
 
-      <div class="card" style="padding:0;overflow:hidden;">
-        <div class="collapsible-header" onclick="toggleCollapsible('card-work-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
-          <div class="card-title" data-i18n="cardWorkHistory" style="margin:0;">היסטוריית עבודה</div>
-          <span class="collapsible-arrow"> ▾</span>
-        </div>
-        <div class="collapsible-body" id="card-work-body" style="padding:0 16px 16px;">
-          <div id="work-history-list" style="margin-top:10px;"></div>
-          <button class="btn btn-secondary btn-block" onclick="openAddWork()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            <span data-i18n="btnAddRole">הוסף תפקיד</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ניסיון — עטוף ב-collapsible -->
+      <!-- ניסיון — כולל היסטוריית עבודה בפנים -->
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="collapsible-header" onclick="toggleCollapsible('exp-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:12px 16px;">
           <div class="card-title" style="margin:0;" data-i18n="secExperience">ניסיון</div>
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="exp-body" style="padding:12px 16px 16px;">
+          <!-- היסטוריית עבודה בתוך ניסיון -->
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:12px;">
+            <div class="collapsible-header" onclick="toggleCollapsible('card-work-body',this)" style="margin-bottom:0;border-radius:var(--radius);padding:10px 14px;">
+              <div class="card-title" data-i18n="cardWorkHistory" style="margin:0;">היסטוריית עבודה</div>
+              <span class="collapsible-arrow"> ▾</span>
+            </div>
+            <div class="collapsible-body" id="card-work-body" style="padding:0 14px 14px;">
+              <div id="work-history-list" style="margin-top:10px;"></div>
+              <button class="btn btn-secondary btn-block" onclick="openAddWork()" style="margin-top:10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                <span data-i18n="btnAddRole">הוסף תפקיד</span>
+              </button>
+            </div>
+          </div>
           <p style="font-size:12px;color:var(--text3);margin-bottom:12px;" data-i18n="subExperience">מחושב אוטומטית מהיסטוריית העבודה שלך</p>
           <div class="stats-grid" style="margin-bottom:12px;">
             <div class="stat-card">
@@ -1016,7 +1016,7 @@
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="col-search-q">
-          <div style="padding:12px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);margin-bottom:10px;">
+          <div style="padding:12px 0 0 0;margin-bottom:10px;">
 
             <!-- Filter bar -->
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
@@ -1037,7 +1037,7 @@
                 <span class="collapsible-arrow"> ▾</span>
               </div>
               <div class="collapsible-body" id="topic-checkboxes-area" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:12px;">
-                <div id="topic-checkboxes" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:6px;"></div>
                 <button class="btn btn-ghost" style="font-size:14px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
               </div>
             </div>
@@ -1051,13 +1051,13 @@
         </div>
         <div class="collapsible-body" id="col-questions-list">
           <div id="q-filtered-list"></div>
+          <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:10px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            <span data-i18n="btnAddHR">הוסף שאלת HR</span>
+          </button>
         </div><!-- end col-questions-list -->
 
-        <!-- Add question button -->
-        <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:12px;">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-          <span data-i18n="btnAddHR">הוסף שאלת HR</span>
-        </button>
+
 
       </div><!-- end unified card -->
       </div>
@@ -2832,9 +2832,9 @@ function renderQuestions() {
             <span style="background:var(--accent);color:#fff;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;">${questions.length}</span>
             <span style="font-weight:700;font-size:14px;">${escHtml(topic)}</span>
             <a href="${ytUrl}" target="_blank" onclick="event.stopPropagation()"
-               style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(255,0,0,0.12);color:#ff4444;border:1px solid rgba(255,0,0,0.25);text-decoration:none;white-space:nowrap;flex-shrink:0;"
+               style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:#F5F3FF;color:var(--accent);border:1px solid var(--accent);text-decoration:none;white-space:nowrap;flex-shrink:0;"
                title="חיפוש YouTube: ${escHtml(topic)}">
-              ▶ YouTube
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;"><polygon points="5 3 19 12 5 21 5 3"/></svg> YouTube
             </a>
           </div>
           <span class="collapsible-arrow"> ▾</span>
@@ -3549,7 +3549,7 @@ let LANG = {
     lblAppNotes: 'הערות', btnSaveApp: 'שמור',
     trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
     phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות + דרישות המשרה (ישמש לניתוח בחלון "לפני ראיון")', btnCancel: 'ביטול',
-    lblCvWord: 'CV — Word', lblCvPdf: 'CV — PDF', phCvLink: 'הדביקי לינק מ-Google Drive...',
+    lblCvWord: 'CV — Word', lblCvPdf: 'CV — PDF', phCvLink: 'הדבק לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
     subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
     progSent: '📨 פניות', progInterview: '💬 ראיונות', progPending: '⏳ ממתינות', progMotivation: 'יש התקדמות!',
@@ -3560,16 +3560,16 @@ let LANG = {
     statusOffer: 'הצעת עבודה', statusNotFit: 'לא מתאים',
     tfActive: 'פעיל',
     prioHighSimple: 'חשוב מאוד', prioMediumSimple: 'חשוב', prioLowSimple: 'נחמד לדעת',
-    piSelectJob: 'בחרי משרה', piSelectJobPh: 'בחר משרה...', piCvLinks: 'קורות חיים',
-    piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צרי', piTips: 'הטיפים שלי',
+    piSelectJob: 'בחר משרה', piSelectJobPh: 'בחר משרה...', piCvLinks: 'קורות חיים',
+    piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צור', piTips: 'הטיפים שלי',
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
-    piNoJobs: 'אין משרות. הוסיפי משרה בחלון "המשרות שלי"',
-    piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסיפי בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
-    piBannerText: 'כדי לקבל הכנה מלאה — מלאי תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
+    piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
+    piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
+    piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnVideo: 'סרטון', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמני כקשה', noAnswer: 'אין תשובה עדיין',
+    btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
-    cardTips: 'טיפים לראיון', phTip: 'כתבי טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
+    cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
