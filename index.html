@@ -2037,32 +2037,17 @@ ${existingQTexts || 'אין'}
 
 // ==================== COLLAPSIBLE ====================
 
-window.accordionToggle = function(idx) {
-  // Toggle state
-  if (openTopicIdx === idx) {
-    openTopicIdx = null; // same topic clicked → close it
-  } else {
-    openTopicIdx = idx; // new topic → open it
-  }
-  applyAccordionState();
+window.accordionToggle = function(el) {
+  // Read topic name from data attribute — no quoting issues
+  const topicName = el.getAttribute('data-topic');
+  // Toggle: if same topic → close, else open new one
+  openTopicName = (openTopicName === topicName) ? null : topicName;
+  // Re-render — renderQuestions reads openTopicName
+  renderQuestions();
 };
 
 function applyAccordionState() {
-  document.querySelectorAll('.topic-row-body').forEach(function(body) {
-    const i = parseInt(body.getAttribute('data-idx'));
-    const isOpen = (i === openTopicIdx);
-    body.classList.toggle('open', isOpen);
-  });
-  document.querySelectorAll('.topic-row-header').forEach(function(header) {
-    const i = parseInt(header.getAttribute('data-idx'));
-    const isOpen = (i === openTopicIdx);
-    header.classList.toggle('open', isOpen);
-    const arrow = header.querySelector('.topic-row-arrow');
-    if (arrow) arrow.textContent = isOpen ? '▼' : '▶';
-  });
-  // Update toggle-all button
-  const btn = document.getElementById('toggle-all-btn');
-  if (btn) btn.textContent = (openTopicIdx !== null) ? (LANG[currentLang]?.btnCloseAll || 'סגור הכל') : (LANG[currentLang]?.btnOpenAll || 'פתח הכל');
+  // No-op: state is applied during renderQuestions()
 }
 
 window.toggleCollapsible = function(id, header) {
@@ -2894,15 +2879,16 @@ function renderQuestions() {
       const questions = groups[topic];
       const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
       const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
-      const isThisOpen = (openTopicIdx === idx);
+      const isThisOpen = (openTopicName === topic);
+      const escapedTopic = escHtml(topic).replace(/'/g, "\\'");
       return (
-        '<div class="topic-row" data-topic="' + escHtml(topic) + '">' +
-          '<div class="topic-row-header' + (isThisOpen ? ' open' : '') + '" data-idx="' + idx + '" onclick="accordionToggle(' + idx + ')">' +
+        '<div class="topic-row">' +
+          '<div class="topic-row-header' + (isThisOpen ? ' open' : '') + '" data-topic="' + escHtml(topic) + '" onclick="accordionToggle(this)">' +
             '<span class="topic-row-arrow">' + (isThisOpen ? '▼' : '▶') + '</span>' +
             '<span class="topic-row-name">' + escHtml(topic) + '</span>' +
             '<span class="topic-row-count">' + questions.length + ' שאלות</span>' +
           '</div>' +
-          '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" data-idx="' + idx + '" id="tg-' + idx + '">' +
+          '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" id="tg-' + idx + '">' +
             '<div class="topic-row-questions">' +
               '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
                 ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;margin-bottom:10px;">' +
@@ -2920,7 +2906,7 @@ function renderQuestions() {
 }
 
 let allGroupsOpen = false;
-let openTopicIdx = null; // accordion state: which topic is open (-1 = none)
+let openTopicName = null; // accordion state: which topic name is open
 let groupDragSrcIdx = null;
 
 window.groupDragStart = function(e, idx) {
@@ -2940,14 +2926,13 @@ window.groupDrop = function(e, targetIdx) {
   renderQuestions();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  // Close all (accordion only supports one open, so this just closes)
-  openTopicIdx = null;
-  applyAccordionState();
+  openTopicName = null;
+  renderQuestions();
 };
 
 window.toggleAllTopicGroups = function(open) {
-  openTopicIdx = open ? 0 : null;
-  applyAccordionState();
+  openTopicName = null;
+  renderQuestions();
 };
 
 function renderQList(list, containerId) {
