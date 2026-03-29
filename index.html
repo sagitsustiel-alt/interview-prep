@@ -1050,8 +1050,8 @@
 
       <!-- Sub-section: שאלות -->
       <div id="inner-questions" class="inner-section active" style="padding:0 2px;">
-        <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
-        <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
+        <h1 class="section-title" data-i18n="secQuestions">נושאים לתרגול</h1>
+        <p class="section-sub" data-i18n="subQuestions">בחר נושא ולאחר מכן תרגל שאלות מתוכו</p>
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
@@ -1082,7 +1082,7 @@
         <!-- 4. Filters panel (collapsed by default) -->
         <div class="filters-panel" id="filters-panel">
           <div style="padding:4px 0 12px 0;">
-            <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px;" data-i18n="colTopics">סנן לפי נושא</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px;" data-i18n="colTopics">סינון נושאים</div>
             <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:4px;"></div>
             <button class="btn btn-ghost" style="font-size:13px;margin-top:8px;padding:2px 0;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
           </div>
@@ -2036,6 +2036,20 @@ ${existingQTexts || 'אין'}
 };
 
 // ==================== COLLAPSIBLE ====================
+
+window.accordionToggle = function(idx, headerEl) {
+  const body = document.getElementById('tg-' + idx);
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.topic-row-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.topic-row-header').forEach(h => h.classList.remove('open'));
+  // Open clicked if was closed
+  if (!isOpen) {
+    body.classList.add('open');
+    headerEl.classList.add('open');
+  }
+};
+
 window.toggleCollapsible = function(id, header) {
   const body = document.getElementById(id);
   const arrow = header.querySelector('.collapsible-arrow');
@@ -2852,46 +2866,46 @@ function renderQuestions() {
 
   el.innerHTML = `
     <!-- Summary bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;margin-bottom:12px;border-bottom:1px solid var(--border);">
-      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:14px;padding:4px 10px;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל ▼</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
       <div style="font-size:13px;color:var(--text2);">
-        <strong style="color:var(--accent);">${totalCount}</strong> שאלות ב-<strong>${groupCount}</strong> נושאים
+        <strong style="color:var(--accent);">${totalCount}</strong> שאלות · <strong>${groupCount}</strong> נושאים
       </div>
-      
+      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל</button>
     </div>
 
-    <!-- Topic groups - ordered by topicOrder -->
+    <!-- Topic rows — accordion -->
+    <div id="topic-accordion">
     ${orderedTopics.map((topic, idx) => {
       const questions = groups[topic];
-      const ytQuery = encodeURIComponent(`${topic} interview explained program manager`);
-      const ytUrl = `https://www.youtube.com/results?search_query=${ytQuery}`;
-      return `
-      <div style="margin-bottom:6px;" draggable="true"
-        ondragstart="groupDragStart(event, ${idx})"
-        ondragover="groupDragOver(event)"
-        ondrop="groupDrop(event, ${idx})"
-        ondragend="groupDragEnd(event)"
-        data-topic="${escHtml(topic)}">
-        <div class="collapsible-header" onclick="toggleCollapsible('tg-${idx}', this)" style="margin-bottom:0;border:none;background:var(--surface2);border-radius:6px;padding:10px 14px;">
-          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
-            <span style="color:var(--text3);font-size:14px;cursor:grab;padding:0 2px;" onclick="event.stopPropagation()" title="גרור לשינוי סדר">⠿</span>
-            <span style="background:var(--accent);color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;">${questions.length}</span>
-            <span style="font-weight:700;font-size:14px;">${escHtml(topic)}</span>
-            <a href="${ytUrl}" target="_blank" onclick="event.stopPropagation()"
-               style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:20px;border-radius:5px;background:var(--accent);text-decoration:none;flex-shrink:0;"
-               title="חיפוש YouTube: ${escHtml(topic)}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </a>
-          </div>
-          <span class="collapsible-arrow"> ▾</span>
-        </div>
-        <div class="collapsible-body" id="tg-${idx}">
-          <div style="padding:4px 0 8px 0;">
-            ${questions.map(q => renderQCard(q)).join('')}
-          </div>
-        </div>
-      </div>
-    `}).join('')}
+      const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
+      const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
+      return '<div class="topic-row" draggable="true"' +
+        ' ondragstart="groupDragStart(event,' + idx + ')"' +
+        ' ondragover="groupDragOver(event)"' +
+        ' ondrop="groupDrop(event,' + idx + ')"' +
+        ' ondragend="groupDragEnd(event)"' +
+        ' data-topic="' + escHtml(topic) + '">' +
+        '<div class="topic-row-header" onclick="accordionToggle(' + idx + ', this)">' +
+          '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">' +
+            '<span class="topic-row-arrow">›</span>' +
+            '<span style="font-size:14px;font-weight:600;color:var(--text);">' + escHtml(topic) + '</span>' +
+            '<span style="font-size:12px;color:var(--text3);font-weight:400;">' + questions.length + ' שאלות</span>' +
+          '</div>' +
+          '<span style="color:var(--text3);font-size:13px;cursor:grab;" onclick="event.stopPropagation()" title="גרור">⠿</span>' +
+        '</div>' +
+        '<div class="topic-row-body" id="tg-' + idx + '">' +
+          '<div style="padding:4px 0 12px 0;">' +
+            '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
+               ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;padding:0 0 10px 0;border-bottom:1px solid var(--border);margin-bottom:8px;width:100%;">' +
+              '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 24 24\' fill=\'var(--accent)\' stroke=\'none\'><polygon points=\'5 3 19 12 5 21 5 3\'/></svg>' +
+              'הסבר ביוטיוב' +
+            '</a>' +
+            questions.map(q => renderQCard(q)).join('') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('')}
+    </div>
   `;
 }
 
@@ -3471,7 +3485,7 @@ let LANG = {
     statYears: 'שנות ניסיון', statCompanies: 'חברות',
     cardByCompany: 'לפי חברה', cardByDomain: 'לפי תחום', cardByCapability: 'לפי יכולת',
     // Questions section
-    secQuestions: 'בנק שאלות', subQuestions: 'ספריית שאלות ותשובות לראיון',
+    secQuestions: 'נושאים לתרגול', subQuestions: 'בחר נושא ולאחר מכן תרגל שאלות מתוכו',
     colDocs: '📚 הוסף מסמך לחילוץ שאלות',
     colManage: 'נהל שאלות',
     uploadClick: 'לחץ להעלאת קובץ', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, תמונות',
@@ -3481,7 +3495,7 @@ let LANG = {
     phImport: 'הדבק כאן שאלות ותשובות...', btnImport: 'ייבא לבנק השאלות',
     cleanTitle: '🧹 נקה וסדר את הבנק',
     cleanDesc: 'מוחק כפילויות, ממזג שאלות דומות, מסדר לפי נושאים', btnClean: '🧹 נקה וסדר',
-    phSearch: 'חיפוש שאלה...', colTopics: 'סנן לפי נושא', btnSelectAll: 'בחר הכל',
+    phSearch: 'חיפוש שאלה...', colTopics: 'סינון נושאים', btnSelectAll: 'בחר הכל',
     defaultQTitle: 'סט שאלות בסיסי', defaultQDesc: 'שאלות ראיון קלאסיות ללא פרטי משרה ספציפיים',
     btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
@@ -3657,7 +3671,7 @@ let LANG = {
     statYears: 'Years of Experience', statCompanies: 'Companies',
     cardByCompany: 'By Company', cardByDomain: 'By Domain', cardByCapability: 'By Capability',
     // Questions section
-    secQuestions: 'Question Bank', subQuestions: 'Interview Q&A library',
+    secQuestions: 'Practice Topics', subQuestions: 'Choose a topic then practice its questions',
     colDocs: '📚 Add Document to Extract Questions',
     colManage: 'Manage Questions',
     uploadClick: 'Click to upload file', uploadSub: 'PDF, Word, Excel, PowerPoint, TXT, Images',
@@ -3667,7 +3681,7 @@ let LANG = {
     phImport: 'Paste Q&A here...', btnImport: 'Import to Question Bank',
     cleanTitle: '🧹 Clean & Organize Bank',
     cleanDesc: 'Removes duplicates, merges similar questions, organizes by topic', btnClean: '🧹 Clean & Organize',
-    phSearch: 'Search question...', colTopics: 'Filter by Topic', btnSelectAll: 'Select All',
+    phSearch: 'Search question...', colTopics: 'Filter Topics', btnSelectAll: 'Select All',
     defaultQTitle: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Basic Question Set', defaultQDesc: 'Classic interview questions without specific job details',
     btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected to Bank',
     modalDefaultQTitle: 'Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
