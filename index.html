@@ -2874,6 +2874,10 @@ function renderQuestions() {
   const totalCount = qs.length;
   const groupCount = orderedTopics.length;
 
+  // Update summary text (static bar)
+  const summaryEl = document.getElementById('q-summary-text');
+  if (summaryEl) summaryEl.innerHTML = '<strong style="color:var(--accent);">' + totalCount + '</strong> שאלות · <strong>' + groupCount + '</strong> נושאים';
+
   el.innerHTML = `
     <!-- Topic rows — accordion -->
     <div id="topic-accordion">
@@ -2930,7 +2934,8 @@ window.groupDrop = function(e, targetIdx) {
 window.toggleAllTopicGroupsBtn = function() {
   allGroupsOpen = !allGroupsOpen;
   openTopicName = allGroupsOpen ? '__ALL__' : null;
-  renderQuestions(); // template reads allGroupsOpen → button text is correct
+  renderQuestions();
+  updateToggleAllBtn();
 };
 
 function updateToggleAllBtn() {
