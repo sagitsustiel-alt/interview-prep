@@ -1155,18 +1155,18 @@
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
-        <!-- Row 1: Toggle + Search side by side -->
+        <!-- Row 1: Toggle (flex-start) + Search (flex:1) — direction-aware -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
           <div class="seg-toggle" style="margin-bottom:0;flex-shrink:0;width:140px;">
             <button class="seg-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
             <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
           </div>
-          <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;">
+          <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;text-align:inherit;">
         </div>
 
-        <!-- Row 2: Filters group (right) + Stats (left) -->
+        <!-- Row 2: Actions (flex-start = right in RTL, left in LTR) + Stats (flex-end) -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
-          <!-- Right: filters group -->
+          <!-- Actions group: always at flex-start (right in RTL, left in LTR) -->
           <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
             <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
@@ -1177,8 +1177,8 @@
               <span data-i18n="btnDifficultFilter">קשות בלבד</span>
             </button>
           </div>
-          <!-- Left: stats -->
-          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
+          <!-- Stats: always at flex-end (left in RTL, right in LTR) -->
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;text-align:start;"></div>
         </div>
 
         <!-- Filters panel (collapsed by default) -->
