@@ -535,7 +535,7 @@
   /* Segmented toggle for HR/TECH */
   .seg-toggle {
     display: flex; gap: 0; background: var(--surface2);
-    border-radius: 6px; padding: 3px; margin-bottom: 20px;
+    border-radius: 6px; padding: 3px; margin-bottom: 0;
     border: 1px solid var(--border); position: relative;
   }
   .seg-btn {
@@ -1155,21 +1155,19 @@
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
-        <!-- 1. Segmented toggle HR / TECH -->
-        <div class="seg-toggle">
-          <button class="seg-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
-          <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
+        <!-- Row 1: Toggle + Search side by side -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div class="seg-toggle" style="margin-bottom:0;flex-shrink:0;width:140px;">
+            <button class="seg-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
+            <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
+          </div>
+          <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;">
         </div>
 
-        <!-- Row 1: Search (primary) -->
-        <div style="margin-bottom:12px;">
-          <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0;width:100%;box-sizing:border-box;">
-        </div>
-
-        <!-- Row 2: Secondary controls — filters group (right) + stats (left) -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;">
+        <!-- Row 2: Filters group (right) + Stats (left) -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
           <!-- Right: filters group -->
-          <div style="display:flex;align-items:center;gap:6px;">
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
             <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               <span data-i18n="btnFilters">פילטרים</span>
@@ -1180,7 +1178,7 @@
             </button>
           </div>
           <!-- Left: stats -->
-          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;flex-shrink:0;"></div>
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
         </div>
 
         <!-- Filters panel (collapsed by default) -->
@@ -1192,8 +1190,8 @@
           </div>
         </div>
 
-        <!-- Topic list controls: open all + count -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+        <!-- Topic list separator + open-all -->
+        <div style="display:flex;align-items:center;justify-content:flex-end;padding:0 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
           <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:2px 6px;height:auto;color:var(--text3);" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
         </div>
 
