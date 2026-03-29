@@ -26,8 +26,8 @@
     --text2: #6E6E73;
     --text3: #9E9EA8;
     --danger: #E63950;
-    --radius: 16px;
-    --radius-sm: 10px;
+    --radius: 6px;
+    --radius-sm: 4px;
     --shadow: 0 2px 12px rgba(0,0,0,0.07);
     --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
   }
@@ -62,7 +62,7 @@
   .btn-google {
     width: 100%; display: flex; align-items: center; justify-content: center;
     gap: 10px; padding: 14px 20px; background: var(--surface); color: var(--text);
-    border: 1.5px solid var(--border); border-radius: 12px; font-family: 'Heebo', sans-serif;
+    border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Heebo', sans-serif;
     font-size: 15px; font-weight: 600; cursor: pointer;
     transition: all 0.2s; box-shadow: var(--shadow);
   }
@@ -81,7 +81,7 @@
     .section-title { font-size: 24px; }
     .section-sub { font-size: 13px; margin-bottom: 18px; }
     .card-title { font-size: 13px; letter-spacing: 0; }
-    .card { padding: 16px 14px; margin-bottom: 12px; }
+    .card { padding: 16px; margin-bottom: 10px; }
     .stat-value { font-size: 28px; }
     .stat-label { font-size: 10px; }
     .nav-btn { font-size: 9px; padding: 8px 2px; gap: 2px; }
@@ -109,7 +109,7 @@
   @media (max-width: 360px) {
     .section-title { font-size: 20px; }
     .nav-btn { font-size: 8px; }
-    .card { padding: 12px; }
+    .card { padding: 12px 14px; }
   }
   @media (min-width: 1025px) {
     .main { padding: 32px 32px 100px; max-width: 860px; }
@@ -198,8 +198,8 @@
 
   .card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 20px; padding: 20px; margin-bottom: 14px;
-    box-shadow: var(--shadow);
+    border-radius: 6px; padding: 20px; margin-bottom: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
   .card-title {
     font-size: 13px; font-weight: 600; text-transform: none;
@@ -228,7 +228,7 @@
 
   .btn {
     display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; height: 42px;
-    border-radius: 12px; font-family: 'Heebo', sans-serif;
+    border-radius: 6px; font-family: 'Heebo', sans-serif;
     font-size: 14px; font-weight: 600; border: none; cursor: pointer;
     transition: all 0.2s; -webkit-tap-highlight-color: transparent;
   }
@@ -306,17 +306,18 @@
   .modal-title { font-weight: 700; font-size: 20px; margin-bottom: 16px; color: var(--text); }
 
   .tabs {
-    display: flex; gap: 4px; background: var(--surface2);
-    border-radius: 12px; padding: 4px; margin-bottom: 18px;
+    display: flex; gap: 0; background: var(--surface2);
+    border-radius: 6px; padding: 3px; margin-bottom: 18px;
+    border: 1px solid var(--border);
   }
   .tab-btn {
     flex: 1; background: none; border: none; color: var(--text2);
     font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
-    padding: 8px; border-radius: 9px; cursor: pointer; transition: all 0.2s;
+    padding: 8px; border-radius: 4px; cursor: pointer; transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
   }
   .tab-btn.active {
-    background: var(--surface); color: var(--text);
-    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+    background: var(--accent); color: #fff;
+    box-shadow: 0 1px 4px rgba(124,108,242,0.25);
   }
 
   .mock-progress { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -324,7 +325,7 @@
   .mock-dot.done { background: var(--accent2); }
   .mock-dot.current { background: var(--accent); }
 
-  .feedback-card { border-radius: 12px; padding: 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.65; text-align: right; }
+  .feedback-card { border-radius: 6px; padding: 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.65; text-align: right; }
   .feedback-card.clarity { background: #F0EEFF; border-right: 3px solid var(--accent); }
   .feedback-card.improved { background: #EDFBF5; border-right: 3px solid var(--accent2); }
   .feedback-card.followup { background: #FEF5EC; border-right: 3px solid var(--accent3); }
@@ -462,9 +463,9 @@
   /* COLLAPSIBLE PANELS */
   .collapsible-header {
     display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; padding: 14px 18px; background: var(--surface);
-    border: 1px solid var(--border); border-radius: var(--radius);
-    margin-bottom: 8px; transition: border-color 0.2s, background 0.2s;
+    cursor: pointer; padding: 12px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px;
+    margin-bottom: 6px; transition: border-color 0.2s, background 0.2s;
   }
   .collapsible-header:hover { border-color: var(--accent); background: #FAFAFE; }
   .collapsible-title { font-weight: 700; font-size: 14px; display:flex; align-items:center; gap:8px; color: var(--text); }
@@ -476,7 +477,7 @@
   /* TOAST */
   .toast-container { position: fixed; top: 72px; left: 50%; transform: translateX(-50%); z-index: 9999; pointer-events: none; }
   .toast {
-    background: var(--text); color: #fff; border-radius: 12px;
+    background: var(--text); color: #fff; border-radius: 6px;
     padding: 10px 18px; font-size: 13px; font-weight: 500;
     box-shadow: var(--shadow-md); margin-bottom: 8px;
     animation: toastIn 0.3s ease; white-space: nowrap;
@@ -512,24 +513,51 @@
 
   /* INNER TABS — הכנה ולמידה */
   .inner-tabs {
-    display: flex; gap: 4px; background: var(--surface2);
-    border-radius: 12px; padding: 4px; margin-bottom: 20px;
+    display: flex; gap: 0; background: var(--surface2);
+    border-radius: 6px; padding: 3px; margin-bottom: 20px;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    scrollbar-width: none; border: 1px solid var(--border);
   }
   .inner-tabs::-webkit-scrollbar { display: none; }
   .inner-tab-btn { flex-shrink: 0; }
   .inner-tab-btn {
     flex: 1; background: none; border: none; color: var(--text2);
     font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
-    padding: 9px 6px; border-radius: 9px; cursor: pointer; transition: all 0.2s;
+    padding: 9px 6px; border-radius: 4px; cursor: pointer; transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
   }
   .inner-tab-btn.active {
     background: var(--surface); color: var(--text);
-    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
   .inner-section { display: none; }
   .inner-section.active { display: block; }
+
+  /* Segmented toggle for HR/TECH */
+  .seg-toggle {
+    display: flex; gap: 0; background: var(--surface2);
+    border-radius: 6px; padding: 3px; margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .seg-btn {
+    flex: 1; background: none; border: none; color: var(--text2);
+    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px 12px; border-radius: 4px; cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  .seg-btn.active {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 1px 4px rgba(124,108,242,0.25);
+  }
+
+  /* Filters toggle btn */
+  .btn-filter-toggle {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--text2);
+    cursor: pointer; font-family: 'Heebo', sans-serif; transition: all 0.2s;
+  }
+  .btn-filter-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-filter-toggle.active { border-color: var(--accent); color: var(--accent); background: #F5F3FF; }
 
   /* ============================================================
      LTR OVERRIDES — English mode (dir="ltr")
@@ -1000,66 +1028,51 @@
 
       <!-- Sub-section: שאלות -->
       <div id="inner-questions" class="inner-section active">
-<h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
-      <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
+        <h1 class="section-title" data-i18n="secQuestions">בנק שאלות</h1>
+        <p class="section-sub" data-i18n="subQuestions">ספריית שאלות ותשובות לראיון</p>
 
+        <!-- Merge notification area -->
+        <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
-      <!-- Merge notification area -->
-      <div id="merge-notifications" style="margin-bottom:8px;"></div>
-
-      <!-- Unified card: search + filter + list + add -->
-      <div style="padding:0;">
-
-        <!-- Search & Filter collapsible -->
-        <div class="collapsible-header" onclick="toggleCollapsible('col-search-q', this);" style="border:none;margin-bottom:0;padding-right:0;padding-left:0;">
-          <div class="collapsible-title" style="font-size:13px;" data-i18n="cardSearchQ">חיפוש וסינון</div>
-          <span class="collapsible-arrow"> ▾</span>
+        <!-- 1. Segmented toggle HR / TECH -->
+        <div class="seg-toggle">
+          <button class="seg-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
+          <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
         </div>
-        <div class="collapsible-body" id="col-search-q">
-          <div style="padding:12px 0 0 0;margin-bottom:10px;">
 
-            <!-- Filter bar -->
-            <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
-              <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;">
-              <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="btnDifficultFilter">קשות בלבד</span></button>
-            </div>
-
-            <!-- Type selector -->
-            <div class="tabs" style="margin-bottom:10px;">
-              <button class="tab-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
-              <button class="tab-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
-            </div>
-
-            <!-- Topic checkboxes -->
-            <div>
-              <div class="collapsible-header" onclick="toggleCollapsible('topic-checkboxes-area', this)" style="margin-bottom:0;border:none;padding-right:0;padding-left:0;">
-                <div class="collapsible-title" style="font-size:13px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> <span data-i18n="colTopics">סנן לפי נושא</span></div>
-                <span class="collapsible-arrow"> ▾</span>
-              </div>
-              <div class="collapsible-body" id="topic-checkboxes-area" style="border:none;padding:8px 0 4px 0;">
-                <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:6px;"></div>
-                <button class="btn btn-ghost" style="font-size:14px;margin-top:8px;padding:2px 8px;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
-              </div>
-            </div>
-          </div>
-        </div><!-- end col-search-q -->
-
-        <!-- Questions list collapsible -->
-        <div class="collapsible-header" onclick="toggleCollapsible('col-questions-list', this)" style="border:none;margin-bottom:0;padding-right:0;padding-left:0;">
-          <div class="collapsible-title" style="font-size:13px;" data-i18n="colQuestionsList">רשימת שאלות</div>
-          <span class="collapsible-arrow"> ▾</span>
+        <!-- 2. Search always visible -->
+        <div style="margin-bottom:10px;">
+          <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0;width:100%;box-sizing:border-box;">
         </div>
-        <div class="collapsible-body" id="col-questions-list">
-          <div id="q-filtered-list"></div>
-          <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:10px;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            <span data-i18n="btnAddHR">הוסף שאלת HR</span>
+
+        <!-- 3. Filters row: toggle button -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span data-i18n="btnFilters">פילטרים</span>
           </button>
-        </div><!-- end col-questions-list -->
+          <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;display:inline-flex;align-items:center;gap:5px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span data-i18n="btnDifficultFilter">קשות בלבד</span>
+          </button>
+        </div>
 
+        <!-- 4. Filters panel (collapsed by default) -->
+        <div class="filters-panel" id="filters-panel">
+          <div style="padding:4px 0 12px 0;">
+            <div style="font-size:12px;color:var(--text3);margin-bottom:8px;" data-i18n="colTopics">סנן לפי נושא</div>
+            <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:4px;"></div>
+            <button class="btn btn-ghost" style="font-size:13px;margin-top:8px;padding:2px 0;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
+          </div>
+        </div>
 
+        <!-- 5. Questions list -->
+        <div id="q-filtered-list"></div>
+        <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          <span data-i18n="btnAddHR">הוסף שאלת HR</span>
+        </button>
 
-      </div><!-- end unified card -->
       </div>
 
       <!-- Sub-section: משרה -->
@@ -2683,13 +2696,24 @@ window.genericDrop = function(e, targetIdx, type) {
 let currentQType = 'HR';
 let selectedTopics = new Set();
 
+
+window.toggleFiltersPanel = function(btn) {
+  const panel = document.getElementById('filters-panel');
+  if (!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  const label = btn.querySelector('[data-i18n="btnFilters"]') || btn.querySelector('span');
+  if (label) label.textContent = isOpen ? (LANG[currentLang]?.btnFiltersClose || 'סגור פילטרים') : (LANG[currentLang]?.btnFilters || 'פילטרים');
+};
 window.selectQType = function(type, btn) {
   currentQType = type;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
   // Update add button
   const addBtn = document.getElementById('add-q-btn');
-  if (addBtn) { addBtn.textContent = type === 'HR' ? '+ הוסף שאלת HR' : '+ הוסף שאלה טכנית'; addBtn.onclick = () => openAddQuestion(type); }
+  if (addBtn) {
+    addBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> ' + (type === 'HR' ? (t('btnAddHR') || 'הוסף שאלת HR') : (t('btnAddTech') || 'הוסף שאלה טכנית'));
+    addBtn.onclick = () => openAddQuestion(type);
+  }
   selectedTopics = new Set();
   renderTopicCheckboxes();
   renderQuestions();
@@ -3567,7 +3591,7 @@ let LANG = {
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnVideo: 'סרטון', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
+    btnFilters: 'פילטרים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
@@ -3754,7 +3778,7 @@ let LANG = {
     piBannerText: 'For full preparation — first complete:',
     piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnVideo: 'Video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
-    btnDifficultFilter: 'Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
+    btnFilters: 'Filters', btnFiltersClose: 'Close filters', btnFilters: 'Filters', btnDifficultFilter: 'Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
@@ -4547,6 +4571,15 @@ window.deleteTip = async function(i) {
 
 // ==================== DIFFICULT + PRIORITY ====================
 let showDifficultOnly = false;
+
+window.toggleFilterPanel = function() {
+  const panel = document.getElementById('filter-panel');
+  const btn = document.getElementById('filter-toggle-btn');
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.classList.toggle('active', !isOpen);
+};
 
 window.toggleDifficultFilter = function() {
   showDifficultOnly = !showDifficultOnly;
