@@ -742,6 +742,62 @@
   }
 
 
+
+  /* ── Accordion topic rows ─────────────────────── */
+  .topic-row {
+    border-bottom: 1px solid var(--border);
+  }
+  .topic-row:first-child { border-top: 1px solid var(--border); }
+
+  .topic-row-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 4px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .topic-row-header:hover {
+    background: var(--surface2); border-radius: 4px;
+    padding: 13px 8px; margin: 0 -4px;
+  }
+
+  .topic-row-arrow {
+    font-size: 11px; color: var(--text3); flex-shrink: 0;
+    width: 14px; text-align: center; display: inline-block;
+    transition: color 0.2s;
+  }
+  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+
+  .topic-row-name {
+    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+  }
+  .topic-row-count {
+    font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+  }
+
+  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  .topic-row-body {
+    display: none;
+  }
+  .topic-row-body.open {
+    display: block;
+  }
+
+  .topic-row-questions {
+    padding: 4px 0 12px 20px;
+    border-right: 2px solid var(--border);
+    margin-right: 6px;
+  }
+
+  /* Questions inside topic — lighter look */
+  .topic-row-questions .question-card {
+    border: none;
+    border-bottom: 1px solid var(--surface2);
+    background: transparent;
+    padding: 12px 0;
+  }
+  .topic-row-questions .question-card:last-child {
+    border-bottom: none;
+  }
+
 </style>
 </head>
 <body>
@@ -4298,6 +4354,62 @@ window.downloadGuide = function() {
   code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
   .section { background: #f9f9ff; border-left: 4px solid #7c6af7; padding: 12px 16px; margin: 16px 0; border-radius: 4px; }
   .tip { background: #f0fff8; border-left: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+
+  /* ── Accordion topic rows ─────────────────────── */
+  .topic-row {
+    border-bottom: 1px solid var(--border);
+  }
+  .topic-row:first-child { border-top: 1px solid var(--border); }
+
+  .topic-row-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 4px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .topic-row-header:hover {
+    background: var(--surface2); border-radius: 4px;
+    padding: 13px 8px; margin: 0 -4px;
+  }
+
+  .topic-row-arrow {
+    font-size: 11px; color: var(--text3); flex-shrink: 0;
+    width: 14px; text-align: center; display: inline-block;
+    transition: color 0.2s;
+  }
+  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+
+  .topic-row-name {
+    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+  }
+  .topic-row-count {
+    font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+  }
+
+  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  .topic-row-body {
+    display: none;
+  }
+  .topic-row-body.open {
+    display: block;
+  }
+
+  .topic-row-questions {
+    padding: 4px 0 12px 20px;
+    border-right: 2px solid var(--border);
+    margin-right: 6px;
+  }
+
+  /* Questions inside topic — lighter look */
+  .topic-row-questions .question-card {
+    border: none;
+    border-bottom: 1px solid var(--surface2);
+    background: transparent;
+    padding: 12px 0;
+  }
+  .topic-row-questions .question-card:last-child {
+    border-bottom: none;
+  }
+
 </style>
 </head>
 <body>
@@ -4390,6 +4502,62 @@ window.downloadGuide = function() {
   code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
   .section { background: #f9f9ff; border-right: 4px solid #7c6af7; padding: 12px 16px; margin: 16px 0; border-radius: 4px; }
   .tip { background: #f0fff8; border-right: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
+
+  /* ── Accordion topic rows ─────────────────────── */
+  .topic-row {
+    border-bottom: 1px solid var(--border);
+  }
+  .topic-row:first-child { border-top: 1px solid var(--border); }
+
+  .topic-row-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 4px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .topic-row-header:hover {
+    background: var(--surface2); border-radius: 4px;
+    padding: 13px 8px; margin: 0 -4px;
+  }
+
+  .topic-row-arrow {
+    font-size: 11px; color: var(--text3); flex-shrink: 0;
+    width: 14px; text-align: center; display: inline-block;
+    transition: color 0.2s;
+  }
+  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+
+  .topic-row-name {
+    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+  }
+  .topic-row-count {
+    font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+  }
+
+  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  .topic-row-body {
+    display: none;
+  }
+  .topic-row-body.open {
+    display: block;
+  }
+
+  .topic-row-questions {
+    padding: 4px 0 12px 20px;
+    border-right: 2px solid var(--border);
+    margin-right: 6px;
+  }
+
+  /* Questions inside topic — lighter look */
+  .topic-row-questions .question-card {
+    border: none;
+    border-bottom: 1px solid var(--surface2);
+    background: transparent;
+    padding: 12px 0;
+  }
+  .topic-row-questions .question-card:last-child {
+    border-bottom: none;
+  }
+
 </style>
 </head>
 <body>
