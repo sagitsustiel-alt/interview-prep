@@ -818,20 +818,23 @@
   }
 
 
-  /* Active question highlight */
-  .question-card.active {
-    background: #FAFAFE !important;
-    border-right: 2px solid var(--accent) !important;
-    padding-right: 10px !important;
-    border-radius: 4px;
+  /* Active question highlight — must override topic-row-questions specificity */
+  .question-card.active,
+  .topic-row-questions .question-card.active {
+    background: #F0EEFF !important;
+    border-right: 3px solid var(--accent) !important;
+    padding: 12px 12px 12px 0 !important;
+    border-radius: 4px !important;
+    border-bottom: 1px solid var(--border) !important;
   }
 
   /* Search term highlight */
   .search-highlight {
-    background: #FEF3C7;
+    background: #FDE68A;
     border-radius: 2px;
-    padding: 0 2px;
-    font-weight: 600;
+    padding: 1px 3px;
+    font-weight: 700;
+    color: #92400E;
   }
 
   /* Subtle fade for non-matching topics when search active */
@@ -3096,9 +3099,19 @@ function renderQList(list, containerId) {
 
 function highlightSearch(text, search) {
   if (!search || !text) return escHtml(text || '');
-  const escaped = escHtml(text);
+  // Escape regex special chars in search term
   const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return escaped.replace(new RegExp('(' + escapedSearch + ')', 'gi'), '<mark class="search-highlight">$1</mark>');
+  const re = new RegExp('(' + escapedSearch + ')', 'gi');
+  // Split on match, escape each part, wrap matches
+  const parts = text.split(re);
+  return parts.map(function(part) {
+    if (re.test(part)) {
+      re.lastIndex = 0;
+      return '<mark class="search-highlight">' + escHtml(part) + '</mark>';
+    }
+    re.lastIndex = 0;
+    return escHtml(part);
+  }).join('');
 }
 
 function renderQCard(q, search) {
@@ -3107,7 +3120,7 @@ function renderQCard(q, search) {
   const prioLabel = q.priority === 'high' ? t('prioHigh') : q.priority === 'medium' ? t('prioMedium') : q.priority === 'low' ? t('prioLow') : '';
   const isEn = currentLang === 'en';
   return `
-    <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}">
+    <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}" onclick="setActiveQuestion('${q.id}')" style="cursor:pointer;">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
         ${q.topic ? `<span class="topic-badge">${escHtml(q.topic)}</span>` : ''}
@@ -3117,7 +3130,7 @@ function renderQCard(q, search) {
           ▶ ${t('btnVideo')}
         </button>
       </div>
-      <div class="question-text" style="cursor:pointer;" onclick="setActiveQuestion('${q.id}')" id="qtxt-${q.id}">${highlightSearch(q.question, search)}</div>
+      <div class="question-text" id="qtxt-${q.id}">${highlightSearch(q.question, search)}</div>
       <div class="answer-text">${escHtml(q.answer)||'<em style="color:var(--text3)">${t("noAnswer")}</em>'}</div>
       <div id="video-area-${q.id}"></div>
       <div class="q-actions">
