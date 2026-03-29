@@ -2044,21 +2044,16 @@ ${existingQTexts || 'אין'}
 // ==================== COLLAPSIBLE ====================
 
 window.accordionToggle = function(el) {
-  const topicName = el.getAttribute('data-topic');
-  const currentlyOpen = (openTopicName === '__ALL__') ? true : (openTopicName === topicName);
-  if (currentlyOpen && openTopicName !== '__ALL__') {
-    openTopicName = null; // close this topic
-  } else {
-    openTopicName = topicName; // open this topic, close all others
-  }
-  allGroupsOpen = false;
+  const name = el.getAttribute('data-topic');
+  // If this topic is currently open (directly or via __ALL__) → close it
+  // Otherwise → open it
+  const isCurrentlyOpen = (openTopicName === '__ALL__') || (openTopicName === name);
+  openTopicName = isCurrentlyOpen ? null : name;
   renderQuestions();
-  updateToggleAllBtn();
+  syncToggleAllBtn();
 };
 
-function applyAccordionState() {
-  // No-op: state is applied during renderQuestions()
-}
+
 
 window.toggleCollapsible = function(id, header) {
   const body = document.getElementById(id);
@@ -2909,10 +2904,12 @@ function renderQuestions() {
     }).join('')}
     </div>
   `;
+  syncToggleAllBtn();
 }
 
-let allGroupsOpen = false;
-let openTopicName = null; // accordion state: which topic name is open
+// ── Accordion state ──────────────────────────────
+let openTopicName = null;  // null = all closed, '__ALL__' = all open, else = topic name
+// ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
 
 window.groupDragStart = function(e, idx) {
@@ -2932,25 +2929,29 @@ window.groupDrop = function(e, targetIdx) {
   renderQuestions();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  allGroupsOpen = !allGroupsOpen;
-  openTopicName = allGroupsOpen ? '__ALL__' : null;
+  // Toggle: if anything open → close all; if all closed → open all
+  const anyOpen = openTopicName !== null;
+  openTopicName = anyOpen ? null : '__ALL__';
   renderQuestions();
-  updateToggleAllBtn();
+  syncToggleAllBtn();
 };
 
-function updateToggleAllBtn() {
+function syncToggleAllBtn() {
   const btn = document.getElementById('toggle-all-btn');
   if (!btn) return;
-  btn.textContent = allGroupsOpen
-    ? (currentLang === 'en' ? 'Close all ▲' : 'סגור הכל ▲')
-    : (currentLang === 'en' ? 'Open all ▼'  : 'פתח הכל ▼');
+  const isAllOpen = (openTopicName === '__ALL__');
+  const isSomeOpen = (openTopicName !== null && openTopicName !== '__ALL__');
+  const anyOpen = isAllOpen || isSomeOpen;
+  const he = currentLang !== 'en';
+  btn.textContent = anyOpen
+    ? (he ? 'סגור הכל ▲' : 'Close all ▲')
+    : (he ? 'פתח הכל ▼' : 'Open all ▼');
 }
 
 window.toggleAllTopicGroups = function(open) {
-  allGroupsOpen = !!open;
   openTopicName = open ? '__ALL__' : null;
   renderQuestions();
-  updateToggleAllBtn();
+  syncToggleAllBtn();
 };
 
 function renderQList(list, containerId) {
