@@ -2038,12 +2038,16 @@ ${existingQTexts || 'אין'}
 // ==================== COLLAPSIBLE ====================
 
 window.accordionToggle = function(el) {
-  // Read topic name from data attribute — no quoting issues
   const topicName = el.getAttribute('data-topic');
-  // Toggle: if same topic → close, else open new one
-  openTopicName = (openTopicName === topicName) ? null : topicName;
-  // Re-render — renderQuestions reads openTopicName
+  const currentlyOpen = (openTopicName === '__ALL__') ? true : (openTopicName === topicName);
+  if (currentlyOpen && openTopicName !== '__ALL__') {
+    openTopicName = null; // close this topic
+  } else {
+    openTopicName = topicName; // open this topic, close all others
+  }
+  allGroupsOpen = false;
   renderQuestions();
+  updateToggleAllBtn();
 };
 
 function applyAccordionState() {
@@ -2870,7 +2874,7 @@ function renderQuestions() {
       <div style="font-size:13px;color:var(--text2);">
         <strong style="color:var(--accent);">${totalCount}</strong> שאלות · <strong>${groupCount}</strong> נושאים
       </div>
-      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()" data-i18n="btnOpenAll">פתח הכל</button>
+      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
     </div>
 
     <!-- Topic rows — accordion -->
@@ -2879,7 +2883,7 @@ function renderQuestions() {
       const questions = groups[topic];
       const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
       const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
-      const isThisOpen = (openTopicName === topic);
+      const isThisOpen = (openTopicName === '__ALL__') || (openTopicName === topic);
       const escapedTopic = escHtml(topic).replace(/'/g, "\\'");
       return (
         '<div class="topic-row">' +
@@ -2926,13 +2930,34 @@ window.groupDrop = function(e, targetIdx) {
   renderQuestions();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  openTopicName = null;
+  allGroupsOpen = !allGroupsOpen;
+  if (allGroupsOpen) {
+    // Open all — set openTopicName to a sentinel that means "all open"
+    // We handle "all open" separately in renderQuestions
+    openTopicName = '__ALL__';
+  } else {
+    openTopicName = null;
+  }
   renderQuestions();
+  // Update button text after render (render may reset it)
+  updateToggleAllBtn();
 };
 
+function updateToggleAllBtn() {
+  const btn = document.getElementById('toggle-all-btn');
+  if (!btn) return;
+  if (allGroupsOpen) {
+    btn.textContent = (currentLang === 'en' ? 'Close all' : 'סגור הכל') + ' ▲';
+  } else {
+    btn.textContent = (currentLang === 'en' ? 'Open all' : 'פתח הכל') + ' ▼';
+  }
+}
+
 window.toggleAllTopicGroups = function(open) {
-  openTopicName = null;
+  allGroupsOpen = !!open;
+  openTopicName = open ? '__ALL__' : null;
   renderQuestions();
+  updateToggleAllBtn();
 };
 
 function renderQList(list, containerId) {
