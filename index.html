@@ -2040,13 +2040,19 @@ ${existingQTexts || 'אין'}
 window.accordionToggle = function(idx, headerEl) {
   const body = document.getElementById('tg-' + idx);
   const isOpen = body.classList.contains('open');
-  // Close all
+  // Close all — reset arrows to ▶
   document.querySelectorAll('.topic-row-body').forEach(b => b.classList.remove('open'));
-  document.querySelectorAll('.topic-row-header').forEach(h => h.classList.remove('open'));
+  document.querySelectorAll('.topic-row-header').forEach(h => {
+    h.classList.remove('open');
+    const arrow = h.querySelector('.topic-row-arrow');
+    if (arrow) arrow.textContent = '▶';
+  });
   // Open clicked if was closed
   if (!isOpen) {
     body.classList.add('open');
     headerEl.classList.add('open');
+    const arrow = headerEl.querySelector('.topic-row-arrow');
+    if (arrow) arrow.textContent = '▼';
   }
 };
 
@@ -2879,31 +2885,25 @@ function renderQuestions() {
       const questions = groups[topic];
       const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
       const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
-      return '<div class="topic-row" draggable="true"' +
-        ' ondragstart="groupDragStart(event,' + idx + ')"' +
-        ' ondragover="groupDragOver(event)"' +
-        ' ondrop="groupDrop(event,' + idx + ')"' +
-        ' ondragend="groupDragEnd(event)"' +
-        ' data-topic="' + escHtml(topic) + '">' +
-        '<div class="topic-row-header" onclick="accordionToggle(' + idx + ', this)">' +
-          '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">' +
-            '<span class="topic-row-arrow">›</span>' +
-            '<span style="font-size:14px;font-weight:600;color:var(--text);">' + escHtml(topic) + '</span>' +
-            '<span style="font-size:12px;color:var(--text3);font-weight:400;">' + questions.length + ' שאלות</span>' +
+      return (
+        '<div class="topic-row" data-topic="' + escHtml(topic) + '">' +
+          '<div class="topic-row-header" onclick="accordionToggle(' + idx + ', this)">' +
+            '<span class="topic-row-arrow">▶</span>' +
+            '<span class="topic-row-name">' + escHtml(topic) + '</span>' +
+            '<span class="topic-row-count">' + questions.length + ' שאלות</span>' +
           '</div>' +
-          '<span style="color:var(--text3);font-size:13px;cursor:grab;" onclick="event.stopPropagation()" title="גרור">⠿</span>' +
-        '</div>' +
-        '<div class="topic-row-body" id="tg-' + idx + '">' +
-          '<div style="padding:4px 0 12px 0;">' +
-            '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
-               ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;padding:0 0 10px 0;border-bottom:1px solid var(--border);margin-bottom:8px;width:100%;">' +
-              '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\' viewBox=\'0 0 24 24\' fill=\'var(--accent)\' stroke=\'none\'><polygon points=\'5 3 19 12 5 21 5 3\'/></svg>' +
-              'הסבר ביוטיוב' +
-            '</a>' +
-            questions.map(q => renderQCard(q)).join('') +
+          '<div class="topic-row-body" id="tg-' + idx + '">' +
+            '<div class="topic-row-questions">' +
+              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
+                ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;margin-bottom:10px;">' +
+                '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'var(--accent)\' stroke=\'none\'><polygon points=\'5 3 19 12 5 21 5 3\'/></svg>' +
+                'הסבר ביוטיוב' +
+              '</a>' +
+              questions.map(q => renderQCard(q)).join('') +
+            '</div>' +
           '</div>' +
-        '</div>' +
-      '</div>';
+        '</div>'
+      );
     }).join('')}
     </div>
   `;
