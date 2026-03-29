@@ -2140,21 +2140,30 @@ ${existingQTexts || 'אין'}
 
 window.accordionToggle = function(el) {
   const name = el.getAttribute('data-topic');
-  // If this topic is currently open (directly or via __ALL__) → close it
-  // Otherwise → open it
   const isCurrentlyOpen = (openTopicName === '__ALL__') || (openTopicName === name);
   openTopicName = isCurrentlyOpen ? null : name;
   renderQuestions();
   syncToggleAllBtn();
+  // Scroll topic header into view when opening
+  if (openTopicName === name) {
+    requestAnimationFrame(function() {
+      const header = document.querySelector('[data-topic="' + name + '"]');
+      if (header) header.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
 };
 
 window.setActiveQuestion = function(id) {
   activeQuestionId = (activeQuestionId === id) ? null : id;
-  document.querySelectorAll('.question-card').forEach(function(card) {
-    const isActive = card.id === 'qcard-' + activeQuestionId;
-    card.classList.toggle('active', isActive);
-    if (isActive) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
+  // Re-render so active class is applied via template
+  renderQuestions();
+  // Scroll after render
+  if (activeQuestionId) {
+    requestAnimationFrame(function() {
+      const card = document.getElementById('qcard-' + activeQuestionId);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
 };
 
 
@@ -2946,14 +2955,11 @@ function renderQuestions() {
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
 
-  // Auto-open first matching topic when searching
-  if (search && qs.length > 0 && openTopicName !== '__ALL__') {
-    const firstTopic = qs[0].topic || 'כללי';
-    if (openTopicName !== firstTopic) openTopicName = firstTopic;
-  }
-  // Clear open topic when search is cleared
-  if (!search && openTopicName && openTopicName !== '__ALL__') {
-    // keep current state
+  // Auto-open: when searching, open all matching topics; when cleared, close all
+  if (search && qs.length > 0) {
+    openTopicName = '__ALL__'; // expand all to show matches
+  } else if (!search && openTopicName === '__ALL__') {
+    openTopicName = null; // collapse when search is cleared
   }
 
   renderTopicCheckboxes();
@@ -2986,6 +2992,11 @@ function renderQuestions() {
   // Update summary text (static bar)
   const summaryEl = document.getElementById('q-summary-text');
   if (summaryEl) summaryEl.innerHTML = '<strong style="color:var(--accent);">' + totalCount + '</strong> שאלות · <strong>' + groupCount + '</strong> נושאים';
+
+  // Clear activeQuestionId if question no longer visible
+  if (activeQuestionId && !qs.find(q => q.id === activeQuestionId)) {
+    activeQuestionId = null;
+  }
 
   el.innerHTML = `
     <!-- Topic rows — accordion -->
