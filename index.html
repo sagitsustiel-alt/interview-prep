@@ -1088,7 +1088,13 @@
           </div>
         </div>
 
-        <!-- 5. Questions list -->
+        <!-- 5. Summary bar (static, not re-rendered) -->
+        <div id="q-summary-bar" style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+          <div id="q-summary-text" style="font-size:13px;color:var(--text2);"></div>
+          <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
+        </div>
+
+        <!-- 5. Questions list (only topic rows rendered here) -->
         <div id="q-filtered-list"></div>
         <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:10px;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
@@ -2869,14 +2875,6 @@ function renderQuestions() {
   const groupCount = orderedTopics.length;
 
   el.innerHTML = `
-    <!-- Summary bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-      <div style="font-size:13px;color:var(--text2);">
-        <strong style="color:var(--accent);">${totalCount}</strong> שאלות · <strong>${groupCount}</strong> נושאים
-      </div>
-      <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
-    </div>
-
     <!-- Topic rows — accordion -->
     <div id="topic-accordion">
     ${orderedTopics.map((topic, idx) => {
@@ -2931,26 +2929,16 @@ window.groupDrop = function(e, targetIdx) {
 };
 window.toggleAllTopicGroupsBtn = function() {
   allGroupsOpen = !allGroupsOpen;
-  if (allGroupsOpen) {
-    // Open all — set openTopicName to a sentinel that means "all open"
-    // We handle "all open" separately in renderQuestions
-    openTopicName = '__ALL__';
-  } else {
-    openTopicName = null;
-  }
-  renderQuestions();
-  // Update button text after render (render may reset it)
-  updateToggleAllBtn();
+  openTopicName = allGroupsOpen ? '__ALL__' : null;
+  renderQuestions(); // template reads allGroupsOpen → button text is correct
 };
 
 function updateToggleAllBtn() {
   const btn = document.getElementById('toggle-all-btn');
   if (!btn) return;
-  if (allGroupsOpen) {
-    btn.textContent = (currentLang === 'en' ? 'Close all' : 'סגור הכל') + ' ▲';
-  } else {
-    btn.textContent = (currentLang === 'en' ? 'Open all' : 'פתח הכל') + ' ▼';
-  }
+  btn.textContent = allGroupsOpen
+    ? (currentLang === 'en' ? 'Close all ▲' : 'סגור הכל ▲')
+    : (currentLang === 'en' ? 'Open all ▼'  : 'פתח הכל ▼');
 }
 
 window.toggleAllTopicGroups = function(open) {
