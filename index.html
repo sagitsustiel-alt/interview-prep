@@ -560,7 +560,7 @@
   .btn-filter-toggle {
     display: inline-flex; align-items: center; gap: 5px;
     background: none; border: 1px solid var(--border); border-radius: 6px;
-    padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--text2);
+    padding: 5px 10px; height: 32px; font-size: 13px; font-weight: 500; color: var(--text2);
     cursor: pointer; font-family: 'Heebo', sans-serif; transition: all 0.2s;
   }
   .btn-filter-toggle:hover { border-color: var(--accent); color: var(--accent); }
@@ -1161,24 +1161,29 @@
           <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
         </div>
 
-        <!-- 2. Search always visible -->
-        <div style="margin-bottom:10px;">
+        <!-- Row 1: Search (primary) -->
+        <div style="margin-bottom:12px;">
           <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="margin:0;width:100%;box-sizing:border-box;">
         </div>
 
-        <!-- 3. Filters row: toggle button -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            <span data-i18n="btnFilters">פילטרים</span>
-          </button>
-          <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;display:inline-flex;align-items:center;gap:5px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span data-i18n="btnDifficultFilter">קשות בלבד</span>
-          </button>
+        <!-- Row 2: Secondary controls — filters group (right) + stats (left) -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;">
+          <!-- Right: filters group -->
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span data-i18n="btnFilters">פילטרים</span>
+            </button>
+            <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;display:inline-flex;align-items:center;gap:5px;height:32px;font-size:13px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span data-i18n="btnDifficultFilter">קשות בלבד</span>
+            </button>
+          </div>
+          <!-- Left: stats -->
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;flex-shrink:0;"></div>
         </div>
 
-        <!-- 4. Filters panel (collapsed by default) -->
+        <!-- Filters panel (collapsed by default) -->
         <div class="filters-panel" id="filters-panel">
           <div style="padding:4px 0 12px 0;">
             <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px;" data-i18n="colTopics">סינון נושאים</div>
@@ -1187,10 +1192,9 @@
           </div>
         </div>
 
-        <!-- 5. Summary bar (static, not re-rendered) -->
-        <div id="q-summary-bar" style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 14px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-          <div id="q-summary-text" style="font-size:13px;color:var(--text2);"></div>
-          <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:13px;padding:3px 8px;height:auto;" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
+        <!-- Topic list controls: open all + count -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+          <button class="btn btn-ghost" id="toggle-all-btn" style="font-size:12px;padding:2px 6px;height:auto;color:var(--text3);" onclick="toggleAllTopicGroupsBtn()">פתח הכל ▼</button>
         </div>
 
         <!-- 5. Questions list (only topic rows rendered here) -->
