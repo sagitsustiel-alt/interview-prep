@@ -2039,21 +2039,27 @@ ${existingQTexts || 'אין'}
 
 window.accordionToggle = function(idx, headerEl) {
   const body = document.getElementById('tg-' + idx);
+  if (!body) return;
   const isOpen = body.classList.contains('open');
-  // Close all — reset arrows to ▶
-  document.querySelectorAll('.topic-row-body').forEach(b => b.classList.remove('open'));
+
+  // Close ALL topics first
+  document.querySelectorAll('.topic-row-body').forEach(b => {
+    b.classList.remove('open');
+  });
   document.querySelectorAll('.topic-row-header').forEach(h => {
     h.classList.remove('open');
-    const arrow = h.querySelector('.topic-row-arrow');
-    if (arrow) arrow.textContent = '▶';
+    const a = h.querySelector('.topic-row-arrow');
+    if (a) a.textContent = '▶';
   });
-  // Open clicked if was closed
+
+  // If it was closed — open it now
   if (!isOpen) {
     body.classList.add('open');
     headerEl.classList.add('open');
     const arrow = headerEl.querySelector('.topic-row-arrow');
     if (arrow) arrow.textContent = '▼';
   }
+  // If it was open — it stays closed (already closed above)
 };
 
 window.toggleCollapsible = function(id, header) {
@@ -2929,17 +2935,37 @@ window.groupDrop = function(e, targetIdx) {
   renderQuestions();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  allGroupsOpen = !allGroupsOpen;
+  // Check if any is open
+  const anyOpen = document.querySelector('.topic-row-body.open') !== null;
   const btn = document.getElementById('toggle-all-btn');
-  if (btn) btn.textContent = allGroupsOpen ? t('btnCloseAll') : t('btnOpenAll');
-  toggleAllTopicGroups(allGroupsOpen);
+  if (anyOpen) {
+    // Close all
+    document.querySelectorAll('.topic-row-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.topic-row-header').forEach(h => {
+      h.classList.remove('open');
+      const a = h.querySelector('.topic-row-arrow');
+      if (a) a.textContent = '▶';
+    });
+    if (btn) btn.innerHTML = t('btnOpenAll') || 'פתח הכל';
+  } else {
+    // Open all
+    document.querySelectorAll('.topic-row-body').forEach(b => b.classList.add('open'));
+    document.querySelectorAll('.topic-row-header').forEach(h => {
+      h.classList.add('open');
+      const a = h.querySelector('.topic-row-arrow');
+      if (a) a.textContent = '▼';
+    });
+    if (btn) btn.innerHTML = t('btnCloseAll') || 'סגור הכל';
+  }
 };
 
 window.toggleAllTopicGroups = function(open) {
-  const el = document.getElementById('q-filtered-list');
-  if (!el) return;
-  el.querySelectorAll('.collapsible-body').forEach(body => body.classList.toggle('open', open));
-  el.querySelectorAll('.collapsible-arrow').forEach(arrow => arrow.classList.toggle('open', open));
+  document.querySelectorAll('.topic-row-body').forEach(b => b.classList.toggle('open', open));
+  document.querySelectorAll('.topic-row-header').forEach(h => {
+    h.classList.toggle('open', open);
+    const a = h.querySelector('.topic-row-arrow');
+    if (a) a.textContent = open ? '▼' : '▶';
+  });
 };
 
 function renderQList(list, containerId) {
