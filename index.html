@@ -817,6 +817,26 @@
     padding: 6px 0; margin: 4px 0 8px;
   }
 
+
+  /* Active question highlight */
+  .question-card.active {
+    background: #FAFAFE !important;
+    border-right: 2px solid var(--accent) !important;
+    padding-right: 10px !important;
+    border-radius: 4px;
+  }
+
+  /* Search term highlight */
+  .search-highlight {
+    background: #FEF3C7;
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 600;
+  }
+
+  /* Subtle fade for non-matching topics when search active */
+  .topic-row.no-match { opacity: 0.4; }
+
 </style>
 </head>
 <body>
@@ -2128,6 +2148,15 @@ window.accordionToggle = function(el) {
   syncToggleAllBtn();
 };
 
+window.setActiveQuestion = function(id) {
+  activeQuestionId = (activeQuestionId === id) ? null : id;
+  document.querySelectorAll('.question-card').forEach(function(card) {
+    const isActive = card.id === 'qcard-' + activeQuestionId;
+    card.classList.toggle('active', isActive);
+    if (isActive) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+};
+
 
 
 window.toggleCollapsible = function(id, header) {
@@ -2917,6 +2946,16 @@ function renderQuestions() {
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
 
+  // Auto-open first matching topic when searching
+  if (search && qs.length > 0 && openTopicName !== '__ALL__') {
+    const firstTopic = qs[0].topic || 'כללי';
+    if (openTopicName !== firstTopic) openTopicName = firstTopic;
+  }
+  // Clear open topic when search is cleared
+  if (!search && openTopicName && openTopicName !== '__ALL__') {
+    // keep current state
+  }
+
   renderTopicCheckboxes();
 
   const el = document.getElementById('q-filtered-list');
@@ -2982,6 +3021,7 @@ function renderQuestions() {
 }
 
 // ── Accordion state ──────────────────────────────
+let activeQuestionId = null; // currently focused question
 let openTopicName = null;  // null = all closed, '__ALL__' = all open, else = topic name
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
@@ -3037,12 +3077,20 @@ function renderQList(list, containerId) {
   el.innerHTML = list.map(q => renderQCard(q)).join('');
 }
 
-function renderQCard(q) {
+function highlightSearch(text, search) {
+  if (!search || !text) return escHtml(text || '');
+  const escaped = escHtml(text);
+  const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp('(' + escapedSearch + ')', 'gi'), '<mark class="search-highlight">$1</mark>');
+}
+
+function renderQCard(q, search) {
+  search = search || getSearchFilter();
   const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
   const prioLabel = q.priority === 'high' ? t('prioHigh') : q.priority === 'medium' ? t('prioMedium') : q.priority === 'low' ? t('prioLow') : '';
   const isEn = currentLang === 'en';
   return `
-    <div class="question-card" id="qcard-${q.id}">
+    <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
         <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
         ${q.topic ? `<span class="topic-badge">${escHtml(q.topic)}</span>` : ''}
@@ -3052,7 +3100,7 @@ function renderQCard(q) {
           ▶ ${t('btnVideo')}
         </button>
       </div>
-      <div class="question-text">${escHtml(q.question)}</div>
+      <div class="question-text" style="cursor:pointer;" onclick="setActiveQuestion('${q.id}')" id="qtxt-${q.id}">${highlightSearch(q.question, search)}</div>
       <div class="answer-text">${escHtml(q.answer)||'<em style="color:var(--text3)">${t("noAnswer")}</em>'}</div>
       <div id="video-area-${q.id}"></div>
       <div class="q-actions">
