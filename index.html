@@ -2037,30 +2037,33 @@ ${existingQTexts || 'אין'}
 
 // ==================== COLLAPSIBLE ====================
 
-window.accordionToggle = function(idx, headerEl) {
-  const body = document.getElementById('tg-' + idx);
-  if (!body) return;
-  const isOpen = body.classList.contains('open');
-
-  // Close ALL topics first
-  document.querySelectorAll('.topic-row-body').forEach(b => {
-    b.classList.remove('open');
-  });
-  document.querySelectorAll('.topic-row-header').forEach(h => {
-    h.classList.remove('open');
-    const a = h.querySelector('.topic-row-arrow');
-    if (a) a.textContent = '▶';
-  });
-
-  // If it was closed — open it now
-  if (!isOpen) {
-    body.classList.add('open');
-    headerEl.classList.add('open');
-    const arrow = headerEl.querySelector('.topic-row-arrow');
-    if (arrow) arrow.textContent = '▼';
+window.accordionToggle = function(idx) {
+  // Toggle state
+  if (openTopicIdx === idx) {
+    openTopicIdx = null; // same topic clicked → close it
+  } else {
+    openTopicIdx = idx; // new topic → open it
   }
-  // If it was open — it stays closed (already closed above)
+  applyAccordionState();
 };
+
+function applyAccordionState() {
+  document.querySelectorAll('.topic-row-body').forEach(function(body) {
+    const i = parseInt(body.getAttribute('data-idx'));
+    const isOpen = (i === openTopicIdx);
+    body.classList.toggle('open', isOpen);
+  });
+  document.querySelectorAll('.topic-row-header').forEach(function(header) {
+    const i = parseInt(header.getAttribute('data-idx'));
+    const isOpen = (i === openTopicIdx);
+    header.classList.toggle('open', isOpen);
+    const arrow = header.querySelector('.topic-row-arrow');
+    if (arrow) arrow.textContent = isOpen ? '▼' : '▶';
+  });
+  // Update toggle-all button
+  const btn = document.getElementById('toggle-all-btn');
+  if (btn) btn.textContent = (openTopicIdx !== null) ? (LANG[currentLang]?.btnCloseAll || 'סגור הכל') : (LANG[currentLang]?.btnOpenAll || 'פתח הכל');
+}
 
 window.toggleCollapsible = function(id, header) {
   const body = document.getElementById(id);
@@ -2891,14 +2894,15 @@ function renderQuestions() {
       const questions = groups[topic];
       const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
       const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
+      const isThisOpen = (openTopicIdx === idx);
       return (
         '<div class="topic-row" data-topic="' + escHtml(topic) + '">' +
-          '<div class="topic-row-header" onclick="accordionToggle(' + idx + ', this)">' +
-            '<span class="topic-row-arrow">▶</span>' +
+          '<div class="topic-row-header' + (isThisOpen ? ' open' : '') + '" data-idx="' + idx + '" onclick="accordionToggle(' + idx + ')">' +
+            '<span class="topic-row-arrow">' + (isThisOpen ? '▼' : '▶') + '</span>' +
             '<span class="topic-row-name">' + escHtml(topic) + '</span>' +
             '<span class="topic-row-count">' + questions.length + ' שאלות</span>' +
           '</div>' +
-          '<div class="topic-row-body" id="tg-' + idx + '">' +
+          '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" data-idx="' + idx + '" id="tg-' + idx + '">' +
             '<div class="topic-row-questions">' +
               '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
                 ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;margin-bottom:10px;">' +
@@ -2916,6 +2920,7 @@ function renderQuestions() {
 }
 
 let allGroupsOpen = false;
+let openTopicIdx = null; // accordion state: which topic is open (-1 = none)
 let groupDragSrcIdx = null;
 
 window.groupDragStart = function(e, idx) {
@@ -2935,37 +2940,14 @@ window.groupDrop = function(e, targetIdx) {
   renderQuestions();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  // Check if any is open
-  const anyOpen = document.querySelector('.topic-row-body.open') !== null;
-  const btn = document.getElementById('toggle-all-btn');
-  if (anyOpen) {
-    // Close all
-    document.querySelectorAll('.topic-row-body').forEach(b => b.classList.remove('open'));
-    document.querySelectorAll('.topic-row-header').forEach(h => {
-      h.classList.remove('open');
-      const a = h.querySelector('.topic-row-arrow');
-      if (a) a.textContent = '▶';
-    });
-    if (btn) btn.innerHTML = t('btnOpenAll') || 'פתח הכל';
-  } else {
-    // Open all
-    document.querySelectorAll('.topic-row-body').forEach(b => b.classList.add('open'));
-    document.querySelectorAll('.topic-row-header').forEach(h => {
-      h.classList.add('open');
-      const a = h.querySelector('.topic-row-arrow');
-      if (a) a.textContent = '▼';
-    });
-    if (btn) btn.innerHTML = t('btnCloseAll') || 'סגור הכל';
-  }
+  // Close all (accordion only supports one open, so this just closes)
+  openTopicIdx = null;
+  applyAccordionState();
 };
 
 window.toggleAllTopicGroups = function(open) {
-  document.querySelectorAll('.topic-row-body').forEach(b => b.classList.toggle('open', open));
-  document.querySelectorAll('.topic-row-header').forEach(h => {
-    h.classList.toggle('open', open);
-    const a = h.querySelector('.topic-row-arrow');
-    if (a) a.textContent = open ? '▼' : '▶';
-  });
+  openTopicIdx = open ? 0 : null;
+  applyAccordionState();
 };
 
 function renderQList(list, containerId) {
