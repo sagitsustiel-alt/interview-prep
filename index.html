@@ -746,34 +746,52 @@
   /* ── Accordion topic rows ─────────────────────── */
   .topic-row {
     border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
   }
   .topic-row:first-child { border-top: 1px solid var(--border); }
 
   .topic-row-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 13px 4px; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 8px; cursor: pointer; user-select: none;
     transition: background 0.15s;
+    border-radius: 4px;
+    margin: 2px -4px;
   }
   .topic-row-header:hover {
-    background: var(--surface2); border-radius: 4px;
-    padding: 13px 8px; margin: 0 -4px;
+    background: var(--surface2);
+  }
+  .topic-row-header.open {
+    background: #F5F3FF;
+    border-radius: 4px 4px 0 0;
   }
 
   .topic-row-arrow {
-    font-size: 11px; color: var(--text3); flex-shrink: 0;
-    width: 14px; text-align: center; display: inline-block;
-    transition: color 0.2s;
+    font-size: 10px; color: var(--text3); flex-shrink: 0;
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface2); border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
   }
-  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+  .topic-row-header.open .topic-row-arrow {
+    color: var(--accent);
+    background: #EDE9FD;
+    border-color: var(--accent);
+  }
 
   .topic-row-name {
-    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+    flex: 1; font-size: 15px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.1px;
   }
+  .topic-row-header.open .topic-row-name { color: var(--accent); }
+
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    background: var(--surface2); border-radius: 4px;
+    padding: 2px 8px;
   }
 
-  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  /* ─── Hide/show body ─── */
   .topic-row-body {
     display: none;
   }
@@ -782,21 +800,31 @@
   }
 
   .topic-row-questions {
-    padding: 4px 0 12px 20px;
-    border-right: 2px solid var(--border);
-    margin-right: 6px;
+    padding: 8px 0 16px 0;
+    border-right: 3px solid #EDE9FD;
+    margin: 0 4px 0 0;
+    padding-right: 12px;
   }
+
+  /* YouTube link */
+  .topic-row-questions .yt-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--text3); text-decoration: none;
+    margin-bottom: 12px; padding: 4px 8px;
+    background: var(--surface2); border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .topic-row-questions .yt-link:hover { color: var(--accent); background: #F5F3FF; }
 
   /* Questions inside topic — lighter look */
   .topic-row-questions .question-card {
     border: none;
     border-bottom: 1px solid var(--surface2);
     background: transparent;
-    padding: 12px 0;
+    padding: 14px 0;
   }
-  .topic-row-questions .question-card:last-child {
-    border-bottom: none;
-  }
+  .topic-row-questions .question-card:last-child { border-bottom: none; }
+  .topic-row-questions .question-text { color: var(--text2); }
 
 </style>
 </head>
@@ -2947,8 +2975,7 @@ function renderQuestions() {
           '</div>' +
           '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" id="tg-' + idx + '">' +
             '<div class="topic-row-questions">' +
-              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()"' +
-                ' style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text3);text-decoration:none;margin-bottom:10px;">' +
+              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()" class="yt-link">' +
                 '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'var(--accent)\' stroke=\'none\'><polygon points=\'5 3 19 12 5 21 5 3\'/></svg>' +
                 'הסבר ביוטיוב' +
               '</a>' +
@@ -4358,34 +4385,52 @@ window.downloadGuide = function() {
   /* ── Accordion topic rows ─────────────────────── */
   .topic-row {
     border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
   }
   .topic-row:first-child { border-top: 1px solid var(--border); }
 
   .topic-row-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 13px 4px; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 8px; cursor: pointer; user-select: none;
     transition: background 0.15s;
+    border-radius: 4px;
+    margin: 2px -4px;
   }
   .topic-row-header:hover {
-    background: var(--surface2); border-radius: 4px;
-    padding: 13px 8px; margin: 0 -4px;
+    background: var(--surface2);
+  }
+  .topic-row-header.open {
+    background: #F5F3FF;
+    border-radius: 4px 4px 0 0;
   }
 
   .topic-row-arrow {
-    font-size: 11px; color: var(--text3); flex-shrink: 0;
-    width: 14px; text-align: center; display: inline-block;
-    transition: color 0.2s;
+    font-size: 10px; color: var(--text3); flex-shrink: 0;
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface2); border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
   }
-  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+  .topic-row-header.open .topic-row-arrow {
+    color: var(--accent);
+    background: #EDE9FD;
+    border-color: var(--accent);
+  }
 
   .topic-row-name {
-    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+    flex: 1; font-size: 15px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.1px;
   }
+  .topic-row-header.open .topic-row-name { color: var(--accent); }
+
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    background: var(--surface2); border-radius: 4px;
+    padding: 2px 8px;
   }
 
-  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  /* ─── Hide/show body ─── */
   .topic-row-body {
     display: none;
   }
@@ -4394,21 +4439,31 @@ window.downloadGuide = function() {
   }
 
   .topic-row-questions {
-    padding: 4px 0 12px 20px;
-    border-right: 2px solid var(--border);
-    margin-right: 6px;
+    padding: 8px 0 16px 0;
+    border-right: 3px solid #EDE9FD;
+    margin: 0 4px 0 0;
+    padding-right: 12px;
   }
+
+  /* YouTube link */
+  .topic-row-questions .yt-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--text3); text-decoration: none;
+    margin-bottom: 12px; padding: 4px 8px;
+    background: var(--surface2); border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .topic-row-questions .yt-link:hover { color: var(--accent); background: #F5F3FF; }
 
   /* Questions inside topic — lighter look */
   .topic-row-questions .question-card {
     border: none;
     border-bottom: 1px solid var(--surface2);
     background: transparent;
-    padding: 12px 0;
+    padding: 14px 0;
   }
-  .topic-row-questions .question-card:last-child {
-    border-bottom: none;
-  }
+  .topic-row-questions .question-card:last-child { border-bottom: none; }
+  .topic-row-questions .question-text { color: var(--text2); }
 
 </style>
 </head>
@@ -4506,34 +4561,52 @@ window.downloadGuide = function() {
   /* ── Accordion topic rows ─────────────────────── */
   .topic-row {
     border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
   }
   .topic-row:first-child { border-top: 1px solid var(--border); }
 
   .topic-row-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 13px 4px; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 8px; cursor: pointer; user-select: none;
     transition: background 0.15s;
+    border-radius: 4px;
+    margin: 2px -4px;
   }
   .topic-row-header:hover {
-    background: var(--surface2); border-radius: 4px;
-    padding: 13px 8px; margin: 0 -4px;
+    background: var(--surface2);
+  }
+  .topic-row-header.open {
+    background: #F5F3FF;
+    border-radius: 4px 4px 0 0;
   }
 
   .topic-row-arrow {
-    font-size: 11px; color: var(--text3); flex-shrink: 0;
-    width: 14px; text-align: center; display: inline-block;
-    transition: color 0.2s;
+    font-size: 10px; color: var(--text3); flex-shrink: 0;
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface2); border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
   }
-  .topic-row-header.open .topic-row-arrow { color: var(--accent); }
+  .topic-row-header.open .topic-row-arrow {
+    color: var(--accent);
+    background: #EDE9FD;
+    border-color: var(--accent);
+  }
 
   .topic-row-name {
-    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+    flex: 1; font-size: 15px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.1px;
   }
+  .topic-row-header.open .topic-row-name { color: var(--accent); }
+
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    background: var(--surface2); border-radius: 4px;
+    padding: 2px 8px;
   }
 
-  /* ─── THIS IS THE KEY: hide body when not open ─── */
+  /* ─── Hide/show body ─── */
   .topic-row-body {
     display: none;
   }
@@ -4542,21 +4615,31 @@ window.downloadGuide = function() {
   }
 
   .topic-row-questions {
-    padding: 4px 0 12px 20px;
-    border-right: 2px solid var(--border);
-    margin-right: 6px;
+    padding: 8px 0 16px 0;
+    border-right: 3px solid #EDE9FD;
+    margin: 0 4px 0 0;
+    padding-right: 12px;
   }
+
+  /* YouTube link */
+  .topic-row-questions .yt-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; color: var(--text3); text-decoration: none;
+    margin-bottom: 12px; padding: 4px 8px;
+    background: var(--surface2); border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .topic-row-questions .yt-link:hover { color: var(--accent); background: #F5F3FF; }
 
   /* Questions inside topic — lighter look */
   .topic-row-questions .question-card {
     border: none;
     border-bottom: 1px solid var(--surface2);
     background: transparent;
-    padding: 12px 0;
+    padding: 14px 0;
   }
-  .topic-row-questions .question-card:last-child {
-    border-bottom: none;
-  }
+  .topic-row-questions .question-card:last-child { border-bottom: none; }
+  .topic-row-questions .question-text { color: var(--text2); }
 
 </style>
 </head>
