@@ -872,10 +872,9 @@
     display: flex; align-items: center; gap: 4px;
     flex-shrink: 0;
   }
-  /* Icon buttons hidden until hover/active */
-  .q-icon-btn { opacity: 0; transition: opacity 0.15s; }
-  .question-card:hover .q-icon-btn,
-  .question-card.active .q-icon-btn { opacity: 1; }
+  /* Icon buttons always visible */
+  .q-icon-btn { opacity: 0.55; transition: opacity 0.15s; }
+  .q-icon-btn:hover { opacity: 1; }
   .q-icon-btn {
     background: none; border: none; cursor: pointer;
     padding: 3px; border-radius: 4px; color: var(--text3);
@@ -3366,14 +3365,11 @@ function renderQCard(q, search) {
         <span class="q-arrow" onclick="toggleQuestion('${q.id}')" style="flex-shrink:0;font-size:9px;color:var(--text3);margin-top:5px;width:12px;cursor:pointer;">${isOpen ? '▼' : '▶'}</span>
         <div onclick="toggleQuestion('${q.id}')" style="flex:1;min-width:0;cursor:pointer;">
           <div class="question-text" id="qtxt-${q.id}" style="margin-bottom:4px;">${highlightSearch(q.question, search)}</div>
-          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
-            <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;font-size:9px;padding:1px 6px;">${q.type}</span>
 
-            <button class="q-star ${q.difficult?'active':''}" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="padding:1px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
-          </div>
         </div>
-        <!-- Inline action icons (shown on hover/active) -->
+        <!-- Inline action icons -->
         <div class="q-header-actions">
+          <button class="q-star ${q.difficult?'active':''}" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
           <div style="position:relative;display:inline-flex;">
             <button class="prio-chip ${q.priority ? 'prio-'+q.priority : 'prio-none'}" onclick="togglePrioDropdown('${q.id}', event)" title="${t('lblPriorityTip')}">${prioLabel}</button>
             <div class="prio-dropdown" id="priodrop-${q.id}">
