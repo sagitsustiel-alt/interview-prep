@@ -3167,13 +3167,16 @@ function renderQuestions() {
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
 
-  // Auto-open matching topics when searching; collapse when cleared
+  // Auto-open matching topics when searching
+  // Only collapse when user clears search (not on every render)
   if (search && qs.length > 0) {
     const matchedTopics = new Set(qs.map(function(q) { return q.topic || 'כללי'; }));
     matchedTopics.forEach(function(t) { openTopics.add(t); });
-  } else if (!search) {
+    lastSearchWasActive = true;
+  } else if (!search && lastSearchWasActive) {
     openTopics.clear();
     activeQuestionId = null;
+    lastSearchWasActive = false;
   }
 
   renderTopicCheckboxes();
@@ -3249,6 +3252,7 @@ function renderQuestions() {
 let activeQuestionId = null; // currently focused question
 let openQuestionId = null;   // which question's answer is expanded
 let openTopics = new Set(); // set of open topic names
+let lastSearchWasActive = false; // track if search caused topics to open
 let currentVisibleTopics = []; // updated each renderQuestions
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
