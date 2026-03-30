@@ -599,12 +599,10 @@
   
   /* topic checkbox rows */
   #topic-checkboxes label {
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border);
+    padding: 4px 2px;
+    border-bottom: 1px solid var(--surface2);
     border-radius: 0;
     background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
   }
   #topic-checkboxes label:last-child { border-bottom: none; }
 
@@ -951,6 +949,32 @@
     transform: scale(1.05);
   }
   #q-fab svg { display: block; }
+
+  /* Undo reorder toast */
+  #reorder-undo {
+    position: fixed;
+    bottom: 88px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    z-index: 200;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+  #reorder-undo.show { display: inline-flex; }
+  #reorder-undo button {
+    background: none; border: none; color: #A89CF4;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit; padding: 0;
+  }
+  #reorder-undo button:hover { color: #fff; }
 </style>
 </head>
 <body>
@@ -1533,6 +1557,13 @@
 
   </main>
 
+
+
+  <!-- Reorder undo toast -->
+  <div id="reorder-undo">
+    <span id="reorder-undo-msg">הסדר עודכן</span>
+    <button onclick="undoReorder()" id="reorder-undo-btn">בטל</button>
+  </div>
 
   <!-- FAB: Add question (visible only on question bank tab) -->
   <button id="q-fab" onclick="openAddQuestion(currentQType||'HR')"
@@ -2265,17 +2296,18 @@ ${existingQTexts || 'אין'}
 
 window.accordionToggle = function(el) {
   const name = el.getAttribute('data-topic');
-  const isCurrentlyOpen = (openTopicName === '__ALL__') || (openTopicName === name);
-  openTopicName = isCurrentlyOpen ? null : name;
-  renderQuestions();
-  syncToggleAllBtn();
-  // Scroll topic header into view when opening
-  if (openTopicName === name) {
+  const isOpen = openTopics.has(name);
+  if (isOpen) {
+    openTopics.delete(name);
+  } else {
+    openTopics.add(name);
     requestAnimationFrame(function() {
       const header = document.querySelector('[data-topic="' + name + '"]');
       if (header) header.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }
+  renderQuestions();
+  syncToggleAllBtn();
 };
 
 window.setActiveQuestion = function(id) {
@@ -3022,6 +3054,35 @@ window.selectQType = function(type, btn) {
   renderQuestions();
 };
 
+
+let prevTopicOrder = []; // snapshot before last reorder
+let reorderUndoTimer = null;
+
+function saveReorderSnapshot() {
+  prevTopicOrder = [...topicOrder];
+}
+
+function showReorderUndo() {
+  const el = document.getElementById('reorder-undo');
+  const msg = document.getElementById('reorder-undo-msg');
+  const btn = document.getElementById('reorder-undo-btn');
+  if (!el) return;
+  if (msg) msg.textContent = currentLang === 'en' ? 'Order updated' : 'הסדר עודכן';
+  if (btn) btn.textContent = currentLang === 'en' ? 'Undo' : 'בטל';
+  el.classList.add('show');
+  if (reorderUndoTimer) clearTimeout(reorderUndoTimer);
+  reorderUndoTimer = setTimeout(function() {
+    el.classList.remove('show');
+  }, 4000);
+}
+
+window.undoReorder = function() {
+  topicOrder = [...prevTopicOrder];
+  document.getElementById('reorder-undo').classList.remove('show');
+  if (reorderUndoTimer) clearTimeout(reorderUndoTimer);
+  renderQuestions();
+};
+
 let topicOrder = []; // custom order for topics
 
 function renderTopicCheckboxes() {
@@ -3039,7 +3100,7 @@ function renderTopicCheckboxes() {
 
   el.style.display = 'flex';
   el.style.flexDirection = 'column';
-  el.style.gap = '4px';
+  el.style.gap = '0';
 
   el.innerHTML = topics.map((t, idx) => `
     <label draggable="true"
@@ -3047,10 +3108,10 @@ function renderTopicCheckboxes() {
       ondragover="topicDragOver(event)"
       ondrop="topicDrop(event,${idx})"
       data-idx="${idx}"
-      style="display:flex;align-items:center;gap:8px;cursor:grab;flex-direction:row-reverse;background:transparent;padding:5px 0;border-radius:0;border:none;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);">
+      style="display:flex;align-items:center;gap:8px;cursor:grab;flex-direction:row-reverse;background:transparent;padding:4px 2px;border-radius:0;border:none;border-bottom:1px solid var(--surface2);font-size:12px;color:var(--text);">
       <span style="flex:1;text-align:right;">${escHtml(t)}</span>
-      <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:14px;height:14px;flex-shrink:0;">
-      <span style="color:var(--text3);font-size:10px;cursor:grab;">⠿</span>
+      <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:13px;height:13px;flex-shrink:0;">
+      <span style="color:var(--text3);font-size:9px;cursor:grab;opacity:0.5;">⠿</span>
     </label>`).join('');
 
   // Store current order
@@ -3063,10 +3124,12 @@ window.topicDragOver = function(e) { e.preventDefault(); e.dataTransfer.dropEffe
 window.topicDrop = function(e, targetIdx) {
   e.preventDefault();
   if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+  saveReorderSnapshot();
   const moved = topicOrder.splice(dragSrcIdx, 1)[0];
   topicOrder.splice(targetIdx, 0, moved);
   dragSrcIdx = null;
-  renderTopicCheckboxes();
+  renderQuestions();
+  showReorderUndo();
 };
 
 window.toggleTopic = function(topic) {
@@ -3104,12 +3167,13 @@ function renderQuestions() {
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
 
-  // Auto-open: when searching expand all; when cleared collapse back
+  // Auto-open matching topics when searching; collapse when cleared
   if (search && qs.length > 0) {
-    openTopicName = '__ALL__';
-  } else if (!search && openTopicName === '__ALL__') {
-    openTopicName = null;
-    activeQuestionId = null; // clear selection when search cleared
+    const matchedTopics = new Set(qs.map(function(q) { return q.topic || 'כללי'; }));
+    matchedTopics.forEach(function(t) { openTopics.add(t); });
+  } else if (!search) {
+    openTopics.clear();
+    activeQuestionId = null;
   }
 
   renderTopicCheckboxes();
@@ -3147,6 +3211,8 @@ function renderQuestions() {
   if (activeQuestionId && !qs.find(q => q.id === activeQuestionId)) {
     activeQuestionId = null;
   }
+  // Remove topics that no longer have questions
+  openTopics.forEach(function(t) { if (!groups[t]) openTopics.delete(t); });
 
   el.innerHTML = `
     <!-- Topic rows — accordion -->
@@ -3155,18 +3221,18 @@ function renderQuestions() {
       const questions = groups[topic];
       const ytQuery = encodeURIComponent(topic + ' interview explained program manager');
       const ytUrl = 'https://www.youtube.com/results?search_query=' + ytQuery;
-      const isThisOpen = (openTopicName === '__ALL__') || (openTopicName === topic);
+      const isThisOpen = openTopics.has(topic);
       const escapedTopic = escHtml(topic).replace(/'/g, "\\'");
       return (
         '<div class="topic-row">' +
           '<div class="topic-row-header' + (isThisOpen ? ' open' : '') + '" data-topic="' + escHtml(topic) + '" onclick="accordionToggle(this)">' +
             '<span class="topic-row-arrow">' + (isThisOpen ? '▼' : '▶') + '</span>' +
             '<span class="topic-row-name">' + escHtml(topic) + '</span>' +
+            '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()" title="' + (currentLang === 'en' ? 'Topic explanation video' : 'סרטון הסבר לנושא') + '" style="font-size:13px;opacity:0.45;text-decoration:none;flex-shrink:0;line-height:1;padding:0 2px;" onmouseenter="this.style.opacity=\'0.85\'" onmouseleave="this.style.opacity=\'0.45\'">🎥</a>' +
             '<span class="topic-row-count">' + questions.length + ' שאלות</span>' +
           '</div>' +
           '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" id="tg-' + idx + '">' +
             '<div class="topic-row-questions">' +
-              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()" class="yt-link" title="' + (currentLang === 'en' ? 'Topic explanation video' : 'סרטון הסבר לנושא') + '" style="font-size:16px;padding:2px 4px;">' + '🎥' + '</a>' +
               questions.map(q => renderQCard(q, search)).join('') +
             '</div>' +
           '</div>' +
@@ -3181,30 +3247,40 @@ function renderQuestions() {
 // ── Accordion state ──────────────────────────────
 let activeQuestionId = null; // currently focused question
 let openQuestionId = null;   // which question's answer is expanded
-let openTopicName = null;  // null = all closed, '__ALL__' = all open, else = topic name
+let openTopics = new Set(); // set of open topic names
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
 
-window.groupDragStart = function(e, idx) {
-  groupDragSrcIdx = idx;
+let groupDragSrcName = null;
+window.groupDragStart = function(e, topicName) {
+  groupDragSrcName = topicName;
   e.currentTarget.style.opacity = '0.5';
 };
 window.groupDragOver = function(e) { e.preventDefault(); };
 window.groupDragEnd = function(e) { e.currentTarget.style.opacity = '1'; };
-window.groupDrop = function(e, targetIdx) {
+window.groupDrop = function(e, targetName) {
   e.preventDefault();
-  if (groupDragSrcIdx === null || groupDragSrcIdx === targetIdx) return;
-  // עדכן את topicOrder — מקור האמת המשותף
-  const moved = topicOrder.splice(groupDragSrcIdx, 1)[0];
-  topicOrder.splice(targetIdx, 0, moved);
-  groupDragSrcIdx = null;
-  // רנדר מחדש — גם הקבוצות וגם הצ'קבוקסים יסתנכרנו
+  if (!groupDragSrcName || groupDragSrcName === targetName) { groupDragSrcName = null; return; }
+  // Move by NAME — works correctly regardless of filtered view
+  const srcIdx = topicOrder.indexOf(groupDragSrcName);
+  const tgtIdx = topicOrder.indexOf(targetName);
+  if (srcIdx === -1 || tgtIdx === -1) { groupDragSrcName = null; return; }
+  saveReorderSnapshot();
+  topicOrder.splice(srcIdx, 1);
+  topicOrder.splice(tgtIdx, 0, groupDragSrcName);
+  groupDragSrcName = null;
   renderQuestions();
+  showReorderUndo();
 };
 window.toggleAllTopicGroupsBtn = function() {
-  // Toggle: if anything open → close all; if all closed → open all
-  const anyOpen = openTopicName !== null;
-  openTopicName = anyOpen ? null : '__ALL__';
+  const anyOpen = openTopics.size > 0;
+  if (anyOpen) {
+    openTopics.clear();
+  } else {
+    // Add all visible topics
+    const rows = document.querySelectorAll('.topic-row-header[data-topic]');
+    rows.forEach(function(h) { openTopics.add(h.getAttribute('data-topic')); });
+  }
   renderQuestions();
   syncToggleAllBtn();
 };
@@ -3212,17 +3288,16 @@ window.toggleAllTopicGroupsBtn = function() {
 function syncToggleAllBtn() {
   const btn = document.getElementById('toggle-all-btn');
   if (!btn) return;
-  const isAllOpen = (openTopicName === '__ALL__');
-  const isSomeOpen = (openTopicName !== null && openTopicName !== '__ALL__');
-  const anyOpen = isAllOpen || isSomeOpen;
   const he = currentLang !== 'en';
-  btn.textContent = anyOpen
+  btn.textContent = openTopics.size > 0
     ? (he ? 'סגור הכל ▲' : 'Close all ▲')
     : (he ? 'פתח הכל ▼' : 'Open all ▼');
 }
 
 window.toggleAllTopicGroups = function(open) {
-  openTopicName = open ? '__ALL__' : null;
+  if (!open) { openTopics.clear(); renderQuestions(); syncToggleAllBtn(); return; }
+  const rows = document.querySelectorAll('.topic-row-header[data-topic]');
+  rows.forEach(function(h) { openTopics.add(h.getAttribute('data-topic')); });
   renderQuestions();
   syncToggleAllBtn();
 };
