@@ -975,6 +975,20 @@
     font-family: inherit; padding: 0;
   }
   #reorder-undo button:hover { color: #fff; }
+
+  /* Filter chips inside filters panel */
+  .filter-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 500; padding: 4px 10px;
+    border-radius: 4px; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface2); color: var(--text2);
+    font-family: 'Heebo', sans-serif; transition: all 0.15s;
+  }
+  .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-chip.active { background: #F5F3FF; border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .filter-chip.prio-chip-high.active { background: #FEF2F2; border-color: #DC2626; color: #DC2626; }
+  .filter-chip.prio-chip-medium.active { background: #FFF7ED; border-color: #C2410C; color: #C2410C; }
+  .filter-chip.prio-chip-low.active { background: #F3F4F6; border-color: #6B7280; color: #6B7280; }
 </style>
 </head>
 <body>
@@ -1298,29 +1312,37 @@
           <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;text-align:inherit;">
         </div>
 
-        <!-- Row 2: Controls (flex-start) + Stats (flex-end) -->
+        <!-- Row 2: Filters button + Stats -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
-          <!-- Unified controls group: same style, connected -->
-          <div style="display:inline-flex;align-items:stretch;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;">
-            <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel(this)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-              <span data-i18n="btnFilters">פילטרים</span>
-            </button>
-            <button class="ctrl-btn" id="difficult-filter-btn" onclick="toggleDifficultFilter()" style="border-inline-start:1px solid var(--border);">
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span data-i18n="btnDifficultFilter">שאלות קשות</span>
-            </button>
-          </div>
-          <!-- Stats: plain neutral text -->
+          <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel(this)" style="border:1px solid var(--border);border-radius:6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            <span data-i18n="btnFilters">פילטרים</span>
+          </button>
           <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
         </div>
 
         <!-- Filters panel (collapsed by default) -->
         <div class="filters-panel" id="filters-panel">
-          <div style="padding:4px 0 12px 0;">
-            <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px;" data-i18n="colTopics">סינון נושאים</div>
-            <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:4px;"></div>
-            <button class="btn btn-ghost" style="font-size:13px;margin-top:8px;padding:2px 0;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
+          <div style="padding:8px 0 14px 0;border-bottom:1px solid var(--border);margin-bottom:8px;">
+
+            <!-- Group 1: Question type -->
+            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupType">סוג שאלה</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <button class="filter-chip" id="difficult-filter-btn" onclick="toggleDifficultFilter()" data-i18n="btnDifficultFilter">שאלות קשות</button>
+            </div>
+
+            <!-- Group 2: Priority -->
+            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupPriority">עדיפות</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <button class="filter-chip prio-chip-high" id="prio-filter-high" onclick="togglePriorityFilter('high', this)" data-i18n="prioHighSimple">חשוב מאוד</button>
+              <button class="filter-chip prio-chip-medium" id="prio-filter-medium" onclick="togglePriorityFilter('medium', this)" data-i18n="prioMediumSimple">חשוב</button>
+              <button class="filter-chip prio-chip-low" id="prio-filter-low" onclick="togglePriorityFilter('low', this)" data-i18n="prioLowSimple">ערך מוסף</button>
+            </div>
+
+            <!-- Group 3: Topics -->
+            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupTopics">נושאים</div>
+            <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:0;"></div>
+            <button class="btn btn-ghost" style="font-size:12px;margin-top:6px;padding:2px 0;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
           </div>
         </div>
 
@@ -2296,7 +2318,6 @@ ${existingQTexts || 'אין'}
 
 window.accordionToggle = function(el) {
   const name = el.getAttribute('data-topic');
-  console.log('[accordion] clicked:', name, 'openTopics before:', [...openTopics]);
   const isOpen = openTopics.has(name);
   if (isOpen) {
     openTopics.delete(name);
@@ -3115,8 +3136,7 @@ function renderTopicCheckboxes() {
       <span style="color:var(--text3);font-size:9px;cursor:grab;opacity:0.5;">⠿</span>
     </label>`).join('');
 
-  // Store current order
-  topicOrder = topics;
+  // topicOrder is read-only here — only drag handlers may write it
 }
 
 let dragSrcIdx = null;
@@ -3154,7 +3174,6 @@ function getSearchFilter() {
 
 function renderQuestions() {
   const search = getSearchFilter();
-  console.log("[renderQ] openTopics:", [...openTopics], "search:", search);
   let qs = (localCache.questions||[]).filter(q => q.type === currentQType);
 
   // Filter by selected topics
@@ -3168,6 +3187,7 @@ function renderQuestions() {
     q.topic?.toLowerCase().includes(search)
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
+  if (selectedPriorities.size) qs = qs.filter(q => selectedPriorities.has(q.priority || ''));
 
   // Auto-open matching topics when searching
   // Only collapse when user clears search (not on every render)
@@ -4024,7 +4044,7 @@ let LANG = {
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnFilters: 'פילטרים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
+    btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'עדיפות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'עדיפות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'עדיפות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
@@ -4211,7 +4231,7 @@ let LANG = {
     piBannerText: 'For full preparation — first complete:',
     piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
-    btnFilters: 'Filters', btnFiltersClose: 'Close filters', btnFilters: 'Filters', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
+    btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Priority', filterGroupTopics: 'Topics', btnFiltersClose: 'Close filters', btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Priority', filterGroupTopics: 'Topics', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
     lblPriority: 'Priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
@@ -5162,6 +5182,7 @@ window.deleteTip = async function(i) {
 
 // ==================== DIFFICULT + PRIORITY ====================
 let showDifficultOnly = false;
+let selectedPriorities = new Set(); // empty = show all priorities
 
 window.toggleFilterPanel = function() {
   const panel = document.getElementById('filters-panel');
@@ -5193,6 +5214,17 @@ window.setPrioFromChip = async function(id, val, event) {
 document.addEventListener('click', function() {
   document.querySelectorAll('.prio-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
 });
+window.togglePriorityFilter = function(prio, btn) {
+  if (selectedPriorities.has(prio)) {
+    selectedPriorities.delete(prio);
+    if (btn) btn.classList.remove('active');
+  } else {
+    selectedPriorities.add(prio);
+    if (btn) btn.classList.add('active');
+  }
+  renderQuestions();
+};
+
 window.toggleDifficultFilter = function() {
   showDifficultOnly = !showDifficultOnly;
   const btn = document.getElementById('difficult-filter-btn');
@@ -5320,7 +5352,6 @@ window.renderPiQuestions = function() {
     const prioLabel = q.priority==='high'?L.prioHigh:q.priority==='medium'?L.prioMedium:q.priority==='low'?L.prioLow:'';
     return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface);">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
-        <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
         ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
         ${q.difficult ? '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' : ''}
         ${q.topic ? `<span style="font-size:11px;color:var(--text3);">${escHtml(q.topic)}</span>` : ''}
