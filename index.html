@@ -2296,6 +2296,7 @@ ${existingQTexts || 'אין'}
 
 window.accordionToggle = function(el) {
   const name = el.getAttribute('data-topic');
+  console.log('[accordion] clicked:', name, 'openTopics before:', [...openTopics]);
   const isOpen = openTopics.has(name);
   if (isOpen) {
     openTopics.delete(name);
@@ -3153,6 +3154,7 @@ function getSearchFilter() {
 
 function renderQuestions() {
   const search = getSearchFilter();
+  console.log("[renderQ] openTopics:", [...openTopics], "search:", search);
   let qs = (localCache.questions||[]).filter(q => q.type === currentQType);
 
   // Filter by selected topics
