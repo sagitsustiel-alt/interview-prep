@@ -1949,6 +1949,7 @@ onAuthStateChanged(auth, async (user) => {
       const viewOk = await checkViewMode();
       if (viewOk) {
         loadProfileUI(); renderQuestions(); renderSavedJobs(); renderExperience(); loadTips(); applyLanguage();
+        const _fab = document.getElementById('q-fab'); if (_fab) _fab.style.display = 'flex';
         return;
       }
     }
@@ -1961,6 +1962,7 @@ onAuthStateChanged(auth, async (user) => {
     loadTips();
     updateMockJobSelect();
     applyLanguage();
+    const _fab2 = document.getElementById('q-fab'); if (_fab2) _fab2.style.display = 'flex';
     loadCredits(); // טעינת יתרת קרדיטים
   } else {
     currentUser = null;
@@ -4978,7 +4980,6 @@ window.toast = function(msg, isError=false) {
 
 // ==================== INNER TABS ====================
 window.showInnerTab = function(id, btn) {
-  // Show FAB only on question bank
   const fab = document.getElementById('q-fab');
   if (fab) fab.style.display = (id === 'inner-questions') ? 'flex' : 'none';
   document.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
