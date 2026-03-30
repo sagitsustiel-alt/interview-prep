@@ -533,35 +533,54 @@
   .inner-section.active { display: block; }
 
   /* Segmented toggle for HR/TECH */
-  /* Segmented control — one connected unit */
+  /* Segmented control — true connected single component */
   .seg-toggle {
-    display: flex; background: var(--surface2);
-    border-radius: 6px; padding: 0; margin-bottom: 0;
-    border: 1px solid var(--border);
-    overflow: hidden; /* clips child borders */
+    display: inline-flex;          /* shrinks to content, no stretch */
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;              /* clips everything — no internal gaps */
     flex-shrink: 0;
+    align-self: stretch;           /* matches input height in flex row */
   }
   .seg-btn {
-    flex: 1; background: transparent; border: none; color: var(--text2);
-    font-family: 'Heebo', sans-serif; font-size: 13px; font-weight: 600;
-    padding: 9px 18px; cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+    flex: 1;
+    background: transparent;
+    border: none;                  /* no individual button border */
+    outline: none;
+    color: var(--text2);
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 0 20px;               /* vertical padding comes from parent height */
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
     white-space: nowrap;
+    position: relative;
   }
-  /* Divider between the two options */
-  .seg-btn + .seg-btn {
-    border-inline-start: 1px solid var(--border);
+  /* Single divider line between the two buttons */
+  .seg-btn + .seg-btn::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 20%; height: 60%;
+    width: 1px;
+    background: var(--border);
+    transition: background 0.18s ease;
   }
+  /* Active state */
   .seg-btn.active {
-    background: var(--accent); color: #fff;
-    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
   }
-  .seg-btn.active + .seg-btn,
-  .seg-btn + .seg-btn.active {
-    border-inline-start-color: var(--accent);
+  /* Hide divider when adjacent to active */
+  .seg-btn.active + .seg-btn::before,
+  .seg-btn.active::before {
+    background: transparent;
   }
   .seg-btn:not(.active):hover {
-    background: var(--surface3); color: var(--accent);
+    background: var(--surface3);
+    color: var(--text);
   }
 
   /* Filters toggle btn */
@@ -829,12 +848,12 @@
   /* Active question highlight */
   .question-card.active,
   .topic-row-questions .question-card.active {
-    background: #F5F3FF !important;
-    border: 1.5px solid rgba(124,108,242,0.45) !important;
+    background: #FAF8FF !important;
+    border: 1px solid rgba(124,108,242,0.25) !important;
     border-radius: 6px !important;
     padding: 14px 12px !important;
     margin: 4px 0 !important;
-    box-shadow: 0 1px 6px rgba(124,108,242,0.10) !important;
+    box-shadow: 0 1px 4px rgba(124,108,242,0.07) !important;
   }
 
   /* Search term highlight */
@@ -849,6 +868,89 @@
   /* Subtle fade for non-matching topics when search active */
   .topic-row.no-match { opacity: 0.4; }
 
+
+  /* Question header inline actions */
+  .q-header-actions {
+    display: flex; align-items: center; gap: 4px;
+    flex-shrink: 0;
+  }
+  /* Icon buttons hidden until hover/active */
+  .q-icon-btn { opacity: 0; transition: opacity 0.15s; }
+  .question-card:hover .q-icon-btn,
+  .question-card.active .q-icon-btn { opacity: 1; }
+  .q-icon-btn {
+    background: none; border: none; cursor: pointer;
+    padding: 3px; border-radius: 4px; color: var(--text3);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .q-icon-btn:hover { color: var(--accent); background: var(--surface2); }
+  .q-icon-btn.danger:hover { color: var(--danger); background: #FFF0F2; }
+
+  /* Priority chip */
+  .prio-chip {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500; padding: 2px 8px;
+    border-radius: 4px; cursor: pointer; border: none;
+    font-family: 'Heebo', sans-serif;
+    position: relative;
+    transition: opacity 0.15s;
+  }
+  .prio-chip:hover { opacity: 0.8; }
+  .prio-chip.prio-high   { background: #FEF2F2; color: #B91C1C; }
+  .prio-chip.prio-medium { background: #FFF7ED; color: #C2410C; }
+  .prio-chip.prio-low    { background: #F3F4F6; color: #6B7280; }
+  .prio-chip.prio-none   { background: var(--surface2); color: var(--text3); }
+
+  /* Priority dropdown */
+  .prio-dropdown {
+    position: absolute; top: calc(100% + 4px); inset-inline-end: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 100; min-width: 130px; padding: 4px;
+    display: none;
+  }
+  .prio-dropdown.open { display: block; }
+  .prio-dropdown button {
+    display: block; width: 100%; text-align: inherit;
+    background: none; border: none; padding: 6px 10px;
+    font-size: 12px; cursor: pointer; border-radius: 4px;
+    font-family: 'Heebo', sans-serif; color: var(--text);
+  }
+  .prio-dropdown button:hover { background: var(--surface2); }
+
+  /* Unified control buttons (filters row) */
+  .ctrl-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: none; border: none; cursor: pointer;
+    padding: 6px 11px; font-size: 12px; font-weight: 500;
+    color: var(--text2); font-family: 'Heebo', sans-serif;
+    white-space: nowrap; transition: background 0.15s, color 0.15s;
+    height: 32px;
+  }
+  .ctrl-btn:hover { background: var(--surface2); color: var(--text); }
+  .ctrl-btn.active { background: #F5F3FF; color: var(--accent); }
+
+  /* FAB — floating action button */
+  #q-fab {
+    display: none; /* shown only on question bank tab */
+    position: fixed;
+    bottom: 80px; /* above bottom nav */
+    inset-inline-end: 20px;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: #A89CF4; /* muted purple */
+    border: none; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(124,108,242,0.22);
+    align-items: center; justify-content: center;
+    transition: transform 0.15s, background 0.15s;
+    z-index: 50;
+  }
+  #q-fab:hover {
+    background: #917FEF;
+    transform: scale(1.05);
+  }
+  #q-fab svg { display: block; }
 </style>
 </head>
 <body>
@@ -1020,7 +1122,7 @@
                   </label>
                   <label style="font-size:13px;color:var(--text);display:flex;align-items:center;gap:5px;cursor:pointer;line-height:1;">
                     <input type="checkbox" id="pi-difficult-only" onchange="renderPiQuestions()" style="width:14px;height:14px;margin:0;flex-shrink:0;">
-                    <span data-i18n="piDifficultOnly">קשות בלבד</span>
+                    <span data-i18n="piDifficultOnly">שאלות קשות</span>
                   </label>
                 </div>
                 <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
@@ -1164,29 +1266,29 @@
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
 
         <!-- Row 1: Toggle (flex-start) + Search (flex:1) — direction-aware -->
-        <div style="display:flex;align-items:stretch;gap:10px;margin-bottom:10px;">
-          <div class="seg-toggle">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div class="seg-toggle" style="height:42px;">
             <button class="seg-btn active" id="type-btn-hr" onclick="selectQType('HR', this)">HR</button>
             <button class="seg-btn" id="type-btn-tech" onclick="selectQType('TECH', this)">TECH</button>
           </div>
           <input type="text" id="q-search" placeholder="חיפוש שאלה..." data-i18n-ph="phSearch" oninput="renderQuestions()" style="flex:1;margin:0;text-align:inherit;">
         </div>
 
-        <!-- Row 2: Actions (flex-start = right in RTL, left in LTR) + Stats (flex-end) -->
+        <!-- Row 2: Controls (flex-start) + Stats (flex-end) -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
-          <!-- Actions group: always at flex-start (right in RTL, left in LTR) -->
-          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-            <button class="filters-toggle-btn" onclick="toggleFiltersPanel(this)" id="filters-toggle-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          <!-- Unified controls group: same style, connected -->
+          <div style="display:inline-flex;align-items:stretch;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;">
+            <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               <span data-i18n="btnFilters">פילטרים</span>
             </button>
-            <button id="difficult-filter-btn" onclick="toggleDifficultFilter()" class="btn btn-secondary btn-sm" style="white-space:nowrap;display:inline-flex;align-items:center;gap:5px;height:32px;font-size:13px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span data-i18n="btnDifficultFilter">קשות בלבד</span>
+            <button class="ctrl-btn" id="difficult-filter-btn" onclick="toggleDifficultFilter()" style="border-inline-start:1px solid var(--border);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span data-i18n="btnDifficultFilter">שאלות קשות</span>
             </button>
           </div>
-          <!-- Stats: always at flex-end (left in RTL, right in LTR) -->
-          <div id="q-summary-text" style="font-size:12px;color:var(--text2);white-space:nowrap;text-align:start;opacity:0.75;"></div>
+          <!-- Stats: plain neutral text -->
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
         </div>
 
         <!-- Filters panel (collapsed by default) -->
@@ -1205,10 +1307,7 @@
 
         <!-- 5. Questions list (only topic rows rendered here) -->
         <div id="q-filtered-list"></div>
-        <button class="btn btn-secondary btn-block" id="add-q-btn" onclick="openAddQuestion('HR')" style="margin-top:10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-          <span data-i18n="btnAddHR">הוסף שאלת HR</span>
-        </button>
+
 
       </div>
 
@@ -1433,6 +1532,16 @@
     </section>
 
   </main>
+
+
+  <!-- FAB: Add question (visible only on question bank tab) -->
+  <button id="q-fab" onclick="openAddQuestion(currentQType||'HR')"
+    title="הוסף שאלה" data-i18n-title="fabAddQuestion">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+      fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  </button>
 
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
@@ -2170,12 +2279,10 @@ window.accordionToggle = function(el) {
 window.setActiveQuestion = function(id) {
   const prev = activeQuestionId;
   activeQuestionId = (prev === id) ? null : id;
-  // Remove active from previous card (no re-render needed)
   if (prev) {
     const prevCard = document.getElementById('qcard-' + prev);
     if (prevCard) prevCard.classList.remove('active');
   }
-  // Add active to new card
   if (activeQuestionId) {
     const card = document.getElementById('qcard-' + activeQuestionId);
     if (card) {
@@ -2183,6 +2290,26 @@ window.setActiveQuestion = function(id) {
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
+};
+
+window.toggleQuestion = function(id) {
+  const prev = openQuestionId;
+  // Close previous
+  if (prev && prev !== id) {
+    const prevBody = document.getElementById('qbody-' + prev);
+    const prevHeader = document.getElementById('qhdr-' + prev);
+    if (prevBody) prevBody.style.display = 'none';
+    if (prevHeader) prevHeader.querySelector('.q-arrow').textContent = '▶';
+  }
+  // Toggle current
+  const body = document.getElementById('qbody-' + id);
+  const header = document.getElementById('qhdr-' + id);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  openQuestionId = isOpen ? null : id;
+  if (header) header.querySelector('.q-arrow').textContent = isOpen ? '▶' : '▼';
+  if (!isOpen) body.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 };
 
 
@@ -2581,7 +2708,7 @@ window.showSection = function(name, btn) {
   document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
   if (name === 'experience' || name === 'profile') { renderExperience(); loadTips(); }
   if (name === 'preinterview') { loadTrackerApps().then(() => loadPreInterviewSection()); }
-  if (name === 'questions') renderQuestions();
+  if (name === 'questions') { renderQuestions(); const fab = document.getElementById('q-fab'); if (fab) fab.style.display = 'flex'; } else { const fab = document.getElementById('q-fab'); if (fab) fab.style.display = 'none'; }
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
   if (name === 'mock') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(3)'); if(b){b.click();} },50); return; }
@@ -2878,6 +3005,7 @@ window.toggleFiltersPanel = function(btn) {
   if (label) label.textContent = isOpen ? (LANG[currentLang]?.btnFiltersClose || 'סגור פילטרים') : (LANG[currentLang]?.btnFilters || 'פילטרים');
 };
 window.selectQType = function(type, btn) {
+  openQuestionId = null;
   currentQType = type;
   document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -3011,7 +3139,7 @@ function renderQuestions() {
 
   // Update summary text (static bar)
   const summaryEl = document.getElementById('q-summary-text');
-  if (summaryEl) summaryEl.innerHTML = '<strong style="color:var(--accent);">' + totalCount + '</strong> שאלות · <strong>' + groupCount + '</strong> נושאים';
+  if (summaryEl) summaryEl.textContent = totalCount + ' שאלות · ' + groupCount + ' נושאים';
 
   // Clear activeQuestionId if question no longer visible
   if (activeQuestionId && !qs.find(q => q.id === activeQuestionId)) {
@@ -3036,10 +3164,7 @@ function renderQuestions() {
           '</div>' +
           '<div class="topic-row-body' + (isThisOpen ? ' open' : '') + '" id="tg-' + idx + '">' +
             '<div class="topic-row-questions">' +
-              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()" class="yt-link">' +
-                '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'var(--accent)\' stroke=\'none\'><polygon points=\'5 3 19 12 5 21 5 3\'/></svg>' +
-                'הסבר ביוטיוב' +
-              '</a>' +
+              '<a href="' + ytUrl + '" target="_blank" onclick="event.stopPropagation()" class="yt-link" title="' + (currentLang === 'en' ? 'Topic explanation video' : 'סרטון הסבר לנושא') + '" style="font-size:16px;padding:2px 4px;">' + '🎥' + '</a>' +
               questions.map(q => renderQCard(q, search)).join('') +
             '</div>' +
           '</div>' +
@@ -3053,6 +3178,7 @@ function renderQuestions() {
 
 // ── Accordion state ──────────────────────────────
 let activeQuestionId = null; // currently focused question
+let openQuestionId = null;   // which question's answer is expanded
 let openTopicName = null;  // null = all closed, '__ALL__' = all open, else = topic name
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
@@ -3128,32 +3254,45 @@ function highlightSearch(text, search) {
 function renderQCard(q, search) {
   search = search || getSearchFilter();
   const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
-  const prioLabel = q.priority === 'high' ? t('prioHigh') : q.priority === 'medium' ? t('prioMedium') : q.priority === 'low' ? t('prioLow') : '';
-  const isEn = currentLang === 'en';
+  const prioLabel = q.priority === 'high' ? t('prioHighSimple') : q.priority === 'medium' ? t('prioMediumSimple') : q.priority === 'low' ? t('prioLowSimple') : (t('lblPriority') || 'עדיפות');
+  const isOpen = openQuestionId === q.id;
   return `
-    <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}" onclick="setActiveQuestion('${q.id}')" style="cursor:pointer;">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
-        <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;">${q.type}</span>
-        ${q.topic ? `<span class="topic-badge">${escHtml(q.topic)}</span>` : ''}
-        ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
-        <button class="q-star ${q.difficult?'active':''}" onclick="toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
-        <button class="btn-video" onclick="findVideo('${q.id}', \`${escAttr(q.question)}\`, \`${escAttr(q.topic||'')}\`)" id="vbtn-${q.id}">
-          ▶ ${t('btnVideo')}
-        </button>
+    <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}">
+      <!-- Header row: arrow + question + inline actions -->
+      <div id="qhdr-${q.id}" style="display:flex;align-items:flex-start;gap:8px;padding:2px 0;">
+        <span class="q-arrow" onclick="toggleQuestion('${q.id}')" style="flex-shrink:0;font-size:9px;color:var(--text3);margin-top:5px;width:12px;cursor:pointer;">${isOpen ? '▼' : '▶'}</span>
+        <div onclick="toggleQuestion('${q.id}')" style="flex:1;min-width:0;cursor:pointer;">
+          <div class="question-text" id="qtxt-${q.id}" style="margin-bottom:4px;">${highlightSearch(q.question, search)}</div>
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+            <span class="q-type-badge ${q.type==='HR'?'badge-hr':'badge-tech'}" style="margin:0;font-size:9px;padding:1px 6px;">${q.type}</span>
+
+            <button class="q-star ${q.difficult?'active':''}" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="padding:1px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+          </div>
+        </div>
+        <!-- Inline action icons (shown on hover/active) -->
+        <div class="q-header-actions">
+          <div style="position:relative;display:inline-flex;">
+            <button class="prio-chip ${q.priority ? 'prio-'+q.priority : 'prio-none'}" onclick="togglePrioDropdown('${q.id}', event)" title="${t('lblPriorityTip')}">${prioLabel}</button>
+            <div class="prio-dropdown" id="priodrop-${q.id}">
+              <button onclick="setPrioFromChip('${q.id}','high',event)" style="color:#B91C1C;">${t('prioHighSimple')}</button>
+              <button onclick="setPrioFromChip('${q.id}','medium',event)" style="color:#C2410C;">${t('prioMediumSimple')}</button>
+              <button onclick="setPrioFromChip('${q.id}','low',event)" style="color:#6B7280;">${t('prioLowSimple')}</button>
+              <button onclick="setPrioFromChip('${q.id}','',event)" style="color:var(--text3);">—</button>
+            </div>
+          </div>
+          <button class="q-icon-btn" onclick="event.stopPropagation();openEditQuestion('${q.id}')" title="${t('btnEdit')}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="q-icon-btn" onclick="event.stopPropagation();openImprove('${q.id}')" title="${t('btnImprove')}"><svg width="18" height="9" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="currentColor" font-family="sans-serif" text-anchor="middle">AI</text></svg></button>
+          <button class="q-icon-btn danger" onclick="event.stopPropagation();deleteQuestion('${q.id}')" title="${t('btnDelete')}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></button>
+        </div>
       </div>
-      <div class="question-text" id="qtxt-${q.id}">${highlightSearch(q.question, search)}</div>
-      <div class="answer-text">${escHtml(q.answer)||'<em style="color:var(--text3)">${t("noAnswer")}</em>'}</div>
-      <div id="video-area-${q.id}"></div>
-      <div class="q-actions">
-        <select onchange="setPriority('${q.id}', this.value)" style="font-size:11px;padding:3px 6px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;" title="${t('lblPriority')}">
-          <option value="" ${!q.priority?'selected':''}>${t('lblPriority')}</option>
-          <option value="high" ${q.priority==='high'?'selected':''}>${t('prioHigh')}</option>
-          <option value="medium" ${q.priority==='medium'?'selected':''}>${t('prioMedium')}</option>
-          <option value="low" ${q.priority==='low'?'selected':''}>${t('prioLow')}</option>
-        </select>
-        <button class="btn btn-secondary btn-sm" onclick="openEditQuestion('${q.id}')">${t('btnEdit')}</button>
-        <button class="btn btn-accent2 btn-sm" onclick="openImprove('${q.id}')"><svg width="20" height="10" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="var(--accent)" font-family="sans-serif" text-anchor="middle">AI</text></svg> ${t('btnImprove')}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}')">${t('btnDelete')}</button>
+      <!-- Expanded body: answer + actions -->
+      <div id="qbody-${q.id}" style="display:${isOpen ? 'block' : 'none'};padding-inline-start:22px;margin-top:10px;">
+        <div class="answer-text" style="margin-bottom:10px;">${escHtml(q.answer)||'<em style="color:var(--text3)">' + t('noAnswer') + '</em>'}</div>
+        <div id="video-area-${q.id}"></div>
+        <div class="q-actions" style="flex-wrap:wrap;gap:6px;">
+          <button class="btn-video btn btn-ghost btn-sm" onclick="findVideo('${q.id}', \`${escAttr(q.question)}\`, \`${escAttr(q.topic||'')}\`)" id="vbtn-${q.id}" title="${currentLang === 'en' ? 'Question explanation video' : 'סרטון הסבר לשאלה'}" style="font-size:14px;padding:2px 6px;">🎥</button>
+
+        </div>
       </div>
     </div>`;
 }
@@ -3675,7 +3814,7 @@ let LANG = {
     btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
-    btnAddHR: 'הוסף שאלת HR',
+    btnAddHR: 'הוסף שאלת HR', fabAddQuestion: 'הוסף שאלה',
     // Job Prep section
     secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
     cardJobDetails: 'פרטי המשרה',
@@ -3797,13 +3936,13 @@ let LANG = {
     prioHighSimple: 'חשוב מאוד', prioMediumSimple: 'חשוב', prioLowSimple: 'נחמד לדעת',
     piSelectJob: 'בחר משרה', piSelectJobPh: 'בחר משרה...', piCvLinks: 'קורות חיים',
     piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צור', piTips: 'הטיפים שלי',
-    piQuestions: 'שאלות להכנה', piDifficultOnly: 'קשות בלבד', btnDownload: 'הורד',
+    piQuestions: 'שאלות להכנה', piDifficultOnly: 'שאלות קשות', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
-    btnVideo: 'סרטון', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnFilters: 'פילטרים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', btnDifficultFilter: 'קשות בלבד', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
-    lblPriority: 'עדיפות', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
+    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
+    btnFilters: 'פילטרים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
+    lblPriority: 'עדיפות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
@@ -3861,7 +4000,7 @@ let LANG = {
     btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected to Bank',
     modalDefaultQTitle: 'Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: 'Search & Filter',
-    btnAddHR: 'Add HR Question',
+    btnAddHR: 'Add HR Question', fabAddQuestion: 'Add question',
     // Job Prep section
     secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
     cardJobDetails: 'Job Details',
@@ -3983,14 +4122,14 @@ let LANG = {
     prioHighSimple: 'Must Know', prioMediumSimple: 'Important', prioLowSimple: 'Nice to Know',
     piSelectJob: 'Select a job', piSelectJobPh: 'Select a job...', piCvLinks: 'CV Links',
     piAboutMe: 'About Me — tailored to this job', btnGenerate: 'Generate', piTips: 'My Tips',
-    piQuestions: 'Prep Questions', piDifficultOnly: 'Difficult only', btnDownload: 'Download',
+    piQuestions: 'Prep Questions', piDifficultOnly: 'Hard questions', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
     piNoCvLinks: 'No CV links added yet', piNoTips: 'No tips yet. Add them in Profile.', piNoQFilters: 'No questions match the selected filters.',
     piBannerText: 'For full preparation — first complete:',
     piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
-    btnVideo: 'Video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
-    btnFilters: 'Filters', btnFiltersClose: 'Close filters', btnFilters: 'Filters', btnDifficultFilter: 'Difficult only', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
-    lblPriority: 'Priority', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
+    btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
+    btnFilters: 'Filters', btnFiltersClose: 'Close filters', btnFilters: 'Filters', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
+    lblPriority: 'Priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
@@ -4071,6 +4210,12 @@ function applyLanguage() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (L[key] !== undefined) el.innerHTML = L[key];
+  });
+
+  // All data-i18n-title elements (title attributes)
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (L[key]) el.title = L[key];
   });
 
   // All data-i18n-ph elements (placeholders)
@@ -4833,6 +4978,9 @@ window.toast = function(msg, isError=false) {
 
 // ==================== INNER TABS ====================
 window.showInnerTab = function(id, btn) {
+  // Show FAB only on question bank
+  const fab = document.getElementById('q-fab');
+  if (fab) fab.style.display = (id === 'inner-questions') ? 'flex' : 'none';
   document.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -4943,14 +5091,30 @@ window.toggleFilterPanel = function() {
 };
 window.toggleFiltersPanel = window.toggleFilterPanel;
 
+
+window.togglePrioDropdown = function(id, event) {
+  event.stopPropagation();
+  // Close all other dropdowns
+  document.querySelectorAll('.prio-dropdown.open').forEach(function(d) {
+    if (d.id !== 'priodrop-' + id) d.classList.remove('open');
+  });
+  const drop = document.getElementById('priodrop-' + id);
+  if (drop) drop.classList.toggle('open');
+};
+window.setPrioFromChip = async function(id, val, event) {
+  event.stopPropagation();
+  await setPriority(id, val);
+  const drop = document.getElementById('priodrop-' + id);
+  if (drop) drop.classList.remove('open');
+};
+// Close dropdowns on outside click
+document.addEventListener('click', function() {
+  document.querySelectorAll('.prio-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+});
 window.toggleDifficultFilter = function() {
   showDifficultOnly = !showDifficultOnly;
   const btn = document.getElementById('difficult-filter-btn');
-  if (btn) {
-    btn.style.background = showDifficultOnly ? 'var(--accent)' : '';
-    btn.style.color = showDifficultOnly ? '#fff' : '';
-    btn.style.borderColor = showDifficultOnly ? 'var(--accent)' : '';
-  }
+  if (btn) btn.classList.toggle('active', showDifficultOnly);
   renderQuestions();
 };
 
