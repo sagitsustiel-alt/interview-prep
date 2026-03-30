@@ -3202,6 +3202,7 @@ function renderQuestions() {
 
   const totalCount = qs.length;
   const groupCount = orderedTopics.length;
+  currentVisibleTopics = orderedTopics; // expose for open-all
 
   // Update summary text (static bar)
   const summaryEl = document.getElementById('q-summary-text');
@@ -3248,6 +3249,7 @@ function renderQuestions() {
 let activeQuestionId = null; // currently focused question
 let openQuestionId = null;   // which question's answer is expanded
 let openTopics = new Set(); // set of open topic names
+let currentVisibleTopics = []; // updated each renderQuestions
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
 
@@ -3277,9 +3279,8 @@ window.toggleAllTopicGroupsBtn = function() {
   if (anyOpen) {
     openTopics.clear();
   } else {
-    // Add all visible topics
-    const rows = document.querySelectorAll('.topic-row-header[data-topic]');
-    rows.forEach(function(h) { openTopics.add(h.getAttribute('data-topic')); });
+    // Use currentVisibleTopics (data-driven, not DOM-dependent)
+    currentVisibleTopics.forEach(function(t) { openTopics.add(t); });
   }
   renderQuestions();
   syncToggleAllBtn();
@@ -3296,8 +3297,7 @@ function syncToggleAllBtn() {
 
 window.toggleAllTopicGroups = function(open) {
   if (!open) { openTopics.clear(); renderQuestions(); syncToggleAllBtn(); return; }
-  const rows = document.querySelectorAll('.topic-row-header[data-topic]');
-  rows.forEach(function(h) { openTopics.add(h.getAttribute('data-topic')); });
+  currentVisibleTopics.forEach(function(t) { openTopics.add(t); });
   renderQuestions();
   syncToggleAllBtn();
 };
