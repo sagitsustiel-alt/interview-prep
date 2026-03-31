@@ -772,23 +772,24 @@
 
 
   /* ── Accordion topic rows ─────────────────────── */
-  .topic-row { border-bottom: 1px solid var(--border); }
-  .topic-row:first-child { border-top: 1px solid var(--border); }
+  .topic-row { border-bottom: 1px solid var(--surface2); }
+  .topic-row:last-child { border-bottom: none; }
 
   /* Closed header */
   .topic-row-header {
     display: flex; align-items: center; gap: 8px;
-    padding: 12px 0; cursor: pointer; user-select: none;
-    transition: background 0.15s; border-radius: 4px; min-width: 0;
+    padding: 10px 12px; cursor: pointer; user-select: none;
+    transition: background 0.15s; border-radius: 6px; min-width: 0;
+    margin: 1px 0;
   }
   .topic-row-header:hover { background: var(--surface2); }
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding-inline-end: 8px;
-    border-radius: 4px 4px 0 0;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding-inline-end: 9px;
+    border-radius: 6px 6px 0 0;
   }
 
   /* Arrow — simple text, no box */
@@ -815,10 +816,11 @@
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding: 4px 12px 12px 12px;
-    margin-bottom: 2px;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding: 4px 12px 14px 12px;
+    margin: 0 0 4px;
+    border-radius: 0 0 6px 6px;
   }
 
   /* YouTube link */
@@ -4763,23 +4765,24 @@ window.downloadGuide = function() {
   .tip { background: #f0fff8; border-left: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
 
   /* ── Accordion topic rows ─────────────────────── */
-  .topic-row { border-bottom: 1px solid var(--border); }
-  .topic-row:first-child { border-top: 1px solid var(--border); }
+  .topic-row { border-bottom: 1px solid var(--surface2); }
+  .topic-row:last-child { border-bottom: none; }
 
   /* Closed header */
   .topic-row-header {
     display: flex; align-items: center; gap: 8px;
-    padding: 12px 0; cursor: pointer; user-select: none;
-    transition: background 0.15s; border-radius: 4px; min-width: 0;
+    padding: 10px 12px; cursor: pointer; user-select: none;
+    transition: background 0.15s; border-radius: 6px; min-width: 0;
+    margin: 1px 0;
   }
   .topic-row-header:hover { background: var(--surface2); }
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding-inline-end: 8px;
-    border-radius: 4px 4px 0 0;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding-inline-end: 9px;
+    border-radius: 6px 6px 0 0;
   }
 
   /* Arrow — simple text, no box */
@@ -4806,10 +4809,11 @@ window.downloadGuide = function() {
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding: 4px 12px 12px 12px;
-    margin-bottom: 2px;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding: 4px 12px 14px 12px;
+    margin: 0 0 4px;
+    border-radius: 0 0 6px 6px;
   }
 
   /* YouTube link */
@@ -4931,23 +4935,24 @@ window.downloadGuide = function() {
   .tip { background: #f0fff8; border-right: 4px solid #4fc8a8; padding: 12px 16px; margin: 12px 0; border-radius: 4px; }
 
   /* ── Accordion topic rows ─────────────────────── */
-  .topic-row { border-bottom: 1px solid var(--border); }
-  .topic-row:first-child { border-top: 1px solid var(--border); }
+  .topic-row { border-bottom: 1px solid var(--surface2); }
+  .topic-row:last-child { border-bottom: none; }
 
   /* Closed header */
   .topic-row-header {
     display: flex; align-items: center; gap: 8px;
-    padding: 12px 0; cursor: pointer; user-select: none;
-    transition: background 0.15s; border-radius: 4px; min-width: 0;
+    padding: 10px 12px; cursor: pointer; user-select: none;
+    transition: background 0.15s; border-radius: 6px; min-width: 0;
+    margin: 1px 0;
   }
   .topic-row-header:hover { background: var(--surface2); }
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding-inline-end: 8px;
-    border-radius: 4px 4px 0 0;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding-inline-end: 9px;
+    border-radius: 6px 6px 0 0;
   }
 
   /* Arrow — simple text, no box */
@@ -4974,10 +4979,11 @@ window.downloadGuide = function() {
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #F9FAFB;
-    border-right: 3px solid var(--accent);
-    padding: 4px 12px 12px 12px;
-    margin-bottom: 2px;
+    background: #F5F3FF;
+    border-inline-end: 3px solid var(--accent);
+    padding: 4px 12px 14px 12px;
+    margin: 0 0 4px;
+    border-radius: 0 0 6px 6px;
   }
 
   /* YouTube link */
