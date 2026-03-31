@@ -3064,6 +3064,7 @@ window.selectQType = function(type, btn) {
   currentQType = type;
   selectedPriorities.clear();
   showDifficultOnly = false;
+  lastFilteredTopics = null;
   // Reset filter chip states
   document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
   document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
@@ -3113,11 +3114,12 @@ let topicOrder = []; // custom order for topics
 function renderTopicCheckboxes(filteredTopics) {
   const qs = (localCache.questions||[]).filter(q => q.type === currentQType);
   const allTopics = [...new Set(qs.map(q => q.topic || 'כללי'))];
-  // If filteredTopics provided (from active filters), use that; else use full ordered list
-  const topics = filteredTopics
+  // Use filteredTopics if provided, or lastFilteredTopics if a filter is active, else all
+  const activeFilter = filteredTopics || lastFilteredTopics;
+  const topics = activeFilter
     ? (topicOrder.length
-        ? [...topicOrder.filter(t => filteredTopics.includes(t)), ...filteredTopics.filter(t => !topicOrder.includes(t))]
-        : filteredTopics)
+        ? [...topicOrder.filter(t => activeFilter.includes(t)), ...activeFilter.filter(t => !topicOrder.includes(t))]
+        : activeFilter)
     : (topicOrder.length
         ? [...topicOrder.filter(t => allTopics.includes(t)), ...allTopics.filter(t => !topicOrder.includes(t))]
         : allTopics.sort());
@@ -3234,6 +3236,11 @@ function renderQuestions() {
   const groupCount = orderedTopics.length;
   currentVisibleTopics = orderedTopics; // expose for open-all
 
+  // If filters are active and reduce the topic set, store for checkbox sync
+  const allTopicsForType = [...new Set((localCache.questions||[]).filter(q=>q.type===currentQType).map(q=>q.topic||'כללי'))];
+  lastFilteredTopics = (orderedTopics.length < allTopicsForType.length || showDifficultOnly || selectedPriorities.size)
+    ? orderedTopics : null;
+
   // Render topic checkboxes with only the currently visible topics
   renderTopicCheckboxes(orderedTopics);
 
@@ -3284,6 +3291,7 @@ let openQuestionId = null;   // which question's answer is expanded
 let openTopics = new Set(); // set of open topic names
 let lastSearchWasActive = false; // track if search caused topics to open
 let currentVisibleTopics = []; // updated each renderQuestions
+let lastFilteredTopics = null; // set when active filter reduces topics
 // ── Drag state ───────────────────────────────────
 let groupDragSrcIdx = null;
 
