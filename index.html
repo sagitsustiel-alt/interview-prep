@@ -2056,6 +2056,12 @@ onAuthStateChanged(auth, async (user) => {
     updateMockJobSelect();
     applyLanguage();
     loadCredits(); // טעינת יתרת קרדיטים
+    // Show FAB only if currently on inner-questions tab
+    setTimeout(function() {
+      const activeInner = document.querySelector('.inner-section.active');
+      const fab = document.getElementById('q-fab');
+      if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
+    }, 100);
   } else {
     currentUser = null;
     // מצב צפייה בלי התחברות — ננסה לטעון ישירות מ-Firestore
@@ -3241,9 +3247,6 @@ function getSearchFilter() {
 }
 
 function renderQuestions() {
-  // Always show FAB when this function runs (only called when on question bank tab)
-  const _fabEl = document.getElementById('q-fab');
-  if (_fabEl) _fabEl.style.display = 'flex';
   const search = getSearchFilter();
   let qs = (localCache.questions||[]).filter(q => q.type === currentQType);
 
