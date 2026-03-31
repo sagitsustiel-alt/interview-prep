@@ -2717,6 +2717,7 @@ async function saveProfile() {
       pitch: localCache.pitch,
       cv: localCache.cv,
       workHistory: localCache.workHistory,
+      savedJobs: localCache.savedJobs || [],
       updatedAt: new Date().toISOString()
     });
     setSyncStatus('synced');
