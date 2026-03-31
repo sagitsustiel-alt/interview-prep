@@ -1331,7 +1331,7 @@
             </div>
 
             <!-- Group 2: Priority -->
-            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupPriority">עדיפות</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupPriority">רמת חשיבות</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
               <button class="filter-chip prio-chip-high" id="prio-filter-high" onclick="togglePriorityFilter('high', this)" data-i18n="prioHighSimple">חשוב מאוד</button>
               <button class="filter-chip prio-chip-medium" id="prio-filter-medium" onclick="togglePriorityFilter('medium', this)" data-i18n="prioMediumSimple">חשוב</button>
@@ -3062,6 +3062,10 @@ window.toggleFiltersPanel = function(btn) {
 window.selectQType = function(type, btn) {
   openQuestionId = null;
   currentQType = type;
+  selectedPriorities.clear();
+  showDifficultOnly = false;
+  // Reset filter chip states
+  document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
   document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   // Update add button
@@ -3356,7 +3360,7 @@ function highlightSearch(text, search) {
 function renderQCard(q, search) {
   search = search || getSearchFilter();
   const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
-  const prioLabel = q.priority === 'high' ? t('prioHighSimple') : q.priority === 'medium' ? t('prioMediumSimple') : q.priority === 'low' ? t('prioLowSimple') : (t('lblPriority') || 'עדיפות');
+  const prioLabel = q.priority === 'high' ? t('prioHighSimple') : q.priority === 'medium' ? t('prioMediumSimple') : q.priority === 'low' ? t('prioLowSimple') : (t('lblPriority') || 'רמת חשיבות');
   const isOpen = openQuestionId === q.id;
   return `
     <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}">
@@ -3367,7 +3371,7 @@ function renderQCard(q, search) {
           <div class="question-text" id="qtxt-${q.id}" style="margin-bottom:4px;">${highlightSearch(q.question, search)}</div>
 
         </div>
-        <!-- Metadata group: priority | star | video -->
+        <!-- Metadata group: priority | video | star -->
         <div class="q-header-actions" style="align-items:center;">
           <div style="position:relative;display:inline-flex;">
             <button class="prio-chip ${q.priority ? 'prio-'+q.priority : 'prio-none'}" onclick="togglePrioDropdown('${q.id}', event)" title="${t('lblPriorityTip')}">${prioLabel}</button>
@@ -3375,11 +3379,11 @@ function renderQCard(q, search) {
               <button onclick="setPrioFromChip('${q.id}','high',event)" style="color:#B91C1C;">${t('prioHighSimple')}</button>
               <button onclick="setPrioFromChip('${q.id}','medium',event)" style="color:#C2410C;">${t('prioMediumSimple')}</button>
               <button onclick="setPrioFromChip('${q.id}','low',event)" style="color:#6B7280;">${t('prioLowSimple')}</button>
-              <button onclick="setPrioFromChip('${q.id}','',event)" style="color:var(--text3);">—</button>
+              <button onclick="setPrioFromChip('${q.id}','',event)" style="color:var(--text3);">${t('prioNone')}</button>
             </div>
           </div>
-          <button class="q-star ${q.difficult?'active':''} q-icon-btn" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;padding:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
           <button class="q-icon-btn" onclick="event.stopPropagation();findVideo('${q.id}', '${escAttr(q.question)}', '${escAttr(q.topic||'')}');" title="${currentLang==='en' ? 'Video explanation for this question' : 'סרטון הסבר לשאלה'}" style="opacity:0.55;font-size:13px;padding:2px 3px;">🎥</button>
+          <button class="q-star ${q.difficult?'active':''} q-icon-btn" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;padding:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
           <span style="width:1px;height:14px;background:var(--border);display:inline-block;margin:0 2px;opacity:0.5;"></span>
           <button class="q-icon-btn" onclick="event.stopPropagation();openEditQuestion('${q.id}')" title="${t('btnEdit')}" style="opacity:0.55;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           <button class="q-icon-btn" onclick="event.stopPropagation();openImprove('${q.id}')" title="${t('btnImprove')}" style="opacity:0.55;"><svg width="18" height="9" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="currentColor" font-family="sans-serif" text-anchor="middle">AI</text></svg></button>
@@ -4039,8 +4043,8 @@ let LANG = {
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
     btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
-    btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'עדיפות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'עדיפות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כקשה', noAnswer: 'אין תשובה עדיין',
-    lblPriority: 'עדיפות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
+    btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
+    lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
@@ -4226,8 +4230,8 @@ let LANG = {
     piBannerText: 'For full preparation — first complete:',
     piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
     btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
-    btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Priority', filterGroupTopics: 'Topics', btnFiltersClose: 'Close filters', btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Priority', filterGroupTopics: 'Topics', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as difficult', noAnswer: 'No answer yet',
-    lblPriority: 'Priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
+    btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnFiltersClose: 'Close filters', btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as hard question', noAnswer: 'No answer yet',
+    lblPriority: 'Importance', prioNone: 'No priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
@@ -5187,7 +5191,7 @@ window.toggleFilterPanel = function() {
   panel.classList.toggle('open', !isOpen);
   if (btn) btn.classList.toggle('active', !isOpen);
 };
-window.toggleFiltersPanel = window.toggleFilterPanel;
+// toggleFiltersPanel already defined above
 
 
 window.togglePrioDropdown = function(id, event) {
