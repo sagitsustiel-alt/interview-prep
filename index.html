@@ -2806,7 +2806,13 @@ window.showSection = function(name, btn) {
   document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
   if (name === 'experience' || name === 'profile') { renderExperience(); loadTips(); }
   if (name === 'preinterview') { loadTrackerApps().then(() => loadPreInterviewSection()); }
-  if (name === 'questions') { renderQuestions(); const fab = document.getElementById('q-fab'); if (fab) fab.style.display = 'flex'; } else { const fab = document.getElementById('q-fab'); if (fab) fab.style.display = 'none'; }
+  if (name === 'questions') {
+    renderQuestions();
+    // Show FAB only if inner-questions tab is active
+    const activeInner = document.querySelector('#sec-questions .inner-section.active');
+    const fab = document.getElementById('q-fab');
+    if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
+  }
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
   if (name === 'mock') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(3)'); if(b){b.click();} },50); return; }
@@ -3338,6 +3344,9 @@ function renderQuestions() {
     </div>
   `;
   syncToggleAllBtn();
+  // Show/keep FAB visible when renderQuestions runs (we're on the right tab)
+  const _fab = document.getElementById('q-fab');
+  if (_fab) _fab.style.display = 'flex';
 }
 
 // ── Accordion state ──────────────────────────────
