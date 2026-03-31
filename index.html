@@ -197,9 +197,12 @@
   .section-sub { color: var(--text2); font-size: 15px; margin-bottom: 22px; }
 
   .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 6px; padding: 20px; margin-bottom: 14px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    background: #fff; border: 1px solid #E5E7EB;
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 14px;
+  }
+  .card-secondary {
+    background: #F9FAFB; border: none;
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;
   }
   .card-title {
     font-size: 13px; font-weight: 600; text-transform: none;
@@ -266,9 +269,8 @@
   .question-text { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 10px; line-height: 1.55; }
   .answer-text {
     font-size: 15px; color: var(--text); line-height: 1.65;
-    background: var(--surface2); border-radius: var(--radius-sm);
+    background: #F9FAFB; border-radius: 10px;
     padding: 14px 16px; margin-bottom: 10px; white-space: pre-wrap; text-align: right;
-    border-right: 3px solid var(--border);
   }
   .q-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .q-type-badge {
@@ -783,7 +785,7 @@
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F5F3FF;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding-right: 12px;
     border-radius: 4px 4px 0 0;
@@ -812,7 +814,7 @@
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #FAFAFE;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding: 4px 12px 12px 12px;
     margin-bottom: 2px;
@@ -847,12 +849,11 @@
   /* Active question highlight */
   .question-card.active,
   .topic-row-questions .question-card.active {
-    background: #FAF8FF !important;
-    border: 1px solid rgba(124,108,242,0.25) !important;
-    border-radius: 6px !important;
-    padding: 14px 12px !important;
+    background: #F5F3FF !important;
+    border: 1px solid rgba(124,108,242,0.30) !important;
+    border-radius: 12px !important;
+    padding: 14px 16px !important;
     margin: 4px 0 !important;
-    box-shadow: 0 1px 4px rgba(124,108,242,0.07) !important;
   }
 
   /* Search term highlight */
@@ -4773,7 +4774,7 @@ window.downloadGuide = function() {
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F5F3FF;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding-right: 12px;
     border-radius: 4px 4px 0 0;
@@ -4802,7 +4803,7 @@ window.downloadGuide = function() {
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #FAFAFE;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding: 4px 12px 12px 12px;
     margin-bottom: 2px;
@@ -4940,7 +4941,7 @@ window.downloadGuide = function() {
 
   /* Open header — purple left border + light purple bg */
   .topic-row-header.open {
-    background: #F5F3FF;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding-right: 12px;
     border-radius: 4px 4px 0 0;
@@ -4969,7 +4970,7 @@ window.downloadGuide = function() {
 
   /* Questions area — attached to open topic, no separation */
   .topic-row-questions {
-    background: #FAFAFE;
+    background: #F9FAFB;
     border-right: 3px solid var(--accent);
     padding: 4px 12px 12px 12px;
     margin-bottom: 2px;
