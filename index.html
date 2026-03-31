@@ -3213,6 +3213,8 @@ function renderQuestions() {
   const el = document.getElementById('q-filtered-list');
   if (!el) return;
   if (!qs.length) {
+    lastFilteredTopics = [];
+    renderTopicCheckboxes([]);
     el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💬</div><p>אין שאלות בקטגוריה זו.</p></div>';
     return;
   }
