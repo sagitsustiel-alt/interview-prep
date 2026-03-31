@@ -3196,7 +3196,7 @@ function renderQuestions() {
     q.topic?.toLowerCase().includes(search)
   );
   if (showDifficultOnly) qs = qs.filter(q => q.difficult);
-  if (selectedPriorities.size) qs = qs.filter(q => selectedPriorities.has(q.priority || ''));
+  if (selectedPriorities.size) { console.log("[PRIO FILTER] filtering, set:", [...selectedPriorities], "sample q.priority:", qs[0]?.priority); qs = qs.filter(q => selectedPriorities.has(q.priority || '')); console.log("[PRIO FILTER] after filter:", qs.length, "questions"); }
 
   // Auto-open matching topics when searching
   // Only collapse when user clears search (not on every render)
@@ -5229,6 +5229,7 @@ document.addEventListener('click', function() {
   document.querySelectorAll('.prio-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
 });
 window.togglePriorityFilter = function(prio, btn) {
+  console.log("[PRIO FILTER] clicked:", prio, "current set:", [...selectedPriorities]);
   if (selectedPriorities.has(prio)) {
     selectedPriorities.delete(prio);
     if (btn) btn.classList.remove('active');
