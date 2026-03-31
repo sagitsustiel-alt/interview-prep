@@ -594,8 +594,7 @@
   .btn-filter-toggle.active { border-color: var(--accent); color: var(--accent); background: #F5F3FF; }
   
   /* Filters panel */
-  .filters-panel { display: none; margin-bottom: 12px; }
-  .filters-panel.open { display: block; }
+  /* filters-panel is now JS-controlled via style.display */
   
   /* topic checkbox rows */
   #topic-checkboxes label {
@@ -1296,24 +1295,24 @@
         </div>
 
         <!-- Row 2: Filters button + active count + stats -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;position:relative;">
-          <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel()" style="border:1px solid var(--border);border-radius:6px;gap:6px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            <span data-i18n="btnFilters">פילטרים</span>
-            <span id="filter-active-badge" style="display:none;background:var(--accent);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:0 5px;line-height:16px;"></span>
-          </button>
-          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
-        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;">
+          <!-- Anchor: button + dropdown panel together -->
+          <div style="position:relative;flex-shrink:0;">
+            <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel()" style="border:1px solid var(--border);border-radius:6px;gap:6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              <span data-i18n="btnFilters">פילטרים</span>
+              <span id="filter-active-badge" style="display:none;background:var(--accent);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:0 5px;line-height:16px;"></span>
+            </button>
 
-        <!-- Filters drawer (floating panel) -->
-        <div id="filters-panel" style="display:none;position:absolute;inset-inline-end:0;top:0;width:260px;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.10);z-index:200;overflow:hidden;">
+            <!-- Filters dropdown — anchored to button, opens below it -->
+            <div id="filters-panel" style="display:none;position:absolute;top:calc(100% + 4px);inset-inline-start:0;width:260px;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.12);z-index:300;overflow:hidden;">
           <!-- Panel header -->
           <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px 10px;border-bottom:1px solid var(--border);">
             <span style="font-size:13px;font-weight:700;color:var(--text);" data-i18n="btnFilters">פילטרים</span>
             <button onclick="toggleFiltersPanel()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;line-height:1;padding:0 2px;">✕</button>
           </div>
           <!-- Scrollable content -->
-          <div style="padding:12px 14px;overflow-y:auto;max-height:70vh;">
+          <div style="padding:12px 14px;overflow-y:auto;max-height:min(65vh, 480px);">
 
             <!-- Section 1: Question Type -->
             <div style="margin-bottom:14px;">
@@ -1363,8 +1362,10 @@
               <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:0;"></div>
             </div>
 
-          </div>
-        </div>
+            </div><!-- end filters-panel -->
+          </div><!-- end anchor -->
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;flex-shrink:0;"></div>
+        </div><!-- end row2 -->
 
         <!-- Topic list separator + open-all -->
         <div style="display:flex;align-items:center;justify-content:flex-end;padding:0 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
