@@ -930,27 +930,6 @@
   .ctrl-btn:hover { background: var(--surface2); color: var(--text); }
   .ctrl-btn.active { background: #F5F3FF; color: var(--accent); }
 
-  /* FAB — floating action button */
-  #q-fab {
-    display: none; /* shown only on question bank tab */
-    position: fixed;
-    bottom: 80px; /* above bottom nav */
-    inset-inline-end: 20px;
-    width: 50px; height: 50px;
-    border-radius: 50%;
-    background: #A89CF4; /* muted purple */
-    border: none; cursor: pointer;
-    box-shadow: 0 2px 8px rgba(124,108,242,0.22);
-    align-items: center; justify-content: center;
-    transition: transform 0.15s, background 0.15s;
-    z-index: 50;
-  }
-  #q-fab:hover {
-    background: #917FEF;
-    transform: scale(1.05);
-  }
-  #q-fab svg { display: block; }
-
   /* Undo reorder toast */
   #reorder-undo {
     position: fixed;
@@ -1394,6 +1373,10 @@
 
         <!-- 5. Questions list (only topic rows rendered here) -->
         <div id="q-filtered-list"></div>
+        <button id="add-q-btn" class="btn btn-secondary btn-block" onclick="openAddQuestion(currentQType||'HR')" style="margin-top:14px;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          <span id="add-q-label" data-i18n="btnAddHR">הוסף שאלה</span>
+        </button>
 
 
       </div>
@@ -1628,14 +1611,6 @@
     <button onclick="undoReorder()" id="reorder-undo-btn">בטל</button>
   </div>
 
-  <!-- FAB: Add question (visible only on question bank tab) -->
-  <button id="q-fab" onclick="openAddQuestion(currentQType||'HR')"
-    title="הוסף שאלה" data-i18n-title="fabAddQuestion">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-      fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  </button>
 
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
@@ -2059,7 +2034,6 @@ onAuthStateChanged(auth, async (user) => {
     // Show FAB only if currently on inner-questions tab
     setTimeout(function() {
       const activeInner = document.querySelector('.inner-section.active');
-      const fab = document.getElementById('q-fab');
       if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
     }, 100);
   } else {
@@ -2801,7 +2775,6 @@ window.autoSaveCV = function() {
 // ==================== NAVIGATION ====================
 window.showSection = function(name, btn) {
   // Hide FAB unless we end up in questions+inner-questions
-  const fabEl = document.getElementById('q-fab');
   if (fabEl) fabEl.style.display = 'none';
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -2816,7 +2789,6 @@ window.showSection = function(name, btn) {
     renderQuestions();
     // Show FAB only if inner-questions tab is active
     const activeInner = document.querySelector('#sec-questions .inner-section.active');
-    const fab = document.getElementById('q-fab');
     if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
   }
   if (name === 'profile') loadProfileUI();
@@ -3136,8 +3108,9 @@ window.selectQType = function(type, btn) {
   // Update add button
   const addBtn = document.getElementById('add-q-btn');
   if (addBtn) {
-    addBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> ' + (type === 'HR' ? (t('btnAddHR') || 'הוסף שאלת HR') : (t('btnAddTech') || 'הוסף שאלה טכנית'));
     addBtn.onclick = () => openAddQuestion(type);
+    const lbl = document.getElementById('add-q-label');
+    if (lbl) lbl.textContent = type === 'HR' ? (t('btnAddHR') || 'הוסף שאלת HR') : (t('btnAddTech') || 'הוסף שאלה טכנית');
   }
   selectedTopics = new Set();
   renderTopicCheckboxes();
@@ -5160,7 +5133,6 @@ window.toast = function(msg, isError=false) {
 
 // ==================== INNER TABS ====================
 window.showInnerTab = function(id, btn) {
-  const fab = document.getElementById('q-fab');
   if (fab) fab.style.display = (id === 'inner-questions') ? 'flex' : 'none';
   document.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
