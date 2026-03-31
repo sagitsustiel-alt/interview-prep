@@ -1332,7 +1332,13 @@
             </div>
 
             <!-- Group 2: Priority -->
-            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupPriority">רמת חשיבות</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;" data-i18n="filterGroupPriority">רמת חשיבות</div>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);cursor:pointer;">
+                <input type="checkbox" id="prio-select-all" onchange="toggleAllPriorityFilters(this)" style="width:12px;height:12px;">
+                <span data-i18n="btnSelectAll">בחר הכל</span>
+              </label>
+            </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
               <button class="filter-chip prio-chip-high" id="prio-filter-high" onclick="togglePriorityFilter('high', this)" data-i18n="prioHighSimple">חשוב מאוד</button>
               <button class="filter-chip prio-chip-medium" id="prio-filter-medium" onclick="togglePriorityFilter('medium', this)" data-i18n="prioMediumSimple">חשוב</button>
@@ -1340,9 +1346,14 @@
             </div>
 
             <!-- Group 3: Topics -->
-            <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="filterGroupTopics">נושאים</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;" data-i18n="filterGroupTopics">נושאים</div>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);cursor:pointer;">
+                <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)" style="width:12px;height:12px;">
+                <span data-i18n="btnSelectAll">בחר הכל</span>
+              </label>
+            </div>
             <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:0;"></div>
-            <button class="btn btn-ghost" style="font-size:12px;margin-top:6px;padding:2px 0;" onclick="selectAllTopics()" data-i18n="btnSelectAll">בחר הכל</button>
           </div>
         </div>
 
@@ -3068,6 +3079,8 @@ window.selectQType = function(type, btn) {
   lastFilteredTopics = null;
   // Reset filter chip states
   document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+  const prioAll = document.getElementById('prio-select-all'); if (prioAll) { prioAll.checked = false; prioAll.indeterminate = false; }
+  const topicAll = document.getElementById('topic-select-all-cb'); if (topicAll) { topicAll.checked = false; topicAll.indeterminate = false; }
   document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   // Update add button
@@ -3147,6 +3160,7 @@ function renderTopicCheckboxes(filteredTopics) {
     </label>`).join('');
 
   // topicOrder is read-only here — only drag handlers may write it
+  syncTopicSelectAll();
 }
 
 let dragSrcIdx = null;
@@ -5229,6 +5243,50 @@ window.setPrioFromChip = async function(id, val, event) {
 document.addEventListener('click', function() {
   document.querySelectorAll('.prio-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
 });
+
+window.toggleAllPriorityFilters = function(cb) {
+  const all = ['high', 'medium', 'low'];
+  if (cb.checked) {
+    all.forEach(function(p) { selectedPriorities.add(p); });
+  } else {
+    selectedPriorities.clear();
+  }
+  all.forEach(function(p) {
+    const btn = document.getElementById('prio-filter-' + p);
+    if (btn) btn.classList.toggle('active', selectedPriorities.has(p));
+  });
+  renderQuestions();
+};
+
+function syncPrioSelectAll() {
+  const cb = document.getElementById('prio-select-all');
+  if (!cb) return;
+  const total = 3;
+  const selected = selectedPriorities.size;
+  cb.checked = selected === total;
+  cb.indeterminate = selected > 0 && selected < total;
+}
+
+window.toggleAllTopicsFromCb = function(cb) {
+  if (cb.checked) {
+    selectAllTopics();
+  } else {
+    selectedTopics.clear();
+    renderTopicCheckboxes();
+    renderQuestions();
+  }
+  syncTopicSelectAll();
+};
+
+function syncTopicSelectAll() {
+  const cb = document.getElementById('topic-select-all-cb');
+  if (!cb) return;
+  const total = document.querySelectorAll('#topic-checkboxes input[type="checkbox"]').length;
+  const checked = document.querySelectorAll('#topic-checkboxes input[type="checkbox"]:checked').length;
+  cb.checked = checked === total && total > 0;
+  cb.indeterminate = checked > 0 && checked < total;
+}
+
 window.togglePriorityFilter = function(prio, btn) {
   if (selectedPriorities.has(prio)) {
     selectedPriorities.delete(prio);
@@ -5237,6 +5295,7 @@ window.togglePriorityFilter = function(prio, btn) {
     selectedPriorities.add(prio);
     if (btn) btn.classList.add('active');
   }
+  syncPrioSelectAll();
   renderQuestions();
 };
 
