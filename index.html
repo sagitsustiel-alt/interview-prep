@@ -2774,8 +2774,6 @@ window.autoSaveCV = function() {
 
 // ==================== NAVIGATION ====================
 window.showSection = function(name, btn) {
-  // Hide FAB unless we end up in questions+inner-questions
-  if (fabEl) fabEl.style.display = 'none';
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + name).classList.add('active');
@@ -2787,9 +2785,7 @@ window.showSection = function(name, btn) {
   if (name === 'preinterview') { loadTrackerApps().then(() => loadPreInterviewSection()); }
   if (name === 'questions') {
     renderQuestions();
-    // Show FAB only if inner-questions tab is active
-    const activeInner = document.querySelector('#sec-questions .inner-section.active');
-    if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
+
   }
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
