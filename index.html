@@ -3110,13 +3110,17 @@ window.undoReorder = function() {
 
 let topicOrder = []; // custom order for topics
 
-function renderTopicCheckboxes() {
+function renderTopicCheckboxes(filteredTopics) {
   const qs = (localCache.questions||[]).filter(q => q.type === currentQType);
   const allTopics = [...new Set(qs.map(q => q.topic || 'כללי'))];
-  // Use custom order if set, else sort
-  const topics = topicOrder.length
-    ? [...topicOrder.filter(t => allTopics.includes(t)), ...allTopics.filter(t => !topicOrder.includes(t))]
-    : allTopics.sort();
+  // If filteredTopics provided (from active filters), use that; else use full ordered list
+  const topics = filteredTopics
+    ? (topicOrder.length
+        ? [...topicOrder.filter(t => filteredTopics.includes(t)), ...filteredTopics.filter(t => !topicOrder.includes(t))]
+        : filteredTopics)
+    : (topicOrder.length
+        ? [...topicOrder.filter(t => allTopics.includes(t)), ...allTopics.filter(t => !topicOrder.includes(t))]
+        : allTopics.sort());
 
   const el = document.getElementById('topic-checkboxes');
   if (!el) return;
@@ -3204,8 +3208,6 @@ function renderQuestions() {
     lastSearchWasActive = false;
   }
 
-  renderTopicCheckboxes();
-
   const el = document.getElementById('q-filtered-list');
   if (!el) return;
   if (!qs.length) {
@@ -3231,6 +3233,9 @@ function renderQuestions() {
   const totalCount = qs.length;
   const groupCount = orderedTopics.length;
   currentVisibleTopics = orderedTopics; // expose for open-all
+
+  // Render topic checkboxes with only the currently visible topics
+  renderTopicCheckboxes(orderedTopics);
 
   // Update summary text (static bar)
   const summaryEl = document.getElementById('q-summary-text');
