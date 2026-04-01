@@ -1001,7 +1001,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 0;
+    padding: 2px 0;
     width: 100%;
   }
   #filters-panel .fp-row input[type="checkbox"] {
@@ -1027,7 +1027,7 @@
     display: block;
   }
   #filters-panel .fp-section {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
   #filters-panel .fp-divider {
     height: 1px;
@@ -1371,11 +1371,11 @@
               <!-- Scrollable body -->
               <div style="padding:14px 16px;overflow-y:auto;max-height:min(60vh,420px);width:100%;box-sizing:border-box;overflow-x:hidden;">
                 <!-- Section 1: Question Type -->
-                <div style="margin-bottom:16px;">
-                  <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;" data-i18n="filterGroupType">סוג שאלה</div>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);cursor:pointer;padding:4px 0;width:100%;box-sizing:border-box;">
-                    <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:14px;height:14px;flex-shrink:0;">
-                    <span data-i18n="btnDifficultFilter" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">שאלות קשות</span>
+                 <div class="fp-section">
+                   <span class="fp-title" data-i18n="filterGroupType">סוג שאלה</span>
+                   <label class="fp-row" for="difficult-filter-cb">
+                     <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)">
+                     <span data-i18n="btnDifficultFilter">שאלות קשות</span>
                   </label>
                 </div>
                 <!-- Divider -->
@@ -5187,7 +5187,6 @@ window.toast = function(msg, isError=false) {
 
 // ==================== INNER TABS ====================
 window.showInnerTab = function(id, btn) {
-  if (fab) fab.style.display = (id === 'inner-questions') ? 'flex' : 'none';
   document.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
