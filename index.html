@@ -999,10 +999,18 @@
   /* Filters panel internal alignment */
   #filters-panel .fp-row {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
+    justify-content: flex-end;
     gap: 10px;
     padding: 2px 0;
     width: 100%;
+    direction: ltr;
+  }
+  [dir="rtl"] #filters-panel .fp-row {
+    direction: rtl;
+    flex-direction: row;
+    justify-content: flex-start;
   }
   #filters-panel .fp-row input[type="checkbox"] {
     width: 15px;
@@ -1381,24 +1389,22 @@
                 <!-- Divider -->
                 <div style="height:1px;background:var(--surface2);margin-bottom:16px;"></div>
                 <!-- Section 2: Importance -->
-                <div style="margin-bottom:16px;">
-                  <div style="margin-bottom:8px;">
-                    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;" data-i18n="filterGroupPriority">רמת חשיבות</div>
-                  </div>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#B91C1C;cursor:pointer;padding:4px 0;width:100%;box-sizing:border-box;">
-                    <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:14px;height:14px;flex-shrink:0;">
-                    <span data-i18n="prioHighSimple" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">חשוב מאוד</span>
-                  </label>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#C2410C;cursor:pointer;padding:4px 0;width:100%;box-sizing:border-box;">
-                    <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)" style="width:14px;height:14px;flex-shrink:0;">
-                    <span data-i18n="prioMediumSimple" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">חשוב</span>
-                  </label>
-                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7280;cursor:pointer;padding:4px 0;width:100%;box-sizing:border-box;">
-                    <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)" style="width:14px;height:14px;flex-shrink:0;">
-                    <span data-i18n="prioLowSimple" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">ערך מוסף</span>
-                  </label>
-                </div>
-                <!-- Divider -->
+                 <!-- Section 2: Importance -->
+                 <div class="fp-section">
+                   <span class="fp-title" data-i18n="filterGroupPriority">רמת חשיבות</span>
+                   <label class="fp-row" for="prio-filter-high-cb">
+                     <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)">
+                     <span data-i18n="prioHighSimple" style="color:#B91C1C;">חשוב מאוד</span>
+                   </label>
+                   <label class="fp-row" for="prio-filter-medium-cb">
+                     <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)">
+                     <span data-i18n="prioMediumSimple" style="color:#C2410C;">חשוב</span>
+                   </label>
+                   <label class="fp-row" for="prio-filter-low-cb">
+                     <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)">
+                     <span data-i18n="prioLowSimple" style="color:#6B7280;">ערך מוסף</span>
+                   </label>
+                 </div>
                 <div style="height:1px;background:var(--surface2);margin-bottom:16px;"></div>
                 <!-- Section 3: Topics -->
                 <div>
@@ -2082,11 +2088,7 @@ onAuthStateChanged(auth, async (user) => {
     updateMockJobSelect();
     applyLanguage();
     loadCredits(); // טעינת יתרת קרדיטים
-    // Show FAB only if currently on inner-questions tab
-    setTimeout(function() {
-      const activeInner = document.querySelector('.inner-section.active');
-      if (fab) fab.style.display = (activeInner && activeInner.id === 'inner-questions') ? 'flex' : 'none';
-    }, 100);
+
   } else {
     currentUser = null;
     // מצב צפייה בלי התחברות — ננסה לטעון ישירות מ-Firestore
