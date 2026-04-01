@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.1</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.2</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1373,10 +1373,11 @@
             <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel()">
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               <span data-i18n="btnFilters">פילטרים</span>
-              <span id="filter-active-badge" style="display:none;background:var(--accent);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:0 5px;line-height:16px;min-width:16px;text-align:center;"></span>
+              <span id="filter-active-badge" class="filter-active-badge is-hidden"></span>
             </button>
             <div id="filters-panel" class="filters-panel">
               <div class="filters-content">
+
                 <!-- Section 1: Question Type -->
                 <div class="filter-section">
                   <div class="filter-title" data-i18n="filterGroupType">סוג שאלה</div>
@@ -1385,35 +1386,40 @@
                     <span data-i18n="btnDifficultFilter">שאלות קשות</span>
                   </label>
                 </div>
+
                 <div class="filter-divider"></div>
+
                 <!-- Section 2: Importance -->
                 <div class="filter-section">
                   <div class="filter-title" data-i18n="filterGroupPriority">רמת חשיבות</div>
                   <label class="filter-row">
                     <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)">
-                    <span style="color:#B91C1C;" data-i18n="prioHighSimple">חשוב מאוד</span>
+                    <span class="prio-high" data-i18n="prioHighSimple">חשוב מאוד</span>
                   </label>
                   <label class="filter-row">
                     <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)">
-                    <span style="color:#C2410C;" data-i18n="prioMediumSimple">חשוב</span>
+                    <span class="prio-medium" data-i18n="prioMediumSimple">חשוב</span>
                   </label>
                   <label class="filter-row">
                     <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)">
-                    <span style="color:#6B7280;" data-i18n="prioLowSimple">ערך מוסף</span>
+                    <span class="prio-low" data-i18n="prioLowSimple">ערך מוסף</span>
                   </label>
                 </div>
+
                 <div class="filter-divider"></div>
+
                 <!-- Section 3: Topics -->
-                <div class="filter-section" style="margin-bottom:4px;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                    <div class="filter-title" style="margin-bottom:0;" data-i18n="filterGroupTopics">נושאים</div>
-                    <label class="filter-row" style="padding:0;gap:5px;">
-                      <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)" style="width:13px;height:13px;">
-                      <span style="font-size:11px;color:#9CA3AF;" data-i18n="btnSelectAll">בחר הכל</span>
+                <div class="filter-section">
+                  <div class="filter-section-header">
+                    <div class="filter-title" data-i18n="filterGroupTopics">נושאים</div>
+                    <label class="filter-row filter-select-all">
+                      <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)">
+                      <span data-i18n="btnSelectAll">בחר הכל</span>
                     </label>
                   </div>
                   <div id="topic-checkboxes"></div>
                 </div>
+
               </div>
             </div>
           </div><!-- end anchor -->
@@ -3983,7 +3989,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.1</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.2</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4169,7 +4175,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.1</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.2</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5342,10 +5348,10 @@ function updateFilterBadge() {
   const count = (showDifficultOnly ? 1 : 0) + selectedPriorities.size;
   if (count > 0) {
     badge.textContent = count;
-    badge.style.display = 'inline-block';
+    badge.classList.remove('is-hidden');
     document.getElementById('filters-toggle-btn')?.classList.add('active');
   } else {
-    badge.style.display = 'none';
+    badge.classList.add('is-hidden');
     document.getElementById('filters-toggle-btn')?.classList.remove('active');
   }
 }
