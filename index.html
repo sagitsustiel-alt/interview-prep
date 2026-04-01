@@ -976,71 +976,72 @@
   /* Filters drawer positioning context */
   #inner-questions { position: relative; }
 
-  /* Filters panel — fixed width, never resizes */
-  #filters-panel {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
+
+
+  /* ── Filters dropdown ─────────────────────────── */
+  .filters-wrapper {
+    position: relative;
+    display: inline-block;
   }
-  #filters-panel * {
-    max-width: 100%;
+  .filters-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    inset-inline-start: 0;
+    width: 300px;
+    max-height: 420px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 400;
+    overflow: hidden;
     box-sizing: border-box;
   }
-  #filters-panel label span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1;
-    min-width: 0;
+  .filters-panel.open {
+    display: block;
   }
-
-  /* Filters panel internal alignment */
-  #filters-panel .fp-row {
+  .filters-content {
+    padding: 16px;
+    overflow-y: auto;
+    max-height: 420px;
+    box-sizing: border-box;
+  }
+  .filter-section {
+    margin-bottom: 16px;
+  }
+  .filter-divider {
+    height: 1px;
+    background: #F3F4F6;
+    margin-bottom: 16px;
+  }
+  .filter-row {
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
-    justify-content: flex-end;
     gap: 10px;
-    padding: 2px 0;
+    padding: 6px 0;
+    cursor: pointer;
     width: 100%;
-    direction: ltr;
   }
-  [dir="rtl"] #filters-panel .fp-row {
-    direction: rtl;
-    flex-direction: row;
-    justify-content: flex-start;
-  }
-  #filters-panel .fp-row input[type="checkbox"] {
+  .filter-row input[type="checkbox"] {
     width: 15px;
     height: 15px;
     flex-shrink: 0;
     margin: 0;
     cursor: pointer;
   }
-  #filters-panel .fp-row span {
+  .filter-row span {
     font-size: 13px;
-    line-height: 1.4;
+    color: #111827;
     flex: 1;
-    min-width: 0;
   }
-  #filters-panel .fp-title {
+  .filter-title {
     font-size: 10px;
     font-weight: 700;
-    color: var(--text3);
+    color: #9CA3AF;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding-bottom: 6px;
-    display: block;
-  }
-  #filters-panel .fp-section {
     margin-bottom: 8px;
-  }
-  #filters-panel .fp-divider {
-    height: 1px;
-    background: var(--surface2);
-    margin-bottom: 16px;
   }
 </style>
 </head>
@@ -1368,75 +1369,53 @@
         <!-- Row 2: Filters button + stats -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
           <!-- Anchor: button + panel -->
-          <div style="position:relative;display:inline-block;">
-            <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel()" style="border:1px solid var(--border);border-radius:6px;gap:6px;">
+          <div class="filters-wrapper">
+            <button class="ctrl-btn" id="filters-toggle-btn" onclick="toggleFiltersPanel()">
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
               <span data-i18n="btnFilters">פילטרים</span>
               <span id="filter-active-badge" style="display:none;background:var(--accent);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:0 5px;line-height:16px;min-width:16px;text-align:center;"></span>
             </button>
-            <!-- Filters dropdown panel -->
-            <div id="filters-panel"
-              style="display:none;
-                     position:absolute;
-                     top:calc(100% + 8px);
-                     inset-inline-start:0;
-                     width:300px;
-                     max-height:420px;
-                     background:#FFFFFF;
-                     border:1px solid #E5E7EB;
-                     border-radius:12px;
-                     box-shadow:0 2px 8px rgba(0,0,0,0.08);
-                     z-index:400;
-                     overflow:hidden;
-                     box-sizing:border-box;">
-              <div style="padding:16px;overflow-y:auto;max-height:420px;box-sizing:border-box;">
-
+            <div id="filters-panel" class="filters-panel">
+              <div class="filters-content">
                 <!-- Section 1: Question Type -->
-                <div style="margin-bottom:16px;">
-                  <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;" data-i18n="filterGroupType">סוג שאלה</div>
-                  <label style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;width:100%;">
-                    <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:15px;height:15px;flex-shrink:0;margin:0;cursor:pointer;">
-                    <span style="font-size:13px;color:#111827;flex:1;" data-i18n="btnDifficultFilter">שאלות קשות</span>
+                <div class="filter-section">
+                  <div class="filter-title" data-i18n="filterGroupType">סוג שאלה</div>
+                  <label class="filter-row">
+                    <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)">
+                    <span data-i18n="btnDifficultFilter">שאלות קשות</span>
                   </label>
                 </div>
-
-                <!-- Divider -->
-                <div style="height:1px;background:#F3F4F6;margin-bottom:16px;"></div>
-
-                <!-- Section 2: Importance (no Select All) -->
-                <div style="margin-bottom:16px;">
-                  <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;" data-i18n="filterGroupPriority">רמת חשיבות</div>
-                  <label style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;width:100%;">
-                    <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:15px;height:15px;flex-shrink:0;margin:0;cursor:pointer;">
-                    <span style="font-size:13px;color:#B91C1C;flex:1;" data-i18n="prioHighSimple">חשוב מאוד</span>
+                <div class="filter-divider"></div>
+                <!-- Section 2: Importance -->
+                <div class="filter-section">
+                  <div class="filter-title" data-i18n="filterGroupPriority">רמת חשיבות</div>
+                  <label class="filter-row">
+                    <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)">
+                    <span style="color:#B91C1C;" data-i18n="prioHighSimple">חשוב מאוד</span>
                   </label>
-                  <label style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;width:100%;">
-                    <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)" style="width:15px;height:15px;flex-shrink:0;margin:0;cursor:pointer;">
-                    <span style="font-size:13px;color:#C2410C;flex:1;" data-i18n="prioMediumSimple">חשוב</span>
+                  <label class="filter-row">
+                    <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)">
+                    <span style="color:#C2410C;" data-i18n="prioMediumSimple">חשוב</span>
                   </label>
-                  <label style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;width:100%;">
-                    <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)" style="width:15px;height:15px;flex-shrink:0;margin:0;cursor:pointer;">
-                    <span style="font-size:13px;color:#6B7280;flex:1;" data-i18n="prioLowSimple">ערך מוסף</span>
+                  <label class="filter-row">
+                    <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)">
+                    <span style="color:#6B7280;" data-i18n="prioLowSimple">ערך מוסף</span>
                   </label>
                 </div>
-
-                <!-- Divider -->
-                <div style="height:1px;background:#F3F4F6;margin-bottom:16px;"></div>
-
+                <div class="filter-divider"></div>
                 <!-- Section 3: Topics -->
-                <div>
+                <div class="filter-section" style="margin-bottom:4px;">
                   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                    <div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:0.5px;" data-i18n="filterGroupTopics">נושאים</div>
-                    <label style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#9CA3AF;cursor:pointer;">
-                      <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)" style="width:13px;height:13px;margin:0;cursor:pointer;">
-                      <span data-i18n="btnSelectAll">בחר הכל</span>
+                    <div class="filter-title" style="margin-bottom:0;" data-i18n="filterGroupTopics">נושאים</div>
+                    <label class="filter-row" style="padding:0;gap:5px;">
+                      <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)" style="width:13px;height:13px;">
+                      <span style="font-size:11px;color:#9CA3AF;" data-i18n="btnSelectAll">בחר הכל</span>
                     </label>
                   </div>
-                  <div id="topic-checkboxes" style="display:flex;flex-direction:column;"></div>
+                  <div id="topic-checkboxes"></div>
                 </div>
-
               </div>
-            </div><!-- end filters-panel -->
+            </div>
           </div><!-- end anchor -->
           <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
         </div><!-- end row2 -->
@@ -3150,15 +3129,15 @@ let selectedTopics = new Set();
 window.toggleFiltersPanel = function() {
   const panel = document.getElementById('filters-panel');
   if (!panel) return;
-  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  panel.classList.toggle('open');
 };
 
 // Close filters panel when clicking outside
 document.addEventListener('click', function(e) {
   const panel = document.getElementById('filters-panel');
   const btn = document.getElementById('filters-toggle-btn');
-  if (panel && panel.style.display !== 'none' && !panel.contains(e.target) && !btn.contains(e.target)) {
-    panel.style.display = 'none';
+  if (panel && panel.classList.contains('open') && !panel.contains(e.target) && btn && !btn.contains(e.target)) {
+    panel.classList.remove('open');
   }
 }, true);
 window.selectQType = function(type, btn) {
