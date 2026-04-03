@@ -803,11 +803,13 @@
   .topic-row-name {
     flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    text-align: start;
   }
   .topic-row-header.open .topic-row-name { color: var(--accent); }
 
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    margin-inline-start: auto;
   }
 
   /* ─── Hide/show ─── */
@@ -1072,7 +1074,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.15</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.16</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -3657,7 +3659,7 @@ function renderQuestions() {
 
   // Update summary text (static bar)
   const summaryEl = document.getElementById('q-summary-text');
-  if (summaryEl) summaryEl.textContent = totalCount + ' שאלות · ' + groupCount + ' נושאים';
+  if (summaryEl) summaryEl.textContent = currentLang === 'en' ? totalCount + ' questions · ' + groupCount + ' topics' : totalCount + ' שאלות · ' + groupCount + ' נושאים';
 
   // Clear activeQuestionId if question no longer visible
   if (activeQuestionId && !qs.find(q => q.id === activeQuestionId)) {
@@ -4376,7 +4378,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.15</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.16</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4562,7 +4564,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.15</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.16</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5234,11 +5236,13 @@ window.downloadGuide = function() {
   .topic-row-name {
     flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    text-align: start;
   }
   .topic-row-header.open .topic-row-name { color: var(--accent); }
 
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    margin-inline-start: auto;
   }
 
   /* ─── Hide/show ─── */
@@ -5404,11 +5408,13 @@ window.downloadGuide = function() {
   .topic-row-name {
     flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+    text-align: start;
   }
   .topic-row-header.open .topic-row-name { color: var(--accent); }
 
   .topic-row-count {
     font-size: 12px; color: var(--text3); font-weight: 400; flex-shrink: 0;
+    margin-inline-start: auto;
   }
 
   /* ─── Hide/show ─── */
