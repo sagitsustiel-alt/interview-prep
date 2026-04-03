@@ -1082,7 +1082,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.23</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -3558,7 +3558,7 @@ function renderTopicCheckboxes(filteredTopics) {
       ondrop="topicDrop(event,${idx})"
       data-idx="${idx}"
       style="display:flex;align-items:center;gap:6px;cursor:grab;flex-direction:${currentLang==='en'?'row':'row-reverse'};background:transparent;padding:1px 2px;border-radius:0;border:none;border-bottom:1px solid var(--surface2);font-size:12px;color:var(--text);line-height:1.2;min-height:24px;">
-      <span style="flex:1;text-align:right;">${escHtml(t)}</span>
+      <span style="flex:1;text-align:${currentLang==='en'?'left':'right'};">${escHtml(t)}</span>
       <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:13px;height:13px;flex-shrink:0;">
       <span style="color:var(--text3);font-size:9px;cursor:grab;opacity:0.5;">⠿</span>
     </label>`).join('');
@@ -4387,7 +4387,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.23</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4546,7 +4546,7 @@ let LANG = {
     piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
-    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
+    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר באמצעות AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
     btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -4573,7 +4573,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.23</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4764,6 +4764,7 @@ let LANG = {
 window.toggleLanguage = function() {
   currentLang = currentLang === 'he' ? 'en' : 'he';
   applyLanguage();
+  renderTopicCheckboxes();
 };
 
 function applyLanguage() {
