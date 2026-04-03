@@ -1052,7 +1052,9 @@
   [dir="ltr"] .topic-row-count { margin-inline-start: auto; margin-inline-end: 0; }
   [dir="ltr"] #inner-questions { text-align: left; }
   [dir="ltr"] .filter-row { text-align: left; }
-  [dir="ltr"] #topic-checkboxes label { flex-direction: row !important; text-align: left; justify-content: flex-start !important; }
+  [dir="ltr"] #topic-checkboxes label { flex-direction: row !important; }
+  [dir="ltr"] #topic-checkboxes input[type="checkbox"] { order: -1; }
+  [dir="ltr"] #topic-checkboxes span[style*="flex:1"] { text-align: left; }
 </style>
 </head>
 <body>
@@ -1082,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.24</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -3558,8 +3560,8 @@ function renderTopicCheckboxes(filteredTopics) {
       ondrop="topicDrop(event,${idx})"
       data-idx="${idx}"
       style="display:flex;align-items:center;gap:6px;cursor:grab;flex-direction:${currentLang==='en'?'row':'row-reverse'};background:transparent;padding:1px 2px;border-radius:0;border:none;border-bottom:1px solid var(--surface2);font-size:12px;color:var(--text);line-height:1.2;min-height:24px;">
+      <span style="flex:1;">${escHtml(t)}</span>
       <input type="checkbox" ${selectedTopics.has(t)?'checked':''} value="${escHtml(t)}" onchange="toggleTopic('${escHtml(t)}')" style="width:13px;height:13px;flex-shrink:0;">
-      <span style="flex:1;text-align:start;">${escHtml(t)}</span>
       <span style="color:var(--text3);font-size:9px;cursor:grab;opacity:0.5;">⠿</span>
     </label>`).join('');
 
@@ -4387,7 +4389,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.24</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4573,7 +4575,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.24</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
