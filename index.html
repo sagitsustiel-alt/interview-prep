@@ -1419,7 +1419,7 @@
         <!-- 5. Questions list (only topic rows rendered here) -->
         <div id="q-filtered-list" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;"></div>
 
-        <button id="add-q-btn" class="btn btn-secondary btn-block" onclick="openAddQuestion(currentQType||'HR')" style="margin-top:14px;">
+        <button id="add-q-btn" class="btn btn-secondary btn-block" onclick="openAddQuestion(window.getCurrentQType())" style="margin-top:14px;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
           <span id="add-q-label" data-i18n="btnAddHR">הוסף שאלה</span>
         </button>
@@ -3151,7 +3151,7 @@ window.showSection = function(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-' + name).classList.add('active');
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   // Show section name in header — uses LANG
   const sectionNameKeys = { preinterview: 'navPreInterview', profile: 'navSetup', questions: 'navLearn', tracker: 'tracker' };
   document.getElementById('current-section-name').textContent = t(sectionNameKeys[name] || name);
@@ -3446,6 +3446,7 @@ window.genericDrop = function(e, targetIdx, type) {
 
 // ==================== QUESTIONS ====================
 let currentQType = 'HR';
+window.getCurrentQType = function() { return currentQType || 'HR'; };
 let selectedTopics = new Set();
 
 
