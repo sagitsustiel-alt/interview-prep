@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.9</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1357,10 +1357,11 @@
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
         <!-- TEMP: Topic merge migration button -->
-        <div id="topic-migration-bar" style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <div id="topic-migration-bar" style="display:none;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;margin-bottom:12px;align-items:center;justify-content:space-between;gap:10px;">
           <span style="font-size:13px;color:#92400E;font-weight:600;">🔧 מיזוג נושאים — לחץ פעם אחת בלבד</span>
           <button onclick="runTopicMigration()" style="background:#F59E0B;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">הרץ מיזוג</button>
         </div>
+        <script>if(!localStorage.getItem("topicMigrationDone")){var b=document.getElementById("topic-migration-bar");if(b)b.style.display="flex";}</script>
 
 
         <!-- Row 1: Toggle (flex-start) + Search (flex:1) — direction-aware -->
@@ -1378,12 +1379,12 @@
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="btnFilters">פילטרים</div>
           <!-- שורה 2: אופציות + סיכום -->
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:1;">
               <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text2);">
                 <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:13px;height:13px;margin:0;">
                 <span data-i18n="btnDifficultFilter">שאלות קשות</span>
               </label>
-              <span style="color:var(--border);">|</span>
+              <span style="color:var(--border);line-height:1;vertical-align:middle;">|</span>
               <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
                 <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:13px;height:13px;margin:0;">
                 <span class="prio-high" data-i18n="prioHighSimple">חשוב מאוד</span>
@@ -1400,7 +1401,17 @@
             <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;margin-inline-start:auto;"></div>
           </div>
         </div><!-- end row2 -->
-        <div id="topic-checkboxes" style="display:none;"></div>
+        <!-- Topics filter -->
+        <div style="margin-top:8px;border-top:1px solid var(--surface2);padding-top:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;" data-i18n="filterGroupTopics">נושאים</span>
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text3);">
+              <input type="checkbox" id="topic-select-all-cb" onchange="toggleAllTopicsFromCb(this)" style="width:13px;height:13px;margin:0;">
+              <span data-i18n="btnSelectAll">בחר הכל</span>
+            </label>
+          </div>
+          <div id="topic-checkboxes" style="display:flex;flex-direction:column;gap:0;"></div>
+        </div>
 
         <!-- Topic list separator + open-all -->
         <div style="display:flex;align-items:center;justify-content:flex-end;padding:0 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;">
@@ -2817,6 +2828,7 @@ window.runTopicMigration = async function() {
   const btn = document.querySelector('#topic-migration-bar button');
   btn.textContent = 'מריץ...';
   btn.disabled = true;
+  localStorage.setItem('topicMigrationDone', '1');
 
   const mergeMap = [
     {
@@ -3346,7 +3358,7 @@ window.selectQType = function(type, btn) {
   if (addBtn) {
     addBtn.onclick = () => openAddQuestion(type);
     const lbl = document.getElementById('add-q-label');
-    if (lbl) lbl.textContent = type === 'HR' ? (t('btnAddHR') || 'הוסף שאלת HR') : (t('btnAddTech') || 'הוסף שאלה טכנית');
+    if (lbl) lbl.textContent = type === 'HR' ? (t('btnAddHR') || 'הוסף שאלת HR') : 'הוסף שאלה טכנית';
   }
   selectedTopics = new Set();
   renderTopicCheckboxes();
@@ -4171,7 +4183,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.9</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4234,7 +4246,7 @@ let LANG = {
     labelWHDomains: 'תחום/ים', phAddDomain: 'הוסף תחום ידנית...',
     labelWHCap: 'יכולות', phAddCap: 'הוסף יכולת ידנית...',
     btnAddItem: '+ הוסף', btnSave: 'שמור', btnCancel: 'ביטול',
-    modalQTitle: 'הוסף שאלה', labelTopic: 'נושא', phTopic: 'למשל: Cloud, AI Program Management, HR...',
+    modalQTitle: 'הוסף שאלה', modalQAddHR: 'הוסף שאלת HR', modalQAddTech: 'הוסף שאלה טכנית', modalQEdit: 'ערוך שאלה', labelTopic: 'נושא', phTopic: 'למשל: Cloud, AI Program Management, HR...',
     labelQuestion: 'שאלה', phQuestion: 'הכנס את שאלת הראיון...',
     phYourAnswer: 'כתוב את תשובתך...',
     // Toast & JS messages
@@ -4357,7 +4369,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.9</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
