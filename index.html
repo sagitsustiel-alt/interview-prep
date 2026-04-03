@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.11</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1377,27 +1377,25 @@
         <div style="margin-bottom:10px;">
           <!-- שורה 1: כותרת פילטרים -->
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;" data-i18n="btnFilters">פילטרים</div>
-          <!-- שורה 2: אופציות + סיכום -->
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:1;">
-              <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text2);">
-                <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:13px;height:13px;margin:0;">
-                <span data-i18n="btnDifficultFilter">שאלות קשות</span>
-              </label>
-              <span style="color:var(--border);line-height:1;vertical-align:middle;">|</span>
-              <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
-                <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:13px;height:13px;margin:0;">
-                <span class="prio-high" data-i18n="prioHighSimple">חשוב מאוד</span>
-              </label>
-              <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
-                <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)" style="width:13px;height:13px;margin:0;">
-                <span class="prio-medium" data-i18n="prioMediumSimple">חשוב</span>
-              </label>
-              <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
-                <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)" style="width:13px;height:13px;margin:0;">
-                <span class="prio-low" data-i18n="prioLowSimple">ערך מוסף</span>
-              </label>
-            </div>
+          <!-- שורה 2: כל האופציות + סיכום בשורה אחת -->
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text2);">
+              <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:13px;height:13px;margin:0;vertical-align:middle;">
+              <span data-i18n="btnDifficultFilter">שאלות קשות</span>
+            </label>
+            <span style="color:var(--border);">|</span>
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
+              <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:13px;height:13px;margin:0;vertical-align:middle;">
+              <span class="prio-high" data-i18n="prioHighSimple">חשוב מאוד</span>
+            </label>
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
+              <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)" style="width:13px;height:13px;margin:0;vertical-align:middle;">
+              <span class="prio-medium" data-i18n="prioMediumSimple">חשוב</span>
+            </label>
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
+              <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)" style="width:13px;height:13px;margin:0;vertical-align:middle;">
+              <span class="prio-low" data-i18n="prioLowSimple">ערך מוסף</span>
+            </label>
             <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;margin-inline-start:auto;"></div>
           </div>
         </div><!-- end row2 -->
@@ -4183,7 +4181,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.11</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4369,7 +4367,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.10</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.11</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
