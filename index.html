@@ -3856,6 +3856,7 @@ function renderQByTopic(qs) {
 }
 
 window.openAddQuestion = function(type) {
+  try {
   document.getElementById('modal-q-title').textContent = type==='HR' ? t('modalQAddHR') : t('modalQAddTech');
   document.getElementById('q-type').value = type;
   document.getElementById('q-edit-id').value = '';
@@ -3867,6 +3868,7 @@ window.openAddQuestion = function(type) {
   document.getElementById('btn-new-topic').textContent = '+ נושא חדש';
   populateTopicDropdown('');
   openModal('modal-question');
+  } catch(e) { console.error('openAddQuestion error:', e); toast('שגיאה: ' + e.message, true); }
 };
 
 window.openEditQuestion = function(id) {
