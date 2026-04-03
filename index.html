@@ -3856,7 +3856,6 @@ function renderQByTopic(qs) {
 }
 
 window.openAddQuestion = function(type) {
-  try {
   document.getElementById('modal-q-title').textContent = type==='HR' ? t('modalQAddHR') : t('modalQAddTech');
   document.getElementById('q-type').value = type;
   document.getElementById('q-edit-id').value = '';
@@ -3868,7 +3867,6 @@ window.openAddQuestion = function(type) {
   document.getElementById('btn-new-topic').textContent = '+ נושא חדש';
   populateTopicDropdown('');
   openModal('modal-question');
-  } catch(e) { console.error('openAddQuestion error:', e); toast('שגיאה: ' + e.message, true); }
 };
 
 window.openEditQuestion = function(id) {
@@ -4002,8 +4000,7 @@ window.openImprove = async function(id) {
 שאלה נוכחית: "${q.question}"
 תשובה נוכחית: "${q.answer||'(אין תשובה)'}"
 שאלות אחרות באותו נושא:
-${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.answer||'').substring(0,100)}"`).join('
-')}
+${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.answer||'').substring(0,100)}"`).join('\n')}
 
 השב ב-JSON בלבד:
 {
