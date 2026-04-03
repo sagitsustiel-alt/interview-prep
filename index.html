@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.5</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1358,7 +1358,7 @@
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
         <!-- TEMP: Topic merge migration button -->
         <div id="topic-migration-bar" style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <span style="font-size:13px;color:#92400E;font-weight:600;">🔧 מיזוג נושאים — לחצי פעם אחת בלבד</span>
+          <span style="font-size:13px;color:#92400E;font-weight:600;">🔧 מיזוג נושאים — לחץ פעם אחת בלבד</span>
           <button onclick="runTopicMigration()" style="background:#F59E0B;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">הרץ מיזוג</button>
         </div>
 
@@ -1373,29 +1373,36 @@
         </div>
 
         <!-- Row 2: Filters inline + stats -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <div style="margin-bottom:10px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;" data-i18n="btnFilters">פילטרים</span>
+            <!-- Select All -->
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text2);">
+              <input type="checkbox" id="prio-select-all" onchange="toggleAllPriorityFilters(this)" style="width:13px;height:13px;margin:0;">
+              <span data-i18n="btnSelectAll">בחר הכל</span>
+            </label>
             <span style="color:var(--border);">|</span>
-            <label class="filter-row" style="width:auto;padding:0;gap:6px;">
+            <!-- שאלות קשות -->
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--text2);">
               <input type="checkbox" id="difficult-filter-cb" onchange="toggleDifficultFilterCb(this)" style="width:13px;height:13px;margin:0;">
-              <span style="font-size:12px;color:var(--text2);" data-i18n="btnDifficultFilter">שאלות קשות</span>
+              <span data-i18n="btnDifficultFilter">שאלות קשות</span>
             </label>
             <span style="color:var(--border);">|</span>
-            <label class="filter-row" style="width:auto;padding:0;gap:6px;">
+            <!-- Priority chips -->
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
               <input type="checkbox" id="prio-filter-high-cb" onchange="togglePriorityFilterCb('high',this)" style="width:13px;height:13px;margin:0;">
-              <span class="prio-high" style="font-size:12px;" data-i18n="prioHighSimple">חשוב מאוד</span>
+              <span class="prio-high" data-i18n="prioHighSimple">חשוב מאוד</span>
             </label>
-            <label class="filter-row" style="width:auto;padding:0;gap:6px;">
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
               <input type="checkbox" id="prio-filter-medium-cb" onchange="togglePriorityFilterCb('medium',this)" style="width:13px;height:13px;margin:0;">
-              <span class="prio-medium" style="font-size:12px;" data-i18n="prioMediumSimple">חשוב</span>
+              <span class="prio-medium" data-i18n="prioMediumSimple">חשוב</span>
             </label>
-            <label class="filter-row" style="width:auto;padding:0;gap:6px;">
+            <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;">
               <input type="checkbox" id="prio-filter-low-cb" onchange="togglePriorityFilterCb('low',this)" style="width:13px;height:13px;margin:0;">
-              <span class="prio-low" style="font-size:12px;" data-i18n="prioLowSimple">ערך מוסף</span>
+              <span class="prio-low" data-i18n="prioLowSimple">ערך מוסף</span>
             </label>
           </div>
-          <div id="q-summary-text" style="font-size:12px;color:var(--text3);white-space:nowrap;"></div>
+          <div id="q-summary-text" style="font-size:12px;color:var(--text3);margin-top:4px;"></div>
         </div><!-- end row2 -->
         <div id="topic-checkboxes" style="display:none;"></div>
 
@@ -1572,7 +1579,7 @@
     <!-- מעקב משרות -->
     <section id="sec-tracker" class="section">
       <h1 class="section-title" data-i18n="secTracker">המשרות שלי</h1>
-      <p class="section-sub" data-i18n="subTracker">עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה</p>
+      <p class="section-sub" data-i18n="subTracker">עקוב אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה</p>
 
       <!-- Progress Summary -->
       <div id="tracker-progress" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:16px 20px;margin-bottom:18px;display:none;">
@@ -1632,7 +1639,7 @@
       <div id="tracker-empty" style="display:none;text-align:center;padding:48px 20px;">
         <div style="margin-bottom:12px;"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg></div>
         <div style="font-weight:600;font-size:15px;color:var(--text);margin-bottom:6px;" data-i18n="trackerEmptyTitle">כל פנייה היא התקדמות</div>
-        <div style="font-size:13px;color:var(--text2);" data-i18n="trackerEmptyDesc">התחילי עם הפנייה הראשונה שלך</div>
+        <div style="font-size:13px;color:var(--text2);" data-i18n="trackerEmptyDesc">התחל עם הפנייה הראשונה שלך</div>
         <button class="btn btn-primary" onclick="openTrackerModal()" style="margin-top:16px;" data-i18n="btnAddApp">+ הוסף משרה</button>
       </div>
 
@@ -2919,7 +2926,7 @@ window.runTopicMerge = async function() {
       'ניהול פרויקטים / Program Management','ניהול פרויקטים מורכבים בהיקף רחב',
       'ניהול פרויקטים בתעשייה ויצור','ניהול פרויקטים מחקריים',
       'שאלות על ניהול תקציב ופרויקטים','Program Manager לעומת Program Operations Manager',
-      'תהליך עבודה יומי'
+      'תהליך עבודה יומי','ניהול פרויקטים בתעשייה ויצור'
     ]},
     { target: 'מנהיגות וניהול אנשים', sources: [
       'סגנון ניהול ומנהיגות','ניהול קונפליקטים ואתגרים','ניהול לקוחות בהיקף רחב',
@@ -4147,7 +4154,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.5</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4291,7 +4298,7 @@ let LANG = {
     phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות + דרישות המשרה (ישמש לניתוח בחלון "לפני ראיון")', btnCancel: 'ביטול',
     lblCvWord: 'CV — Word', lblCvPdf: 'CV — PDF', phCvLink: 'הדבק לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
-    subTracker: 'עקבי אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
+    subTracker: 'עקוב אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
     progSent: '📨 פניות', progInterview: '💬 ראיונות', progPending: '⏳ ממתינות', progMotivation: 'יש התקדמות!',
     btnAddApp: '+ הוסף משרה', phSearchApp: 'חפשי משרות...',
     lblAppStatus: 'סטטוס', colStatus: 'סטטוס',
@@ -4310,7 +4317,7 @@ let LANG = {
     btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
-    trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחילי עם הפנייה הראשונה שלך',
+    trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחל עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
     toastApiKeySavedMsg: 'מפתח API נשמר! ✅',
@@ -4333,7 +4340,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.5</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5517,13 +5524,21 @@ window.toggleAllPriorityFilters = function(cb) {
   const all = ['high', 'medium', 'low'];
   if (cb.checked) {
     all.forEach(function(p) { selectedPriorities.add(p); });
+    showDifficultOnly = true;
+    const dcb = document.getElementById('difficult-filter-cb');
+    if (dcb) dcb.checked = true;
   } else {
     selectedPriorities.clear();
+    showDifficultOnly = false;
+    const dcb = document.getElementById('difficult-filter-cb');
+    if (dcb) dcb.checked = false;
   }
   all.forEach(function(p) {
-    const btn = document.getElementById('prio-filter-' + p);
-    if (btn) btn.classList.toggle('active', selectedPriorities.has(p));
+    const cb2 = document.getElementById('prio-filter-' + p + '-cb');
+    if (cb2) cb2.checked = selectedPriorities.has(p);
   });
+  syncPrioSelectAll();
+  updateFilterBadge();
   renderQuestions();
 };
 
@@ -5532,8 +5547,9 @@ function syncPrioSelectAll() {
   if (!cb) return;
   const total = 3;
   const selected = selectedPriorities.size;
-  cb.checked = selected === total;
-  cb.indeterminate = selected > 0 && selected < total;
+  const difficultChecked = showDifficultOnly ? 1 : 0;
+  cb.checked = selected === total && difficultChecked;
+  cb.indeterminate = (selected > 0 || difficultChecked) && !(selected === total && difficultChecked);
 }
 
 window.toggleAllTopicsFromCb = function(cb) {
