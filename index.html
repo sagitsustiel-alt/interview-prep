@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.12</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1714,7 +1714,23 @@
     <div class="modal-title" id="modal-q-title" data-i18n="modalQTitle">הוסף שאלה</div>
     <input type="hidden" id="q-type"><input type="hidden" id="q-edit-id">
     <label data-i18n="labelTopic">נושא</label>
-    <input type="text" id="q-topic" placeholder="למשל: Cloud, AI Program Management, HR..." data-i18n-ph="phTopic">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <!-- Dropdown for existing topics -->
+      <select id="q-topic-select" onchange="onTopicSelectChange()" style="margin:0;padding:9px 12px;font-size:14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-family:inherit;color:var(--text);">
+        <option value="">בחר נושא...</option>
+      </select>
+      <!-- New topic input (hidden by default) -->
+      <input type="text" id="q-topic-new" placeholder="שם הנושא החדש..." style="display:none;margin:0;" oninput="syncTopicInput()">
+      <!-- Rename topic input (hidden by default) -->
+      <input type="text" id="q-topic-rename" placeholder="שם חדש לנושא..." style="display:none;margin:0;" oninput="syncTopicInput()">
+      <!-- Hidden actual value -->
+      <input type="hidden" id="q-topic">
+      <!-- Actions -->
+      <div style="display:flex;gap:8px;">
+        <button type="button" id="btn-new-topic" onclick="toggleNewTopic()" class="btn btn-ghost" style="font-size:12px;padding:2px 8px;height:auto;">+ נושא חדש</button>
+        <button type="button" id="btn-rename-topic" onclick="toggleRenameTopic()" class="btn btn-ghost" style="font-size:12px;padding:2px 8px;height:auto;display:none;">✏️ שנה שם נושא</button>
+      </div>
+    </div>
     <label data-i18n="labelQuestion">שאלה</label><textarea dir="auto" id="q-question" rows="3" placeholder="הכנס את שאלת הראיון..." data-i18n-ph="phQuestion"></textarea>
     <label data-i18n="labelYourAnswer">התשובה שלך</label><textarea dir="auto" id="q-answer" rows="5" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer"></textarea>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
@@ -3017,6 +3033,87 @@ window.runTopicMerge = async function() {
   }, 5000);
 };
 
+
+// ==================== TOPIC SELECTOR IN QUESTION MODAL ====================
+function populateTopicDropdown(currentTopic) {
+  const sel = document.getElementById('q-topic-select');
+  if (!sel) return;
+  const topics = [...new Set((localCache.questions||[]).map(q => q.topic).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">בחר נושא...</option>';
+  topics.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    if (t === currentTopic) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  // Set hidden input
+  document.getElementById('q-topic').value = currentTopic || '';
+  // Show/hide rename button
+  const renameBtn = document.getElementById('btn-rename-topic');
+  if (renameBtn) renameBtn.style.display = currentTopic ? 'inline-flex' : 'none';
+}
+
+window.onTopicSelectChange = function() {
+  const sel = document.getElementById('q-topic-select');
+  const val = sel.value;
+  document.getElementById('q-topic').value = val;
+  // Hide new/rename inputs
+  document.getElementById('q-topic-new').style.display = 'none';
+  document.getElementById('q-topic-rename').style.display = 'none';
+  document.getElementById('btn-new-topic').textContent = '+ נושא חדש';
+  // Show rename button only if topic selected
+  const renameBtn = document.getElementById('btn-rename-topic');
+  if (renameBtn) renameBtn.style.display = val ? 'inline-flex' : 'none';
+  // Reset rename input
+  document.getElementById('q-topic-rename').value = '';
+};
+
+window.toggleNewTopic = function() {
+  const input = document.getElementById('q-topic-new');
+  const btn = document.getElementById('btn-new-topic');
+  const isOpen = input.style.display !== 'none';
+  if (isOpen) {
+    input.style.display = 'none';
+    input.value = '';
+    btn.textContent = '+ נושא חדש';
+    // restore select value
+    document.getElementById('q-topic').value = document.getElementById('q-topic-select').value;
+  } else {
+    input.style.display = 'block';
+    input.focus();
+    btn.textContent = '✕ ביטול';
+    document.getElementById('q-topic-select').value = '';
+    document.getElementById('q-topic').value = '';
+  }
+};
+
+window.toggleRenameTopic = function() {
+  const input = document.getElementById('q-topic-rename');
+  const isOpen = input.style.display !== 'none';
+  if (isOpen) {
+    input.style.display = 'none';
+    input.value = '';
+    document.getElementById('q-topic').value = document.getElementById('q-topic-select').value;
+  } else {
+    input.style.display = 'block';
+    input.value = document.getElementById('q-topic-select').value;
+    input.focus();
+  }
+};
+
+window.syncTopicInput = function() {
+  const newInput = document.getElementById('q-topic-new');
+  const renameInput = document.getElementById('q-topic-rename');
+  if (newInput.style.display !== 'none') {
+    document.getElementById('q-topic').value = newInput.value.trim();
+  } else if (renameInput.style.display !== 'none') {
+    document.getElementById('q-topic').value = renameInput.value.trim();
+    // store rename intent
+    document.getElementById('q-topic').dataset.rename = document.getElementById('q-topic-select').value;
+  }
+};
+
 // ==================== NAVIGATION ====================
 window.showSection = function(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -3733,6 +3830,10 @@ window.openAddQuestion = function(type) {
   document.getElementById('q-question').value = '';
   document.getElementById('q-answer').value = '';
   document.getElementById('q-topic').value = '';
+  document.getElementById('q-topic-new').style.display = 'none';
+  document.getElementById('q-topic-rename').style.display = 'none';
+  document.getElementById('btn-new-topic').textContent = '+ נושא חדש';
+  populateTopicDropdown('');
   openModal('modal-question');
 };
 
@@ -3744,7 +3845,10 @@ window.openEditQuestion = function(id) {
   document.getElementById('q-edit-id').value = id;
   document.getElementById('q-question').value = q.question;
   document.getElementById('q-answer').value = q.answer;
-  document.getElementById('q-topic').value = q.topic || '';
+  document.getElementById('q-topic-new').style.display = 'none';
+  document.getElementById('q-topic-rename').style.display = 'none';
+  document.getElementById('btn-new-topic').textContent = '+ נושא חדש';
+  populateTopicDropdown(q.topic || '');
   openModal('modal-question');
 };
 
@@ -3752,7 +3856,18 @@ window.saveQuestion = async function() {
   const question = document.getElementById('q-question').value.trim();
   const answer = document.getElementById('q-answer').value.trim();
   const type = document.getElementById('q-type').value;
-  const rawTopic = document.getElementById('q-topic').value.trim();
+  const topicInput = document.getElementById('q-topic');
+  const rawTopic = topicInput.value.trim();
+  const renameFrom = topicInput.dataset.rename || '';
+  // If renaming a topic, update all questions with old topic name
+  if (renameFrom && rawTopic && renameFrom !== rawTopic) {
+    const toRename = (localCache.questions||[]).filter(q => q.topic === renameFrom && q.id !== (document.getElementById('q-edit-id').value));
+    for (const q of toRename) {
+      q.topic = rawTopic;
+      saveQuestionToCloud(q);
+    }
+  }
+  topicInput.dataset.rename = '';
   const editId = document.getElementById('q-edit-id').value;
   if (!question) { toast('יש להזין שאלה.', true); return; }
   if (!localCache.questions) localCache.questions = [];
@@ -4177,7 +4292,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.12</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4363,7 +4478,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.12</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
