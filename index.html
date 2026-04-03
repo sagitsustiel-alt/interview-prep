@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.3</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1356,6 +1356,12 @@
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
+        <!-- TEMP: Topic merge migration button -->
+        <div id="topic-migration-bar" style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span style="font-size:13px;color:#92400E;font-weight:600;">🔧 מיזוג נושאים — לחצי פעם אחת בלבד</span>
+          <button onclick="runTopicMigration()" style="background:#F59E0B;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">הרץ מיזוג</button>
+        </div>
+
 
         <!-- Row 1: Toggle (flex-start) + Search (flex:1) — direction-aware -->
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
@@ -1400,6 +1406,11 @@
 
         <!-- 5. Questions list (only topic rows rendered here) -->
         <div id="q-filtered-list" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;"></div>
+
+        <!-- כפתור מיזוג נושאים זמני -->
+        <button id="merge-topics-btn" onclick="runTopicMerge()" style="margin-top:10px;background:#7C6CF2;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;width:100%;">
+          🔀 מזג נושאים (פעולה חד-פעמית)
+        </button>
         <button id="add-q-btn" class="btn btn-secondary btn-block" onclick="openAddQuestion(currentQType||'HR')" style="margin-top:14px;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
           <span id="add-q-label" data-i18n="btnAddHR">הוסף שאלה</span>
@@ -2797,6 +2808,185 @@ window.autoSaveCV = function() {
   cvTimer = setTimeout(() => saveProfile(), 1500);
 };
 
+
+window.runTopicMigration = async function() {
+  if (!currentUser) { toast('לא מחובר', true); return; }
+  const btn = document.querySelector('#topic-migration-bar button');
+  btn.textContent = 'מריץ...';
+  btn.disabled = true;
+
+  const mergeMap = [
+    {
+      target: 'ניהול פרויקטים ותהליכים',
+      sources: [
+        'Governance-1 Delivery Lifecycle',
+        'מתודולוגיית ניהול פרויקטים',
+        'ניהול פרויקטים / Program Management',
+        'ניהול פרויקטים מורכבים בהיקף רחב',
+        'ניהול פרויקטים בתעשייה ויצור',
+        'ניהול פרויקטים מחקריים',
+        'שאלות על ניהול תקציב ופרויקטים',
+        'Program Manager לעומת Program Operations Manager',
+        'תהליך עבודה יומי'
+      ]
+    },
+    {
+      target: 'מנהיגות וניהול אנשים',
+      sources: [
+        'סגנון ניהול ומנהיגות',
+        'ניהול קונפליקטים ואתגרים',
+        'ניהול לקוחות בהיקף רחב',
+        'עבודה עם ממשקים ולחץ',
+        'עבודה בסביבה גלובלית ורב-תרבותית',
+        'הובלת שינוי ושיפור ביצועים'
+      ]
+    },
+    {
+      target: 'חוזקות, חולשות ודוגמאות אישיות',
+      sources: [
+        'חוזקות אישיות ומקצועיות',
+        'חוזקות וחולשות',
+        'חוזקות וחולשות — גרסה מועמד',
+        'חוזקות — דרך דוגמאות',
+        'חולשות — גרסה כנה ומבוגרת',
+        'פתרון בעיות וחשיבה מערכתית',
+        'מצבים מאתגרים'
+      ]
+    },
+    {
+      target: 'קריירה, מוטיבציה והתאמה לתפקיד',
+      sources: [
+        'Elevator Pitch / ספרי על עצמך',
+        'מסלול קריירה',
+        'מסלול קריירה — פירוט תפקידים',
+        'מוטיבציה ועתיד',
+        'התאמה לתפקיד',
+        'תרומה בכל תפקיד',
+        'ציפיות ושכר'
+      ]
+    },
+    {
+      target: 'למידה, חדשנות והסתגלות',
+      sources: [
+        'למידה עצמית ויכולת הסתגלות',
+        'R&D וחדשנות',
+        'נחישות וסגנון ניהול',
+        'שאלות קשות — תשובות מוכנות'
+      ]
+    },
+    {
+      target: 'ניהול ראיון וציפיות',
+      sources: [
+        'שאלות לשאול את המראיין',
+        'שאלות לממליץ — מה לצפות שיאמרו עליך',
+        'אמינות ודיוק בדיווח',
+        'soft skills — שאלות כלליות'
+      ]
+    }
+  ];
+
+  let updated = 0;
+  try {
+    for (const group of mergeMap) {
+      const sourceSet = new Set(group.sources);
+      const toUpdate = localCache.questions.filter(q => sourceSet.has(q.topic));
+      for (const q of toUpdate) {
+        q.topic = group.target;
+        await setDoc(doc(db, 'users', currentUser.uid, 'questions', q.id), q);
+        updated++;
+      }
+    }
+    toast('✅ מיזוג הושלם — ' + updated + ' שאלות עודכנו');
+    document.getElementById('topic-migration-bar').style.display = 'none';
+    renderQuestions();
+  } catch(e) {
+    toast('שגיאה במיזוג: ' + e.message, true);
+    btn.textContent = 'הרץ מיזוג';
+    btn.disabled = false;
+  }
+};
+
+
+// ==================== TOPIC MERGE (ONE-TIME) ====================
+window.runTopicMerge = async function() {
+  const btn = document.getElementById('merge-topics-btn');
+  btn.textContent = 'מריץ מיזוג...';
+  btn.disabled = true;
+
+  const HR_MERGES = [
+    { target: 'ניהול פרויקטים ותהליכים', sources: [
+      'Governance-1 Delivery Lifecycle','מתודולוגיית ניהול פרויקטים',
+      'ניהול פרויקטים / Program Management','ניהול פרויקטים מורכבים בהיקף רחב',
+      'ניהול פרויקטים בתעשייה ויצור','ניהול פרויקטים מחקריים',
+      'שאלות על ניהול תקציב ופרויקטים','Program Manager לעומת Program Operations Manager',
+      'תהליך עבודה יומי'
+    ]},
+    { target: 'מנהיגות וניהול אנשים', sources: [
+      'סגנון ניהול ומנהיגות','ניהול קונפליקטים ואתגרים','ניהול לקוחות בהיקף רחב',
+      'עבודה עם ממשקים ולחץ','עבודה בסביבה גלובלית ורב-תרבותית','הובלת שינוי ושיפור ביצועים'
+    ]},
+    { target: 'חוזקות, חולשות ודוגמאות אישיות', sources: [
+      'חוזקות אישיות ומקצועיות','חוזקות וחולשות','חוזקות וחולשות — גרסה מועמד',
+      'חוזקות — דרך דוגמאות','חולשות — גרסה כנה ומבוגרת','פתרון בעיות וחשיבה מערכתית','מצבים מאתגרים'
+    ]},
+    { target: 'קריירה, מוטיבציה והתאמה לתפקיד', sources: [
+      'Elevator Pitch / ספרי על עצמך','מסלול קריירה','מסלול קריירה — פירוט תפקידים',
+      'מוטיבציה ועתיד','התאמה לתפקיד','תרומה בכל תפקיד','ציפיות ושכר'
+    ]},
+    { target: 'למידה, חדשנות והסתגלות', sources: [
+      'למידה עצמית ויכולת הסתגלות','R&D וחדשנות','נחישות וסגנון ניהול','שאלות קשות — תשובות מוכנות'
+    ]},
+    { target: 'ניהול ראיון וציפיות', sources: [
+      'שאלות לשאול את המראיין','שאלות לממליץ — מה לצפות שיאמרו עליך',
+      'אמינות ודיוק בדיווח','soft skills — שאלות כלליות'
+    ]}
+  ];
+
+  const TECH_MERGES = [
+    { target: 'AI וטכנולוגיה', sources: [
+      'AI SDLC — מחזור חיים של פרויקט AI','ניהול אי-ודאות בפרויקטי AI',
+      'התמודדות עם אי-ודאות בפרויקטי AI','ניסיון בפרויקטי AI ו-LLM',
+      'AI לעומת Agile','MLOps-1 Monitoring'
+    ]},
+    { target: 'מוצר וביצוע', sources: [
+      'SmartDelta — המוצר','SmartDelta — הצגה באנגלית',
+      'Release Management / ניהול גרסאות','הגדרת מטרות ו-KPIs'
+    ]},
+    { target: 'רקע טכני וכלים', sources: [
+      'רקע טכני / כלים','רקע טכני — SQM ואיכות','פער טכני'
+    ]},
+    { target: 'מנהיגות ופיתוח מקצועי', sources: [
+      'הנעה ללא סמכות','ניהול פרויקטים בתעשייה וייצור','למידה עצמית ופיתוח מקצועי'
+    ]}
+  ];
+
+  const ALL_MERGES = [...HR_MERGES, ...TECH_MERGES];
+  let updated = 0;
+  let errors = 0;
+
+  for (const merge of ALL_MERGES) {
+    const sourceSet = new Set(merge.sources);
+    const toUpdate = (localCache.questions || []).filter(q => sourceSet.has(q.topic));
+    for (const q of toUpdate) {
+      try {
+        const newQ = { ...q, topic: merge.target };
+        await setDoc(doc(db, 'users', currentUser.uid, 'questions', q.id), newQ);
+        q.topic = merge.target;
+        updated++;
+      } catch(e) {
+        errors++;
+      }
+    }
+  }
+
+  renderQuestions();
+  btn.textContent = `✅ הושלם — ${updated} שאלות עודכנו${errors ? ', ' + errors + ' שגיאות' : ''}`;
+  btn.style.background = '#16a34a';
+  setTimeout(() => {
+    btn.style.display = 'none';
+  }, 5000);
+};
+
 // ==================== NAVIGATION ====================
 window.showSection = function(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -3957,7 +4147,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.3</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4143,7 +4333,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.3</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.4</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
