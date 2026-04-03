@@ -1082,7 +1082,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.21</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -4021,7 +4021,7 @@ ${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.a
 }`;
 
   try {
-    const resp = await callClaude(prompt, true, 'improve_answer');
+    const resp = await callClaude(prompt, false, 'improve_answer');
     const match = resp.match(/\{[\s\S]*\}/);
     if (!match) throw new Error('no json');
     const data = JSON.parse(match[0]);
@@ -4040,8 +4040,9 @@ ${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.a
       document.getElementById('improve-content').textContent = data.improved_current || resp;
       document.getElementById('improve-result-simple').style.display = 'block';
     }
-  } catch {
-    document.getElementById('improve-loading').innerHTML = '<p style="color:var(--danger)">שגיאה. נסה שוב.</p>';
+  } catch(e) {
+    console.error('improve error:', e);
+    document.getElementById('improve-loading').innerHTML = '<p style="color:var(--danger)">שגיאה: ' + (e.message||'נסה שוב') + '</p>';
   }
 };
 
@@ -4386,7 +4387,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.21</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4545,7 +4546,7 @@ let LANG = {
     piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה', piBannerJobs: 'המשרות שלי',
-    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
+    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
     btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
@@ -4572,7 +4573,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.21</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.22</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4732,7 +4733,7 @@ let LANG = {
     piNoCvLinks: 'No CV links added yet', piNoTips: 'No tips yet. Add them in Profile.', piNoQFilters: 'No questions match the selected filters.',
     piBannerText: 'For full preparation — first complete:',
     piBannerText: 'For a complete prep — first fill in:', piBannerProfile: 'Profile Setup', piBannerPrep: 'Prep & Practice', piBannerJobs: 'My Jobs',
-    btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
+    btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve with AI', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
     btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnFiltersClose: 'Close filters', btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as hard question', noAnswer: 'No answer yet',
     lblPriority: 'Importance', prioNone: 'No priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
     cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
