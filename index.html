@@ -1072,7 +1072,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.14</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1743,18 +1743,50 @@
 <div class="modal-overlay" id="modal-improve">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title"><svg width="24" height="12" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="var(--accent)" font-family="sans-serif" text-anchor="middle">AI</text></svg> תשובה משופרת</div>
+    <div class="modal-title"><svg width="24" height="12" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="var(--accent)" font-family="sans-serif" text-anchor="middle">AI</text></svg> שיפור וזיהוי כפילויות</div>
     <div style="color:var(--text2);font-size:13px;margin-bottom:14px;" id="improve-q-text"></div>
     <div id="improve-loading" style="text-align:center;padding:30px;">
       <div class="loading-dots"><span></span><span></span><span></span></div>
-      <p style="color:var(--text3);font-size:13px;margin-top:12px;">משפר/ת את תשובתך...</p>
+      <p style="color:var(--text3);font-size:13px;margin-top:12px;">בודק כפילויות ומשפר...</p>
     </div>
-    <div id="improve-result" style="display:none;">
+
+    <!-- תוצאה: אין כפילות — תשובה משופרת בלבד -->
+    <div id="improve-result-simple" style="display:none;">
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;margin-bottom:6px;">תשובה משופרת</div>
       <div class="gen-content" id="improve-content"></div>
       <div style="display:flex;gap:8px;margin-top:14px;flex-direction:row-reverse;">
-        <button class="btn btn-accent2" style="flex:1;" onclick="applyImprovedAnswer()">השתמש בתשובה זו</button>
+        <button class="btn btn-accent2" style="flex:1;" onclick="applyImprovedAnswer('simple')">השתמש בתשובה זו</button>
         <button class="btn btn-secondary" onclick="closeModal('modal-improve')">שמור המקורית</button>
       </div>
+    </div>
+
+    <!-- תוצאה: נמצאה כפילות — 3 אפשרויות -->
+    <div id="improve-result-merge" style="display:none;">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:3px;">⚠️ נמצאה שאלה דומה:</div>
+        <div id="improve-dup-q" style="font-size:13px;font-weight:600;"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <!-- Option A -->
+        <div style="border:1px solid var(--border);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px;">תשובה A — הנוכחית</div>
+          <div id="improve-opt-a" style="font-size:13px;color:var(--text);"></div>
+          <button class="btn btn-ghost" style="font-size:12px;margin-top:6px;padding:3px 8px;" onclick="applyImprovedAnswer('a')">בחר תשובה A</button>
+        </div>
+        <!-- Option B -->
+        <div style="border:1px solid var(--border);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px;">תשובה B — מהשאלה הדומה</div>
+          <div id="improve-opt-b" style="font-size:13px;color:var(--text);"></div>
+          <button class="btn btn-ghost" style="font-size:12px;margin-top:6px;padding:3px 8px;" onclick="applyImprovedAnswer('b')">בחר תשובה B</button>
+        </div>
+        <!-- Option C — merged -->
+        <div style="border:2px solid var(--accent);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;">✨ תשובה משולבת — מומלצת</div>
+          <div id="improve-opt-c" style="font-size:13px;color:var(--text);"></div>
+          <button class="btn btn-primary" style="font-size:12px;margin-top:6px;padding:3px 8px;" onclick="applyImprovedAnswer('c')">בחר תשובה משולבת</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary" style="width:100%;margin-top:10px;" onclick="closeModal('modal-improve')">ביטול</button>
     </div>
   </div>
 </div>
@@ -3946,36 +3978,88 @@ window.deleteQuestion = async function(id) {
 
 // ==================== IMPROVE ====================
 let currentImproveId = null;
+let currentImproveDupId = null;
+
 window.openImprove = async function(id) {
   const q = (localCache.questions||[]).find(x => x.id===id);
   if (!q) return;
   currentImproveId = id;
+  currentImproveDupId = null;
   document.getElementById('improve-q-text').textContent = q.question;
   document.getElementById('improve-loading').style.display = 'block';
-  document.getElementById('improve-result').style.display = 'none';
+  document.getElementById('improve-result-simple').style.display = 'none';
+  document.getElementById('improve-result-merge').style.display = 'none';
   openModal('modal-improve');
-  const prompt = `אתה מאמן ראיונות מומחה. בהינתן שאלת ראיון ותשובת המועמד, ספק גרסה משופרת, מקצועית ומשכנעת יותר.
-שאלה: ${q.question}
-תשובת המועמד: ${q.answer||'(לא סופקה תשובה)'}
-${localCache.pitch?`\nהצגה עצמית: ${localCache.pitch}`:''}
-ספק את התשובה המשופרת בלבד. תמציתית, מובנית (STAR אם רלוונטי), מקצועית. בעברית. ללא הקדמה.`;
+
+  // Find similar questions in same topic + type
+  const sameTopic = (localCache.questions||[]).filter(x =>
+    x.id !== id && x.topic === q.topic && x.type === q.type && x.question
+  );
+
+  const prompt = `אתה מאמן ראיונות. קבל שאלת ראיון ותשובה, ורשימת שאלות דומות באותו נושא.
+שאלה נוכחית: "${q.question}"
+תשובה נוכחית: "${q.answer||'(אין תשובה)'}"
+שאלות אחרות באותו נושא:
+${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.answer||'').substring(0,100)}"`).join('
+')}
+
+השב ב-JSON בלבד:
+{
+  "duplicate_index": null או מספר (index מהרשימה שהכי דומה, null אם אין כפילות),
+  "improved_current": "תשובה משופרת לשאלה הנוכחית בלבד",
+  "merged": "תשובה משולבת מהשתיים (אם יש כפילות, אחרת null)"
+}`;
+
   try {
-    const resp = await callClaude(prompt, false, 'improve_answer');
-    document.getElementById('improve-content').textContent = resp;
+    const resp = await callClaude(prompt, true, 'improve_answer');
+    const match = resp.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('no json');
+    const data = JSON.parse(match[0]);
+
     document.getElementById('improve-loading').style.display = 'none';
-    document.getElementById('improve-result').style.display = 'block';
+
+    if (data.duplicate_index !== null && data.duplicate_index !== undefined && sameTopic[data.duplicate_index]) {
+      const dup = sameTopic[data.duplicate_index];
+      currentImproveDupId = dup.id;
+      document.getElementById('improve-dup-q').textContent = dup.question;
+      document.getElementById('improve-opt-a').textContent = q.answer || '(אין תשובה)';
+      document.getElementById('improve-opt-b').textContent = dup.answer || '(אין תשובה)';
+      document.getElementById('improve-opt-c').textContent = data.merged || data.improved_current;
+      document.getElementById('improve-result-merge').style.display = 'block';
+    } else {
+      document.getElementById('improve-content').textContent = data.improved_current || resp;
+      document.getElementById('improve-result-simple').style.display = 'block';
+    }
   } catch {
     document.getElementById('improve-loading').innerHTML = '<p style="color:var(--danger)">שגיאה. נסה שוב.</p>';
   }
 };
 
-window.applyImprovedAnswer = async function() {
-  const improved = document.getElementById('improve-content').textContent;
-  const idx = (localCache.questions||[]).findIndex(x => x.id===currentImproveId);
-  if (idx>-1) {
-    localCache.questions[idx].answer = improved;
-    await saveQuestionToCloud(localCache.questions[idx]);
+window.applyImprovedAnswer = async function(option) {
+  const q = (localCache.questions||[]).find(x => x.id===currentImproveId);
+  if (!q) return;
+
+  let chosenAnswer;
+  if (option === 'simple') {
+    chosenAnswer = document.getElementById('improve-content').textContent;
+  } else if (option === 'a') {
+    chosenAnswer = document.getElementById('improve-opt-a').textContent;
+  } else if (option === 'b') {
+    chosenAnswer = document.getElementById('improve-opt-b').textContent;
+  } else if (option === 'c') {
+    chosenAnswer = document.getElementById('improve-opt-c').textContent;
   }
+
+  // Save to current question
+  q.answer = chosenAnswer;
+  await saveQuestionToCloud(q);
+
+  // If duplicate found and user chose B or C — delete the duplicate
+  if ((option === 'b' || option === 'c') && currentImproveDupId) {
+    await deleteQuestionFromCloud(currentImproveDupId);
+    localCache.questions = localCache.questions.filter(x => x.id !== currentImproveDupId);
+  }
+
   closeModal('modal-improve');
   renderQuestions();
   toast(t('toastAnswerUpdated'));
@@ -4292,7 +4376,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.14</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4478,7 +4562,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.13</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.14</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
