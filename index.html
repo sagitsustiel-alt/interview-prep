@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.32</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -4166,7 +4166,7 @@ window.generateJobPrep = async function() {
 };
 
 function renderSavedJobs() {
-  const jobs = localCache.savedJobs || [];
+  const jobs = trackerApps || [];
   const card = document.getElementById('saved-jobs-card');
   const el = document.getElementById('saved-jobs-list');
   if (!el) return;
@@ -4177,13 +4177,10 @@ function renderSavedJobs() {
   }
   el.innerHTML = jobs.map(j => `
     <div class="saved-job-item">
-      <div>
-        <button class="btn btn-ghost" onclick="deleteSavedJob('${j.id}')" style="color:var(--danger);padding:4px 8px;">✕</button>
-      </div>
       <div class="saved-job-info">
-        <div class="saved-job-company">${escHtml(j.company)}</div>
-        <div class="saved-job-role">${escHtml(j.role)}</div>
-        <div class="saved-job-date">${j.date || ''}</div>
+        <div class="saved-job-company">${escHtml(j.company||'')}</div>
+        <div class="saved-job-role">${escHtml(j.role||'')}</div>
+        <div class="saved-job-date">${j.date || j.interviewDate || ''}</div>
       </div>
     </div>`).join('');
 }
@@ -4239,10 +4236,10 @@ window.updateMockJobSelect = function() {
   if (hrSel) hrSel.style.display = hrJob ? 'block' : 'none';
   if (techSel) techSel.style.display = techJob ? 'block' : 'none';
 
-  // Populate job dropdowns
-  const jobs = localCache.savedJobs || [];
+  // Populate job dropdowns from trackerApps (same source as המשרות שלי)
+  const jobs = trackerApps || [];
   const jobOptions = jobs.length
-    ? jobs.map(j => `<option value="${j.id}">${escHtml(j.company)} — ${escHtml(j.role)}</option>`).join('')
+    ? jobs.map(j => `<option value="${j._id}">${escHtml(j.company||'')} — ${escHtml(j.role||'')}</option>`).join('')
     : '<option value="">אין משרות שמורות</option>';
   const hrJobSel = document.getElementById('mock-hr-job-name');
   const techJobSel = document.getElementById('mock-tech-job-name');
@@ -4422,7 +4419,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.32</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4505,7 +4502,18 @@ let LANG = {
 4. מומלץ — הכן שאלות בכלי AI תחילה ← עצב בפורמט הנ"ל ← ייבא<br>
 5. לאחר ייבוא גדול — לחץ 🧹 נקה וסדר<br>
 6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
-7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI`,
+7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI<br><br>
+<b style="color:var(--accent);">⚡ פעולות AI באפליקציה</b><br><br>
+<b>📚 בנק שאלות:</b><br>
+&nbsp;&nbsp;• <b>חלץ שאלות ממסמך</b> — AI קורא מסמך ומחלץ שאלות ותשובות (~5,000-15,000 טוקנים)<br>
+&nbsp;&nbsp;• <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)<br><br>
+<b>💼 הכנה למשרה:</b><br>
+&nbsp;&nbsp;• <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה ספציפית (~1,000-2,000 טוקנים)<br><br>
+<b>🎤 ראיון מדומה:</b><br>
+&nbsp;&nbsp;• <b>משוב על תשובה</b> — AI מעניק פידבק + תשובה משופרת (~500-1,000 טוקנים)<br><br>
+<b>⭐ לפני ראיון:</b><br>
+&nbsp;&nbsp;• <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי לפי CV + פרופיל + משרה (~500-1,000 טוקנים)<br><br>
+<b>💡 טיפ לחיסכון בטוקנים:</b> כל פעולת AI תבקש אישורך לפני הפעלה.`,
     bannerNoApiKey: '⚠️ טרם הוגדר Anthropic API Key — פיצ\'רי AI לא יפעלו',
     bannerSetNow: 'הגדר עכשיו →',
     toastSyncing: '💾 שומר...',
@@ -4608,7 +4616,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.32</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4691,7 +4699,18 @@ let LANG = {
 4. Recommended — prepare questions with AI first ← format ← import<br>
 5. After large import — click 🧹 Clean & Organize<br>
 6. Job Prep — enter job description ← AI generates Pitch + tailored questions<br>
-7. Practice — choose question type ← start mock interview with AI feedback`,
+7. Practice — choose question type ← start mock interview with AI feedback<br><br>
+<b style="color:var(--accent);">⚡ AI Actions in This App</b><br><br>
+<b>📚 Question Bank:</b><br>
+&nbsp;&nbsp;• <b>Extract from document</b> — AI reads a doc and extracts Q&A (~5,000-15,000 tokens)<br>
+&nbsp;&nbsp;• <b>Improve with AI</b> — checks for duplicates and improves answer (~200-500 tokens)<br><br>
+<b>💼 Job Prep:</b><br>
+&nbsp;&nbsp;• <b>Generate Prep</b> — AI creates tailored questions for a specific job (~1,000-2,000 tokens)<br><br>
+<b>🎤 Mock Interview:</b><br>
+&nbsp;&nbsp;• <b>Answer feedback</b> — AI gives feedback + improved answer (~500-1,000 tokens)<br><br>
+<b>⭐ Pre-Interview:</b><br>
+&nbsp;&nbsp;• <b>Tell me about yourself</b> — AI creates a personal summary based on CV + profile + job (~500-1,000 tokens)<br><br>
+<b>💡 Token saving tip:</b> Every AI action will ask for your confirmation before running.`,
     bannerNoApiKey: '⚠️ Anthropic API Key not set — AI features will not work',
     bannerSetNow: 'Set up now →',
     toastSyncing: '💾 Saving...',
