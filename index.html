@@ -1086,7 +1086,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1210,7 +1210,6 @@
           <div class="collapsible-header" onclick="toggleCollapsible('pi-q-body',this)" style="padding:10px 0;margin-bottom:0;">
             <div style="display:flex;align-items:center;gap:6px;">
                   <div style="display:flex;align-items:center;gap:6px;"><div class="pi-title" style="margin:0;" data-i18n="piQuestions">שאלות להכנה</div><button onclick="showSection('questions', document.querySelector('[onclick*=\"questions\"]'));event.stopPropagation();" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0;line-height:1;">↗</button></div>
-                  <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" title="Go to Prep & Practice" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
                 </div>
             <span class="collapsible-arrow"> ▾</span>
           </div>
@@ -4427,7 +4426,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4630,7 +4629,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6061,19 +6060,20 @@ window.renderPiQuestions = function() {
   const el = document.getElementById('pi-questions-list');
   if (!el) return;
   updatePiSelectAllLink();
-  const showHigh    = document.getElementById('pi-prio-high')?.checked;
-  const showMedium  = document.getElementById('pi-prio-medium')?.checked;
-  const showLow     = document.getElementById('pi-prio-low')?.checked;
-  const difficultOnly = document.getElementById('pi-difficult-only')?.checked;
+
+  const showHigh      = !!document.getElementById('pi-prio-high')?.checked;
+  const showMedium    = !!document.getElementById('pi-prio-medium')?.checked;
+  const showLow       = !!document.getElementById('pi-prio-low')?.checked;
+  const difficultOnly = !!document.getElementById('pi-difficult-only')?.checked;
+  const noneChecked   = !showHigh && !showMedium && !showLow && !difficultOnly;
 
   let qs = (localCache.questions || []).filter(q => {
-    const noneChecked = !showHigh && !showMedium && !showLow && !difficultOnly;
-    if (noneChecked) return !!q.priority; // הצג הכל (עם עדיפות) כשאין בחירה
+    if (!q.priority) return false; // שאלות ללא עדיפות לא מוצגות
+    if (noneChecked) return true;  // אין פילטר = הצג הכל
     if (difficultOnly && !q.difficult) return false;
-    if (q.priority === 'high'   && !showHigh)   return !difficultOnly ? false : q.difficult;
-    if (q.priority === 'medium' && !showMedium) return !difficultOnly ? false : q.difficult;
-    if (q.priority === 'low'    && !showLow)    return !difficultOnly ? false : q.difficult;
-    if (!q.priority) return false;
+    if (q.priority === 'high'   && !showHigh)   return false;
+    if (q.priority === 'medium' && !showMedium) return false;
+    if (q.priority === 'low'    && !showLow)    return false;
     return true;
   });
 
