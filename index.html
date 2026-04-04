@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.38</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.39</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -4424,7 +4424,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.38</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.39</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4626,7 +4626,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.38</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.39</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4881,9 +4881,11 @@ function applyLanguage() {
   // Update select placeholders
   const qTopicPh = document.getElementById('q-topic-select-ph');
   if (qTopicPh) qTopicPh.textContent = isHe ? 'בחר נושא...' : 'Select topic...';
-  try { if (typeof renderTracker === 'function' && typeof trackerApps !== 'undefined' && trackerApps.length) renderTracker(); } catch(e) {}
   const piJobPh = document.getElementById('pi-job-ph');
   if (piJobPh) piJobPh.textContent = L.piSelectJobPh || (isHe ? 'בחר משרה...' : 'Select a job...');
+  try { if (typeof renderTracker === 'function' && typeof trackerApps !== 'undefined' && trackerApps.length) renderTracker(); } catch(e) {}
+  // Reload pre-interview section to update job select language
+  if (typeof loadPreInterviewSection === 'function') { try { loadPreInterviewSection(); } catch(e) {} }
   // Update AI info boxes
   ['aiInfoPreinterview','aiInfoQuestions','aiInfoJobprep','aiInfoMock'].forEach(key => {
     const ids = {'aiInfoPreinterview':'ai-info-preinterview','aiInfoQuestions':'ai-info-questions','aiInfoJobprep':'ai-info-jobprep','aiInfoMock':'ai-info-mock'};
