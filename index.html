@@ -1086,7 +1086,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.42</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -4427,7 +4427,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.42</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4606,7 +4606,7 @@ let LANG = {
     btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר באמצעות AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
     btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
-    cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק',
+    cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק', toastTipSaved: 'טיפ עודכן ✅',
     trackerEmptyTitle: 'כל פנייה היא התקדמות', trackerEmptyDesc: 'התחל עם הפנייה הראשונה שלך',
     toastApiKeyInvalid: '❌ מפתח לא תקין',
     toastApiKeySaved: '✅ מפתח נשמר!',
@@ -4630,7 +4630,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.42</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.45</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4811,7 +4811,7 @@ let LANG = {
     btnVideo: 'Video', btnVideoTopicTip: 'Topic explanation video', btnVideoQTip: 'Question explanation video', btnEdit: 'Edit', btnImprove: 'Improve with AI', btnDelete: 'Delete', errGenerateSummary: 'Error generating summary. Please try again.',
     btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnFiltersClose: 'Close filters', btnFilters: 'Filters', filterGroupType: 'Question type', filterGroupPriority: 'Importance level', filterGroupTopics: 'Topics', btnDifficultFilter: 'Hard questions', btnMarkDifficult: 'Mark as hard question', noAnswer: 'No answer yet',
     lblPriority: 'Importance', prioNone: 'No priority', lblPriorityTip: 'Important questions will appear in the \'Before Interview\' screen', prioHigh: '🔴 Must Know', prioMedium: '🟠 Important', prioLow: '⚪ Nice to Know', btnOpenAll: 'Open all ▼', btnCloseAll: 'Close all ^', colQuestionsList: 'Questions',
-    cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed',
+    cardTips: 'Interview Tips', phTip: 'Write a tip...', btnAddTip: '+ Add', toastTipAdded: 'Tip added ✅', toastTipDeleted: 'Tip removed', toastTipSaved: 'Tip updated ✅',
     trackerEmptyTitle: 'Every application is progress', trackerEmptyDesc: 'Start with your first one',
     toastApiKeyInvalid: '❌ Invalid key',
     toastApiKeySaved: '✅ Key saved!',
@@ -5768,11 +5768,35 @@ function renderTips() {
     return;
   }
   el.innerHTML = interviewTips.map((tip, i) => `
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:6px;">
+    <div id="tip-row-${i}" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:6px;">
       <span style="flex:1;font-size:13px;line-height:1.5;">• ${escHtml(tip)}</span>
+      <button class="btn btn-ghost" style="padding:2px 6px;font-size:13px;color:var(--text2);flex-shrink:0;" onclick="startEditTip(${i})" title="${t('btnEdit')||'ערוך'}">✎</button>
       <button class="btn btn-ghost" style="padding:2px 6px;font-size:14px;color:var(--danger);flex-shrink:0;" onclick="deleteTip(${i})">✕</button>
     </div>`).join('');
 }
+
+window.startEditTip = function(i) {
+  const row = document.getElementById(`tip-row-${i}`);
+  if (!row) return;
+  row.innerHTML = `
+    <input type="text" value="${escHtml(interviewTips[i])}" id="tip-edit-input-${i}"
+      style="flex:1;font-size:13px;padding:4px 8px;border:1px solid var(--accent);border-radius:6px;background:var(--surface);color:var(--text);"
+      onkeydown="if(event.key==='Enter')saveEditTip(${i});if(event.key==='Escape')renderTips();">
+    <button class="btn btn-primary btn-sm" onclick="saveEditTip(${i})" data-i18n="btnSave" style="flex-shrink:0;">שמור</button>
+    <button class="btn btn-ghost btn-sm" onclick="renderTips()" style="flex-shrink:0;color:var(--text2);">ביטול</button>`;
+  row.querySelector('input').focus();
+};
+
+window.saveEditTip = async function(i) {
+  const input = document.getElementById(`tip-edit-input-${i}`);
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  interviewTips[i] = val;
+  renderTips();
+  await saveTips();
+  toast(t('toastTipSaved') || '✅');
+};
 
 window.addTip = async function() {
   const input = document.getElementById('tip-input');
@@ -6018,18 +6042,19 @@ window.loadPreInterview = function() {
 };
 
 window.piToggleSelectAll = function() {
-  const ids = ['pi-prio-high','pi-prio-medium','pi-prio-low','pi-difficult-only'];
-  const allChecked = ids.every(id => document.getElementById(id)?.checked);
-  ids.forEach(id => { const el = document.getElementById(id); if(el) el.checked = !allChecked; });
+  const boxes = document.querySelectorAll('#pi-questions-list .pi-q-checkbox');
+  const allChecked = [...boxes].every(cb => cb.checked);
+  boxes.forEach(cb => cb.checked = !allChecked);
   updatePiSelectAllLink();
-  renderPiQuestions();
 };
 
 window.updatePiSelectAllLink = function() {
-  const ids = ['pi-prio-high','pi-prio-medium','pi-prio-low','pi-difficult-only'];
-  const allChecked = ids.every(id => document.getElementById(id)?.checked);
+  const boxes = document.querySelectorAll('#pi-questions-list .pi-q-checkbox');
   const link = document.getElementById('pi-select-all-link');
-  if (link) link.textContent = allChecked ? t('piDeselectAll') : t('piSelectAll');
+  if (!link) return;
+  if (!boxes.length) { link.textContent = t('piSelectAll'); return; }
+  const allChecked = [...boxes].every(cb => cb.checked);
+  link.textContent = allChecked ? t('piDeselectAll') : t('piSelectAll');
 };
 
 window.renderPiQuestions = function() {
@@ -6042,6 +6067,8 @@ window.renderPiQuestions = function() {
   const difficultOnly = document.getElementById('pi-difficult-only')?.checked;
 
   let qs = (localCache.questions || []).filter(q => {
+    const noneChecked = !showHigh && !showMedium && !showLow && !difficultOnly;
+    if (noneChecked) return !!q.priority; // הצג הכל (עם עדיפות) כשאין בחירה
     if (difficultOnly && !q.difficult) return false;
     if (q.priority === 'high'   && !showHigh)   return !difficultOnly ? false : q.difficult;
     if (q.priority === 'medium' && !showMedium) return !difficultOnly ? false : q.difficult;
@@ -6073,16 +6100,19 @@ window.renderPiQuestions = function() {
   });
 
   const L = LANG[currentLang] || LANG.he;
-  const renderCard = q => {
+  const renderCard = (q, idx) => {
     const prioClass = q.priority==='high'?'prio-high':q.priority==='medium'?'prio-medium':q.priority==='low'?'prio-low':'';
     const prioLabel = q.priority==='high'?L.prioHigh:q.priority==='medium'?L.prioMedium:q.priority==='low'?L.prioLow:'';
-    return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface);">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
-        ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
-        ${q.difficult ? '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' : ''}
+    return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface);display:flex;gap:10px;align-items:flex-start;">
+      <input type="checkbox" class="pi-q-checkbox" data-qid="${escHtml(q.id||idx)}" checked onchange="updatePiSelectAllLink()" style="width:15px;height:15px;margin-top:2px;flex-shrink:0;cursor:pointer;">
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+          ${prioClass ? `<span class="priority-badge ${prioClass}">${prioLabel}</span>` : ''}
+          ${q.difficult ? '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' : ''}
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,150))}${(q.answer||'').length>150?'...':''}</div>
       </div>
-      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,150))}${(q.answer||'').length>150?'...':''}</div>
     </div>`;
   };
 
@@ -6090,9 +6120,10 @@ window.renderPiQuestions = function() {
     const topicLabel = topic === noTopic ? (currentLang==='en' ? 'No topic' : 'ללא נושא') : escHtml(topic);
     return `<div style="margin-bottom:16px;">
       <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">${topicLabel} <span style="font-weight:400;">(${items.length})</span></div>
-      ${items.map(renderCard).join('')}
+      ${items.map((q,i) => renderCard(q, i)).join('')}
     </div>`;
   }).join('');
+  updatePiSelectAllLink();
 };
 
 window.generatePiAboutMe = async function() {
@@ -6144,16 +6175,20 @@ Return only the summary text, no titles or formatting.`
 };
 
 window.downloadPiQuestions = function() {
-  const items = document.querySelectorAll('#pi-questions-list > div');
-  if (!items.length) return;
+  const cards = document.querySelectorAll('#pi-questions-list .pi-q-checkbox');
   const job = trackerApps.find(j => j._id === document.getElementById('pi-job-select').value);
   const title = job ? `${job.company} — ${job.role}` : 'שאלות לראיון';
   let txt = `${title}\n${'='.repeat(40)}\n\n`;
-  items.forEach((el, i) => {
-    const q = el.querySelector('[style*="font-weight:600"]')?.textContent || '';
-    const a = el.querySelectorAll('div')[2]?.textContent || '';
-    txt += `${i+1}. ${q}\n   ${a}\n\n`;
+  let count = 0;
+  cards.forEach((cb, i) => {
+    if (!cb.checked) return;
+    const card = cb.closest('div[style*="display:flex"]');
+    const q = card?.querySelector('[style*="font-weight:600"]')?.textContent || '';
+    const a = card?.querySelectorAll('div > div')?.[2]?.textContent || '';
+    count++;
+    txt += `${count}. ${q}\n   ${a}\n\n`;
   });
+  if (!count) { alert(currentLang==='en' ? 'No questions selected.' : 'לא נבחרו שאלות.'); return; }
   const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
