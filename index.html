@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1142,7 +1142,7 @@
     <section id="sec-preinterview" class="section active">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
       <p class="section-sub" data-i18n="subPreInterview">כל מה שצורך לפני הראיון — במקום אחד</p>
-      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
+      <div id="ai-info-preinterview" style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview">⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
 
       <!-- 1. בחירת משרה -->
       <div class="card">
@@ -1370,7 +1370,7 @@
       <div id="inner-questions" class="inner-section active">
         <h1 class="section-title" data-i18n="secQuestions">נושאים לתרגול</h1>
         <p class="section-sub" data-i18n="subQuestions">בחר נושא ולאחר מכן תרגל שאלות מתוכו</p>
-        <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
+        <div id="ai-info-questions" style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoQuestions">⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
@@ -1449,7 +1449,7 @@
       <div id="inner-jobprep" class="inner-section">
 <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
-      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
+      <div id="ai-info-jobprep" style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoJobprep">⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
 
       <!-- כפתור שאלות בסיסיות -->
       <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -1498,7 +1498,7 @@
       <div id="inner-mock" class="inner-section">
 <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
       <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
-      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
+      <div id="ai-info-mock" style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoMock">⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
       <div id="mock-setup">
         <div class="card">
           <div class="card-title" data-i18n="cardMockTypes">סוג שאלות לתרגול</div>
@@ -4424,7 +4424,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4457,6 +4457,10 @@ let LANG = {
     btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
+    aiInfoPreinterview: '⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)',
+    aiInfoQuestions: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)',
+    aiInfoJobprep: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)',
+    aiInfoMock: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)',
     btnAddHR: 'הוסף שאלת HR', fabAddQuestion: 'הוסף שאלה',
     // Job Prep section
     secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
@@ -4621,7 +4625,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4654,6 +4658,10 @@ let LANG = {
     btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected to Bank',
     modalDefaultQTitle: 'Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: 'Search & Filter',
+    aiInfoPreinterview: '⚡ <b>AI actions in this section:</b> <b>About Me</b> — AI creates a personalized summary based on your CV, profile & job (~500-1,000 tokens)',
+    aiInfoQuestions: '⚡ <b>AI actions in this tab:</b> <b>Extract from document</b> (~5,000-15,000 tokens) · <b>Improve with AI</b> — checks duplicates & improves answer (~200-500 tokens)',
+    aiInfoJobprep: '⚡ <b>AI actions in this tab:</b> <b>Generate Prep</b> — AI creates targeted Q&A for the job (~1,000-2,000 tokens)',
+    aiInfoMock: '⚡ <b>AI actions in this tab:</b> <b>Answer feedback</b> — AI gives feedback & improved answer per response (~500-1,000 tokens)',
     btnAddHR: 'Add HR Question', fabAddQuestion: 'Add question',
     // Job Prep section
     secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
@@ -4867,6 +4875,12 @@ function applyLanguage() {
 
   // Logo & header
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
+  // Update AI info boxes
+  ['aiInfoPreinterview','aiInfoQuestions','aiInfoJobprep','aiInfoMock'].forEach(key => {
+    const ids = {'aiInfoPreinterview':'ai-info-preinterview','aiInfoQuestions':'ai-info-questions','aiInfoJobprep':'ai-info-jobprep','aiInfoMock':'ai-info-mock'};
+    const el = document.getElementById(ids[key]);
+    if (el && L[key]) el.innerHTML = L[key];
+  });
   document.getElementById('lang-btn').textContent = L.btnLang;
   if (document.getElementById('view-lang-btn')) document.getElementById('view-lang-btn').textContent = L.btnLang;
 
