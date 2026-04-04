@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.37</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1737,7 +1737,7 @@
     <div style="display:flex;flex-direction:column;gap:6px;">
       <!-- Dropdown for existing topics -->
       <select id="q-topic-select" onchange="onTopicSelectChange()" style="margin:0;padding:9px 12px;font-size:14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-family:inherit;color:var(--text);">
-        <option value="">בחר נושא...</option>
+        <option value="">${currentLang === 'en' ? 'Select topic...' : 'בחר נושא...'}</option>
       </select>
       <!-- New topic input (hidden by default) -->
       <input type="text" id="q-topic-new" placeholder="שם הנושא החדש..." style="display:none;margin:0;" oninput="syncTopicInput()">
@@ -1747,7 +1747,7 @@
       <input type="hidden" id="q-topic">
       <!-- Actions -->
       <div style="display:flex;gap:8px;">
-        <button type="button" id="btn-new-topic" onclick="toggleNewTopic()" class="btn btn-ghost" style="font-size:12px;padding:2px 8px;height:auto;">+ נושא חדש</button>
+        <button type="button" id="btn-new-topic" onclick="toggleNewTopic()" class="btn btn-ghost" style="font-size:12px;padding:2px 8px;height:auto;" data-i18n="btnNewTopic">+ נושא חדש</button>
         <button type="button" id="btn-rename-topic" onclick="toggleRenameTopic()" class="btn btn-ghost" style="font-size:12px;padding:2px 8px;height:auto;display:none;">✏️ שנה שם נושא</button>
       </div>
     </div>
@@ -3093,7 +3093,7 @@ function populateTopicDropdown(currentTopic) {
   const sel = document.getElementById('q-topic-select');
   if (!sel) return;
   const topics = [...new Set((localCache.questions||[]).map(q => q.topic).filter(Boolean))].sort();
-  sel.innerHTML = '<option value="">בחר נושא...</option>';
+  sel.innerHTML = '<option value="">${currentLang === 'en' ? 'Select topic...' : 'בחר נושא...'}</option>';
   topics.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t;
@@ -3130,13 +3130,13 @@ window.toggleNewTopic = function() {
   if (isOpen) {
     input.style.display = 'none';
     input.value = '';
-    btn.textContent = '+ נושא חדש';
+    btn.textContent = currentLang === 'en' ? '+ New Topic' : '+ נושא חדש';
     // restore select value
     document.getElementById('q-topic').value = document.getElementById('q-topic-select').value;
   } else {
     input.style.display = 'block';
     input.focus();
-    btn.textContent = '✕ ביטול';
+    btn.textContent = currentLang === 'en' ? '✕ Cancel' : '✕ ביטול';
     document.getElementById('q-topic-select').value = '';
     document.getElementById('q-topic').value = '';
   }
@@ -4424,7 +4424,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.37</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4457,6 +4457,7 @@ let LANG = {
     btnDefaultQ: 'שאלות בסיסיות', btnDeselectAll: 'בטל הכל', btnAddSelected: 'הוסף שאלות מסומנות לבנק',
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
+    btnNewTopic: '+ נושא חדש',
     aiInfoPreinterview: '⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)',
     aiInfoQuestions: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)',
     aiInfoJobprep: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)',
@@ -4625,7 +4626,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.36</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.37</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4658,6 +4659,8 @@ let LANG = {
     btnDefaultQ: 'Basic Questions', btnDeselectAll: 'Deselect All', btnAddSelected: 'Add Selected to Bank',
     modalDefaultQTitle: 'Basic Question Set', modalDefaultQDesc: 'AI marks default questions — check/uncheck as you like',
     cardSearchQ: 'Search & Filter',
+    btnNewTopic: '+ נושא חדש',
+    btnNewTopic: '+ New Topic',
     aiInfoPreinterview: '⚡ <b>AI actions in this section:</b> <b>About Me</b> — AI creates a personalized summary based on your CV, profile & job (~500-1,000 tokens)',
     aiInfoQuestions: '⚡ <b>AI actions in this tab:</b> <b>Extract from document</b> (~5,000-15,000 tokens) · <b>Improve with AI</b> — checks duplicates & improves answer (~200-500 tokens)',
     aiInfoJobprep: '⚡ <b>AI actions in this tab:</b> <b>Generate Prep</b> — AI creates targeted Q&A for the job (~1,000-2,000 tokens)',
@@ -4875,6 +4878,12 @@ function applyLanguage() {
 
   // Logo & header
   document.getElementById('app-logo-text').innerHTML = L.appTitle;
+  // Update select placeholders
+  const qTopicPh = document.getElementById('q-topic-select-ph');
+  if (qTopicPh) qTopicPh.textContent = isHe ? 'בחר נושא...' : 'Select topic...';
+  if (typeof renderTracker === 'function' && trackerApps.length) renderTracker();
+  const piJobPh = document.getElementById('pi-job-ph');
+  if (piJobPh) piJobPh.textContent = L.piSelectJobPh || (isHe ? 'בחר משרה...' : 'Select a job...');
   // Update AI info boxes
   ['aiInfoPreinterview','aiInfoQuestions','aiInfoJobprep','aiInfoMock'].forEach(key => {
     const ids = {'aiInfoPreinterview':'ai-info-preinterview','aiInfoQuestions':'ai-info-questions','aiInfoJobprep':'ai-info-jobprep','aiInfoMock':'ai-info-mock'};
