@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.33</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1142,6 +1142,7 @@
     <section id="sec-preinterview" class="section active">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
       <p class="section-sub" data-i18n="subPreInterview">כל מה שצורך לפני הראיון — במקום אחד</p>
+      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
 
       <!-- 1. בחירת משרה -->
       <div class="card">
@@ -1369,6 +1370,7 @@
       <div id="inner-questions" class="inner-section active">
         <h1 class="section-title" data-i18n="secQuestions">נושאים לתרגול</h1>
         <p class="section-sub" data-i18n="subQuestions">בחר נושא ולאחר מכן תרגל שאלות מתוכו</p>
+        <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
@@ -1447,6 +1449,7 @@
       <div id="inner-jobprep" class="inner-section">
 <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
+      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
 
       <!-- כפתור שאלות בסיסיות -->
       <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -1495,6 +1498,7 @@
       <div id="inner-mock" class="inner-section">
 <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
       <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
+      <div style="background:#F5F3FF;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);">⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
       <div id="mock-setup">
         <div class="card">
           <div class="card-title" data-i18n="cardMockTypes">סוג שאלות לתרגול</div>
@@ -4420,7 +4424,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.33</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4572,7 +4576,7 @@ let LANG = {
     lblAppLink: 'קישור למשרה', lblAppRelevant: 'רלוונטי?', lblAppInterview: 'תאריך ראיון',
     lblAppNotes: 'הערות', btnSaveApp: 'שמור',
     trackerModalAdd: 'הוסף פנייה', trackerModalEdit: 'ערוך פנייה',
-    phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'הערות + דרישות המשרה (ישמש לניתוח בחלון "לפני ראיון")', btnCancel: 'ביטול',
+    phCompany: 'שם החברה', phRole: 'שם התפקיד', phNotes: 'תיאור התפקיד / דרישות המשרה — ישמש את ה-AI ב\'לפני ראיון\' לכתיבת \'על עצמי\' מותאם', btnCancel: 'ביטול',
     lblCvWord: 'CV — Word', lblCvPdf: 'CV — PDF', phCvLink: 'הדבק לינק מ-Google Drive...',
     toastAppAdded: 'המשרה נוספה ✅', toastAppUpdated: 'המשרה עודכנה ✅', toastAppDeleted: 'המשרה נמחקה',
     subTracker: 'עקוב אחרי ההתקדמות שלך — כל פנייה היא צעד קדימה',
@@ -4617,7 +4621,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.33</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.35</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4769,7 +4773,7 @@ let LANG = {
     lblAppLink: 'Job Link', lblAppRelevant: 'Relevant?', lblAppInterview: 'Next Interview Date',
     lblAppNotes: 'Notes', btnSaveApp: 'Save',
     trackerModalAdd: 'Add Application', trackerModalEdit: 'Edit Application',
-    phCompany: 'Company name', phRole: 'Job title', phNotes: 'Notes + job requirements (used for analysis in "Pre-Interview")', btnCancel: 'Cancel',
+    phCompany: 'Company name', phRole: 'Job title', phNotes: 'Job description / requirements — used by AI in \'Pre-Interview\' to write a personalized \'About Me\'', btnCancel: 'Cancel',
     lblCvWord: 'CV — Word', lblCvPdf: 'CV — PDF', phCvLink: 'Paste Google Drive link...',
     toastAppAdded: 'Job added ✅', toastAppUpdated: 'Job updated ✅', toastAppDeleted: 'Job removed',
     subTracker: 'Track your progress — every application counts',
@@ -6335,7 +6339,7 @@ window.deleteTrackerApp = async function(id) {
     <!-- הערות -->
     <div style="margin-bottom:12px;">
       <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppNotes">הערות</label>
-      <textarea dir="auto" id="tracker-notes" rows="2" placeholder="הערות + דרישות המשרה (ישמש לניתוח בחלון 'לפני ראיון')" data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
+      <textarea dir="auto" id="tracker-notes" rows="2" placeholder="תיאור התפקיד / דרישות המשרה — ישמש את ה-AI ב'לפני ראיון' לכתיבת 'על עצמי' מותאם" data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
     </div>
 
     <!-- Buttons -->
