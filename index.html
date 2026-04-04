@@ -1084,10 +1084,14 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
+      <div id="header-credits" style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text3);background:var(--surface2);border-radius:6px;padding:3px 8px;cursor:pointer;" onclick="toggleUserMenu();openModal('modal-pricing')" title="קרדיטים נותרים">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span id="header-credits-val">--</span>
+      </div>
       <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
       <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></button>
       <div id="user-avatar-container" onclick="toggleUserMenu()"></div>
@@ -3158,6 +3162,19 @@ window.syncTopicInput = function() {
   }
 };
 
+
+// ==================== AI CONFIRMATION ====================
+let pendingAICall = null;
+
+window.confirmAI = function(label, costEstimate, onConfirm) {
+  const msg = currentLang === 'en'
+    ? `This action uses AI and deducts credits.\nAction: ${label}\n\nContinue?`
+    : `פעולה זו משתמשת ב-AI ומנכה קרדיטים.\nפעולה: ${label}\n\nיתרה נוכחית: ${userCredits ?? '--'} קרדיטים\n\nלהמשיך?`;
+  if (window.confirm(msg)) {
+    onConfirm();
+  }
+};
+
 // ==================== NAVIGATION ====================
 window.showSection = function(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -3994,6 +4011,8 @@ let currentImproveId = null;
 let currentImproveDupId = null;
 
 window.openImprove = async function(id) {
+  const _aiOk = await confirmAIUsage();
+  if (!_aiOk) return;
   const q = (localCache.questions||[]).find(x => x.id===id);
   if (!q) return;
   currentImproveId = id;
@@ -4003,6 +4022,13 @@ window.openImprove = async function(id) {
   document.getElementById('improve-result-simple').style.display = 'none';
   document.getElementById('improve-result-merge').style.display = 'none';
   openModal('modal-improve');
+
+  // Confirm AI usage
+  // (modal already open, show inline confirm)
+  if (!window.confirm(currentLang === 'en' ? 'This will use AI credits. Continue?' : 'פעולה זו תנכה קרדיטים. להמשיך?')) {
+    closeModal('modal-improve');
+    return;
+  }
 
   // Find similar questions in same topic + type
   const sameTopic = (localCache.questions||[]).filter(x =>
@@ -4076,10 +4102,14 @@ window.applyImprovedAnswer = async function(option) {
   closeModal('modal-improve');
   renderQuestions();
   toast(t('toastAnswerUpdated'));
+  loadCredits();
 };
 
 // ==================== JOB PREP ====================
 window.generateJobPrep = async function() {
+  if (!window.confirm(currentLang === 'en' ? 'This will use AI credits. Continue?' : 'פעולה זו תנכה קרדיטים. להמשיך?')) return;
+  const _aiOk = await confirmAIUsage();
+  if (!_aiOk) return;
   const company = document.getElementById('jp-company').value.trim();
   const role = document.getElementById('jp-role').value.trim();
   const jd = document.getElementById('jp-jd').value.trim();
@@ -4288,6 +4318,7 @@ function loadMockQuestion() {
 window.submitMockAnswer = async function() {
   const answer=document.getElementById('mock-answer').value.trim();
   if (!answer) { toast(t('toastWriteAnswer'), true); return; }
+  if (!window.confirm(currentLang === 'en' ? 'This will use AI credits. Continue?' : 'פעולה זו תנכה קרדיטים. להמשיך?')) return;
   const q=mockQueue[mockIndex];
   // ספציפי יותר — רק הכפתור בתוך mock-question-card
   const btn=document.querySelector('#mock-question-card .btn-primary');
@@ -4389,7 +4420,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4575,7 +4606,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.25</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4944,6 +4975,10 @@ function updateCreditsUI(balance) {
   const bar = document.getElementById('credits-bar-fill');
   if (el) el.textContent = balance;
   if (pricingEl) pricingEl.textContent = balance;
+  const hc = document.getElementById('header-credits');
+  const hcv = document.getElementById('header-credits-val');
+  if (hc) hc.style.display = 'flex';
+  if (hcv) hcv.textContent = balance;
   if (bar) {
     const pct = Math.min(100, Math.round((balance / MAX_CREDITS_DISPLAY) * 100));
     bar.style.width = pct + '%';
@@ -4985,6 +5020,15 @@ window.goToCheckout = function() {
 };
 
 // ==================== callClaude — עובר דרך Firebase Function ====================
+async function confirmAIUsage() {
+  return new Promise(resolve => {
+    const msg = currentLang === 'en'
+      ? `This action uses AI credits (current balance: ${userCredits ?? '--'}). Continue?`
+      : `פעולה זו משתמשת בקרדיטים (יתרה: ${userCredits ?? '--'}). להמשיך?`;
+    resolve(confirm(msg));
+  });
+}
+
 async function callClaude(prompt, jsonMode=false, action='general') {
   // בדיקה מקומית של credits לפני השליחה
   if (userCredits !== null && userCredits <= 0) {
