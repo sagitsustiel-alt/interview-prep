@@ -1084,7 +1084,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -2231,6 +2231,7 @@ async function processFile(file) {
   const name = file.name.toLowerCase();
   const isAllowed = name.match(/\.(pdf|docx|doc|txt|xlsx|xls|pptx|ppt|jpg|jpeg|png|webp|gif)$/);
   if (!isAllowed) { toast(t('toastFormatNotSupported'), true); return; }
+  if (!window.confirm(currentLang === 'en' ? '⚡ Extract Questions AI\n~5,000-15,000 tokens (depends on document size)\n\nContinue?' : '⚡ חילוץ שאלות ממסמך\n~5,000-15,000 טוקנים (תלוי בגודל המסמך)\n\nלהמשיך?')) return;
 
   toast(t('toastSending'));
   try {
@@ -4011,8 +4012,7 @@ let currentImproveId = null;
 let currentImproveDupId = null;
 
 window.openImprove = async function(id) {
-  const _aiOk = await confirmAIUsage();
-  if (!_aiOk) return;
+  if (!window.confirm(currentLang === 'en' ? '⚡ Improve with AI\n~200-500 tokens\n\nContinue?' : '⚡ שפר באמצעות AI\n~200-500 טוקנים\n\nלהמשיך?')) return;
   const q = (localCache.questions||[]).find(x => x.id===id);
   if (!q) return;
   currentImproveId = id;
@@ -4023,49 +4023,51 @@ window.openImprove = async function(id) {
   document.getElementById('improve-result-merge').style.display = 'none';
   openModal('modal-improve');
 
-  // Confirm AI usage
-  // (modal already open, show inline confirm)
-  if (!window.confirm(currentLang === 'en' ? 'This will use AI credits. Continue?' : 'פעולה זו תנכה קרדיטים. להמשיך?')) {
-    closeModal('modal-improve');
-    return;
-  }
-
-  // Find similar questions in same topic + type
+  // STEP 1 (cheap): send only question names to detect duplicate
   const sameTopic = (localCache.questions||[]).filter(x =>
     x.id !== id && x.topic === q.topic && x.type === q.type && x.question
   );
 
-  const prompt = `אתה מאמן ראיונות. קבל שאלת ראיון ותשובה, ורשימת שאלות דומות באותו נושא.
+  const step1prompt = `האם יש שאלה זהה או דומה מאוד לשאלה הנוכחית?
 שאלה נוכחית: "${q.question}"
-תשובה נוכחית: "${q.answer||'(אין תשובה)'}"
-שאלות אחרות באותו נושא:
-${sameTopic.slice(0,8).map((x,i)=>`${i+1}. "${x.question}" | תשובה: "${(x.answer||'').substring(0,100)}"`).join('\n')}
-
-השב ב-JSON בלבד:
-{
-  "duplicate_index": null או מספר (index מהרשימה שהכי דומה, null אם אין כפילות),
-  "improved_current": "תשובה משופרת לשאלה הנוכחית בלבד",
-  "merged": "תשובה משולבת מהשתיים (אם יש כפילות, אחרת null)"
-}`;
+שאלות באותו נושא:
+${sameTopic.slice(0,10).map((x,i) => `${i}. "${x.question}"`).join('\n')}
+השב ב-JSON בלבד: {"duplicate_index": null או מספר}`;
 
   try {
-    const resp = await callClaude(prompt, false, 'improve_answer');
-    const match = resp.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('no json');
-    const data = JSON.parse(match[0]);
+    const resp1 = await callClaude(step1prompt, false, 'improve_answer');
+    const match1 = resp1.match(/\{[\s\S]*?\}/);
+    const step1data = match1 ? JSON.parse(match1[0]) : { duplicate_index: null };
+    const dupIdx = step1data.duplicate_index;
+    const dup = (dupIdx !== null && dupIdx !== undefined) ? sameTopic[dupIdx] : null;
 
-    document.getElementById('improve-loading').style.display = 'none';
-
-    if (data.duplicate_index !== null && data.duplicate_index !== undefined && sameTopic[data.duplicate_index]) {
-      const dup = sameTopic[data.duplicate_index];
+    if (dup) {
+      // STEP 2 (only if duplicate found): send 2 answers for merging
       currentImproveDupId = dup.id;
+      const step2prompt = `מזג 2 תשובות לשאלת ראיון לתשובה אחת מקיפה ומקצועית, ללא כפילויות.
+שאלה: "${q.question}"
+תשובה א: "${q.answer||'(אין)'}"
+תשובה ב: "${dup.answer||'(אין)'}"
+החזר JSON בלבד: {"merged": "תשובה משולבת"}`;
+      const resp2 = await callClaude(step2prompt, false, 'improve_answer');
+      const match2 = resp2.match(/\{[\s\S]*?\}/);
+      const merged = match2 ? JSON.parse(match2[0]).merged : resp2;
+
+      document.getElementById('improve-loading').style.display = 'none';
       document.getElementById('improve-dup-q').textContent = dup.question;
       document.getElementById('improve-opt-a').textContent = q.answer || '(אין תשובה)';
       document.getElementById('improve-opt-b').textContent = dup.answer || '(אין תשובה)';
-      document.getElementById('improve-opt-c').textContent = data.merged || data.improved_current;
+      document.getElementById('improve-opt-c').textContent = merged || '';
       document.getElementById('improve-result-merge').style.display = 'block';
     } else {
-      document.getElementById('improve-content').textContent = data.improved_current || resp;
+      // No duplicate — just improve current answer
+      const step2prompt = `שפר את התשובה הבאה לשאלת ראיון. היה תמציתי, מובנה ומקצועי.
+שאלה: "${q.question}"
+תשובה נוכחית: "${q.answer||'(אין)'}"
+החזר את התשובה המשופרת בלבד, ללא הקדמה.`;
+      const resp2 = await callClaude(step2prompt, false, 'improve_answer');
+      document.getElementById('improve-loading').style.display = 'none';
+      document.getElementById('improve-content').textContent = resp2;
       document.getElementById('improve-result-simple').style.display = 'block';
     }
   } catch(e) {
@@ -4107,7 +4109,7 @@ window.applyImprovedAnswer = async function(option) {
 
 // ==================== JOB PREP ====================
 window.generateJobPrep = async function() {
-  if (!window.confirm(currentLang === 'en' ? 'This will use AI credits. Continue?' : 'פעולה זו תנכה קרדיטים. להמשיך?')) return;
+  if (!window.confirm(currentLang === 'en' ? '⚡ Job Prep AI\n~1,000-2,000 tokens\n\nContinue?' : '⚡ הכנה למשרה\n~1,000-2,000 טוקנים\n\nלהמשיך?')) return;
   const _aiOk = await confirmAIUsage();
   if (!_aiOk) return;
   const company = document.getElementById('jp-company').value.trim();
@@ -4420,7 +4422,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4606,7 +4608,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.27</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.30</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6008,6 +6010,7 @@ window.renderPiQuestions = function() {
 };
 
 window.generatePiAboutMe = async function() {
+  if (!window.confirm(currentLang === 'en' ? '⚡ About Me AI\n~500-1,000 tokens\n\nContinue?' : '⚡ ספר לי על עצמך\n~500-1,000 טוקנים\n\nלהמשיך?')) return;
   const id = document.getElementById('pi-job-select').value;
   const job = trackerApps.find(j => j._id === id);
   if (!job) return;
