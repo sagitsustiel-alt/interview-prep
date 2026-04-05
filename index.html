@@ -1099,7 +1099,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.58</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1157,7 +1157,7 @@
     <section id="sec-preinterview" class="section active">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
       <p class="section-sub" data-i18n="subPreInterview"></p>
-      <div id="ai-info-preinterview" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview">⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
+      <div id="ai-info-preinterview" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
 
       <!-- 1. בחירת משרה -->
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
@@ -1204,7 +1204,7 @@
               <div class="pi-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
               <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" title="Go to Profile" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n-title="btnGenerateTitle" style="flex-shrink:0;">⚡ <span data-i18n="btnGenerate">צור בעזרת AI</span></button>
+            <button class="btn btn-secondary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n-title="btnGenerateTitle" style="flex-shrink:0;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span data-i18n="btnGenerate">צור בעזרת AI</span></button>
             <span id="pi-aboutme-saved" style="font-size:11px;color:var(--text3);display:none;">✓ נשמר</span>
           </div>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
@@ -1266,7 +1266,10 @@
                   </label>
                   <span id="pi-select-all-link" onclick="piToggleSelectAll()" style="font-size:12px;color:var(--accent);cursor:pointer;white-space:nowrap;user-select:none;" data-i18n="piSelectAll">בחר הכל</span>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <button id="pi-sort-toggle" onclick="togglePiSort()" style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;" title="החלף סדר מיון">סדר נושאים</button>
+                  <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
+                </div>
               </div>
               <div id="pi-questions-list"></div>
             </div>
@@ -1402,7 +1405,7 @@
       <div id="inner-questions" class="inner-section active">
         <h1 class="section-title" data-i18n="secQuestions">נושאים לתרגול</h1>
         <p class="section-sub" data-i18n="subQuestions">בחר נושא ולאחר מכן תרגל שאלות מתוכו</p>
-        <div id="ai-info-questions" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoQuestions">⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
+        <div id="ai-info-questions" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoQuestions"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
@@ -1481,7 +1484,7 @@
       <div id="inner-jobprep" class="inner-section">
 <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
-      <div id="ai-info-jobprep" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoJobprep">⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
+      <div id="ai-info-jobprep" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoJobprep"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
 
       <!-- כפתור שאלות בסיסיות -->
       <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -1533,7 +1536,7 @@
       <div id="inner-mock" class="inner-section">
 <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
       <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
-      <div id="ai-info-mock" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoMock">⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
+      <div id="ai-info-mock" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoMock"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
       <div id="mock-setup">
         <div class="card">
           <div class="card-title" data-i18n="cardMockTypes">סוג שאלות לתרגול</div>
@@ -4510,7 +4513,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.58</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4544,10 +4547,10 @@ let LANG = {
     modalDefaultQTitle: 'סט שאלות בסיסי', modalDefaultQDesc: 'AI מסמן שאלות ברירת מחדל — סמן/בטל לפי רצונך',
     cardSearchQ: 'חיפוש וסינון',
     btnNewTopic: '+ נושא חדש',
-    aiInfoPreinterview: '⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)',
-    aiInfoQuestions: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)',
-    aiInfoJobprep: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)',
-    aiInfoMock: '⚡ <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)',
+    aiInfoPreinterview: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)',
+    aiInfoQuestions: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)',
+    aiInfoJobprep: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)',
+    aiInfoMock: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)',
     btnAddHR: 'הוסף שאלת HR', fabAddQuestion: 'הוסף שאלה',
     // Job Prep section
     secJobprep: 'הכנה למשרה', subJobprep: 'הפק הכנה מותאמת אישית לתפקיד ספציפי',
@@ -4599,7 +4602,7 @@ let LANG = {
 5. לאחר ייבוא גדול — לחץ 🧹 נקה וסדר<br>
 6. הכנה למשרה — הכנס תיאור משרה ← AI יפיק Pitch + שאלות מותאמות<br>
 7. תרגול — בחר סוג שאלות ← התחל ראיון מדומה עם משוב AI<br><br>
-<b style="color:var(--accent);">⚡ פעולות AI באפליקציה</b><br><br>
+<b style="color:var(--accent);"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> פעולות AI באפליקציה</b><br><br>
 <b>📚 בנק שאלות:</b><br>
 &nbsp;&nbsp;• <b>חלץ שאלות ממסמך</b> — AI קורא מסמך ומחלץ שאלות ותשובות (~5,000-15,000 טוקנים)<br>
 &nbsp;&nbsp;• <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)<br><br>
@@ -4713,7 +4716,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.58</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4748,10 +4751,10 @@ let LANG = {
     cardSearchQ: 'Search & Filter',
     btnNewTopic: '+ נושא חדש',
     btnNewTopic: '+ New Topic',
-    aiInfoPreinterview: '⚡ <b>AI actions in this section:</b> <b>About Me</b> — AI creates a personalized summary based on your CV, profile & job (~500-1,000 tokens)',
-    aiInfoQuestions: '⚡ <b>AI actions in this tab:</b> <b>Extract from document</b> (~5,000-15,000 tokens) · <b>Improve with AI</b> — checks duplicates & improves answer (~200-500 tokens)',
-    aiInfoJobprep: '⚡ <b>AI actions in this tab:</b> <b>Generate Prep</b> — AI creates targeted Q&A for the job (~1,000-2,000 tokens)',
-    aiInfoMock: '⚡ <b>AI actions in this tab:</b> <b>Answer feedback</b> — AI gives feedback & improved answer per response (~500-1,000 tokens)',
+    aiInfoPreinterview: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>AI actions in this section:</b> <b>About Me</b> — AI creates a personalized summary based on your CV, profile & job (~500-1,000 tokens)',
+    aiInfoQuestions: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>AI actions in this tab:</b> <b>Extract from document</b> (~5,000-15,000 tokens) · <b>Improve with AI</b> — checks duplicates & improves answer (~200-500 tokens)',
+    aiInfoJobprep: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>AI actions in this tab:</b> <b>Generate Prep</b> — AI creates targeted Q&A for the job (~1,000-2,000 tokens)',
+    aiInfoMock: '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>AI actions in this tab:</b> <b>Answer feedback</b> — AI gives feedback & improved answer per response (~500-1,000 tokens)',
     btnAddHR: 'Add HR Question', fabAddQuestion: 'Add question',
     // Job Prep section
     secJobprep: 'Job Prep', subJobprep: 'Generate personalized prep for a specific role',
@@ -4803,7 +4806,7 @@ let LANG = {
 5. After large import — click 🧹 Clean & Organize<br>
 6. Job Prep — enter job description ← AI generates Pitch + tailored questions<br>
 7. Practice — choose question type ← start mock interview with AI feedback<br><br>
-<b style="color:var(--accent);">⚡ AI Actions in This App</b><br><br>
+<b style="color:var(--accent);"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AI Actions in This App</b><br><br>
 <b>📚 Question Bank:</b><br>
 &nbsp;&nbsp;• <b>Extract from document</b> — AI reads a doc and extracts Q&A (~5,000-15,000 tokens)<br>
 &nbsp;&nbsp;• <b>Improve with AI</b> — checks for duplicates and improves answer (~200-500 tokens)<br><br>
@@ -6160,6 +6163,15 @@ window.toolbarDir = function(id, dir) {
   el.focus();
 };
 
+let piSortMode = 'topic'; // 'topic' | 'priority'
+
+window.togglePiSort = function() {
+  piSortMode = piSortMode === 'topic' ? 'priority' : 'topic';
+  const btn = document.getElementById('pi-sort-toggle');
+  if (btn) btn.textContent = piSortMode === 'topic' ? 'סדר נושאים' : 'סדר עדיפות';
+  renderPiQuestions();
+};
+
 window.saveAboutMeDebounced = function() {
   const savedEl = document.getElementById('pi-aboutme-saved');
   if (savedEl) savedEl.style.display = 'none'; // מסתיר בזמן עריכה
@@ -6290,27 +6302,10 @@ window.renderPiQuestions = function() {
     });
   }
 
-  // Sort: high → medium → low, difficult first within each
-  const prioOrder = { high: 0, medium: 1, low: 2 };
-  qs.sort((a, b) => {
-    const po = (prioOrder[a.priority]??1) - (prioOrder[b.priority]??1);
-    if (po !== 0) return po;
-    return (b.difficult?1:0) - (a.difficult?1:0);
-  });
-
   if (!qs.length) {
     el.innerHTML = `<p style="font-size:13px;color:var(--text3);text-align:center;padding:16px;">${t('piNoQFilters')}</p>`;
     return;
   }
-
-  // Group by topic
-  const groups = {};
-  const noTopic = '__none__';
-  qs.forEach(q => {
-    const key = q.topic || noTopic;
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(q);
-  });
 
   const L = LANG[currentLang] || LANG.he;
   const renderCard = (q, idx) => {
@@ -6329,13 +6324,44 @@ window.renderPiQuestions = function() {
     </div>`;
   };
 
-  el.innerHTML = Object.entries(groups).map(([topic, items]) => {
-    const topicLabel = topic === noTopic ? (currentLang==='en' ? 'No topic' : 'ללא נושא') : escHtml(topic);
-    return `<div style="margin-bottom:16px;">
-      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">${topicLabel} <span style="font-weight:400;">(${items.length})</span></div>
-      ${items.map((q,i) => renderCard(q, i)).join('')}
-    </div>`;
-  }).join('');
+  const renderGroup = (label, items) => `<div style="margin-bottom:16px;">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);">${label} <span style="font-weight:400;">(${items.length})</span></div>
+    ${items.map((q,i) => renderCard(q, i)).join('')}
+  </div>`;
+
+  const noTopic = '__none__';
+
+  if (piSortMode === 'priority') {
+    // מיון לפי עדיפות: קשות → חשוב מאוד → חשוב → נחמד לדעת → ללא
+    const prioGroups = [
+      { key: 'difficult', label: currentLang==='en'?'Hard Questions':'שאלות קשות', items: qs.filter(q=>q.difficult) },
+      { key: 'high',      label: L.prioHigh,   items: qs.filter(q=>!q.difficult && q.priority==='high') },
+      { key: 'medium',    label: L.prioMedium, items: qs.filter(q=>!q.difficult && q.priority==='medium') },
+      { key: 'low',       label: L.prioLow,    items: qs.filter(q=>!q.difficult && q.priority==='low') },
+      { key: 'none',      label: currentLang==='en'?'No priority':'ללא עדיפות', items: qs.filter(q=>!q.difficult && !q.priority) },
+    ].filter(g => g.items.length);
+    // בתוך כל קבוצה — מיין לפי נושא
+    prioGroups.forEach(g => g.items.sort((a,b) => (a.topic||'').localeCompare(b.topic||'')));
+    el.innerHTML = prioGroups.map(g => renderGroup(g.label, g.items)).join('');
+  } else {
+    // מיון לפי נושא (ברירת מחדל)
+    const prioOrder = { high: 0, medium: 1, low: 2 };
+    qs.sort((a, b) => {
+      const po = (prioOrder[a.priority]??3) - (prioOrder[b.priority]??3);
+      if (po !== 0) return po;
+      return (b.difficult?1:0) - (a.difficult?1:0);
+    });
+    const groups = {};
+    qs.forEach(q => {
+      const key = q.topic || noTopic;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(q);
+    });
+    el.innerHTML = Object.entries(groups).map(([topic, items]) => {
+      const topicLabel = topic === noTopic ? (currentLang==='en' ? 'No topic' : 'ללא נושא') : escHtml(topic);
+      return renderGroup(topicLabel, items);
+    }).join('');
+  }
   updatePiSelectAllLink();
 };
 
@@ -6471,21 +6497,57 @@ window.downloadPiQuestions = async function() {
       children.push(sectionSep());
     }
 
-    // Questions
+    // Questions — בנה קבוצות לפי מצב המיון הנוכחי
     if (questions.length) {
       children.push(heading(currentLang === 'en' ? 'Prep Questions' : 'שאלות להכנה'));
-      questions.forEach((item, i) => {
+
+      // בנה מיפוי id→data מהשאלות שנבחרו
+      const selectedIds = [...document.querySelectorAll('#pi-questions-list .pi-q-checkbox')]
+        .filter(cb => cb.checked).map(cb => cb.dataset.qid);
+      const selectedQs = (localCache.questions||[]).filter(q => selectedIds.includes(q.id));
+
+      const L2 = LANG[currentLang] || LANG.he;
+
+      let groups = [];
+      if (piSortMode === 'priority') {
+        groups = [
+          { label: currentLang==='en'?'Hard Questions':'שאלות קשות', items: selectedQs.filter(q=>q.difficult) },
+          { label: L2.prioHigh,   items: selectedQs.filter(q=>!q.difficult && q.priority==='high') },
+          { label: L2.prioMedium, items: selectedQs.filter(q=>!q.difficult && q.priority==='medium') },
+          { label: L2.prioLow,    items: selectedQs.filter(q=>!q.difficult && q.priority==='low') },
+          { label: currentLang==='en'?'No priority':'ללא עדיפות', items: selectedQs.filter(q=>!q.difficult && !q.priority) },
+        ].filter(g => g.items.length);
+      } else {
+        const topicMap = {};
+        selectedQs.forEach(q => {
+          const k = q.topic || (currentLang==='en'?'General':'כללי');
+          if (!topicMap[k]) topicMap[k] = [];
+          topicMap[k].push(q);
+        });
+        groups = Object.entries(topicMap).map(([label, items]) => ({ label, items }));
+      }
+
+      groups.forEach(group => {
+        // כותרת קבוצה — Bold
         children.push(new Paragraph({
-          children: [new TextRun({ text: `${i+1}. ${item.q}`, bold: true, size: 22, font: 'Arial' })],
-          spacing: { before: 160, after: 60 }
+          children: [new TextRun({ text: group.label, bold: true, size: 24, font: 'Arial', color: '444444' })],
+          spacing: { before: 240, after: 80 }
         }));
-        if (item.a) {
-          item.a.split('\n').forEach(line => children.push(new Paragraph({
-            children: [new TextRun({ text: line, size: 22, font: 'Arial', color: '333333' })],
-            indent: { left: 360 },
-            spacing: { before: 30, after: 30 }
-          })));
-        }
+        group.items.forEach(q => {
+          // שאלה — Bold, ללא רווח
+          children.push(new Paragraph({
+            children: [new TextRun({ text: q.question || '', bold: true, size: 22, font: 'Arial' })],
+            spacing: { before: 80, after: 0 }
+          }));
+          // תשובה — רגיל, ללא רווח
+          if (q.answer) {
+            q.answer.split('\n').forEach(line => children.push(new Paragraph({
+              children: [new TextRun({ text: line, size: 22, font: 'Arial', color: '333333' })],
+              indent: { left: 360 },
+              spacing: { before: 0, after: 0 }
+            })));
+          }
+        });
       });
     }
 
