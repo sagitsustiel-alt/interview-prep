@@ -1212,7 +1212,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.73</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.75</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleDarkMode()" id="dark-mode-btn" title="החלף מצב תצוגה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -1532,9 +1532,6 @@
           <button onclick="runTopicMigration()" style="background:#F59E0B;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">הרץ מיזוג</button>
         </div>
         <script>if(!localStorage.getItem("topicMigrationDone")){var b=document.getElementById("topic-migration-bar");if(b)b.style.display="flex";}</script>
-
-<!-- docx.js for Word export -->
-<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 
 
         <!-- Row 1: Toggle (flex-start) + Search (flex:1) — direction-aware -->
@@ -2248,7 +2245,18 @@ window.signInWithGoogle = async function() {
   try {
     await signInWithPopup(auth, provider);
   } catch (e) {
-    toast('שגיאה בהתחברות — נסי שוב', true);
+    console.error('Auth error:', e);
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      // fallback to redirect
+      try {
+        const { signInWithRedirect } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+        await signInWithRedirect(auth, provider);
+      } catch(e2) {
+        toast('שגיאה בהתחברות — נסה שנית (' + (e2.code||e2.message) + ')', true);
+      }
+    } else {
+      toast('שגיאה בהתחברות — נסה שנית (' + (e.code||e.message) + ')', true);
+    }
   }
 };
 
@@ -4641,7 +4649,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.73</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.75</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4817,7 +4825,7 @@ let LANG = {
     piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
     piNoCvLinks: 'אין לינקים לקו"ח עדיין', piNoTips: 'אין טיפים עדיין. הוסף בחלון הפרופיל.', piNoQFilters: 'אין שאלות עם הפילטרים שנבחרו.',
     piBannerText: 'כדי לקבל הכנה מלאה — מלא תחילה את:', piBannerProfile: 'הפרופיל שלי', piBannerPrep: 'תרגול והכנה (בנק שאלות בלבד)', piBannerJobs: 'המשרות שלי',
-    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר באמצעות AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסי שוב.',
+    btnVideo: 'סרטון', btnVideoTopicTip: 'סרטון הסבר לנושא', btnVideoQTip: 'סרטון הסבר לשאלה', btnEdit: 'ערוך', btnImprove: 'שפר באמצעות AI', btnDelete: 'מחק', errGenerateSummary: 'שגיאה ביצירת הסיכום. נסה שנית.',
     btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnFiltersClose: 'סגור פילטרים', btnFilters: 'פילטרים', filterGroupType: 'סוג שאלה', filterGroupPriority: 'רמת חשיבות', filterGroupTopics: 'נושאים', btnDifficultFilter: 'שאלות קשות', btnMarkDifficult: 'סמן כשאלה קשה', noAnswer: 'אין תשובה עדיין',
     lblPriority: 'רמת חשיבות', prioNone: 'ללא חשיבות', lblPriorityTip: 'שאלות חשובות יופיעו בחלון \'לפני ראיון\'', prioHigh: '🔴 חשוב מאוד', prioMedium: '🟠 חשוב', prioLow: '⚪ נחמד לדעת', btnOpenAll: 'פתח הכל ▼', btnCloseAll: 'סגור הכל ^', colQuestionsList: 'רשימת שאלות',
     cardTips: 'טיפים לראיון', phTip: 'כתוב טיפ...', btnAddTip: '+ הוסף', toastTipAdded: 'טיפ נוסף ✅', toastTipDeleted: 'טיפ נמחק', toastTipSaved: 'טיפ עודכן ✅',
@@ -4844,7 +4852,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.73</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.75</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6738,7 +6746,7 @@ window.downloadPiQuestions = async function() {
 
   } catch(e) {
     console.error('docx error', e);
-    alert(currentLang === 'en' ? 'Download failed. Try again.' : 'שגיאה בהורדה. נסי שוב.');
+    alert(currentLang === 'en' ? 'Download failed. Try again.' : 'שגיאה בהורדה. נסה שנית.');
   }
 };
 
@@ -7004,5 +7012,9 @@ window.deleteTrackerApp = async function(id) {
       <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-confirm-delete')">ביטול</button>
     </div>
   
+
+
+<!-- docx.js for Word export -->
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 </body>
 </html>
