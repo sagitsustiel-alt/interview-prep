@@ -1086,7 +1086,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.52</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1143,7 +1143,7 @@
     <!-- לפני ראיון -->
     <section id="sec-preinterview" class="section active">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
-      <p class="section-sub" data-i18n="subPreInterview">כל מה שצורך לפני הראיון — במקום אחד</p>
+      <p class="section-sub" data-i18n="subPreInterview"></p>
       <div id="ai-info-preinterview" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview">⚡ <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
 
       <!-- 1. בחירת משרה -->
@@ -1172,7 +1172,7 @@
         <!-- 2. דרישות המשרה -->
         <div class="card" id="pi-requirements-card">
           <div class="pi-title" data-i18n="piRequirements">דרישות המשרה</div>
-          <div id="pi-requirements-content" style="font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap;"></div>
+          <div id="pi-requirements-content" dir="auto" style="font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap;"></div>
         </div>
 
         <!-- 3. לינק ל-CV -->
@@ -1198,7 +1198,8 @@
           </div>
           <textarea id="pi-aboutme-content" rows="5" dir="auto"
             style="width:100%;font-size:13px;line-height:1.7;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;resize:vertical;font-family:inherit;"
-            placeholder="הקלד כאן את הצגתך העצמית, או השתמש ב-⚡ ליצירה אוטומטית..."></textarea>
+            placeholder="הקלד כאן את הצגתך העצמית, או השתמש ב-⚡ ליצירה אוטומטית..."
+            oninput="saveAboutMeDebounced()"></textarea>
         </div>
 
         <!-- 4. טיפים -->
@@ -3836,14 +3837,22 @@ function renderQCard(q, search) {
   const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
   const prioLabel = q.priority === 'high' ? t('prioHighSimple') : q.priority === 'medium' ? t('prioMediumSimple') : q.priority === 'low' ? t('prioLowSimple') : (t('lblPriority') || 'רמת חשיבות');
   const isOpen = openQuestionId === q.id;
+
+  // Job tags
+  const qJobIds = q.jobIds || [];
+  const jobTags = qJobIds.map(jid => {
+    const job = (trackerApps||[]).find(j => j._id === jid);
+    return job ? `<span style="font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;color:var(--text2);white-space:nowrap;">${escHtml(job.company||job.role||'')}</span>` : '';
+  }).filter(Boolean).join('');
+
   return `
     <div class="question-card${activeQuestionId === q.id ? ' active' : ''}" id="qcard-${q.id}">
       <!-- Header row: arrow + question + inline actions -->
       <div id="qhdr-${q.id}" style="display:flex;align-items:flex-start;gap:8px;padding:2px 0;">
         <span class="q-arrow" onclick="toggleQuestion('${q.id}')" style="flex-shrink:0;font-size:9px;color:var(--text3);margin-top:5px;width:12px;cursor:pointer;">${isOpen ? '▼' : '▶'}</span>
         <div onclick="toggleQuestion('${q.id}')" style="flex:1;min-width:0;cursor:pointer;">
-          <div class="question-text" id="qtxt-${q.id}" style="margin-bottom:4px;">${highlightSearch(q.question, search)}</div>
-
+          <div class="question-text" id="qtxt-${q.id}" style="margin-bottom:${jobTags ? '6px' : '4px'};">${highlightSearch(q.question, search)}</div>
+          ${jobTags ? `<div style="display:flex;gap:4px;flex-wrap:wrap;">${jobTags}</div>` : ''}
         </div>
         <!-- Metadata group: priority | video | star -->
         <div class="q-header-actions" style="align-items:center;">
@@ -3855,6 +3864,10 @@ function renderQCard(q, search) {
               <button onclick="setPrioFromChip('${q.id}','low',event)" style="color:#6B7280;">${t('prioLowSimple')}</button>
               <button onclick="setPrioFromChip('${q.id}','',event)" style="color:var(--text3);">${t('prioNone')}</button>
             </div>
+          </div>
+          <div style="position:relative;display:inline-flex;">
+            <button class="q-icon-btn${qJobIds.length ? '' : ''}" onclick="event.stopPropagation();openJobTagDropdown('${q.id}',event)" title="${currentLang==='en'?'Tag to job':'שייך למשרה'}" style="opacity:${qJobIds.length?'1':'0.55'};font-size:13px;padding:2px 3px;">🏢</button>
+            <div class="prio-dropdown" id="jobtagdrop-${q.id}" style="min-width:160px;"></div>
           </div>
           <button class="q-icon-btn" onclick="event.stopPropagation();findVideo('${q.id}', '${escAttr(q.question)}', '${escAttr(q.topic||'')}');" title="${currentLang==='en' ? 'Video explanation for this question' : 'סרטון הסבר לשאלה'}" style="opacity:0.55;font-size:13px;padding:2px 3px;">🎥</button>
           <button class="q-star ${q.difficult?'active':''} q-icon-btn" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;padding:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
@@ -3868,7 +3881,6 @@ function renderQCard(q, search) {
       <div id="qbody-${q.id}" style="display:${isOpen ? 'block' : 'none'};padding-inline-start:22px;margin-top:10px;">
         <div class="answer-text" style="margin-bottom:10px;">${escHtml(q.answer)||'<em style="color:var(--text3)">' + t('noAnswer') + '</em>'}</div>
         <div id="video-area-${q.id}"></div>
-
       </div>
     </div>`;
 }
@@ -4472,7 +4484,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.52</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4642,7 +4654,7 @@ let LANG = {
     tfActive: 'פעיל',
     prioHighSimple: 'חשוב מאוד', prioMediumSimple: 'חשוב', prioLowSimple: 'נחמד לדעת',
     piSelectJob: 'בחר משרה', piSelectJobPh: 'בחר משרה...', piRequirements: 'דרישות המשרה', piCvLinks: 'קורות חיים',
-    piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צור', btnGenerateTitle: 'משתמש ב-AI ליצירת תשובה מותאמת לשאלת "ספר לי על עצמך" — בהתאם למשרה הנבחרת ולפרופיל שלך', piTips: 'הטיפים שלי',
+    piAboutMe: 'על עצמי — מותאם למשרה', btnGenerate: 'צור בעזרת AI', btnGenerateTitle: 'משתמש ב-AI ליצירת תשובה מותאמת לשאלת "ספר לי על עצמך" — בהתאם למשרה הנבחרת ולפרופיל שלך', piTips: 'הטיפים שלי',
     piSelectAll: 'בחר הכל', piDeselectAll: 'בטל הכל',
     piQuestions: 'שאלות להכנה', piDifficultOnly: 'שאלות קשות', btnDownload: 'הורד',
     piNoJobs: 'אין משרות. הוסף משרה בחלון "המשרות שלי"',
@@ -4675,7 +4687,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.52</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4846,7 +4858,7 @@ let LANG = {
     tfActive: 'Active',
     prioHighSimple: 'Must Know', prioMediumSimple: 'Important', prioLowSimple: 'Nice to Know',
     piSelectJob: 'Select a job', piSelectJobPh: 'Select a job...', piRequirements: 'Job Requirements', piCvLinks: 'CV Links',
-    piAboutMe: 'About Me — tailored to this job', btnGenerate: 'Generate', btnGenerateTitle: 'Uses AI to generate a tailored "Tell me about yourself" answer — based on the selected job and your profile', piTips: 'My Tips',
+    piAboutMe: 'About Me — tailored to this job', btnGenerate: 'Generate with AI', btnGenerateTitle: 'Uses AI to generate a tailored "Tell me about yourself" answer — based on the selected job and your profile', piTips: 'My Tips',
     piSelectAll: 'Select all', piDeselectAll: 'Deselect all',
     piQuestions: 'Prep Questions', piDifficultOnly: 'Hard questions', btnDownload: 'Download',
     piNoJobs: 'No jobs added. Add one in "My Jobs"',
@@ -5878,6 +5890,43 @@ window.toggleFilterPanel = function() {
 // toggleFiltersPanel already defined above
 
 
+window.openJobTagDropdown = function(qId, event) {
+  event.stopPropagation();
+  // Close all other dropdowns
+  document.querySelectorAll('.prio-dropdown.open, [id^="jobtagdrop-"]').forEach(d => d.classList.remove('open'));
+  const drop = document.getElementById(`jobtagdrop-${qId}`);
+  if (!drop) return;
+  const q = (localCache.questions||[]).find(x => x.id === qId);
+  if (!q) return;
+  const qJobIds = q.jobIds || [];
+  const jobs = (trackerApps||[]).filter(j => j.company || j.role);
+  if (!jobs.length) {
+    drop.innerHTML = `<div style="padding:8px;font-size:12px;color:var(--text3);">${currentLang==='en'?'No jobs found':'אין משרות'}</div>`;
+  } else {
+    drop.innerHTML = jobs.map(j => {
+      const checked = qJobIds.includes(j._id);
+      const label = escHtml([j.company, j.role].filter(Boolean).join(' — '));
+      return `<button onclick="toggleJobTag('${qId}','${j._id}',event)" style="display:flex;align-items:center;gap:6px;${checked?'font-weight:600;color:var(--accent);':''}">
+        <span style="width:14px;text-align:center;">${checked?'✓':''}</span>${label}
+      </button>`;
+    }).join('');
+  }
+  drop.classList.add('open');
+};
+
+window.toggleJobTag = async function(qId, jobId, event) {
+  event.stopPropagation();
+  const q = (localCache.questions||[]).find(x => x.id === qId);
+  if (!q) return;
+  const jobIds = new Set(q.jobIds || []);
+  if (jobIds.has(jobId)) jobIds.delete(jobId); else jobIds.add(jobId);
+  q.jobIds = [...jobIds];
+  try {
+    await setDoc(userDoc('data/questions'), { list: localCache.questions }, { merge: true });
+  } catch(e) { console.error(e); }
+  renderQuestions();
+};
+
 window.togglePrioDropdown = function(id, event) {
   event.stopPropagation();
   // Close all other dropdowns
@@ -6052,6 +6101,19 @@ function loadPreInterviewSection() {
   document.getElementById('pi-empty').style.display = sorted.length ? 'none' : 'block';
 }
 
+let _aboutMeTimer = null;
+window.saveAboutMeDebounced = function() {
+  clearTimeout(_aboutMeTimer);
+  _aboutMeTimer = setTimeout(async () => {
+    const id = document.getElementById('pi-job-select')?.value;
+    if (!id || !currentUser) return;
+    const val = document.getElementById('pi-aboutme-content')?.value || '';
+    try {
+      await setDoc(userDoc(`data/aboutme_${id}`), { text: val, updatedAt: Date.now() }, { merge: true });
+    } catch(e) { console.error('aboutme save error', e); }
+  }, 800);
+};
+
 window.loadPreInterview = function() {
   const id = document.getElementById('pi-job-select').value;
   const content = document.getElementById('pi-content');
@@ -6060,6 +6122,15 @@ window.loadPreInterview = function() {
 
   const job = trackerApps.find(j => j._id === id);
   if (!job) return;
+
+  // Load saved aboutme for this job
+  const aboutmeEl = document.getElementById('pi-aboutme-content');
+  if (aboutmeEl) {
+    aboutmeEl.value = '';
+    getDoc(userDoc(`data/aboutme_${id}`)).then(snap => {
+      if (snap.exists()) aboutmeEl.value = snap.data().text || '';
+    }).catch(() => {});
+  }
 
   // Requirements
   const reqEl = document.getElementById('pi-requirements-content');
@@ -6116,21 +6187,43 @@ window.renderPiQuestions = function() {
   if (!el) return;
   updatePiSelectAllLink();
 
+  const selectedJobId = document.getElementById('pi-job-select')?.value;
   const showHigh      = !!document.getElementById('pi-prio-high')?.checked;
   const showMedium    = !!document.getElementById('pi-prio-medium')?.checked;
   const showLow       = !!document.getElementById('pi-prio-low')?.checked;
   const difficultOnly = !!document.getElementById('pi-difficult-only')?.checked;
   const noneChecked   = !showHigh && !showMedium && !showLow && !difficultOnly;
 
-  let qs = (localCache.questions || []).filter(q => {
-    if (!q.priority) return false; // שאלות ללא עדיפות לא מוצגות
-    if (noneChecked) return true;  // אין פילטר = הצג הכל
-    if (difficultOnly && !q.difficult) return false;
-    if (q.priority === 'high'   && !showHigh)   return false;
-    if (q.priority === 'medium' && !showMedium) return false;
-    if (q.priority === 'low'    && !showLow)    return false;
-    return true;
-  });
+  const allQs = localCache.questions || [];
+
+  // האם יש שאלות מתויגות למשרה הנבחרת?
+  const taggedToJob = selectedJobId
+    ? allQs.filter(q => (q.jobIds||[]).includes(selectedJobId))
+    : [];
+
+  let qs;
+  if (taggedToJob.length > 0) {
+    // הצג שאלות מתויגות + סנן לפי פילטרים
+    qs = taggedToJob.filter(q => {
+      if (noneChecked) return true;
+      if (difficultOnly && !q.difficult) return false;
+      if (q.priority === 'high'   && !showHigh)   return false;
+      if (q.priority === 'medium' && !showMedium) return false;
+      if (q.priority === 'low'    && !showLow)    return false;
+      return true;
+    });
+  } else {
+    // fallback: התנהגות ישנה — סנן לפי עדיפות
+    qs = allQs.filter(q => {
+      if (!q.priority) return false;
+      if (noneChecked) return true;
+      if (difficultOnly && !q.difficult) return false;
+      if (q.priority === 'high'   && !showHigh)   return false;
+      if (q.priority === 'medium' && !showMedium) return false;
+      if (q.priority === 'low'    && !showLow)    return false;
+      return true;
+    });
+  }
 
   // Sort: high → medium → low, difficult first within each
   const prioOrder = { high: 0, medium: 1, low: 2 };
@@ -6221,6 +6314,7 @@ Return only the summary text, no titles or formatting.`
   try {
     const result = await callClaude(prompt, false, 'job_prep');
     content.value = result;
+    saveAboutMeDebounced();
   } catch(e) {
     content.value = t('errGenerateSummary');
   } finally {
