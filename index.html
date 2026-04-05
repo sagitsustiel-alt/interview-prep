@@ -273,6 +273,44 @@
   }
   textarea { resize: vertical; min-height: 80px; }
 
+  /* Long text fields */
+  .long-textarea {
+    min-height: 240px;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    resize: vertical;
+    overflow-y: auto;
+    transition: height 0.25s ease;
+  }
+  .long-textarea.expanded {
+    height: 50vh;
+    min-height: 50vh;
+    resize: none;
+  }
+  .textarea-wrapper { position: relative; }
+  .textarea-expand-btn {
+    position: absolute;
+    top: 8px;
+    inset-inline-start: 8px;
+    background: var(--surface3);
+    border: none;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--text3);
+    cursor: pointer;
+    z-index: 2;
+    line-height: 1.6;
+    transition: color 0.15s, background 0.15s;
+  }
+  .textarea-expand-btn:hover { color: var(--accent); background: var(--surface2); }
+
+  @media (max-width: 480px) {
+    .long-textarea { min-height: 180px; font-size: 16px; }
+    .long-textarea.expanded { height: 45vh; min-height: 45vh; }
+  }
+
   .btn {
     display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; height: 42px;
     border-radius: 6px; font-family: 'Heebo', sans-serif;
@@ -1143,7 +1181,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.66</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.67</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleDarkMode()" id="dark-mode-btn" title="החלף מצב תצוגה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -1259,9 +1297,10 @@
             <button onclick="toolbarBold('pi-aboutme-content')" title="Bold"><b>B</b></button>
             <button onclick="toolbarDir('pi-aboutme-content','rtl')" id="dir-rtl-pi-aboutme-content">RTL</button>
             <button onclick="toolbarDir('pi-aboutme-content','ltr')" id="dir-ltr-pi-aboutme-content">LTR</button>
+            <button id="expand-btn-pi-aboutme-content" onclick="toggleTextareaExpand('pi-aboutme-content')" style="margin-inline-start:auto;">↕ הרחב</button>
           </div>
-          <textarea id="pi-aboutme-content" rows="10" dir="auto"
-            style="width:100%;font-size:13px;line-height:1.7;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;resize:vertical;font-family:inherit;"
+          <textarea id="pi-aboutme-content" class="long-textarea" dir="auto"
+            style="width:100%;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-family:inherit;"
             placeholder="הקלד כאן את הצגתך העצמית, או השתמש ב-⚡ ליצירה אוטומטית..."
             oninput="saveAboutMeDebounced()"></textarea>
         </div>
@@ -1341,7 +1380,7 @@
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="card-pitch-body" style="padding:0 16px 16px;">
-          <textarea dir="auto" id="personal-pitch" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" rows="5" oninput="autoSavePitch()" style="margin-top:10px;"></textarea>
+          <div class="textarea-wrapper"><button class="textarea-expand-btn" id="expand-btn-personal-pitch" onclick="toggleTextareaExpand('personal-pitch')">↕ הרחב</button><textarea dir="auto" id="personal-pitch" class="long-textarea" placeholder="כתוב כאן את ה-elevator pitch שלך..." data-i18n-ph="phPitch" oninput="autoSavePitch()" style="margin-top:10px;padding-top:32px;"></textarea></div>
         </div>
       </div>
       <div class="card" style="padding:0;overflow:hidden;">
@@ -1350,7 +1389,7 @@
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="card-cv-body" style="padding:0 16px 16px;">
-          <textarea dir="auto" id="cv-text" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" rows="8" oninput="autoSaveCV()" style="margin-top:10px;"></textarea>
+          <div class="textarea-wrapper"><button class="textarea-expand-btn" id="expand-btn-cv-text" onclick="toggleTextareaExpand('cv-text')">↕ הרחב</button><textarea dir="auto" id="cv-text" class="long-textarea" placeholder="הדבק כאן את טקסט קורות החיים שלך..." data-i18n-ph="phCV" oninput="autoSaveCV()" style="margin-top:10px;padding-top:32px;"></textarea></div>
         </div>
       </div>
       <!-- טיפים לראיון -->
@@ -1557,7 +1596,7 @@
           <input type="hidden" id="jp-company">
           <input type="hidden" id="jp-role">
           <label data-i18n="labelJD">תיאור המשרה</label>
-          <textarea dir="auto" id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD"></textarea>
+          <div class="textarea-wrapper"><button class="textarea-expand-btn" id="expand-btn-jp-jd" onclick="toggleTextareaExpand('jp-jd')">↕ הרחב</button><textarea dir="auto" id="jp-jd" class="long-textarea" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD" style="padding-top:32px;"></textarea></div>
           <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>
             <span data-i18n="btnGenerate">הפק הכנה</span>
@@ -1842,7 +1881,7 @@
       <button onclick="toolbarDir('q-answer','rtl')" id="dir-rtl-q-answer">RTL</button>
       <button onclick="toolbarDir('q-answer','ltr')" id="dir-ltr-q-answer">LTR</button>
     </div>
-    <textarea dir="auto" id="q-answer" rows="5" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer"></textarea>
+    <div class="textarea-wrapper"><button class="textarea-expand-btn" id="expand-btn-q-answer" onclick="toggleTextareaExpand('q-answer')">↕ הרחב</button><textarea dir="auto" id="q-answer" class="long-textarea" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer" style="padding-top:32px;"></textarea></div>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveQuestion()" data-i18n="btnSave">שמור</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-question')" data-i18n="btnCancel">ביטול</button>
@@ -4569,7 +4608,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.66</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.67</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4772,7 +4811,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.66</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.67</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -4981,7 +5020,13 @@ let LANG = {
 const moonSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 const sunSVG  = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>';
 
-window.toggleDarkMode = function() {
+window.toggleTextareaExpand = function(id) {
+  const ta = document.getElementById(id);
+  const btn = document.getElementById('expand-btn-' + id);
+  if (!ta) return;
+  const isExpanded = ta.classList.toggle('expanded');
+  if (btn) btn.textContent = isExpanded ? '↕ כווץ' : '↕ הרחב';
+};
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
   const btn = document.getElementById('dark-mode-btn');
@@ -6902,7 +6947,7 @@ window.deleteTrackerApp = async function(id) {
     <!-- הערות -->
     <div style="margin-bottom:12px;">
       <label style="font-size:10px;font-weight:600;color:var(--text3);margin-bottom:2px;display:block;" data-i18n="lblAppNotes">הערות</label>
-      <textarea dir="auto" id="tracker-notes" rows="2" placeholder="תיאור התפקיד / דרישות המשרה — ישמש את ה-AI ב'לפני ראיון' לכתיבת 'על עצמי' מותאם" data-i18n-ph="phNotes" style="margin:0;padding:8px 10px;font-size:12px;resize:none;"></textarea>
+      <div class="textarea-wrapper"><button class="textarea-expand-btn" id="expand-btn-tracker-notes" onclick="toggleTextareaExpand('tracker-notes')">↕ הרחב</button><textarea dir="auto" id="tracker-notes" class="long-textarea" placeholder="תיאור התפקיד / דרישות המשרה — ישמש את ה-AI ב'לפני ראיון' לכתיבת 'על עצמי' מותאם" data-i18n-ph="phNotes" style="margin:0;padding-top:32px;min-height:180px;"></textarea></div>
     </div>
 
     <!-- Buttons -->
