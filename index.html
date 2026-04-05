@@ -1086,7 +1086,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1150,11 +1150,11 @@
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
         <div style="font-size:13px;color:var(--text2);margin-bottom:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0018 8 6 6 0 006 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 018.91 14"/></svg> <span data-i18n="piBannerText">כדי לקבל הכנה מלאה — מלא תחילה את:</span></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
+          <span style="color:var(--text3);" class="pi-sep-arrow"> ← </span>
           <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerProfile">הפרופיל שלי</button>
           <span style="color:var(--text3);" class="pi-sep-arrow"> ← </span>
           <button onclick="showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerPrep">תרגול והכנה</button>
-          <span style="color:var(--text3);" class="pi-sep-arrow"> ← </span>
-          <button onclick="showSection('tracker', document.querySelector('.nav-btn[onclick*=\'tracker\']'))" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:0;" data-i18n="piBannerJobs">המשרות שלי</button>
         </div>
       </div>
 
@@ -1191,7 +1191,8 @@
               <div class="pi-title" style="margin:0;" data-i18n="piAboutMe">על עצמי — מותאם למשרה</div>
               <button onclick="showSection('profile', document.querySelector('.nav-btn[onclick*=\'profile\']'))" title="Go to Profile" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3);padding:0 2px;line-height:1;">↗</button>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n-title="btnGenerateTitle" style="flex-shrink:0;">⚡ <span data-i18n="btnGenerate">צור</span></button>
+            <button class="btn btn-secondary btn-sm" onclick="generatePiAboutMe()" id="pi-aboutme-btn" data-i18n-title="btnGenerateTitle" style="flex-shrink:0;">⚡ <span data-i18n="btnGenerate">צור בעזרת AI</span></button>
+            <span id="pi-aboutme-saved" style="font-size:11px;color:var(--text3);display:none;">✓ נשמר</span>
           </div>
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
@@ -3870,7 +3871,7 @@ function renderQCard(q, search) {
             <div class="prio-dropdown" id="jobtagdrop-${q.id}" style="min-width:160px;"></div>
           </div>
           <button class="q-icon-btn" onclick="event.stopPropagation();findVideo('${q.id}', '${escAttr(q.question)}', '${escAttr(q.topic||'')}');" title="${currentLang==='en' ? 'Video explanation for this question' : 'סרטון הסבר לשאלה'}" style="opacity:0.55;font-size:13px;padding:2px 3px;">🎥</button>
-          <button class="q-star ${q.difficult?'active':''} q-icon-btn" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;padding:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+          <button class="q-star ${q.difficult?'active':''} q-icon-btn" onclick="event.stopPropagation();toggleDifficult('${q.id}')" title="${t('btnMarkDifficult')}" style="opacity:1;padding:2px;"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="${q.difficult?'var(--accent)':'none'}" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
           <span style="width:1px;height:14px;background:var(--border);display:inline-block;margin:0 2px;opacity:0.5;"></span>
           <button class="q-icon-btn" onclick="event.stopPropagation();openEditQuestion('${q.id}')" title="${t('btnEdit')}" style="opacity:0.55;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           <button class="q-icon-btn" onclick="event.stopPropagation();openImprove('${q.id}')" title="${t('btnImprove')}" style="opacity:0.55;"><svg width="18" height="9" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="currentColor" font-family="sans-serif" text-anchor="middle">AI</text></svg></button>
@@ -4484,7 +4485,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4687,7 +4688,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.53</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6103,6 +6104,8 @@ function loadPreInterviewSection() {
 
 let _aboutMeTimer = null;
 window.saveAboutMeDebounced = function() {
+  const savedEl = document.getElementById('pi-aboutme-saved');
+  if (savedEl) savedEl.style.display = 'none'; // מסתיר בזמן עריכה
   clearTimeout(_aboutMeTimer);
   _aboutMeTimer = setTimeout(async () => {
     const id = document.getElementById('pi-job-select')?.value;
@@ -6110,6 +6113,7 @@ window.saveAboutMeDebounced = function() {
     const val = document.getElementById('pi-aboutme-content')?.value || '';
     try {
       await setDoc(userDoc(`data/aboutme_${id}`), { text: val, updatedAt: Date.now() }, { merge: true });
+      if (savedEl) savedEl.style.display = 'inline'; // מציג אחרי שמירה
     } catch(e) { console.error('aboutme save error', e); }
   }, 800);
 };
@@ -6128,7 +6132,11 @@ window.loadPreInterview = function() {
   if (aboutmeEl) {
     aboutmeEl.value = '';
     getDoc(userDoc(`data/aboutme_${id}`)).then(snap => {
-      if (snap.exists()) aboutmeEl.value = snap.data().text || '';
+      if (snap.exists()) {
+        aboutmeEl.value = snap.data().text || '';
+        const savedEl = document.getElementById('pi-aboutme-saved');
+        if (savedEl && aboutmeEl.value) savedEl.style.display = 'inline';
+      }
     }).catch(() => {});
   }
 
