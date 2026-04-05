@@ -1099,7 +1099,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.59</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.61</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -3250,6 +3250,14 @@ window.loadProfileUI = function() {
   document.getElementById('cv-text').value = localCache.cv || '';
   renderWorkHistoryList();
   renderKbDocs();
+  // פתח את כל הכרטסות בחלון הפרופיל
+  ['card-pitch-body','card-cv-body','tips-body','exp-body'].forEach(id => {
+    const body = document.getElementById(id);
+    if (body && body.style.display === 'none') {
+      const header = body.previousElementSibling;
+      if (header) toggleCollapsible(id, header);
+    }
+  });
 };
 
 function renderWorkHistoryList() {
@@ -4513,7 +4521,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.59</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.61</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4716,7 +4724,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.59</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.61</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6283,18 +6291,18 @@ window.renderPiQuestions = function() {
     // הצג שאלות מתויגות + סנן לפי פילטרים
     qs = taggedToJob.filter(q => {
       if (noneChecked) return true;
-      if (difficultOnly && !q.difficult) return false;
+      if (difficultOnly) return !!q.difficult; // קשות בלבד — ללא קשר לעדיפות
       if (q.priority === 'high'   && !showHigh)   return false;
       if (q.priority === 'medium' && !showMedium) return false;
       if (q.priority === 'low'    && !showLow)    return false;
       return true;
     });
   } else {
-    // fallback: התנהגות ישנה — סנן לפי עדיפות
+    // fallback: סנן לפי פילטרים
     qs = allQs.filter(q => {
+      if (noneChecked) return !!q.priority;
+      if (difficultOnly) return !!q.difficult; // קשות בלבד — ללא קשר לעדיפות
       if (!q.priority) return false;
-      if (noneChecked) return true;
-      if (difficultOnly && !q.difficult) return false;
       if (q.priority === 'high'   && !showHigh)   return false;
       if (q.priority === 'medium' && !showMedium) return false;
       if (q.priority === 'low'    && !showLow)    return false;
