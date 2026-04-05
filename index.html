@@ -281,6 +281,18 @@
   .badge-hr { background: #EEF0FF; color: var(--accent); border: 1px solid rgba(124,108,242,0.2); }
   .badge-tech { background: #EDFBF5; color: var(--accent2); border: 1px solid rgba(45,191,138,0.2); }
 
+  .text-toolbar {
+    display: flex; gap: 4px; margin-bottom: 4px;
+  }
+  .text-toolbar button {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px; font-size: 12px;
+    cursor: pointer; color: var(--text2); line-height: 1.6;
+    transition: background 0.15s;
+  }
+  .text-toolbar button:hover { background: var(--surface3); color: var(--text); }
+  .text-toolbar button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
   .modal-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(28,28,30,0.45); z-index: 200; align-items: flex-end;
@@ -917,6 +929,7 @@
     display: none;
   }
   .prio-dropdown.open { display: block; }
+  .prio-dropdown.open-up { top: auto; bottom: calc(100% + 4px); }
   .prio-dropdown button {
     display: block; width: 100%; text-align: inherit;
     background: none; border: none; padding: 6px 10px;
@@ -1086,7 +1099,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1197,7 +1210,12 @@
           <div id="pi-aboutme-loading" style="display:none;text-align:center;padding:12px;">
             <div class="loading-dots"><span></span><span></span><span></span></div>
           </div>
-          <textarea id="pi-aboutme-content" rows="5" dir="auto"
+          <div class="text-toolbar" id="toolbar-pi-aboutme">
+            <button onclick="toolbarBold('pi-aboutme-content')" title="Bold"><b>B</b></button>
+            <button onclick="toolbarDir('pi-aboutme-content','rtl')" id="dir-rtl-pi-aboutme-content">RTL</button>
+            <button onclick="toolbarDir('pi-aboutme-content','ltr')" id="dir-ltr-pi-aboutme-content">LTR</button>
+          </div>
+          <textarea id="pi-aboutme-content" rows="10" dir="auto"
             style="width:100%;font-size:13px;line-height:1.7;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;resize:vertical;font-family:inherit;"
             placeholder="הקלד כאן את הצגתך העצמית, או השתמש ב-⚡ ליצירה אוטומטית..."
             oninput="saveAboutMeDebounced()"></textarea>
@@ -1769,7 +1787,13 @@
       </div>
     </div>
     <label data-i18n="labelQuestion">שאלה</label><textarea dir="auto" id="q-question" rows="3" placeholder="הכנס את שאלת הראיון..." data-i18n-ph="phQuestion"></textarea>
-    <label data-i18n="labelYourAnswer">התשובה שלך</label><textarea dir="auto" id="q-answer" rows="5" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer"></textarea>
+    <label data-i18n="labelYourAnswer">התשובה שלך</label>
+    <div class="text-toolbar" id="toolbar-q-answer">
+      <button onclick="toolbarBold('q-answer')" title="Bold"><b>B</b></button>
+      <button onclick="toolbarDir('q-answer','rtl')" id="dir-rtl-q-answer">RTL</button>
+      <button onclick="toolbarDir('q-answer','ltr')" id="dir-ltr-q-answer">LTR</button>
+    </div>
+    <textarea dir="auto" id="q-answer" rows="5" placeholder="כתוב את תשובתך..." data-i18n-ph="phYourAnswer"></textarea>
     <div style="display:flex;gap:10px;margin-top:20px;flex-direction:row-reverse;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveQuestion()" data-i18n="btnSave">שמור</button>
       <button class="btn btn-secondary" onclick="closeModal('modal-question')" data-i18n="btnCancel">ביטול</button>
@@ -2068,6 +2092,9 @@
     <button class="btn btn-ghost btn-block" onclick="closeModal('modal-info')" style="margin-top:8px;">סגור</button>
   </div>
 </div>
+
+<!-- docx.js for Word export -->
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -2497,23 +2524,17 @@ window.setActiveQuestion = function(id) {
   }
 };
 
+let openQuestionIds = new Set();
+
 window.toggleQuestion = function(id) {
-  const prev = openQuestionId;
-  // Close previous
-  if (prev && prev !== id) {
-    const prevBody = document.getElementById('qbody-' + prev);
-    const prevHeader = document.getElementById('qhdr-' + prev);
-    if (prevBody) prevBody.style.display = 'none';
-    if (prevHeader) prevHeader.querySelector('.q-arrow').textContent = '▶';
-  }
-  // Toggle current
   const body = document.getElementById('qbody-' + id);
   const header = document.getElementById('qhdr-' + id);
   if (!body) return;
   const isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
-  openQuestionId = isOpen ? null : id;
   if (header) header.querySelector('.q-arrow').textContent = isOpen ? '▶' : '▼';
+  if (isOpen) openQuestionIds.delete(id); else openQuestionIds.add(id);
+  openQuestionId = isOpen ? null : id; // backwards compat
   if (!isOpen) body.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 };
 
@@ -3518,6 +3539,7 @@ document.addEventListener('click', function(e) {
 }, true);
 window.selectQType = function(type, btn) {
   openQuestionId = null;
+  openQuestionIds = new Set();
   currentQType = type;
   selectedPriorities.clear();
   showDifficultOnly = false;
@@ -3656,8 +3678,11 @@ function renderQuestions() {
     q.answer?.toLowerCase().includes(search) ||
     q.topic?.toLowerCase().includes(search)
   );
-  if (showDifficultOnly) qs = qs.filter(q => q.difficult);
-  if (selectedPriorities.size) qs = qs.filter(q => selectedPriorities.has(q.priority || ''));
+  if (showDifficultOnly) {
+    qs = qs.filter(q => q.difficult);
+  } else {
+    if (selectedPriorities.size) qs = qs.filter(q => selectedPriorities.has(q.priority || ''));
+  }
 
   // Auto-open matching topics when searching
   // Only collapse when user clears search (not on every render)
@@ -3837,7 +3862,7 @@ function renderQCard(q, search) {
   search = search || getSearchFilter();
   const prioClass = q.priority === 'high' ? 'prio-high' : q.priority === 'medium' ? 'prio-medium' : q.priority === 'low' ? 'prio-low' : '';
   const prioLabel = q.priority === 'high' ? t('prioHighSimple') : q.priority === 'medium' ? t('prioMediumSimple') : q.priority === 'low' ? t('prioLowSimple') : (t('lblPriority') || 'רמת חשיבות');
-  const isOpen = openQuestionId === q.id;
+  const isOpen = openQuestionIds.has(q.id);
 
   // Job tags
   const qJobIds = q.jobIds || [];
@@ -4485,7 +4510,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4688,7 +4713,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.54</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.55</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5935,7 +5960,15 @@ window.togglePrioDropdown = function(id, event) {
     if (d.id !== 'priodrop-' + id) d.classList.remove('open');
   });
   const drop = document.getElementById('priodrop-' + id);
-  if (drop) drop.classList.toggle('open');
+  if (drop) {
+    drop.classList.toggle('open');
+    if (drop.classList.contains('open')) {
+      // בדוק אם יש מקום מתחת, אחרת פתח כלפי מעלה
+      const rect = drop.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.top;
+      drop.classList.toggle('open-up', spaceBelow < 160);
+    }
+  }
 };
 window.setPrioFromChip = async function(id, val, event) {
   event.stopPropagation();
@@ -6103,6 +6136,30 @@ function loadPreInterviewSection() {
 }
 
 let _aboutMeTimer = null;
+window.toolbarBold = function(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = el.selectionStart, end = el.selectionEnd;
+  const selected = el.value.substring(start, end);
+  const replacement = selected ? `**${selected}**` : '****';
+  el.value = el.value.substring(0, start) + replacement + el.value.substring(end);
+  el.focus();
+  el.setSelectionRange(selected ? start : start+2, selected ? start+replacement.length : start+2);
+  el.dispatchEvent(new Event('input'));
+};
+
+window.toolbarDir = function(id, dir) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.dir = dir;
+  // Update active state on buttons
+  const rtlBtn = document.getElementById(`dir-rtl-${id}`);
+  const ltrBtn = document.getElementById(`dir-ltr-${id}`);
+  if (rtlBtn) rtlBtn.classList.toggle('active', dir === 'rtl');
+  if (ltrBtn) ltrBtn.classList.toggle('active', dir === 'ltr');
+  el.focus();
+};
+
 window.saveAboutMeDebounced = function() {
   const savedEl = document.getElementById('pi-aboutme-saved');
   if (savedEl) savedEl.style.display = 'none'; // מסתיר בזמן עריכה
@@ -6331,26 +6388,130 @@ Return only the summary text, no titles or formatting.`
   }
 };
 
-window.downloadPiQuestions = function() {
-  const cards = document.querySelectorAll('#pi-questions-list .pi-q-checkbox');
+window.downloadPiQuestions = async function() {
   const job = trackerApps.find(j => j._id === document.getElementById('pi-job-select').value);
-  const title = job ? `${job.company} — ${job.role}` : 'שאלות לראיון';
-  let txt = `${title}\n${'='.repeat(40)}\n\n`;
-  let count = 0;
-  cards.forEach((cb, i) => {
+  const title = job ? `${job.company || ''} — ${job.role || ''}` : 'הכנה לראיון';
+  const dateStr = new Date().toLocaleDateString('he-IL');
+
+  // Gather data
+  const requirements = document.getElementById('pi-requirements-content')?.textContent?.trim() || '';
+  const aboutMe = document.getElementById('pi-aboutme-content')?.value?.trim() || '';
+  const tips = interviewTips || [];
+
+  // Gather selected questions from DOM
+  const cards = document.querySelectorAll('#pi-questions-list .pi-q-checkbox');
+  const questions = [];
+  cards.forEach(cb => {
     if (!cb.checked) return;
     const card = cb.closest('div[style*="display:flex"]');
-    const q = card?.querySelector('[style*="font-weight:600"]')?.textContent || '';
-    const a = card?.querySelectorAll('div > div')?.[2]?.textContent || '';
-    count++;
-    txt += `${count}. ${q}\n   ${a}\n\n`;
+    const q = card?.querySelector('[style*="font-weight:600"]')?.textContent?.trim() || '';
+    const aEl = card?.querySelectorAll('div > div')?.[2];
+    const a = aEl?.textContent?.trim() || '';
+    if (q) questions.push({ q, a });
   });
-  if (!count) { alert(currentLang==='en' ? 'No questions selected.' : 'לא נבחרו שאלות.'); return; }
-  const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'interview_questions.txt'; a.click();
-  URL.revokeObjectURL(url);
+
+  if (!questions.length && !aboutMe && !tips.length) {
+    alert(currentLang === 'en' ? 'Nothing to download.' : 'אין תוכן להורדה.');
+    return;
+  }
+
+  try {
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle } = docx;
+
+    const sectionSep = () => new Paragraph({
+      border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC', space: 6 } },
+      spacing: { before: 200, after: 200 }
+    });
+
+    const heading = (text) => new Paragraph({
+      heading: HeadingLevel.HEADING_2,
+      children: [new TextRun({ text, bold: true, size: 26, font: 'Arial' })],
+      spacing: { before: 300, after: 120 }
+    });
+
+    const body = (text) => new Paragraph({
+      children: [new TextRun({ text: text || '', size: 22, font: 'Arial' })],
+      spacing: { before: 60, after: 60 }
+    });
+
+    const children = [];
+
+    // Title
+    children.push(new Paragraph({
+      heading: HeadingLevel.HEADING_1,
+      children: [new TextRun({ text: title, bold: true, size: 32, font: 'Arial' })],
+      spacing: { before: 0, after: 200 }
+    }));
+    children.push(new Paragraph({
+      children: [new TextRun({ text: dateStr, size: 20, color: '888888', font: 'Arial' })],
+      spacing: { before: 0, after: 300 }
+    }));
+
+    // Requirements
+    if (requirements) {
+      children.push(heading(currentLang === 'en' ? 'Job Requirements' : 'דרישות המשרה'));
+      requirements.split('\n').forEach(line => children.push(body(line)));
+      children.push(sectionSep());
+    }
+
+    // About Me
+    if (aboutMe) {
+      children.push(heading(currentLang === 'en' ? 'About Me' : 'על עצמי'));
+      aboutMe.split('\n').forEach(line => children.push(body(line)));
+      children.push(sectionSep());
+    }
+
+    // Tips
+    if (tips.length) {
+      children.push(heading(currentLang === 'en' ? 'My Tips' : 'הטיפים שלי'));
+      tips.forEach(tip => children.push(new Paragraph({
+        children: [new TextRun({ text: '• ' + tip, size: 22, font: 'Arial' })],
+        spacing: { before: 40, after: 40 }
+      })));
+      children.push(sectionSep());
+    }
+
+    // Questions
+    if (questions.length) {
+      children.push(heading(currentLang === 'en' ? 'Prep Questions' : 'שאלות להכנה'));
+      questions.forEach((item, i) => {
+        children.push(new Paragraph({
+          children: [new TextRun({ text: `${i+1}. ${item.q}`, bold: true, size: 22, font: 'Arial' })],
+          spacing: { before: 160, after: 60 }
+        }));
+        if (item.a) {
+          item.a.split('\n').forEach(line => children.push(new Paragraph({
+            children: [new TextRun({ text: line, size: 22, font: 'Arial', color: '333333' })],
+            indent: { left: 360 },
+            spacing: { before: 30, after: 30 }
+          })));
+        }
+      });
+    }
+
+    const doc = new Document({
+      styles: {
+        default: { document: { run: { font: 'Arial', size: 22 } } }
+      },
+      sections: [{
+        properties: {
+          page: { size: { width: 11906, height: 16838 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 } }
+        },
+        children
+      }]
+    });
+
+    const buffer = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(buffer);
+    const a = document.createElement('a');
+    const filename = (job ? `${job.company || ''}_${job.role || ''}` : 'interview').replace(/\s+/g, '_');
+    a.href = url; a.download = `${filename}_prep.docx`; a.click();
+    URL.revokeObjectURL(url);
+
+  } catch(e) {
+    console.error('docx error', e);
+    alert(currentLang === 'en' ? 'Download failed. Try again.' : 'שגיאה בהורדה. נסי שוב.');
+  }
 };
 
 // ==================== TRACKER ====================
