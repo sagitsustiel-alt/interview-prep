@@ -1086,7 +1086,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.49</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleLanguage()" id="lang-btn" title="החלף שפה" style="padding:4px 8px;font-size:14px;font-weight:700;">EN</button>
@@ -1470,10 +1470,13 @@
           <span class="collapsible-arrow"> ▾</span>
         </div>
         <div class="collapsible-body" id="job-details-body" style="padding:0 16px 16px;">
-          <label data-i18n="labelCompany" style="margin-top:12px;">שם החברה</label>
-          <input type="text" id="jp-company" placeholder="למשל: גוגל, מיקרוסופט" data-i18n-ph="phCompany">
-          <label data-i18n="labelRole">תפקיד / כותרת</label>
-          <input type="text" id="jp-role" placeholder="למשל: Program Manager בכיר" data-i18n-ph="phRole">
+          <label style="margin-top:12px;" data-i18n="piSelectJob">בחר משרה</label>
+          <select id="jp-job-select" onchange="loadJpJobDetails()" style="margin-bottom:10px;">
+            <option value="" data-i18n="piSelectJobPh">בחר משרה...</option>
+          </select>
+          <div id="jp-job-info" style="display:none;background:var(--surface2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px;color:var(--text2);"></div>
+          <input type="hidden" id="jp-company">
+          <input type="hidden" id="jp-role">
           <label data-i18n="labelJD">תיאור המשרה</label>
           <textarea dir="auto" id="jp-jd" rows="6" placeholder="הדבק כאן את תיאור המשרה..." data-i18n-ph="phJD"></textarea>
           <button class="btn btn-primary btn-block" onclick="generateJobPrep()">
@@ -3196,7 +3199,7 @@ window.showSection = function(name, btn) {
   if (name === 'preinterview') { loadTrackerApps().then(() => loadPreInterviewSection()); }
   if (name === 'questions') {
     renderQuestions();
-
+    loadTrackerApps().then(() => loadJpJobSelect());
   }
   if (name === 'profile') loadProfileUI();
   if (name === 'jobprep') { showSection('questions', document.querySelector('.nav-btn[onclick*=\'questions\']')); setTimeout(()=>{ const b=document.querySelector('.inner-tab-btn:nth-child(2)'); if(b){b.click();} },50); return; }
@@ -4115,6 +4118,39 @@ window.applyImprovedAnswer = async function(option) {
 };
 
 // ==================== JOB PREP ====================
+window.loadJpJobSelect = function() {
+  const sel = document.getElementById('jp-job-select');
+  if (!sel) return;
+  const jobs = (trackerApps || []).filter(j => j.company || j.role);
+  const ph = currentLang === 'en' ? 'Select job...' : 'בחר משרה...';
+  sel.innerHTML = `<option value="">${ph}</option>` +
+    jobs.map(j => `<option value="${j._id}">${escHtml([j.company, j.role].filter(Boolean).join(' — '))}</option>`).join('');
+  loadJpJobDetails();
+};
+
+window.loadJpJobDetails = function() {
+  const sel = document.getElementById('jp-job-select');
+  const id = sel?.value;
+  const info = document.getElementById('jp-job-info');
+  const compEl = document.getElementById('jp-company');
+  const roleEl = document.getElementById('jp-role');
+  if (!id) {
+    if (info) info.style.display = 'none';
+    if (compEl) compEl.value = '';
+    if (roleEl) roleEl.value = '';
+    return;
+  }
+  const job = trackerApps.find(j => j._id === id);
+  if (!job) return;
+  if (compEl) compEl.value = job.company || '';
+  if (roleEl) roleEl.value = job.role || '';
+  if (info) {
+    info.style.display = 'block';
+    info.textContent = [job.company, job.role].filter(Boolean).join(' — ');
+  }
+};
+
+
 window.generateJobPrep = async function() {
   if (!window.confirm(currentLang === 'en' ? '⚡ Job Prep AI\n~1,000-2,000 tokens\n\nContinue?' : '⚡ הכנה למשרה\n~1,000-2,000 טוקנים\n\nלהמשיך?')) return;
   const _aiOk = await confirmAIUsage();
@@ -4122,7 +4158,7 @@ window.generateJobPrep = async function() {
   const company = document.getElementById('jp-company').value.trim();
   const role = document.getElementById('jp-role').value.trim();
   const jd = document.getElementById('jp-jd').value.trim();
-  if (!company||!role) { toast('יש להזין חברה ותפקיד.', true); return; }
+  if (!company || !role) { toast(currentLang === 'en' ? 'Please select a job first.' : 'יש לבחור משרה תחילה.', true); return; }
   const btn = document.querySelector('#sec-jobprep .btn-primary');
   btn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> מפיק...';
   btn.disabled = true;
@@ -4426,7 +4462,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.49</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4629,7 +4665,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.47</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.49</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5702,7 +5738,7 @@ window.showInnerTab = function(id, btn) {
   btn.classList.add('active');
   // trigger relevant renders
   if (id === 'inner-questions') renderQuestions();
-  if (id === 'inner-jobprep') renderSavedJobs();
+  if (id === 'inner-jobprep') { renderSavedJobs(); loadJpJobSelect(); }
   if (id === 'inner-mock') updateMockJobSelect();
 };
 
