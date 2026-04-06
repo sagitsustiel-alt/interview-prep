@@ -1212,7 +1212,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.76</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.77</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleDarkMode()" id="dark-mode-btn" title="החלף מצב תצוגה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -1271,7 +1271,7 @@
     <section id="sec-preinterview" class="section active">
       <h1 class="section-title" data-i18n="secPreInterview">לפני ראיון</h1>
       <p class="section-sub" data-i18n="subPreInterview"></p>
-      <div id="ai-info-preinterview" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
+      <div id="ai-info-preinterview" style="background:var(--surface2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoPreinterview"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בחלון זה:</b> <b>ספר לי על עצמך</b> — AI יוצר סיכום אישי מותאם למשרה ולפרופיל שלך (~500-1,000 טוקנים)</div>
 
       <!-- 1. בחירת משרה -->
       <div class="card" style="background:var(--surface2);border:1px solid var(--border);">
@@ -1298,8 +1298,14 @@
 
         <!-- 2. דרישות המשרה -->
         <div class="card" id="pi-requirements-card">
-          <div class="pi-title" data-i18n="piRequirements">דרישות המשרה</div>
-          <div id="pi-requirements-content" dir="auto" style="font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap;"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div class="pi-title" data-i18n="piRequirements">דרישות המשרה</div>
+            <span id="pi-req-saved" style="font-size:11px;color:var(--text3);display:none;">✓ נשמר</span>
+          </div>
+          <textarea id="pi-requirements-content" dir="auto" class="long-textarea"
+            style="font-size:13px;min-height:100px;"
+            placeholder="תיאור התפקיד / דרישות המשרה..."
+            oninput="saveReqDebounced()"></textarea>
         </div>
 
         <!-- 3. לינק ל-CV -->
@@ -1385,6 +1391,7 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:6px;">
                   <button id="pi-sort-toggle" onclick="togglePiSort()" style="font-size:11px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;" title="החלף סדר מיון">סדר נושאים</button>
+                  <button class="btn btn-secondary btn-sm" onclick="piAddQuestion()" style="font-size:11px;">+ הוסף שאלה</button>
                   <button class="btn btn-secondary btn-sm" onclick="downloadPiQuestions()" data-i18n="btnDownload">⬇ הורד</button>
                 </div>
               </div>
@@ -1522,7 +1529,7 @@
       <div id="inner-questions" class="inner-section active">
         <h1 class="section-title" data-i18n="secQuestions">נושאים לתרגול</h1>
         <p class="section-sub" data-i18n="subQuestions">בחר נושא ולאחר מכן תרגל שאלות מתוכו</p>
-        <div id="ai-info-questions" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoQuestions"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
+        <div id="ai-info-questions" style="background:var(--surface2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoQuestions"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>חלץ שאלות ממסמך</b> (~5,000-15,000 טוקנים) · <b>שפר באמצעות AI</b> — בודק כפילויות ומשפר תשובה (~200-500 טוקנים)</div>
 
         <!-- Merge notification area -->
         <div id="merge-notifications" style="margin-bottom:8px;"></div>
@@ -1602,7 +1609,7 @@
       <div id="inner-jobprep" class="inner-section">
 <h1 class="section-title" data-i18n="secJobprep">הכנה למשרה</h1>
       <p class="section-sub" data-i18n="subJobprep">הפק הכנה מותאמת אישית לתפקיד ספציפי</p>
-      <div id="ai-info-jobprep" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoJobprep"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
+      <div id="ai-info-jobprep" style="background:var(--surface2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoJobprep"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>הפק הכנה</b> — AI מייצר שאלות ותשובות ממוקדות למשרה (~1,000-2,000 טוקנים)</div>
 
       <!-- כפתור שאלות בסיסיות -->
       <div style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -1654,7 +1661,7 @@
       <div id="inner-mock" class="inner-section">
 <h1 class="section-title" data-i18n="secMock">ראיון מדומה</h1>
       <p class="section-sub" data-i18n="subMock">תרגל תשובות וקבל משוב מ-AI</p>
-      <div id="ai-info-mock" style="background:#E6E9F2;border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoMock"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
+      <div id="ai-info-mock" style="background:var(--surface2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);border-inline-start:3px solid var(--accent);" data-i18n-html="aiInfoMock"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <b>פעולות AI בכרטסת זו:</b> <b>משוב על תשובה</b> — AI מעניק פידבק ותשובה משופרת לכל תשובה (~500-1,000 טוקנים)</div>
       <div id="mock-setup">
         <div class="card">
           <div class="card-title" data-i18n="cardMockTypes">סוג שאלות לתרגול</div>
@@ -4112,6 +4119,64 @@ window.openEditQuestion = function(id) {
   openModal('modal-question');
 };
 
+// ===== PI Questions Actions =====
+let _reqTimer = null;
+window.saveReqDebounced = function() {
+  const savedEl = document.getElementById('pi-req-saved');
+  if (savedEl) savedEl.style.display = 'none';
+  clearTimeout(_reqTimer);
+  _reqTimer = setTimeout(async () => {
+    const el = document.getElementById('pi-requirements-content');
+    const jobId = el?.dataset.jobId;
+    if (!jobId || !currentUser) return;
+    const val = el.value || '';
+    const job = trackerApps.find(j => j._id === jobId);
+    if (!job) return;
+    job.notes = val;
+    try {
+      await setDoc(doc(db, 'users', currentUser.uid, 'tracker', jobId), { notes: val }, { merge: true });
+      if (savedEl) savedEl.style.display = 'inline';
+    } catch(e) { console.error(e); }
+  }, 800);
+};
+
+window.piAddQuestion = function() {
+  const jobId = document.getElementById('pi-job-select')?.value;
+  const job = jobId ? trackerApps.find(j => j._id === jobId) : null;
+  // Open existing modal pre-filled with job tag
+  openAddQuestion('HR');
+  // After modal saves, the job tag will be set via piPostAddQuestion
+  window._piPendingJobId = jobId;
+};
+
+window.piEditQuestion = function(qId) {
+  openEditQuestion(qId);
+  window._piPendingJobId = null; // just edit, no extra tag
+};
+
+window.piUnlinkQuestion = async function(qId, jobId) {
+  const q = (localCache.questions||[]).find(x => x.id === qId);
+  if (!q || !jobId) return;
+  const jobIds = new Set(q.jobIds || []);
+  jobIds.delete(jobId);
+  q.jobIds = [...jobIds];
+  await saveQuestionToCloud(q);
+  renderQuestions();
+  renderPiQuestions();
+};
+
+window.piDeleteQuestion = async function(qId) {
+  const q = (localCache.questions||[]).find(x => x.id === qId);
+  if (!q) return;
+  const otherJobs = (q.jobIds||[]).filter(id => id !== document.getElementById('pi-job-select')?.value);
+  const msg = otherJobs.length > 0
+    ? (currentLang==='en' ? `This question is linked to ${otherJobs.length} other job(s). Delete permanently?` : `שאלה זו מחוברת ל-${otherJobs.length} משרות נוספות. למחוק לצמיתות?`)
+    : (currentLang==='en' ? 'Delete this question permanently?' : 'למחוק שאלה זו לצמיתות?');
+  if (!window.confirm(msg)) return;
+  await deleteQuestion(qId);
+  renderPiQuestions();
+};
+
 window.saveQuestion = async function() {
   const question = document.getElementById('q-question').value.trim();
   const answer = document.getElementById('q-answer').value.trim();
@@ -4140,6 +4205,7 @@ window.saveQuestion = async function() {
     await saveQuestionToCloud(localCache.questions.find(x=>x.id===editId));
     closeModal('modal-question');
     renderQuestions();
+    renderPiQuestions();
     toast(t('toastQSaved'));
   } else {
     closeModal('modal-question');
@@ -4153,9 +4219,15 @@ window.saveQuestion = async function() {
       openModal('modal-merge');
     } else {
       const q = { id: uid(), type, question, answer, topic, _jobId: 'generic' };
+      // אם נפתח מ"לפני ראיון" — שייך למשרה הנוכחית
+      if (window._piPendingJobId) {
+        q.jobIds = [window._piPendingJobId];
+        window._piPendingJobId = null;
+      }
       localCache.questions.push(q);
       await saveQuestionToCloud(q);
       renderQuestions();
+      renderPiQuestions();
       toast(t('toastQSaved'));
     }
   }
@@ -4649,7 +4721,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.76</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.77</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4852,7 +4924,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.76</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.77</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -6387,9 +6459,9 @@ window.loadPreInterview = function() {
   const reqEl = document.getElementById('pi-requirements-content');
   const reqCard = document.getElementById('pi-requirements-card');
   if (reqEl) {
-    const notes = job.notes || '';
-    reqEl.textContent = notes;
-    if (reqCard) reqCard.style.display = notes ? 'block' : 'none';
+    reqEl.value = job.notes || '';
+    reqEl.dataset.jobId = job._id;
+    if (reqCard) reqCard.style.display = 'block';
   }
 
   // CV links
@@ -6485,6 +6557,7 @@ window.renderPiQuestions = function() {
   const renderCard = (q, idx) => {
     const prioClass = q.priority==='high'?'prio-high':q.priority==='medium'?'prio-medium':q.priority==='low'?'prio-low':'';
     const prioLabel = q.priority==='high'?L.prioHigh:q.priority==='medium'?L.prioMedium:q.priority==='low'?L.prioLow:'';
+    const selectedJobId = document.getElementById('pi-job-select')?.value || '';
     return `<div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;background:var(--surface);display:flex;gap:10px;align-items:flex-start;">
       <input type="checkbox" class="pi-q-checkbox" data-qid="${escHtml(q.id||idx)}" checked onchange="updatePiSelectAllLink()" style="width:15px;height:15px;margin-top:2px;flex-shrink:0;cursor:pointer;">
       <div style="flex:1;min-width:0;">
@@ -6494,6 +6567,11 @@ window.renderPiQuestions = function() {
         </div>
         <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">${escHtml(q.question)}</div>
         <div style="font-size:12px;color:var(--text2);line-height:1.5;">${escHtml((q.answer||'').substring(0,150))}${(q.answer||'').length>150?'...':''}</div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button onclick="piEditQuestion('${escAttr(q.id)}')" style="font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">${currentLang==='en'?'Edit':'עריכה'}</button>
+          <button onclick="piUnlinkQuestion('${escAttr(q.id)}','${escAttr(selectedJobId)}')" style="font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;padding:0;">${currentLang==='en'?'Unlink':'בטל שיוך'}</button>
+          <button onclick="piDeleteQuestion('${escAttr(q.id)}')" style="font-size:11px;color:var(--danger);background:none;border:none;cursor:pointer;padding:0;">${currentLang==='en'?'Delete':'מחק'}</button>
+        </div>
       </div>
     </div>`;
   };
@@ -6598,7 +6676,7 @@ window.downloadPiQuestions = async function() {
   const dateStr = new Date().toLocaleDateString('he-IL');
 
   // Gather data
-  const requirements = document.getElementById('pi-requirements-content')?.textContent?.trim() || '';
+  const requirements = document.getElementById('pi-requirements-content')?.value?.trim() || '';
   const aboutMe = document.getElementById('pi-aboutme-content')?.value?.trim() || '';
   const tips = interviewTips || [];
 
