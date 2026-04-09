@@ -196,7 +196,7 @@
   .header-right { display: flex; align-items: center; gap: 6px; }
   .user-avatar {
     width: 32px; height: 32px; border-radius: 50%;
-    border: 2px solid var(--accent); cursor: pointer; object-fit: cover;
+    border: none; cursor: pointer; object-fit: cover;
   }
   .user-initial {
     width: 32px; height: 32px; border-radius: 50%;
@@ -1184,6 +1184,8 @@
   [dir="ltr"] #topic-checkboxes input[type="checkbox"] { order: -1; }
   [dir="ltr"] #topic-checkboxes span[style*="flex:1"] { text-align: left; }
 </style>
+
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 </head>
 <body>
 
@@ -1212,7 +1214,7 @@
 
   <!-- HEADER -->
   <header class="app-header">
-    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.80</span></div>
+    <div class="app-logo" id="app-logo-text">הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.84</span></div>
     
     <div class="header-right">
       <button class="btn btn-ghost" onclick="toggleDarkMode()" id="dark-mode-btn" title="החלף מצב תצוגה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="var(--accent)" stroke="none" style="display:inline-block;vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -1221,8 +1223,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         <span id="header-credits-val">--</span>
       </div>
-      <button class="btn btn-ghost" onclick="openModal('modal-share')" title="שתף מצב צפייה" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></button>
-      <button class="btn btn-ghost" onclick="openModal('modal-help')" title="הוראות שימוש" style="padding:4px 8px;font-size:14px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg></button>
       <div id="user-avatar-container" onclick="toggleUserMenu()"></div>
     </div>
   </header>
@@ -1234,8 +1234,7 @@
 
     <!-- Credits Display -->
     <div id="credits-box" style="background:var(--surface2);border-radius:6px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--border);">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <button class="btn btn-primary btn-sm" onclick="toggleUserMenu();openModal('modal-pricing')" style="font-size:14px;padding:5px 12px;">רכוש קרדיטים</button>
+      <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;">
         <div style="font-size:11px;color:var(--text3);font-weight:600;"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> קרדיטים</div>
       </div>
       <div style="display:flex;align-items:baseline;gap:4px;justify-content:flex-end;">
@@ -1254,6 +1253,9 @@
     <div style="display:flex;gap:8px;margin-top:10px;">
       <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:14px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-help');toggleUserMenu()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> הוראות</button>
       <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:14px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="toggleUserMenu();checkInfoPassword()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> מידע טכני</button>
+    </div>
+    <div style="margin-top:8px;">
+      <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:14px;border:1px solid var(--border);border-radius:var(--radius-sm);" onclick="openModal('modal-share');toggleUserMenu()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin-inline-end:4px;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> שתף מצב צפייה</button>
     </div>
   </div>
 
@@ -2186,6 +2188,228 @@
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> מידע טכני</div>
+    <div id="modal-info-body" style="overflow-y:auto;max-height:60vh;font-size:13px;color:var(--text2);line-height:1.8;">
+      <div id="modal-info-content-he">
+      <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:12px;border-bottom:2px solid var(--accent);padding-bottom:8px;">מידע טכני</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text3);">גרסה</span><span style="color:var(--text);font-weight:600;" id="info-version">—</span></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text3);">Firebase Project</span><span style="color:var(--accent);font-family:monospace;font-size:12px;">interview-prep-6a3aa</span></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text3);">GitHub</span><a href="https://github.com/sagitsustiel-alt/interview-prep" target="_blank" style="color:var(--accent);font-size:12px;">sagitsustiel-alt/interview-prep</a></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text3);">URL</span><a href="https://sagitsustiel-alt.github.io/interview-prep" target="_blank" style="color:var(--accent);font-size:12px;">GitHub Pages</a></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;"><span style="color:var(--text3);">מודל AI</span><span style="color:var(--text);font-family:monospace;font-size:12px;">claude-sonnet-4-20250514</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:var(--text3);">API Key</span><span id="info-api-status" style="color:var(--accent2);font-size:12px;"></span></div>
+      </div>
+      <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:8px;border-bottom:2px solid var(--accent);padding-bottom:8px;">מדריך שימוש — לפי חלונות</div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">סרגל עליון</div>
+        <div>⚡ קרדיטים — מציג יתרה, לחיצה לרכישה</div>
+        <div>🌙/☀️ — החלפת מצב יום/לילה, נשמר בין סשנים</div>
+        <div>EN/HE — החלפת שפה</div>
+        <div>אווטאר — תפריט: יתרה, הוראות, מידע טכני, שתף, התנתק</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">לפני ראיון</div>
+        <div>בחר משרה → כל התוכן מתעדכן לפי הבחירה</div>
+        <div>דרישות המשרה — עריך, נשמר אוטומטית למשרות שלי</div>
+        <div>על עצמי — כתיבה ידנית + ⚡AI (Pitch+קו"ח+משרה) נשמר לפי משרה</div>
+        <div>שאלות — עריכה/ביטול שיוך/מחיקה + ⬇ Word</div>
+        <div>⬇ הורד — Word עם: דרישות + על עצמי + טיפים + שאלות</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">תרגול והכנה — בנק שאלות</div>
+        <div>HR/TECH — מחליף בנק</div>
+        <div>✎AI — שיפור תשובה + בדיקת כפילויות (~200-500 טוקנים)</div>
+        <div>⭐ — סימון שאלה קשה</div>
+        <div>🏢 — שיוך שאלה למשרות (מופיע ב"לפני ראיון")</div>
+        <div>חלץ שאלות — מסמך → AI מחלץ (~5,000-15,000 טוקנים)</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">הפרופיל שלי</div>
+        <div>Pitch — נשמר אוטומטית, AI ישתמש בו ב"על עצמי"</div>
+        <div>קו"ח — AI ישתמש ב-800 תווים ראשונים</div>
+        <div>טיפים — מוצגים גם ב"לפני ראיון"</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-weight:700;color:var(--accent);margin-bottom:4px;">המשרות שלי</div>
+        <div>הערות/תיאור — AI ישתמש ב"על עצמי" מותאם</div>
+        <div>תאריך ראיון — מופיע ב"לפני ראיון" לבחירה</div>
+        <div>קו"ח Word/PDF — מוצגים ב"לפני ראיון"</div>
+      </div>
+      </div>
+    </div>
+        <button class="btn btn-secondary btn-block" onclick="downloadGuide()" style="margin-top:12px;display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg><span data-i18n="helpDownload">הורד מדריך מפורט</span></button>
+    <button class="btn btn-primary btn-block" onclick="closeModal('modal-help')" style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;"><span data-i18n="helpGotIt">הבנתי</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg></button>
+  </div>
+</div>
+
+<!-- Modal: שתף מצב צפייה -->
+<div class="modal-overlay" id="modal-share">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> שתף מצב צפייה</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">צור לינק שיאפשר לאחרים לצפות בנתונים שלך — ללא עריכה, ללא התחברות.</p>
+    <div id="share-link-area">
+      <button class="btn btn-primary btn-block" onclick="generateShareLink()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> צור לינק צפייה</button>
+    </div>
+    <div id="share-link-result" style="display:none;margin-top:14px;">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">העתק את הלינק ושלח:</div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="share-link-input" readonly style="flex:1;font-size:11px;padding:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="copyShareLink()">העתק</button>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;">הלינק תקף ל-30 יום. מי שנכנס יוכל לצפות בלבד.</div>
+    </div>
+    <button class="btn btn-ghost btn-block" onclick="closeModal('modal-share')" style="margin-top:12px;">סגור</button>
+  </div>
+</div>
+
+<!-- Modal: שאלות בסיסיות -->
+<!-- Modal: נקה וסדר בנק -->
+<div class="modal-overlay" id="modal-clean-bank">
+  <div class="modal-sheet" style="max-height:92vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🧹 בנק מסודר ונקי</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">תצוגה מקדימה — לחץ "החלף את הבנק" כדי לשמור:</p>
+    <div id="clean-bank-list"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="applyCleanedBank()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> החלף את הבנק</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-clean-bank')">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: חלץ שאלות -->
+<div class="modal-overlay" id="modal-extracted">
+  <div class="modal-sheet" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><svg width="24" height="12" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="var(--accent)" font-family="sans-serif" text-anchor="middle">AI</text></svg> שאלות שחולצו</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">בחר אילו שאלות להוסיף לבנק שלך:</p>
+    <div id="extracted-list"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="addAllExtracted()">הוסף את כולן לבנק</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-extracted')">סגור</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: שאלות בסיסיות -->
+<div class="modal-overlay" id="modal-default-questions">
+  <div class="modal-sheet" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span data-i18n="defaultQModalTitle">סט שאלות בסיסי</span></div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" data-i18n="defaultQModalDesc">AI סימן את השאלות המומלצות. אפשר לשנות את הסימון.</p>
+    <!-- בורר כמות -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+      <label style="font-size:13px;color:var(--text2);margin:0;white-space:nowrap;" data-i18n="labelDefaultQCount">כמות לכל סוג:</label>
+      <select id="default-q-count" style="flex:1;font-size:13px;padding:6px 10px;">
+        <option value="6">6 HR + 6 טכניות</option>
+        <option value="10">10 HR + 10 טכניות</option>
+        <option value="15">15 HR + 15 טכניות</option>
+        <option value="20">20 HR + 20 טכניות</option>
+      </select>
+      <button class="btn btn-secondary btn-sm" onclick="reloadDefaultQ()" style="display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg><span data-i18n="btnReload">טען</span></button>
+    </div>
+    <div id="default-q-loading" style="display:none;text-align:center;padding:20px;">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p style="color:var(--text3);font-size:13px;margin-top:10px;" data-i18n="defaultQLoading">AI מכין שאלות בסיסיות...</p>
+    </div>
+    <div id="default-q-list" style="display:none;max-height:45vh;overflow-y:auto;"></div>
+    <div id="default-q-actions" style="display:none;margin-top:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(true)" data-i18n="btnSelectAll">בחר הכל</button>
+        <button class="btn btn-ghost" style="font-size:14px;" onclick="toggleAllDefaultQ(false)" data-i18n="btnDeselectAll">בטל הכל</button>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="addSelectedDefaultQ()" style="display:inline-flex;align-items:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span data-i18n="btnAddSelected">הוסף שאלות מסומנות לבנק</span></button>
+      <button class="btn btn-ghost btn-block" onclick="closeModal('modal-default-questions')" style="margin-top:8px;" data-i18n="btnCancel">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: תמחור / רכישת קרדיטים -->
+<div class="modal-overlay" id="modal-pricing">
+  <div class="modal-sheet" style="max-width:420px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="text-align:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> רכוש קרדיטים</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;text-align:center;">בחר חבילה — כל פעולת AI מנכה קרדיטים</p>
+
+    <!-- יתרה נוכחית -->
+    <div style="background:var(--surface2);border-radius:6px;padding:12px 16px;margin-bottom:20px;text-align:center;border:1px solid rgba(124,108,242,0.2);">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">יתרה נוכחית</div>
+      <div style="font-size:32px;font-weight:700;color:var(--accent);" id="pricing-balance">--</div>
+      <div style="font-size:11px;color:var(--text3);">קרדיטים</div>
+    </div>
+
+    <!-- חבילות -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+
+      <!-- Basic -->
+      <div style="border:2px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('basic',this)" id="plan-basic">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪25 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Basic</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">200 קרדיטים · ~40 שיפורי תשובות</div>
+      </div>
+
+      <!-- Pro — מומלץ -->
+      <div style="border:2px solid var(--accent);border-radius:6px;padding:16px;cursor:pointer;background:var(--surface2);position:relative;" onclick="selectPlan('pro',this)" id="plan-pro">
+        <div style="position:absolute;top:-10px;right:16px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:2px 10px;border-radius:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> מומלץ</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪39 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Pro</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">600 קרדיטים · ~120 שיפורי תשובות</div>
+      </div>
+
+      <!-- Unlimited -->
+      <div style="border:2px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('unlimited',this)" id="plan-unlimited">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:22px;font-weight:700;color:var(--accent);">₪59 <span style="font-size:13px;color:var(--text2);font-weight:400;">/חודש</span></div>
+          <div style="font-weight:700;font-size:15px;">Unlimited</div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);margin-top:6px;">∞ קרדיטים · שימוש ללא הגבלה</div>
+      </div>
+    </div>
+
+    <!-- עלות לפעולה -->
+    <div style="background:var(--surface2);border-radius:6px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:var(--text2);">
+      <div style="font-weight:700;color:var(--text);margin-bottom:8px;">עלות לפי פעולה:</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+        <div><svg width="20" height="10" viewBox="0 0 38 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M11 4H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 1.5a1.8 1.8 0 012.5 2.5L13 14l-3.5 1 1-3.5L20 1.5z" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="16" font-size="11" font-weight="700" fill="var(--accent)" font-family="sans-serif" text-anchor="middle">AI</text></svg> שיפור תשובה</div><div style="text-align:left;color:var(--accent);font-weight:600;">3 קרדיטים</div>
+        <div>🎤 ראיון מדומה</div><div style="text-align:left;color:var(--accent);font-weight:600;">5 קרדיטים</div>
+        <div><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> הכנה למשרה</div><div style="text-align:left;color:var(--accent);font-weight:600;">15 קרדיטים</div>
+        <div><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg> חילוץ ממסמך</div><div style="text-align:left;color:var(--accent);font-weight:600;">10 קרדיטים</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" id="btn-buy-plan" onclick="goToCheckout()" style="font-size:14px;padding:14px;">
+      המשך לתשלום →
+    </button>
+    <button class="btn btn-ghost btn-block" onclick="closeModal('modal-pricing')" style="margin-top:8px;">סגור</button>
+  </div>
+</div>
+
+<!-- Modal: סיסמה למידע טכני -->
+<div class="modal-overlay" id="modal-password">
+  <div class="modal-sheet" style="max-width:320px;">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔒 מידע טכני</div>
+    <label style="font-size:13px;color:var(--text2);">סיסמה</label>
+    <input type="password" id="info-password-input" placeholder="••••••••" style="margin-top:6px;"
+      onkeydown="if(event.key==='Enter') submitInfoPassword()">
+    <div id="info-password-error" style="font-size:12px;color:var(--danger);margin-top:6px;display:none;">סיסמה שגויה</div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-direction:row-reverse;">
+      <button class="btn btn-primary" style="flex:1;" onclick="submitInfoPassword()">כניסה</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-password');document.getElementById('info-password-input').value='';document.getElementById('info-password-error').style.display='none';">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: מידע טכני -->
+<div class="modal-overlay" id="modal-info">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="12" x2="12" y2="16"/></svg> מידע טכני</div>
     <div style="font-size:13px;color:var(--text2);line-height:2.2;">
       <div style="display:flex;flex-direction:column;gap:6px;">
         <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:6px;">
@@ -2258,17 +2482,8 @@ window.signInWithGoogle = async function() {
     await signInWithPopup(auth, provider);
   } catch (e) {
     console.error('Auth error:', e);
-    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
-      // fallback to redirect
-      try {
-        const { signInWithRedirect } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-        await signInWithRedirect(auth, provider);
-      } catch(e2) {
-        toast('שגיאה בהתחברות — נסה שנית (' + (e2.code||e2.message) + ')', true);
-      }
-    } else {
-      toast('שגיאה בהתחברות — נסה שנית (' + (e.code||e.message) + ')', true);
-    }
+    if (e.code === 'auth/popup-closed-by-user') return; // user closed - no error
+    toast('שגיאה בהתחברות — נסה שנית (' + (e.code || e.message) + ')', true);
   }
 };
 
@@ -4726,7 +4941,7 @@ function t(key, ...args) {
 
 let LANG = {
   he: {
-    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.80</span>', btnLang: 'EN', syncText: 'מסונכרן',
+    appTitle: 'הכנה<span>לראיון</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.84</span>', btnLang: 'EN', syncText: 'מסונכרן',
     // Nav
     profile: 'הפרופיל שלי', questions: 'תרגול והכנה', tracker: 'המשרות שלי', preinterview: 'לפני ראיון',
     // Profile section
@@ -4929,7 +5144,7 @@ let LANG = {
     today: 'היום',
   },
   en: {
-    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.80</span>', btnLang: 'HE', syncText: 'Synced',
+    appTitle: 'Interview<span>Prep</span><span style="font-size:9px;color:var(--text3);font-weight:400;margin-inline-start:6px;vertical-align:middle;">v1.1.84</span>', btnLang: 'HE', syncText: 'Synced',
     // Nav
     preinterview: 'Pre-Interview', profile: 'Profile Setup', questions: 'Prep & Practice', tracker: 'My Jobs',
     // Profile section
@@ -5628,6 +5843,13 @@ window.submitInfoPassword = function() {
     const hasKey = true; // API key now server-side
     const el = document.getElementById('info-api-status');
     if (el) el.textContent = hasKey ? '✅ שמור' : '❌ לא הוגדר';
+    // Fill version
+    const vEl = document.getElementById('info-version');
+    const logoEl = document.getElementById('app-logo-text');
+    if (vEl && logoEl) {
+      const match = logoEl.textContent.match(/v[\d.]+/);
+      if (match) vEl.textContent = match[0];
+    }
     openModal('modal-info');
   } else {
     document.getElementById('info-password-error').style.display = 'block';
@@ -6739,6 +6961,10 @@ window.downloadPiQuestions = async function() {
   }
 
   try {
+    if (typeof docx === 'undefined') {
+      alert(currentLang === 'en' ? 'Word library not loaded yet. Please wait a moment and try again.' : 'ספריית Word לא נטענה עדיין. המתן רגע ונסה שנית.');
+      return;
+    }
     const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle } = docx;
 
     const sectionSep = () => new Paragraph({
@@ -7135,9 +7361,5 @@ window.deleteTrackerApp = async function(id) {
       <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('modal-confirm-delete')">ביטול</button>
     </div>
   
-
-
-<!-- docx.js for Word export -->
-<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 </body>
 </html>
